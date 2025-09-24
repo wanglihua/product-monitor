@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Core.Util;
 
-public class HashUtil
+public static class HashUtil
 {
     public static string GetMD5(string clearText)
     {

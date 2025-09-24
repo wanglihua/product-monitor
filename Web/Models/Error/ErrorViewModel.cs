@@ -1,6 +1,6 @@
 ﻿namespace Web.Models.Error;
 
-public class ErrorModel
+public class ErrorViewModel
 {
     public string Message { get; set; } = string.Empty;
 }
