@@ -17,6 +17,8 @@ public class TestController : Controller
         this.db = db;
     }
 
+#if DEBUG
+
     [HttpGet]
     [Route("/test")]
     [Transactional]
@@ -24,6 +26,7 @@ public class TestController : Controller
     {
         var testList = db.Set<TestEntity>()
             .Where(e => e.Id > 0)
+            .Take(100)
             .ToList();
 
         return Json(new JsonResultData {
@@ -32,4 +35,6 @@ public class TestController : Controller
             Data = testList,
         });
     }
+
+#endif
 }
