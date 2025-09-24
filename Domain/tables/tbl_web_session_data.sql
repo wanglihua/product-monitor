@@ -9,6 +9,7 @@ CREATE TABLE tbl_web_session_data
     update_time    DATETIME      NOT NULL,
 
     CONSTRAINT pk_web_session_data PRIMARY KEY (id),
-    CONSTRAINT fk_web_session_data_session_id FOREIGN KEY (web_session_id) REFERENCES tbl_web_session (id),
+    -- ON DELETE CASCADE 让 session 过期删除非常方便 
+    CONSTRAINT fk_web_session_data_session_id FOREIGN KEY (web_session_id) REFERENCES tbl_web_session (id) ON DELETE CASCADE,
     INDEX ix_web_session_data_update_time (update_time)
 );

@@ -10,12 +10,21 @@ public class Db : DbContext
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public Db() //  : base() 这个调用是多余的
     {
-        log.Warn("Db.OnConfiguring");
+    }
 
-        base.OnConfiguring(optionsBuilder);
+    // services.AddDbContext<Db>(optionsBuilder => {
+    //     // 在这里配置，同时配合Db(DbContextOptions options)构造器，和DbContextOptionsBuilder.IsConfigured判断
+    //     // 可以防止 Db.OnConfiguring() 中重复配置
+    //     Db.Configure(optionsBuilder);
+    // });
+    public Db(DbContextOptions options) : base(options)
+    {
+    }
 
+    public static void Configure(DbContextOptionsBuilder optionsBuilder)
+    {
         // 数据 migration 和 单元测试时会用到这个逻辑
         if (string.IsNullOrWhiteSpace(DatabaseConfig.ConnectionString) == true)
         {
@@ -30,6 +39,18 @@ public class Db : DbContext
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
 #endif
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        // base.OnConfiguring(optionsBuilder); 没必要调用，基类中啥都没做
+
+        if (optionsBuilder.IsConfigured == false)
+        {
+            log.Warn("Db.OnConfiguring call Configure()");
+
+            Configure(optionsBuilder);
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

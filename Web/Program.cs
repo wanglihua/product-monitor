@@ -43,7 +43,11 @@ public static class Program
         services.AddHttpClient();
 
         // 添加 DbContext 服务
-        services.AddDbContext<Db>();
+        services.AddDbContext<Db>(optionsBuilder => {
+            // 在这里配置，同时配合Db(DbContextOptions options)构造器，和DbContextOptionsBuilder.IsConfigured判断
+            // 可以防止 Db.OnConfiguring() 中重复配置
+            Db.Configure(optionsBuilder);
+        });
 
         // Core 中 服务类
         services.AddCoreServices();

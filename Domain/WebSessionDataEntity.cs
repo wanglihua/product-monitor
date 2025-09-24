@@ -4,7 +4,7 @@ namespace Domain;
 
 public class WebSessionDataEntity : Entity
 {
-    public long WebSessionDataId { get; set; }
+    public long WebSessionId { get; set; }
 
     public WebSessionDataType Type { get; set; } = WebSessionDataType.None;
 

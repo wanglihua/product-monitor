@@ -12,7 +12,7 @@ public class WebSessionDataMap : IEntityTypeConfiguration<WebSessionDataEntity>
 
         EntityMap.Configure(builder);
 
-        builder.Property(e => e.WebSessionDataId)
+        builder.Property(e => e.WebSessionId)
             .HasColumnName("web_session_id")
             .IsRequired(true);
 
