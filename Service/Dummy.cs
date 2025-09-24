@@ -1,6 +1,6 @@
 ﻿namespace Service;
 
-public class Mock
+public class Dummy
 {
     
 }

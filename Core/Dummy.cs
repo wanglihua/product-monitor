@@ -1,6 +1,6 @@
 ﻿namespace Core;
 
-public class Mock
+public class Dummy
 {
     
 }

@@ -1,6 +1,7 @@
 using Core;
 using Core.Config;
 using Core.Web;
+using Domain;
 using NLog;
 using NLog.Web;
 using Service;
@@ -35,15 +36,14 @@ public static class Program
 
         var services = builder.Services;
 
-        services.AddControllersWithViews();
-
-        var app = builder.Build();
-
         // Microsoft.Extensions.Caching.Memory.IMemoryCache
         services.AddMemoryCache();
 
         // System.Net.Http.HttpClient
         services.AddHttpClient();
+
+        // 添加 DbContext 服务
+        services.AddDbContext<Db>();
 
         // Core 中 服务类
         services.AddCoreServices();
@@ -51,12 +51,23 @@ public static class Program
         // Service 中 服务类
         services.AddLocalServices();
 
+        services.Configure<CookiePolicyOptions>(options => {
+            // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+            options.CheckConsentNeeded = context => false;
+            options.MinimumSameSitePolicy = SameSiteMode.None;
+        });
+
+        services.AddControllersWithViews();
+
+        var app = builder.Build();
+
         app.UseExceptionHandler("/error");
 
         app.UseStaticFiles();
 
         app.UseRouting();
 
+        app.UseMiddleware<NLogRequestPostedBodyMiddleware>(); // {aspnet-request-posted-body} 需要配置这个
         app.UseMiddleware<SessionIdCookieMiddleware>();
 
         app.MapControllerRoute(

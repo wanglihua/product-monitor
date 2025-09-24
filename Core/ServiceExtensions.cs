@@ -8,7 +8,7 @@ public static class ServiceExtensions
 {
     public static void AddCoreServices(this IServiceCollection services)
     {
-        Assembly assembly = typeof(Mock).Assembly;
+        Assembly assembly = typeof(Dummy).Assembly;
         ServiceUtil.AddAssemblyService(services, assembly);
     }
 }
