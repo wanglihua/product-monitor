@@ -10,7 +10,7 @@ public static class Program
 
         var app = builder.Build();
 
-        app.UseExceptionHandler("/Home/Error");
+        app.UseExceptionHandler("/error");
 
         app.UseStaticFiles();
 

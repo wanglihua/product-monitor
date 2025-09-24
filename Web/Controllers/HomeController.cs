@@ -1,7 +1,6 @@
-﻿using System.Diagnostics;
+﻿using Core.Database;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
-using Web.Models;
 
 namespace Web.Controllers;
 
@@ -13,14 +12,11 @@ public class HomeController : Controller
     {
     }
 
+    [HttpGet]
+    [Route("/")]
+    [Transactional(false)]
     public IActionResult Index()
     {
         return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
