@@ -8,6 +8,8 @@ public static class CodeTypeUtil
 {
     private static readonly MemoryCache memoryCache = new MemoryCache(new MemoryCacheOptions());
 
+    private const string GET_BY_CODE_METHOD_NAME = "GetByCode";
+
     public static T GetByCode<T>(int code) where T : CodeTypeBase
     {
         if (code < 0)
@@ -24,17 +26,16 @@ public static class CodeTypeUtil
             return (T)codeType;
         }
 
-        string methodName = "GetByCode";
-        var method = typeOfT.GetMethod(methodName, BindingFlags.Static | BindingFlags.Public);
+        var method = typeOfT.GetMethod(GET_BY_CODE_METHOD_NAME, BindingFlags.Static | BindingFlags.Public);
         if (method == null)
         {
-            throw new Exception($"{typeof(T).Name} public static {methodName}() 方法 不存在！");
+            throw new Exception($"{typeof(T).Name} public static {GET_BY_CODE_METHOD_NAME}() 方法 不存在！");
         }
 
         var result = method.Invoke(null, new object[] { code }) as T;
         if (result == null)
         {
-            throw new Exception($"{typeof(T).Name} public static {methodName}() 返回为空或返回类型不匹配！");
+            throw new Exception($"{typeof(T).Name} public static {GET_BY_CODE_METHOD_NAME}() 返回为空或返回类型不匹配！");
         }
 
         if (result.Code <= 0)
