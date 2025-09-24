@@ -1,7 +1,7 @@
 CREATE TABLE tbl_web_session_data
 (
     id             BIGINT        NOT NULL,
-    web_session_id BIGINT           NOT NULL, -- 44长度就够了的
+    web_session_id BIGINT        NOT NULL, -- 44长度就够了的
     type_code      INT           NOT NULL, -- SessionDataType
     data           NVARCHAR(300) NOT NULL, -- 各种数据类型都有可能，长度也不确定，就暂时定个 300长的字符串，应该够用
 
