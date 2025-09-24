@@ -1,0 +1,10 @@
+.idea
+Core/bin
+Core/obj
+Domain/bin
+Domain/obj
+Service/bin
+Service/obj
+Web/bin
+Web/obj
+*.csproj.user

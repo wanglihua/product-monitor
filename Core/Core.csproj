@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>ProductMonitor.Core</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="11.11.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.20" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.20" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+      <PackageReference Include="NLog" Version="6.0.4" />
+      <PackageReference Include="NLog.Web.AspNetCore" Version="6.0.4" />
+      <PackageReference Include="RestSharp" Version="112.1.0" />
+      <PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="112.1.0" />
+    </ItemGroup>
+
+</Project>
