@@ -1,6 +1,29 @@
-﻿namespace Domain;
+﻿using Core;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-public class WebSessionDataMap
+namespace Domain;
+
+public class WebSessionDataMap : IEntityTypeConfiguration<WebSessionDataEntity>
 {
-    
+    public void Configure(EntityTypeBuilder<WebSessionDataEntity> builder)
+    {
+        builder.ToTable("tbl_web_session_data");
+
+        EntityMap.Configure(builder);
+
+        builder.Property(e => e.WebSessionDataId)
+            .HasColumnName("web_session_id")
+            .IsRequired(true);
+
+        builder.Property(e => e.Type)
+            .HasConversion<WebSessionDataTypeValueConverter>()
+            .HasColumnName("type_code")
+            .IsRequired(true);
+
+        builder.Property(e => e.Data)
+            .HasColumnName("data")
+            .HasMaxLength(300)
+            .IsRequired(true);
+    }
 }

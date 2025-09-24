@@ -9,3 +9,4 @@ Web/bin
 Web/obj
 Web/logs
 *.csproj.user
+*.sln.DotSettings
