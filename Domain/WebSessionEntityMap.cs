@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Domain;
 
-public class WebSessionMap : IEntityTypeConfiguration<WebSessionEntity>
+public class WebSessionEntityMap : IEntityTypeConfiguration<WebSessionEntity>
 {
     public void Configure(EntityTypeBuilder<WebSessionEntity> builder)
     {

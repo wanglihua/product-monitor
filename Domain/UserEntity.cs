@@ -1,6 +1,7 @@
-﻿namespace Domain;
+﻿using Core;
 
-public class UserEntity
+namespace Domain;
+
+public class UserEntity : Entity
 {
-    
 }

@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Domain;
 
-public class TestMap : IEntityTypeConfiguration<TestEntity>
+public class GroupEntityMap : IEntityTypeConfiguration<GroupEntity>
 {
-    public void Configure(EntityTypeBuilder<TestEntity> builder)
+    public void Configure(EntityTypeBuilder<GroupEntity> builder)
     {
-        builder.ToTable("tbl_test");
+        builder.ToTable("tbl_group");
 
         EntityMap.Configure(builder);
 
