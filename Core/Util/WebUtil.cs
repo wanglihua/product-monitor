@@ -118,7 +118,7 @@ public static class WebUtil
     public static bool ShouldShowJson(HttpRequest request)
     {
         string url = request.GetEncodedUrl() ?? string.Empty;
-        if (url.StartsWith("/api") || IsAjaxRequest(request) || IsFileUpload(request))
+        if (IsAjaxRequest(request) || IsFileUpload(request))
         {
             return true;
         }

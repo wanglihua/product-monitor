@@ -4,6 +4,10 @@ namespace Core.CodeType;
 
 using System.Reflection;
 
+/// <summary>
+/// 这是通过反射来获取 GetByCode 方法，
+/// 如果是 .net7 或者以后，就可以 用 static virtual/abstract interface members 实现
+/// </summary>
 public static class CodeTypeUtil
 {
     private static readonly MemoryCache memoryCache = new MemoryCache(new MemoryCacheOptions());

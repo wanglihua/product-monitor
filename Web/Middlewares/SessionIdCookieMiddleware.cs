@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Web;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Core.Web;
+namespace Web.Middlewares;
 
 /// <summary>
 /// 这个 middleware 的作用是保持 cookie 中一直有一个 session id，

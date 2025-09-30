@@ -1,10 +1,13 @@
 using Core;
 using Core.Config;
-using Core.Web;
 using Domain;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using NLog;
 using NLog.Web;
 using Service;
+using Web.Filters;
+using Web.Middlewares;
 
 namespace Web;
 
@@ -61,7 +64,24 @@ public static class Program
             options.MinimumSameSitePolicy = SameSiteMode.None;
         });
 
-        services.AddControllersWithViews();
+        services.AddScoped<WebSessionTimeoutResetActionFilter>();
+        services.AddScoped<ExceptionFilter>();
+
+        var mvcBuilder = services.AddControllersWithViews()
+            .AddMvcOptions(options => {
+                options.Filters.AddService<WebSessionTimeoutResetActionFilter>();
+                options.Filters.AddService<ExceptionFilter>();
+            })
+            .AddNewtonsoftJson(options => {
+                // options.SerializerSettings.ContractResolver = new DefaultContractResolver(); // 这个ContractResolver【不会】改变属性大小写
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver(); // 这个ContractResolver【会】改变属性大小写
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm";
+            });
+        
+#if DEBUG
+        mvcBuilder.AddRazorRuntimeCompilation();
+#endif
 
         var app = builder.Build();
 

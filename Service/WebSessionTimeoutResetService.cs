@@ -1,7 +1,6 @@
 ﻿using Core;
 using Core.Web;
 using Domain;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Service;
@@ -11,7 +10,14 @@ public class WebSessionTimeoutResetService
 {
     private static int runCount = 0;
 
-    public void ResetTimeout(string sessionId, [FromServices] Db db)
+    private readonly Db db;
+
+    public WebSessionTimeoutResetService(Db db)
+    {
+        this.db = db;
+    }
+
+    public void ResetTimeout(string sessionId)
     {
         if (string.IsNullOrWhiteSpace(sessionId) == true)
         {
