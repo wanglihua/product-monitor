@@ -10,3 +10,4 @@ Web/obj
 Web/logs
 *.csproj.user
 *.sln.DotSettings
+*.sln.DotSettings.user
