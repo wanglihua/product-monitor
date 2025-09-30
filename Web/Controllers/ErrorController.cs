@@ -28,6 +28,6 @@ public class ErrorController : Controller
             model.Message = exp.Message;
         }
 
-        return View("ErrorIndex", model);
+        return View("Error", model);
     }
 }

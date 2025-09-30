@@ -4,8 +4,10 @@ using Domain;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NLog;
+using NLog.Extensions.Logging;
 using NLog.Web;
 using Service;
+using StackExchange.Profiling.Storage;
 using Web.Filters;
 using Web.Middlewares;
 
@@ -34,10 +36,24 @@ public static class Program
 
         builder.Logging.AddNLogWeb();
 
+#if DEBUG
+        var logLevel = Microsoft.Extensions.Logging.LogLevel.Information;
+#else
+        var logLevel = Microsoft.Extensions.Logging.LogLevel.Error;
+#endif
+
         // 读取数据库配置
         DatabaseConfig.ReadConfig(StaticConfigurationManager.Configuration);
 
         var services = builder.Services;
+
+        services.AddLogging(configure => {
+            configure
+                .AddNLog()
+                .AddNLogWeb()
+                .AddFilter("Microsoft.*", logLevel)
+                .AddConsole();
+        });
 
         // Microsoft.Extensions.Caching.Memory.IMemoryCache
         services.AddMemoryCache();
@@ -64,6 +80,24 @@ public static class Program
             options.MinimumSameSitePolicy = SameSiteMode.None;
         });
 
+#if DEBUG
+        services.AddMiniProfiler(options => {
+                options.RouteBasePath = "/mini/profiler";
+
+                if (options.Storage is MemoryCacheStorage storage)
+                {
+                    storage.CacheDuration = TimeSpan.FromMinutes(60);
+                }
+
+                options.SqlFormatter = new StackExchange.Profiling.SqlFormatters.SqlServerFormatter();
+                options.TrackConnectionOpenClose = true;
+                options.ColorScheme = StackExchange.Profiling.ColorScheme.Light;
+                options.EnableMvcFilterProfiling = true;
+                options.EnableMvcViewProfiling = true;
+            })
+            .AddEntityFramework();
+#endif
+
         services.AddScoped<WebSessionTimeoutResetActionFilter>();
         services.AddScoped<ExceptionFilter>();
 
@@ -78,12 +112,14 @@ public static class Program
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm";
             });
-        
+
 #if DEBUG
         mvcBuilder.AddRazorRuntimeCompilation();
 #endif
 
         var app = builder.Build();
+
+        app.UseMiniProfiler();
 
         app.UseExceptionHandler("/error");
 

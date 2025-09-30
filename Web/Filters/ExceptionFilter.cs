@@ -38,7 +38,7 @@ public class ExceptionFilter : IExceptionFilter
         else
         {
             context.Result = new ViewResult() {
-                ViewName = "Error/ErrorIndex",
+                ViewName = "Error",
                 ViewData = new ViewDataDictionary(
                     new EmptyModelMetadataProvider(),
                     new ModelStateDictionary()
