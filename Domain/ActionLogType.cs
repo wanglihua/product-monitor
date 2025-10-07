@@ -7,7 +7,7 @@ public class ActionLogType : CodeTypeBase
     /// <summary>
     /// 用户创建
     /// </summary>
-    public static readonly ActionLogType UserCreate = new(100_00_00, "用户创建");
+    public static readonly ActionLogType UserCreate = new(100_000_00, "用户创建");
 
     /// <summary>
     /// None
