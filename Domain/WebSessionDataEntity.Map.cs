@@ -23,7 +23,7 @@ public class WebSessionDataEntityMap : IEntityTypeConfiguration<WebSessionDataEn
 
         builder.Property(e => e.Data)
             .HasColumnName("data")
-            .HasMaxLength(300)
+            .HasMaxLength(256)
             .IsRequired(true);
     }
 }

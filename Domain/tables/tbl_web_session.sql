@@ -1,7 +1,7 @@
 CREATE TABLE tbl_web_session
 (
     id          BIGINT       NOT NULL,
-    session_id  NVARCHAR(50) NOT NULL, -- 44长度就够了的
+    session_id  NVARCHAR(64) NOT NULL, -- 44长度就够了的
 
     create_time DATETIME     NOT NULL,
     update_time DATETIME     NOT NULL,

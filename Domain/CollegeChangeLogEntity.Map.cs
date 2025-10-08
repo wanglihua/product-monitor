@@ -18,6 +18,7 @@ public class CollegeChangeLogEntityMap : IEntityTypeConfiguration<CollegeChangeL
 
         builder.Property(e => e.ChangeDesc)
             .HasColumnName("change_desc")
+            .HasMaxLength(512)
             .IsRequired(true);
     }
 }

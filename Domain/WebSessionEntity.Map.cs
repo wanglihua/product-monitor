@@ -14,7 +14,7 @@ public class WebSessionEntityMap : IEntityTypeConfiguration<WebSessionEntity>
 
         builder.Property(e => e.SessionId)
             .HasColumnName("session_id")
-            .HasMaxLength(50)
+            .HasMaxLength(64)
             .IsRequired(true);
     }
 }

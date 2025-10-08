@@ -5,7 +5,7 @@
     name                 NVARCHAR(256) NOT NULL,
     version              NVARCHAR(32)  NOT NULL,
     version_upgrade_base NVARCHAR(32)  NOT NULL,
-    version_upgrade_desc NVARCHAR(500) NOT NULL,
+    version_upgrade_desc NVARCHAR(512) NOT NULL,
     version_upgrade_time DATETIME      NOT NULL,
 
     create_time          DATETIME      NOT NULL,

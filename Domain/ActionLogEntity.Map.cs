@@ -23,6 +23,7 @@ public class ActionLogEntityMap : IEntityTypeConfiguration<ActionLogEntity>
 
         builder.Property(e => e.ActionDesc)
             .HasColumnName("action_desc")
+            .HasMaxLength(512)
             .IsRequired(true);
     }
 }

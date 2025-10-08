@@ -4,7 +4,7 @@
 
     college_id  BIGINT        NOT NULL,
 
-    change_desc NVARCHAR(500) NOT NULL DEFAULT '',
+    change_desc NVARCHAR(512) NOT NULL DEFAULT '',
 
     create_time DATETIME      NOT NULL,
 
