@@ -1,6 +1,10 @@
-﻿namespace Domain;
+﻿using Core;
 
-public class CollegeChangeLogEntity
+namespace Domain;
+
+public class CollegeChangeLogEntity : EntityNoUpdate
 {
-    
+    public long CollegeId { get; set; }
+
+    public string ChangeDesc { get; set; } = string.Empty;
 }

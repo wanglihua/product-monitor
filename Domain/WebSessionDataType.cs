@@ -44,7 +44,7 @@ public class WebSessionDataTypeModelBinder : CodeTypeModelBinder<WebSessionDataT
 {
 }
 
-public class WebSessionDataTypeCodeJsonConverter : CodeTypeJsonConverter<WebSessionDataType> // 用法 [JsonConverter(typeof(SessionDataTypeCodeConverter))]
+public class WebSessionDataTypeCodeJsonConverter : CodeTypeJsonConverter<WebSessionDataType>
 {
 }
 

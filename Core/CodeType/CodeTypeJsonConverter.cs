@@ -2,6 +2,10 @@ using Newtonsoft.Json;
 
 namespace Core.CodeType;
 
+/// <summary>
+/// 用法 [JsonConverter(typeof(XXXCodeTypeJsonConverter))]
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public abstract class CodeTypeJsonConverter<T> : JsonConverter<T> where T : CodeTypeBase
 {
     public override void WriteJson(JsonWriter writer, T? value, JsonSerializer serializer)

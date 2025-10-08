@@ -7,7 +7,7 @@ public class ActionLogType : CodeTypeBase
     /// <summary>
     /// 用户创建
     /// </summary>
-    public static readonly ActionLogType UserCreate = new(100_000_00, "用户创建");
+    public static readonly ActionLogType UserCreate = new(1_00, "用户创建");
 
     /// <summary>
     /// None
@@ -44,7 +44,7 @@ public class ActionLogTypeModelBinder : CodeTypeModelBinder<ActionLogType>
 {
 }
 
-public class ActionLogTypeCodeJsonConverter : CodeTypeJsonConverter<ActionLogType> // 用法 [JsonConverter(typeof(SessionDataTypeCodeConverter))]
+public class ActionLogTypeCodeJsonConverter : CodeTypeJsonConverter<ActionLogType>
 {
 }
 
