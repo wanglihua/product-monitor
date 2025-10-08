@@ -7,7 +7,7 @@ public class ProductUrlType : CodeTypeBase
     /// <summary>
     /// 试用网址
     /// </summary>
-    public static readonly ProductUrlType Evaluating = new(1_00, "试用网址");
+    public static readonly ProductUrlType Evaluation = new(1_00, "试用网址");
 
     /// <summary>
     /// 租赁网址
@@ -25,7 +25,7 @@ public class ProductUrlType : CodeTypeBase
     public static readonly ProductUrlType None = new(0, "");
 
     private static readonly IReadOnlyList<ProductUrlType> codeTypeList = new List<ProductUrlType> {
-        Evaluating,
+        Evaluation,
         Rent,
         WebSite,
     };
