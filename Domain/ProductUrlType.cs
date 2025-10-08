@@ -7,7 +7,7 @@ public class ProductUrlType : CodeTypeBase
     /// <summary>
     /// 试用网址
     /// </summary>
-    public static readonly ProductUrlType Evaluation = new(1_00, "试用网址");
+    public static readonly ProductUrlType Eval = new(1_00, "试用网址");
 
     /// <summary>
     /// 租赁网址
@@ -17,7 +17,7 @@ public class ProductUrlType : CodeTypeBase
     /// <summary>
     /// 网站网址
     /// </summary>
-    public static readonly ProductUrlType WebSite = new(3_00, "网站网址");
+    public static readonly ProductUrlType Site = new(3_00, "网站网址");
 
     /// <summary>
     /// None
@@ -25,9 +25,9 @@ public class ProductUrlType : CodeTypeBase
     public static readonly ProductUrlType None = new(0, "");
 
     private static readonly IReadOnlyList<ProductUrlType> codeTypeList = new List<ProductUrlType> {
-        Evaluation,
+        Eval,
         Rent,
-        WebSite,
+        Site,
     };
 
     private static readonly IDictionary<int, ProductUrlType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);
