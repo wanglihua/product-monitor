@@ -1,10 +1,16 @@
 ﻿CREATE TABLE tbl_product_version
 (
-    id          BIGINT   NOT NULL,
-    product_id  BIGINT   NOT NULL,
+    id          BIGINT        NOT NULL,
+    product_id  BIGINT        NOT NULL,
 
-    create_time DATETIME NOT NULL,
-    update_time DATETIME NOT NULL,
+    major       INT           NOT NULL,
+    minor       INT           NOT NULL,
+    revision    INT           NOT NULL,
+
+    description NVARCHAR(256) NOT NULL,
+
+    create_time DATETIME      NOT NULL,
+    update_time DATETIME      NOT NULL,
 
     CONSTRAINT pk_product_version PRIMARY KEY (id),
     CONSTRAINT fk_product_version_product_id FOREIGN KEY (product_id) REFERENCES tbl_product (id),
