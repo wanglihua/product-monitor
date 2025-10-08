@@ -22,18 +22,18 @@ public class ProductEntityMap : IEntityTypeConfiguration<ProductEntity>
             .HasMaxLength(32)
             .IsRequired(true);
 
-        builder.Property(e => e.VersionUpgradeBase)
-            .HasColumnName("version_upgrade_base")
+        builder.Property(e => e.VersionUpdateBase)
+            .HasColumnName("version_update_base")
             .HasMaxLength(32)
             .IsRequired(true);
 
-        builder.Property(e => e.VersionUpgradeDesc)
-            .HasColumnName("version_upgrade_desc")
+        builder.Property(e => e.VersionUpdateDesc)
+            .HasColumnName("version_update_desc")
             .HasMaxLength(512)
             .IsRequired(true);
 
-        builder.Property(e => e.VersionUpgradeTime)
-            .HasColumnName("version_upgrade_time")
+        builder.Property(e => e.VersionUpdateTime)
+            .HasColumnName("version_update_time")
             .IsRequired(true);
     }
 }

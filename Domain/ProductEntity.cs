@@ -8,9 +8,9 @@ public class ProductEntity : Entity
 
     public string Version { get; set; } = string.Empty;
 
-    public string VersionUpgradeBase { get; set; } = string.Empty;
+    public string VersionUpdateBase { get; set; } = string.Empty;
 
-    public string VersionUpgradeDesc { get; set; } = string.Empty;
+    public string VersionUpdateDesc { get; set; } = string.Empty;
 
-    public DateTime VersionUpgradeTime { get; set; }
+    public DateTime VersionUpdateTime { get; set; }
 }
