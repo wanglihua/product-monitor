@@ -12,6 +12,10 @@ public class ProductRentEntityMap : IEntityTypeConfiguration<ProductRentEntity>
 
         EntityMap.Configure(builder);
 
+        builder.Property(e => e.CollegeId)
+            .HasColumnName("college_id")
+            .IsRequired(true);
+
         builder.Property(e => e.ProductId)
             .HasColumnName("product_id")
             .IsRequired(true);
