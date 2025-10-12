@@ -2,6 +2,9 @@
 
 namespace Domain;
 
+/// <summary>
+/// 销售目录
+/// </summary>
 public class ProductSaleEntity : Entity
 {
     /// <summary>
