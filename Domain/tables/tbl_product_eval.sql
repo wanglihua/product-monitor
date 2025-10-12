@@ -1,11 +1,21 @@
 ﻿CREATE TABLE tbl_product_eval
 (
-    id          BIGINT   NOT NULL,
-    college_id  BIGINT   NOT NULL,
-    product_id  BIGINT   NOT NULL,
+    id          BIGINT        NOT NULL,
+    college_id  BIGINT        NOT NULL,
+    product_id  BIGINT        NOT NULL,
 
-    create_time DATETIME NOT NULL,
-    update_time DATETIME NOT NULL,
+    eval_times  INT           NOT NULL,
+    sale_times  INT           NOT NULL,
+    total_days  INT           NOT NULL,
+    remain_days INT           NOT NULL,
+
+    begin_date  DATE          NOT NULL,
+    end_date    DATE          NOT NULL,
+
+    description NVARCHAR(512) NOT NULL,
+
+    create_time DATETIME      NOT NULL,
+    update_time DATETIME      NOT NULL,
 
     CONSTRAINT pk_product_eval PRIMARY KEY (id),
     CONSTRAINT fk_product_eval_product_id FOREIGN KEY (product_id) REFERENCES tbl_product (id),
