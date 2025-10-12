@@ -1,10 +1,17 @@
 ﻿CREATE TABLE tbl_product_sale_entry
 (
-    id              BIGINT   NOT NULL,
-    product_sale_id BIGINT   NOT NULL,
+    id                  BIGINT        NOT NULL,
+    product_sale_id     BIGINT        NOT NULL,
 
-    create_time     DATETIME NOT NULL,
-    update_time     DATETIME NOT NULL,
+    version             NVARCHAR(32)  NOT NULL,
+
+    sale_date           DATE          NOT NULL,
+    service_expire_date DATE          NOT NULL,
+    
+    description         NVARCHAR(512) NOT NULL,
+
+    create_time         DATETIME      NOT NULL,
+    update_time         DATETIME      NOT NULL,
 
     CONSTRAINT pk_product_sale_entry PRIMARY KEY (id),
 
