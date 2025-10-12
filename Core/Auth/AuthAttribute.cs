@@ -4,7 +4,7 @@
 /// 标记 Controller 或者 Action 的授权资源
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-public class AdminAuthAttribute : Attribute
+public class AuthAttribute : Attribute
 {
     /// <summary>
     /// 授权资源Id 列表， 如果值为 空 ，就表示不检查资源授权，只检查用户是否已经登录。
@@ -18,7 +18,7 @@ public class AdminAuthAttribute : Attribute
     /// </summary>
     public bool AdminOnly { get; set; }
 
-    private AdminAuthAttribute(int passResId, bool adminOnly)
+    private AuthAttribute(int passResId, bool adminOnly)
     {
         PassResIdList = new List<int>();
         if (passResId != 0)
@@ -34,19 +34,19 @@ public class AdminAuthAttribute : Attribute
     /// 但一般如果是在 Admin Area 中的，不加这个标记也会进行登录检查，
     /// 所以这个没有参数的构造函数加不加都一样
     /// </summary>
-    public AdminAuthAttribute() : this(0, false)
+    public AuthAttribute() : this(0, false)
     {
     }
 
-    public AdminAuthAttribute(int passResId) : this(passResId, false)
+    public AuthAttribute(int passResId) : this(passResId, false)
     {
     }
 
-    public AdminAuthAttribute(bool adminOnly) : this(0, true)
+    public AuthAttribute(bool adminOnly) : this(0, true)
     {
     }
 
-    public AdminAuthAttribute(params int[] passResIds)
+    public AuthAttribute(params int[] passResIds)
     {
         PassResIdList = new List<int>();
 
