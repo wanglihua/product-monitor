@@ -44,11 +44,13 @@ public class ProductSaleEntity : Entity
 
     /// <summary>
     /// 销售时间
+    /// 存的是日期
     /// </summary>
     public DateTime SaleDate { get; set; }
 
     /// <summary>
     /// 服务到期时间
+    /// 存的是日期
     /// </summary>
     public DateTime ServiceExpireDate { get; set; }
 
