@@ -21,4 +21,15 @@ public class PassResCate
     // 系统管理
     public const long SystemManageId = 1000_0000;
     public static readonly PassResCateEntity SystemManage = new() { Id = SystemManageId, Name = "系统管理" };
+
+    public static IList<PassResCateEntity> GetLst()
+    {
+        return new List<PassResCateEntity>() {
+            DataMonitor,
+            ProductService,
+            ProjectManage,
+            BasicSetting,
+            SystemManage,
+        };
+    }
 }
