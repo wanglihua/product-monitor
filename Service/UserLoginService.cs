@@ -20,18 +20,21 @@ public class UserLoginService
     private readonly IMemoryCache memoryCache;
     private readonly WebSessionService webSessionService;
     private readonly PasswordService passwordService;
+    private readonly ActionLogService actionLogService;
 
     public UserLoginService(
         Db db,
         IMemoryCache memoryCache,
         WebSessionService webSessionService,
-        PasswordService passwordService
+        PasswordService passwordService,
+        ActionLogService actionLogService
     )
     {
         this.db = db;
         this.memoryCache = memoryCache;
         this.webSessionService = webSessionService;
         this.passwordService = passwordService;
+        this.actionLogService = actionLogService;
     }
 
     public string GetUserLoginUrl()
@@ -214,11 +217,7 @@ public class UserLoginService
         }
 
         // login log
-        var userLoginLog = new ActionLogEntity {
-            UserId = user.Id,
-            Type = ActionLogType.UserLogin,
-        };
-        db.Add<ActionLogEntity>(userLoginLog);
+        actionLogService.Add(user.Id, ActionLogType.UserLogin);
 
         // user 
         user.LastLoginTime = DateTime.Now;
