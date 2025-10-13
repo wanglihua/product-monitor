@@ -1,5 +1,6 @@
 ﻿using Core.Auth;
 using Core.Database;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
@@ -10,15 +11,21 @@ public class HomeController : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    public HomeController()
+    private readonly Db db;
+
+    public HomeController(Db db)
     {
+        this.db = db;
     }
 
     [HttpGet]
-    [Route("/")]
+    [Route("/home/data")]
     [Transactional(false)]
-    public IActionResult Index()
+    public IActionResult HomeData()
     {
-        return View();
+        return Json(new Dictionary<string, object> {
+            ["success"] = true,
+            ["message"] = "success"
+        });
     }
 }

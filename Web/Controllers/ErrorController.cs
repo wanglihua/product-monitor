@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Auth;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
@@ -6,6 +7,7 @@ using Web.Models.Error;
 
 namespace Web.Controllers;
 
+[NoAuth]
 public class ErrorController : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();

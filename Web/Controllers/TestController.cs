@@ -1,12 +1,13 @@
-﻿using Core.Database;
+﻿using Core.Auth;
+using Core.Database;
 using Core.Web;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NLog;
 
 namespace Web.Controllers;
 
+[NoAuth]
 public class TestController : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();

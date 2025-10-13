@@ -136,6 +136,8 @@ public static class Program
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
+        app.MapFallbackToFile("index.html");
+
 #if DEBUG
         Console.WriteLine("started");
 #endif

@@ -10,6 +10,9 @@ Service/obj
 Web/bin
 Web/obj
 Web/logs
+Web/wwwroot/index.html
+Web/wwwroot/static
+Web/wwwroot/favicon.ico
 *.csproj.user
 *.sln.DotSettings
 *.sln.DotSettings.user
