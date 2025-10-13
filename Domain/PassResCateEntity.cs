@@ -2,7 +2,7 @@
 
 namespace Domain;
 
-public class PassResCateEntity : Entity
+public class PassResCateEntity : EntityAssignedId
 {
     public string Name { get; set; } = string.Empty;
 }

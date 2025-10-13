@@ -10,7 +10,7 @@ public class PassResEntityMap : IEntityTypeConfiguration<PassResEntity>
     {
         builder.ToTable("tbl_pass_res");
 
-        EntityMap.Configure(builder);
+        EntityAssignedIdMap.Configure(builder);
 
         builder.Property(e => e.CateId)
             .HasColumnName("cate_id")

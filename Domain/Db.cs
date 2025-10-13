@@ -80,11 +80,14 @@ public class Db : DbContext
         {
             if (entityEntry.State == EntityState.Added)
             {
+                // Entity
                 if (entityEntry.Entity is Entity entity)
                 {
                     entity.Id = EntityIdGenerator.NewId();
-                    entity.CreateTime = DateTime.Now;
-                    entity.UpdateTime = DateTime.Now;
+
+                    DateTime now = DateTime.Now;
+                    entity.CreateTime = now;
+                    entity.UpdateTime = now;
                 }
                 else if (entityEntry.Entity is EntityNoUpdate entityNoUpdate)
                 {
@@ -95,13 +98,32 @@ public class Db : DbContext
                 {
                     entityNoCreateNoUpdate.Id = EntityIdGenerator.NewId();
                 }
+
+                // EntityAssignedId
+                if (entityEntry.Entity is EntityAssignedId entityAssignedId)
+                {
+                    DateTime now = DateTime.Now;
+                    entityAssignedId.CreateTime = now;
+                    entityAssignedId.UpdateTime = now;
+                }
+                else if (entityEntry.Entity is EntityAssignedIdNoUpdate entityAssignedIdNoUpdate)
+                {
+                    entityAssignedIdNoUpdate.CreateTime = DateTime.Now;
+                }
             }
 
             if (entityEntry.State == EntityState.Modified)
             {
+                // Entity
                 if (entityEntry.Entity is Entity entity)
                 {
                     entity.UpdateTime = DateTime.Now;
+                }
+
+                // EntityAssignedId
+                if (entityEntry.Entity is EntityAssignedId entityAssignedId)
+                {
+                    entityAssignedId.UpdateTime = DateTime.Now;
                 }
             }
         }

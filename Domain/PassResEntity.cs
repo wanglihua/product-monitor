@@ -2,7 +2,7 @@
 
 namespace Domain;
 
-public class PassResEntity : Entity
+public class PassResEntity : EntityAssignedId
 {
     public long CateId { get; set; }
 

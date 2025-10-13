@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Core;
 
-public class EntityNoCreateNoUpdateMap
+public static class EntityNoCreateNoUpdateMap
 {
     public static void Configure<T>(EntityTypeBuilder<T> builder) where T : EntityNoCreateNoUpdate
     {
