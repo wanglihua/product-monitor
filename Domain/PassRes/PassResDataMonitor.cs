@@ -7,7 +7,7 @@ public partial class PassRes
     /// </summary>
     public static class DataMonitor
     {
-        public const long CateId = PassResCate.DataMonitorId;
+        private const long CateId = PassResCate.DataMonitorId;
 
         public static IList<PassResEntity> AllData => new List<PassResEntity>() {
             new() { Id = InstallMonitor, Name = "安装监测", CateId = CateId },

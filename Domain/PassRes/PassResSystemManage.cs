@@ -7,7 +7,7 @@ public partial class PassRes
     /// </summary>
     public static class SystemManage
     {
-        public const long CateId = PassResCate.SystemManageId;
+        private const long CateId = PassResCate.SystemManageId;
 
         public static IList<PassResEntity> AllData => new List<PassResEntity>() {
             new() { Id = ActionLog, Name = "操作日志", CateId = CateId },

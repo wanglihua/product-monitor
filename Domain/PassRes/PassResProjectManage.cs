@@ -7,7 +7,7 @@ public partial class PassRes
     /// </summary>
     public static class ProjectManage
     {
-        public const long CateId = PassResCate.ProjectManageId;
+        private const long CateId = PassResCate.ProjectManageId;
 
         public static IList<PassResEntity> AllData => new List<PassResEntity>() {
             new() { Id = ProductSale, Name = "销售目录", CateId = CateId },

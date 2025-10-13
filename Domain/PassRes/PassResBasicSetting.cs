@@ -7,7 +7,7 @@ public partial class PassRes
     /// </summary>
     public static class BasicSetting
     {
-        public const long CateId = PassResCate.BasicSettingId;
+        private const long CateId = PassResCate.BasicSettingId;
 
         public static IList<PassResEntity> AllData => new List<PassResEntity>() {
             new() { Id = Product, Name = "产品目录", CateId = CateId },
