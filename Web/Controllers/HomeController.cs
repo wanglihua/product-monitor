@@ -1,9 +1,11 @@
-﻿using Core.Database;
+﻿using Core.Auth;
+using Core.Database;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
 namespace Web.Controllers;
 
+[Auth]
 public class HomeController : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();

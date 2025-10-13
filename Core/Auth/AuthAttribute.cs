@@ -10,7 +10,7 @@ public class AuthAttribute : Attribute
     /// 授权资源Id 列表， 如果值为 空 ，就表示不检查资源授权，只检查用户是否已经登录。
     /// PassResIdList 中只要有一个授权了，就是可以访问标注的 Controller 或 Action 了
     /// </summary>
-    public IList<int> PassResIdList { get; set; }
+    public IList<long> PassResIdList { get; set; }
 
     /// <summary>
     /// 标记只能是管理员才能访问的 Controller 或者 Action
@@ -18,9 +18,9 @@ public class AuthAttribute : Attribute
     /// </summary>
     public bool AdminOnly { get; set; }
 
-    private AuthAttribute(int passResId, bool adminOnly)
+    private AuthAttribute(long passResId, bool adminOnly)
     {
-        PassResIdList = new List<int>();
+        PassResIdList = new List<long>();
         if (passResId != 0)
         {
             PassResIdList.Add(passResId);
@@ -38,7 +38,7 @@ public class AuthAttribute : Attribute
     {
     }
 
-    public AuthAttribute(int passResId) : this(passResId, false)
+    public AuthAttribute(long passResId) : this(passResId, false)
     {
     }
 
@@ -46,11 +46,11 @@ public class AuthAttribute : Attribute
     {
     }
 
-    public AuthAttribute(params int[] passResIds)
+    public AuthAttribute(params long[] passResIds)
     {
-        PassResIdList = new List<int>();
+        PassResIdList = new List<long>();
 
-        foreach (int passResId in passResIds)
+        foreach (long passResId in passResIds)
         {
             if (passResId != 0)
             {

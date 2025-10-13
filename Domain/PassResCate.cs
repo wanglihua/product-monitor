@@ -1,6 +1,6 @@
 ﻿namespace Domain;
 
-public class PassResCate
+public static class PassResCate
 {
     // 数据监测
     public const long DataMonitorId = 0200_0000;
