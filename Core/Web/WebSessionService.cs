@@ -14,7 +14,7 @@ namespace Core.Web;
 [Service(ServiceType.Scoped)]
 public class WebSessionService
 {
-    public static readonly TimeSpan SessionTimeout = TimeSpan.FromMinutes(30);
+    public static readonly TimeSpan SessionTimeout = TimeSpan.FromMinutes(120);
 
     private static readonly string SessionIdCookieKey = "session_id";
 

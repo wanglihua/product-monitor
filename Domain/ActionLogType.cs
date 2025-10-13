@@ -5,9 +5,14 @@ namespace Domain;
 public class ActionLogType : CodeTypeBase
 {
     /// <summary>
+    /// 用户登录
+    /// </summary>
+    public static readonly ActionLogType UserLogin = new(2_00, "用户登录");
+
+    /// <summary>
     /// 用户创建
     /// </summary>
-    public static readonly ActionLogType UserCreate = new(1_00, "用户创建");
+    public static readonly ActionLogType UserCreate = new(4_00, "用户创建");
 
     /// <summary>
     /// None
@@ -15,6 +20,7 @@ public class ActionLogType : CodeTypeBase
     public static readonly ActionLogType None = new(0, "");
 
     private static readonly IReadOnlyList<ActionLogType> codeTypeList = new List<ActionLogType>() {
+        UserLogin,
         UserCreate,
     };
 
