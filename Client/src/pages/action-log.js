@@ -17,12 +17,12 @@ const ActionLog = () => {
     });
 
     const [state, setState] = useState({
-        loginLogList: [],
-        loginLogCount: 0,
+        actionLogList: [],
+        actionLogCount: 0,
     });
 
     const loadLoginLogList = () => {
-        post("/api/admin/user/login/log/list", listParam, function (response) {
+        post("/api/action/log/list", listParam, function (response) {
             const res = response.data;
             if (res.success !== true) {
                 showError(res.message);
@@ -32,14 +32,14 @@ const ActionLog = () => {
             setState((pre) => {
                 return {
                     ...pre,
-                    loginLogList: res.data.loginLogList,
-                    loginLogCount: res.data.loginLogCount,
+                    actionLogList: res.data.actionLogList,
+                    actionLogCount: res.data.actionLogCount,
                 };
             });
         });
     };
 
-    const loginLogListColumns = [
+    const actionLogListColumns = [
         {
             title: "序号",
             width: "80px",
@@ -51,27 +51,29 @@ const ActionLog = () => {
         {
             title: "登录名",
             dataIndex: "loginName",
-            width: "200px",
+            width: "100px",
         },
         {
             title: "用户名",
             dataIndex: "userName",
-            width: "200px",
+            width: "100px",
         },
         {
-            title: "登录时间",
+            title: "操作类型",
+            dataIndex: "type",
+            width: "150px"
+        },
+        {
+            title: "操作时间",
             dataIndex: "createTime",
             width: "150px",
         },
         {
-            title: "IP",
-            dataIndex: "ipAddress",
-            width: "150px"
+            title: "操作描述",
+            dataIndex: "actionDesc",
+            minWidth: "250px",
         },
-        {
-            title: "User Agent",
-            dataIndex: "userAgent",
-        },
+
     ];
 
     useEffect(() => {
@@ -85,53 +87,52 @@ const ActionLog = () => {
             <Title title="操作日志" menuKey="action-log" breadcrumb={[
                 {title: "操作日志"},
             ]}/>
-            <Space direction="vertical" size="large">
-                <div>
-                    <Space>
-                        <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名或用户名查询" style={{width: 380}}/>
-                        <Button
-                            color="default"
-                            icon={<SearchOutlined/>}
-                            onClick={(e) => {
-                                const loginNameQuery = loginNameQueryRef.current.input.value;
+            <div>
+                <Space>
+                    <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名或用户名查询" style={{width: 380}}/>
+                    <Button
+                        color="default"
+                        icon={<SearchOutlined/>}
+                        onClick={(e) => {
+                            const loginNameQuery = loginNameQueryRef.current.input.value;
 
-                                setListParam((pre) => {
-                                    return {
-                                        ...pre,
-                                        loginNameQuery: loginNameQuery,
-                                    };
-                                });
-                            }}
-                        >
-                            查询
-                        </Button>
-                    </Space>
-                </div>
+                            setListParam((pre) => {
+                                return {
+                                    ...pre,
+                                    loginNameQuery: loginNameQuery,
+                                };
+                            });
+                        }}
+                    >
+                        查询
+                    </Button>
+                </Space>
+            </div>
+            <div style={{ padding: "10px 0" }}>
+                <Table columns={actionLogListColumns} rowKey="id"
+                       tableLayout="auto"
+                       dataSource={state.actionLogList}
+                       pagination={{
+                           current: listParam.currentPage,
+                           pageSize: listParam.pageSize,
+                           total: state.actionLogCount,
+                           showQuickJumper: true,
+                           showSizeChanger: true,
+                           showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
+                       }}
+                       onChange={(pagination, filters, sorter, extra) => {
+                           setListParam((pre) => {
+                               return {
+                                   ...pre,
+                                   currentPage: pagination.current,
+                                   pageSize: pagination.pageSize,
+                                   sortField: sorter.field,
+                                   sortOrder: sorter.order,
+                               };
+                           });
+                       }}/>
+            </div>
 
-                <div>
-                    <Table columns={loginLogListColumns} rowKey="id"
-                           dataSource={state.loginLogList}
-                           pagination={{
-                               current: listParam.currentPage,
-                               pageSize: listParam.pageSize,
-                               total: state.loginLogCount,
-                               showQuickJumper: true,
-                               showSizeChanger: true,
-                               showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
-                           }}
-                           onChange={(pagination, filters, sorter, extra) => {
-                               setListParam((pre) => {
-                                   return {
-                                       ...pre,
-                                       currentPage: pagination.current,
-                                       pageSize: pagination.pageSize,
-                                       sortField: sorter.field,
-                                       sortOrder: sorter.order,
-                                   };
-                               });
-                           }}/>
-                </div>
-            </Space>
         </div>
     );
 };
