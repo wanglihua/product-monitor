@@ -4,7 +4,7 @@ import { DeleteOutlined, SearchOutlined, UserAddOutlined } from '@ant-design/ico
 import AdminUserDetail from "./admin-user-detail";
 
 import useSiteContext from "../site/site-context";
-import TitleAdmin from "../site/title-admin";
+import Title from "../site/title";
 
 const AdminUser = () => {
     const { post, showConfirm, showError, showSuccess } = useSiteContext();
@@ -107,7 +107,7 @@ const AdminUser = () => {
 
     return (
         <div>
-            <TitleAdmin title="管理员" menuKey="admin-user" breadcrumb={[
+            <Title title="管理员" menuKey="admin-user" breadcrumb={[
                 { title: "管理员" },
             ]} />
             <Space direction="vertical" size="large">

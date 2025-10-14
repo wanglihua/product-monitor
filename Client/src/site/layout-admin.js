@@ -186,12 +186,12 @@ const LayoutAdmin = () => {
                                     }
                                 },
                                 {
-                                    key: "user-login-log",
+                                    key: "action-log",
                                     icon: <SolutionOutlined style={{ color: "#1677ff" }} />,
-                                    label: "登录日志",
+                                    label: "操作日志",
                                     style: menuItemStyle,
                                     onClick: () => {
-                                        navigate("/admin/user/login/log");
+                                        navigate("/action/log");
                                     }
                                 },
                             ]}

@@ -4,7 +4,7 @@ import { Button, Input, Space, Table } from 'antd';
 import { DeleteOutlined, ProfileOutlined, SearchOutlined } from '@ant-design/icons';
 
 import useSiteContext from "../site/site-context";
-import TitleAdmin from "../site/title-admin";
+import Title from "../site/title";
 
 const AdminChat = () => {
     const navigate = useNavigate();
@@ -121,7 +121,7 @@ const AdminChat = () => {
 
     return (
         <div>
-            <TitleAdmin title="对话" menuKey="chat" breadcrumb={[
+            <Title title="对话" menuKey="chat" breadcrumb={[
                 { title: "对话" },
             ]} />
             <Space direction="vertical" size="large">

@@ -2,17 +2,18 @@ import React, { useEffect } from 'react';
 
 import { getTitle } from "../core/config";
 import useSiteContext from "./site-context";
-import { isNotEmptyArray } from "../core/empty";
+import { isEmptyStr, isNotEmptyArray } from "../core/empty";
 
-const TitleUser = (props) => {
+const Title = (props) => {
     const title = props.title;
     const breadcrumb = props.breadcrumb;
     const menuKey = props.menuKey ? props.menuKey : "";
+    const displayStyle = isEmptyStr(title) ? "none" : "block";
 
     const { setBreadcrumb, setMenuActiveKey } = useSiteContext();
 
     useEffect(() => {
-        document.title = getTitle(title);
+        document.title = getTitle(title) + " - 后台管理";
 
         if (isNotEmptyArray(breadcrumb)) {
             setBreadcrumb(breadcrumb);
@@ -27,10 +28,11 @@ const TitleUser = (props) => {
         setMenuActiveKey(menuKey);
     }, [menuKey]);
 
-    // 暂时不显示
     return (
-        <></>
+        <h1 className="page-title" style={{ display: displayStyle }}>
+            {title}
+        </h1>
     );
 };
 
-export default TitleUser;
+export default Title;

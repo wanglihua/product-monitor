@@ -4,7 +4,7 @@ import { DeleteOutlined, EditOutlined, SearchOutlined, UserAddOutlined } from '@
 import UserDetail from "./user-detail";
 
 import useSiteContext from "../site/site-context";
-import TitleAdmin from "../site/title-admin";
+import Title from "../site/title";
 
 const User = () => {
     const { post, showConfirm, showError, showSuccess } = useSiteContext();
@@ -128,7 +128,7 @@ const User = () => {
 
     return (
         <div>
-            <TitleAdmin title="用户" menuKey="user" breadcrumb={[
+            <Title title="用户" menuKey="user" breadcrumb={[
                 { title: "用户" },
             ]} />
             <Space direction="vertical" size="large">

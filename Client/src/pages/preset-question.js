@@ -4,7 +4,7 @@ import { EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined } from
 import PresetQuestionDetail from "./preset-question-detail";
 
 import useSiteContext from "../site/site-context";
-import TitleAdmin from "../site/title-admin";
+import Title from "../site/title";
 
 const PresetQuestion = () => {
 
@@ -113,7 +113,7 @@ const PresetQuestion = () => {
 
     return (
         <div>
-            <TitleAdmin title="预设问题" menuKey="preset-question" breadcrumb={[
+            <Title title="预设问题" menuKey="preset-question" breadcrumb={[
                 { title: "预设问题" },
             ]} />
             <Space direction="vertical" size="large">

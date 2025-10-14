@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, Input, Space, Table, Tag } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, Input, Space, Table, Tag} from 'antd';
+import {SearchOutlined} from '@ant-design/icons';
 
 import useSiteContext from "../site/site-context";
-import TitleAdmin from "../site/title-admin";
+import Title from "../site/title";
 
-const UserLoginLog = () => {
-    const { post, showError } = useSiteContext();
+const ActionLog = () => {
+    const {post, showError} = useSiteContext();
 
     const [listParam, setListParam] = useState({
         loginNameQuery: "",
@@ -82,16 +82,16 @@ const UserLoginLog = () => {
 
     return (
         <div>
-            <TitleAdmin title="登录日志" menuKey="user-login-log" breadcrumb={[
-                { title: "登录日志" },
-            ]} />
+            <Title title="操作日志" menuKey="action-log" breadcrumb={[
+                {title: "操作日志"},
+            ]}/>
             <Space direction="vertical" size="large">
                 <div>
                     <Space>
-                        <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名或用户名查询" style={{ width: 380 }} />
+                        <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名或用户名查询" style={{width: 380}}/>
                         <Button
                             color="default"
-                            icon={<SearchOutlined />}
+                            icon={<SearchOutlined/>}
                             onClick={(e) => {
                                 const loginNameQuery = loginNameQueryRef.current.input.value;
 
@@ -110,30 +110,30 @@ const UserLoginLog = () => {
 
                 <div>
                     <Table columns={loginLogListColumns} rowKey="id"
-                        dataSource={state.loginLogList}
-                        pagination={{
-                            current: listParam.currentPage,
-                            pageSize: listParam.pageSize,
-                            total: state.loginLogCount,
-                            showQuickJumper: true,
-                            showSizeChanger: true,
-                            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
-                        }}
-                        onChange={(pagination, filters, sorter, extra) => {
-                            setListParam((pre) => {
-                                return {
-                                    ...pre,
-                                    currentPage: pagination.current,
-                                    pageSize: pagination.pageSize,
-                                    sortField: sorter.field,
-                                    sortOrder: sorter.order,
-                                };
-                            });
-                        }} />
+                           dataSource={state.loginLogList}
+                           pagination={{
+                               current: listParam.currentPage,
+                               pageSize: listParam.pageSize,
+                               total: state.loginLogCount,
+                               showQuickJumper: true,
+                               showSizeChanger: true,
+                               showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
+                           }}
+                           onChange={(pagination, filters, sorter, extra) => {
+                               setListParam((pre) => {
+                                   return {
+                                       ...pre,
+                                       currentPage: pagination.current,
+                                       pageSize: pagination.pageSize,
+                                       sortField: sorter.field,
+                                       sortOrder: sorter.order,
+                                   };
+                               });
+                           }}/>
                 </div>
             </Space>
         </div>
     );
 };
 
-export default UserLoginLog;
+export default ActionLog;

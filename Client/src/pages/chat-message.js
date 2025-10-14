@@ -5,7 +5,7 @@ import { Button, Input, Space } from 'antd';
 import { AndroidOutlined, UserOutlined } from '@ant-design/icons';
 
 import useSiteContext from "../site/site-context";
-import TitleAdmin from "../site/title-admin";
+import Title from "../site/title";
 
 const AdminChatMessage = () => {
     const params = useParams();
@@ -48,7 +48,7 @@ const AdminChatMessage = () => {
 
     return (
         <div>
-            <TitleAdmin title={state.chatTitle} menuKey="chat" breadcrumb={[
+            <Title title={state.chatTitle} menuKey="chat" breadcrumb={[
                 { title: <a href="/admin/chat">对话</a> },
                 { title: "对话消息列表" },
                 { title: state.chatTitle },

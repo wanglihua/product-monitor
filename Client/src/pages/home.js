@@ -1,6 +1,6 @@
-import TitleAdmin from "../site/title-admin";
+import Title from "../site/title";
 
-const AdminHome = () => {
+const Home = () => {
 
     /*
     
@@ -26,9 +26,9 @@ const AdminHome = () => {
 
     return (
         <div>
-            <TitleAdmin title="后台首页" />
+            <Title title="首页" />
         </div>
     );
 };
 
-export default AdminHome;
+export default Home;

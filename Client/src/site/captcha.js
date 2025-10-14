@@ -1,4 +1,4 @@
-import { Image } from "antd";
+import {Image} from "antd";
 import React from "react";
 
 class Captcha extends React.Component {
@@ -22,16 +22,16 @@ class Captcha extends React.Component {
 
         return (
             <Image alt="验证码"
-                src={`/api/captcha?${random}`}
-                onClick={() => {
-                    this.setState({
-                        random: (new Date()).getTime(),
-                    });
-                }}
-                preview={false}
-                width={72}
-                height={32}
-                style={{ cursor: "pointer" }}
+                   src={`/api/captcha?${random}`}
+                   onClick={() => {
+                       this.setState({
+                           random: (new Date()).getTime(),
+                       });
+                   }}
+                   preview={false}
+                   width={72}
+                   height={32}
+                   style={{cursor: "pointer"}}
             />
         );
     }
