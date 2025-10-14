@@ -1,4 +1,5 @@
 ﻿using Core.Auth;
+using Core.Database;
 using Core.Web;
 using Domain;
 using Domain.PassRes;
@@ -29,6 +30,7 @@ public class ActionLogController : Controller
 
     [HttpPost]
     [Route("/api/action/log/list")]
+    [Transactional(false)]
     public IActionResult List([FromBody] ActionLogListParam param)
     {
         IQueryable<ActionLogJoinItem> query = db.Set<ActionLogEntity>()

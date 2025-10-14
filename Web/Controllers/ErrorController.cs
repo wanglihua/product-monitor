@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Auth;
+using Core.Database;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
@@ -14,6 +15,7 @@ public class ErrorController : Controller
 
     [Route("/error")]
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    [Transactional(false)]
     public IActionResult Error()
     {
         var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();

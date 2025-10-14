@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Auth;
+using Core.Database;
 using Core.Util;
 using Core.Web;
 using Domain;
@@ -31,6 +32,7 @@ public class LoginController : Controller
 
     [HttpPost]
     [Route("/api/login")]
+    [Transactional(true)]
     public IActionResult Login([FromBody] LoginParam param)
     {
         ValidationUtil.Validate<LoginParamValidator, LoginParam>(param);
@@ -69,6 +71,7 @@ public class LoginController : Controller
 
     [HttpPost]
     [Route("/api/logout")]
+    [Transactional(true)]
     public IActionResult Logout()
     {
         userLoginService.Logout();
@@ -81,6 +84,7 @@ public class LoginController : Controller
 
     [HttpPost]
     [Route("/api/login/check")]
+    [Transactional(false)]
     public IActionResult UserLoginCheck()
     {
         long loginUserId = userLoginService.GetLoginUserId();

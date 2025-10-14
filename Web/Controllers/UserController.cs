@@ -8,6 +8,7 @@ using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using Service;
 using Web.Models.User;
 
 namespace Web.Controllers;
@@ -18,16 +19,26 @@ public class UserController : Controller
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
     private readonly Db db;
+    private readonly UserLoginService userLoginService;
     private readonly PasswordService passwordService;
+    private readonly ActionLogService actionLogService;
 
-    public UserController(Db db, PasswordService passwordService)
+    public UserController(
+        Db db,
+        UserLoginService userLoginService,
+        PasswordService passwordService,
+        ActionLogService actionLogService
+    )
     {
         this.db = db;
+        this.userLoginService = userLoginService;
         this.passwordService = passwordService;
+        this.actionLogService = actionLogService;
     }
 
     [HttpPost]
     [Route("/api/user/list")]
+    [Transactional(false)]
     public IActionResult List([FromBody] UserListParam param)
     {
         IQueryable<UserEntity> query = db.Set<UserEntity>();
@@ -100,6 +111,7 @@ public class UserController : Controller
 
     [HttpPost]
     [Route("/api/user/detail")]
+    [Transactional(false)]
     public IActionResult Detail([FromBody] IdParam param)
     {
         long userId = param.Id;
@@ -132,6 +144,7 @@ public class UserController : Controller
 
     [HttpPost]
     [Route("/api/user/save")]
+    [Transactional(true)]
     public IActionResult Save([FromBody] UserDetailModel model)
     {
         long userId = model.Id;
@@ -145,6 +158,8 @@ public class UserController : Controller
         {
             ValidationUtil.Validate<UserDetailModelEditValidator, UserDetailModel>(model);
         }
+
+        long loginUserId = userLoginService.GetLoginUserId();
 
         Transactional.Wrap(db, () => {
             UserEntity? user = null;
@@ -202,6 +217,17 @@ public class UserController : Controller
             }
 
             db.SaveChanges();
+
+            if (isCreate)
+            {
+                string actionDesc = $"{user.LoginName}#{user.Id}";
+                actionLogService.Add(loginUserId, ActionLogType.UserCreate, actionDesc);
+            }
+            else
+            {
+                string actionDesc = $"{user.LoginName}#{user.Id}";
+                actionLogService.Add(loginUserId, ActionLogType.UserUpdate, actionDesc);
+            }
         });
 
         return Json(new JsonResultData {
@@ -212,9 +238,12 @@ public class UserController : Controller
 
     [HttpPost]
     [Route("/api/user/delete")]
+    [Transactional(true)]
     public IActionResult Delete([FromBody] IdParam param)
     {
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
+        long loginUserId = userLoginService.GetLoginUserId();
 
         Transactional.Wrap(db, () => {
             long userId = param.Id;
@@ -233,6 +262,9 @@ public class UserController : Controller
                 throw new ValidationException("不能删除管理员用户！");
             }
 
+            // todo 还有其他可能要删除的关联数据
+
+            // 删除日志不是很好
             // db.Set<ActionLogEntity>()
             //     .Where(e => e.UserId == userId)
             //     .ExecuteDelete<ActionLogEntity>();
@@ -241,6 +273,9 @@ public class UserController : Controller
             db.Remove<UserEntity>(user);
 
             db.SaveChanges();
+
+            string actionDesc = $"{user.LoginName}#{user.Id}";
+            actionLogService.Add(loginUserId, ActionLogType.UserDelete, actionDesc);
         });
 
         return Json(new JsonResultData {

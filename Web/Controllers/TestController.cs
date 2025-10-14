@@ -23,7 +23,7 @@ public class TestController : Controller
 
     [HttpGet]
     [Route("/test")]
-    [Transactional]
+    [Transactional(true)]
     public IActionResult Index()
     {
         // var testList = db.Set<TestEntity>()

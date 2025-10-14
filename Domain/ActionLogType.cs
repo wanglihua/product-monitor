@@ -7,12 +7,32 @@ public class ActionLogType : CodeTypeBase
     /// <summary>
     /// 用户登录
     /// </summary>
-    public static readonly ActionLogType UserLogin = new(2_00, "用户登录");
+    public static readonly ActionLogType UserLogin = new(0002_0000, "用户登录");
 
     /// <summary>
     /// 用户创建
     /// </summary>
-    public static readonly ActionLogType UserCreate = new(4_00, "用户创建");
+    public static readonly ActionLogType UserCreate = new(0004_0000, "用户创建");
+
+    /// <summary>
+    /// 用户更新
+    /// </summary>
+    public static readonly ActionLogType UserUpdate = new(0006_0000, "用户更新");
+
+    /// <summary>
+    /// 用户删除
+    /// </summary>
+    public static readonly ActionLogType UserDelete = new(0008_0000, "用户删除");
+
+    /// <summary>
+    /// 管理员添加
+    /// </summary>
+    public static readonly ActionLogType AdminUserAdd = new(0010_0000, "管理员添加");
+
+    /// <summary>
+    /// 管理员移除
+    /// </summary>
+    public static readonly ActionLogType AdminUserRemove = new(0012_0000, "管理员移除");
 
     /// <summary>
     /// None
@@ -22,6 +42,10 @@ public class ActionLogType : CodeTypeBase
     private static readonly IReadOnlyList<ActionLogType> codeTypeList = new List<ActionLogType>() {
         UserLogin,
         UserCreate,
+        UserUpdate,
+        UserDelete,
+        AdminUserAdd,
+        AdminUserRemove,
     };
 
     private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);

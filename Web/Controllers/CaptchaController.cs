@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Auth;
+using Core.Database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
@@ -16,6 +17,7 @@ public class CaptchaController : Controller
 
     [HttpGet]
     [Route("/api/captcha")]
+    [Transactional(false)]
     public IActionResult Index()
     {
         byte[] bytes = captchaService.Create();
@@ -25,6 +27,7 @@ public class CaptchaController : Controller
 
     [HttpPost]
     [Route("/api/captcha/base64")]
+    [Transactional(false)]
     public IActionResult Base64()
     {
         byte[] bytes = captchaService.Create();

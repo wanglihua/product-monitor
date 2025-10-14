@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using Service;
 using Web.Models.AdminUser;
 
 namespace Web.Controllers;
@@ -17,10 +18,18 @@ public class AdminUserController : Controller
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
     private readonly Db db;
+    private readonly UserLoginService userLoginService;
+    private readonly ActionLogService actionLogService;
 
-    public AdminUserController(Db db)
+    public AdminUserController(
+        Db db,
+        UserLoginService userLoginService,
+        ActionLogService actionLogService
+    )
     {
         this.db = db;
+        this.userLoginService = userLoginService;
+        this.actionLogService = actionLogService;
     }
 
     private class AdminUserJoinItem
@@ -32,6 +41,7 @@ public class AdminUserController : Controller
 
     [HttpPost]
     [Route("/api/admin/user/list")]
+    [Transactional(false)]
     public IActionResult List([FromBody] AdminUserListParam param)
     {
         IQueryable<AdminUserJoinItem> query = db.Set<AdminUserEntity>()
@@ -103,9 +113,12 @@ public class AdminUserController : Controller
 
     [HttpPost]
     [Route("/api/admin/user/add/save")]
+    [Transactional(true)]
     public IActionResult AddSave([FromBody] AdminUserAddSaveParam param)
     {
         ValidationUtil.Validate<AdminUserAddSaveParamValidator, AdminUserAddSaveParam>(param);
+
+        long loginUserId = userLoginService.GetLoginUserId();
 
         string loginName = param.LoginName.Trim();
         var user = db.Set<UserEntity>()
@@ -134,6 +147,9 @@ public class AdminUserController : Controller
         db.Add<AdminUserEntity>(admin);
         db.SaveChanges();
 
+        string actionDesc = $"{user.LoginName}#{user.Id}";
+        actionLogService.Add(loginUserId, ActionLogType.AdminUserAdd, actionDesc);
+
         return Json(new JsonResultData {
             Success = true,
             Message = "添加成功！",
@@ -142,9 +158,12 @@ public class AdminUserController : Controller
 
     [HttpPost]
     [Route("/api/admin/user/remove")]
+    [Transactional(true)]
     public IActionResult Remove([FromBody] IdParam param)
     {
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
+        long loginUserId = userLoginService.GetLoginUserId();
 
         long adminId = param.Id;
 
@@ -153,6 +172,13 @@ public class AdminUserController : Controller
             if (admin == null)
             {
                 throw new ValidationException($"指定的管理员#{adminId}不存在！");
+            }
+
+            long userId = admin.UserId;
+            var user = db.Set<UserEntity>().Find(userId);
+            if (user == null)
+            {
+                throw new ValidationException($"指定的用户#{userId}不存在!");
             }
 
             var adminOther = db.Set<AdminUserEntity>()
@@ -166,6 +192,9 @@ public class AdminUserController : Controller
 
             db.Remove<AdminUserEntity>(admin);
             db.SaveChanges();
+
+            string actionDesc = $"{user.LoginName}#{user.Id}";
+            actionLogService.Add(loginUserId, ActionLogType.AdminUserRemove, actionDesc);
         });
 
         return Json(new JsonResultData {
