@@ -175,9 +175,6 @@ const Login = () => {
                         </Button>
                     </Space>
                 </Form.Item>
-                <Form.Item style={{ textAlign: "center" }}>
-                    <Checkbox checked={adminLogin} onChange={(e) => { setAdminLogin(e.target.checked); }}>管理员登录</Checkbox>
-                </Form.Item>
             </Form>
         </div>
     );

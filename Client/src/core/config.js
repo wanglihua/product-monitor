@@ -1,6 +1,6 @@
 import { isEmptyStr } from "./empty";
 
-const titleSuffix = "AI智能助手";
+const titleSuffix = "管理平台";
 
 const getTitle = (title) => { 
     if(isEmptyStr(title)) {

@@ -13,7 +13,7 @@ const Title = (props) => {
     const { setBreadcrumb, setMenuActiveKey } = useSiteContext();
 
     useEffect(() => {
-        document.title = getTitle(title) + " - 后台管理";
+        document.title = getTitle(title);
 
         if (isNotEmptyArray(breadcrumb)) {
             setBreadcrumb(breadcrumb);

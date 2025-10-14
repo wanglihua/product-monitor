@@ -90,8 +90,7 @@ const LayoutAdmin = () => {
             }}>
                 <Flex align="center" justify="space-between" style={{width: "100%"}}>
                     <span style={{ color: "white", fontSize: "22px" }}>
-                        <span>AI智能助手</span>
-                        <span>后台管理</span>
+                        <span>管理平台</span>
                     </span>
 
                     <span style={{ cursor: 'pointer' }}>

@@ -1,13 +1,12 @@
-import { ExclamationCircleFilled } from "@ant-design/icons";
-import { ConfigProvider, Modal, notification, Spin } from "antd";
+import {ExclamationCircleFilled} from "@ant-design/icons";
+import {ConfigProvider, Modal, notification, Spin} from "antd";
 import zhCn from "antd/locale/zh_CN";
 import axios from "axios";
-import React, { useRef, useState } from "react";
-import { BrowserRouter, HashRouter } from "react-router";
+import React, {useState} from "react";
+import {BrowserRouter} from "react-router";
 import "./app.css";
-import { isDev } from "./core/util";
 import Router from "./router";
-import { SiteContext } from "./site/site-context";
+import {SiteContext} from "./site/site-context";
 
 const App = () =>  {
     const [notificationApi, notificationContextHolder] = notification.useNotification();
