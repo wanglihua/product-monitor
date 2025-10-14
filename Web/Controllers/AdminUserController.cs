@@ -167,35 +167,33 @@ public class AdminUserController : Controller
 
         long adminId = param.Id;
 
-        Transactional.Wrap(db, () => {
-            var admin = db.Set<AdminUserEntity>().Find(adminId);
-            if (admin == null)
-            {
-                throw new ValidationException($"指定的管理员#{adminId}不存在！");
-            }
+        var admin = db.Set<AdminUserEntity>().Find(adminId);
+        if (admin == null)
+        {
+            throw new ValidationException($"指定的管理员#{adminId}不存在！");
+        }
 
-            long userId = admin.UserId;
-            var user = db.Set<UserEntity>().Find(userId);
-            if (user == null)
-            {
-                throw new ValidationException($"指定的用户#{userId}不存在!");
-            }
+        long userId = admin.UserId;
+        var user = db.Set<UserEntity>().Find(userId);
+        if (user == null)
+        {
+            throw new ValidationException($"指定的用户#{userId}不存在!");
+        }
 
-            var adminOther = db.Set<AdminUserEntity>()
-                .Where(e => e.Id != adminId)
-                .Take(1)
-                .SingleOrDefault();
-            if (adminOther == null)
-            {
-                throw new ValidationException("必需至少保留一位管理员！");
-            }
+        var adminOther = db.Set<AdminUserEntity>()
+            .Where(e => e.Id != adminId)
+            .Take(1)
+            .SingleOrDefault();
+        if (adminOther == null)
+        {
+            throw new ValidationException("必需至少保留一位管理员！");
+        }
 
-            db.Remove<AdminUserEntity>(admin);
-            db.SaveChanges();
+        db.Remove<AdminUserEntity>(admin);
+        db.SaveChanges();
 
-            string actionDesc = $"{user.LoginName}#{user.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.AdminUserRemove, actionDesc);
-        });
+        string actionDesc = $"{user.LoginName}#{user.Id}";
+        actionLogService.Add(loginUserId, ActionLogType.AdminUserRemove, actionDesc);
 
         return Json(new JsonResultData {
             Success = true,

@@ -161,74 +161,72 @@ public class UserController : Controller
 
         long loginUserId = userLoginService.GetLoginUserId();
 
-        Transactional.Wrap(db, () => {
-            UserEntity? user = null;
-            string loginName = model.LoginName.Trim();
-            if (isCreate)
+        UserEntity? user = null;
+        string loginName = model.LoginName.Trim();
+        if (isCreate)
+        {
+            user = new UserEntity();
+
+            var otherUser = db.Set<UserEntity>()
+                .Where(e => e.LoginName == loginName)
+                .Take(1)
+                .FirstOrDefault();
+
+            if (otherUser != null)
             {
-                user = new UserEntity();
-
-                var otherUser = db.Set<UserEntity>()
-                    .Where(e => e.LoginName == loginName)
-                    .Take(1)
-                    .FirstOrDefault();
-
-                if (otherUser != null)
-                {
-                    throw new ValidationException($"登录名 {loginName} 已存在！");
-                }
+                throw new ValidationException($"登录名 {loginName} 已存在！");
             }
-            else
+        }
+        else
+        {
+            user = db.Set<UserEntity>().Find(userId);
+            if (user == null)
             {
-                user = db.Set<UserEntity>().Find(userId);
-                if (user == null)
-                {
-                    throw new ValidationException($"指定的用户#{userId}不存在！");
-                }
-
-                var otherUser = db.Set<UserEntity>()
-                    .Where(e => e.LoginName == loginName && e.Id != userId)
-                    .Take(1)
-                    .FirstOrDefault();
-
-                if (otherUser != null)
-                {
-                    throw new ValidationException($"登录名 {loginName} 已存在！");
-                }
+                throw new ValidationException($"指定的用户#{userId}不存在！");
             }
 
-            user.LoginName = loginName;
-            user.UserName = model.UserName;
-            if (string.IsNullOrWhiteSpace(model.Password) == false)
-            {
-                string salt = passwordService.GenerateSalt();
+            var otherUser = db.Set<UserEntity>()
+                .Where(e => e.LoginName == loginName && e.Id != userId)
+                .Take(1)
+                .FirstOrDefault();
 
-                user.Salt = salt;
-                user.Password = passwordService.Encrypt(model.Password.Trim(), salt);
+            if (otherUser != null)
+            {
+                throw new ValidationException($"登录名 {loginName} 已存在！");
             }
+        }
 
-            if (isCreate)
-            {
-                db.Add<UserEntity>(user);
-            }
-            else
-            {
-                db.Update<UserEntity>(user);
-            }
+        user.LoginName = loginName;
+        user.UserName = model.UserName;
+        if (string.IsNullOrWhiteSpace(model.Password) == false)
+        {
+            string salt = passwordService.GenerateSalt();
 
-            db.SaveChanges();
+            user.Salt = salt;
+            user.Password = passwordService.Encrypt(model.Password.Trim(), salt);
+        }
 
-            if (isCreate)
-            {
-                string actionDesc = $"{user.LoginName}#{user.Id}";
-                actionLogService.Add(loginUserId, ActionLogType.UserCreate, actionDesc);
-            }
-            else
-            {
-                string actionDesc = $"{user.LoginName}#{user.Id}";
-                actionLogService.Add(loginUserId, ActionLogType.UserUpdate, actionDesc);
-            }
-        });
+        if (isCreate)
+        {
+            db.Add<UserEntity>(user);
+        }
+        else
+        {
+            db.Update<UserEntity>(user);
+        }
+
+        db.SaveChanges();
+
+        if (isCreate)
+        {
+            string actionDesc = $"{user.LoginName}#{user.Id}";
+            actionLogService.Add(loginUserId, ActionLogType.UserCreate, actionDesc);
+        }
+        else
+        {
+            string actionDesc = $"{user.LoginName}#{user.Id}";
+            actionLogService.Add(loginUserId, ActionLogType.UserUpdate, actionDesc);
+        }
 
         return Json(new JsonResultData {
             Success = true,
@@ -245,38 +243,36 @@ public class UserController : Controller
 
         long loginUserId = userLoginService.GetLoginUserId();
 
-        Transactional.Wrap(db, () => {
-            long userId = param.Id;
-            var user = db.Set<UserEntity>().Find(userId);
-            if (user == null)
-            {
-                throw new ValidationException($"指定的用户#{userId}不存在！");
-            }
+        long userId = param.Id;
+        var user = db.Set<UserEntity>().Find(userId);
+        if (user == null)
+        {
+            throw new ValidationException($"指定的用户#{userId}不存在！");
+        }
 
-            var admin = db.Set<AdminUserEntity>()
-                .Where(e => e.UserId == userId)
-                .Take(1)
-                .SingleOrDefault();
-            if (admin != null)
-            {
-                throw new ValidationException("不能删除管理员用户！");
-            }
+        var admin = db.Set<AdminUserEntity>()
+            .Where(e => e.UserId == userId)
+            .Take(1)
+            .SingleOrDefault();
+        if (admin != null)
+        {
+            throw new ValidationException("不能删除管理员用户！");
+        }
 
-            // todo 还有其他可能要删除的关联数据
+        // todo 还有其他可能要删除的关联数据
 
-            // 删除日志不是很好
-            // db.Set<ActionLogEntity>()
-            //     .Where(e => e.UserId == userId)
-            //     .ExecuteDelete<ActionLogEntity>();
+        // 删除日志不是很好
+        // db.Set<ActionLogEntity>()
+        //     .Where(e => e.UserId == userId)
+        //     .ExecuteDelete<ActionLogEntity>();
 
-            // 删除用户
-            db.Remove<UserEntity>(user);
+        // 删除用户
+        db.Remove<UserEntity>(user);
 
-            db.SaveChanges();
+        db.SaveChanges();
 
-            string actionDesc = $"{user.LoginName}#{user.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.UserDelete, actionDesc);
-        });
+        string actionDesc = $"{user.LoginName}#{user.Id}";
+        actionLogService.Add(loginUserId, ActionLogType.UserDelete, actionDesc);
 
         return Json(new JsonResultData {
             Success = true,

@@ -100,12 +100,14 @@ public static class Program
 
         services.AddScoped<WebSessionTimeoutResetActionFilter>();
         services.AddScoped<AuthActionFilter>();
+        services.AddScoped<TransactionActionFilter>();
         services.AddScoped<ExceptionFilter>();
 
         var mvcBuilder = services.AddControllersWithViews()
             .AddMvcOptions(options => {
                 options.Filters.AddService<WebSessionTimeoutResetActionFilter>();
                 options.Filters.AddService<AuthActionFilter>();
+                options.Filters.AddService<TransactionActionFilter>();
                 options.Filters.AddService<ExceptionFilter>();
             })
             .AddNewtonsoftJson(options => {
