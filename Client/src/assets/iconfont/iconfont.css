@@ -1,0 +1,147 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 4783790 */
+  src: url('iconfont.woff2?t=1734356198435') format('woff2'),
+       url('iconfont.woff?t=1734356198435') format('woff'),
+       url('iconfont.ttf?t=1734356198435') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-knowledge1:before {
+  content: "\e91f";
+}
+
+.icon-knowledge2:before {
+  content: "\e90e";
+}
+
+.icon-knowledge3:before {
+  content: "\e7a7";
+}
+
+.icon-refresh3:before {
+  content: "\e646";
+}
+
+.icon-refresh2:before {
+  content: "\e702";
+}
+
+.icon-refresh1:before {
+  content: "\e735";
+}
+
+.icon-translate1:before {
+  content: "\e75a";
+}
+
+.icon-translate2:before {
+  content: "\e611";
+}
+
+.icon-translate3:before {
+  content: "\e65b";
+}
+
+.icon-edit3:before {
+  content: "\e72e";
+}
+
+.icon-edit2:before {
+  content: "\e645";
+}
+
+.icon-edit1:before {
+  content: "\e61d";
+}
+
+.icon-plane1:before {
+  content: "\e60c";
+}
+
+.icon-plane2:before {
+  content: "\e600";
+}
+
+.icon-plane3:before {
+  content: "\e6f6";
+}
+
+.icon-image-add1:before {
+  content: "\e8b3";
+}
+
+.icon-image-add2:before {
+  content: "\eb89";
+}
+
+.icon-image-add3:before {
+  content: "\eb8a";
+}
+
+.icon-file-add1:before {
+  content: "\e6f1";
+}
+
+.icon-file-add2:before {
+  content: "\e804";
+}
+
+.icon-file-add3:before {
+  content: "\e711";
+}
+
+.icon-plus1:before {
+  content: "\e829";
+}
+
+.icon-plus2:before {
+  content: "\e8fe";
+}
+
+.icon-plus3:before {
+  content: "\e694";
+}
+
+.icon-search1:before {
+  content: "\e61c";
+}
+
+.icon-search2:before {
+  content: "\e651";
+}
+
+.icon-search3:before {
+  content: "\e613";
+}
+
+.icon-tool1:before {
+  content: "\e609";
+}
+
+.icon-tool2:before {
+  content: "\e647";
+}
+
+.icon-tool3:before {
+  content: "\e86f";
+}
+
+.icon-chat1:before {
+  content: "\ecb2";
+}
+
+.icon-chat2:before {
+  content: "\ecb4";
+}
+
+.icon-chat3:before {
+  content: "\e991";
+}
+
