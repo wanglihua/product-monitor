@@ -13,10 +13,12 @@ public class TestController : Controller
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
     private readonly Db db;
+    private readonly PasswordService passwordService;
 
-    public TestController(Db db)
+    public TestController(Db db, PasswordService passwordService)
     {
         this.db = db;
+        this.passwordService = passwordService;
     }
 
 #if DEBUG
@@ -31,13 +33,26 @@ public class TestController : Controller
         //     .Take(100)
         //     .ToList();
 
-        db.Set<WebSessionDataEntity>()
-            .Join(db.Set<WebSessionEntity>(),
-                sd => sd.WebSessionId,
-                s => s.Id,
-                (sd, s) => new { sd.Id, s.UpdateTime })
-            .Where(e => e.UpdateTime < DateTime.Now.AddHours(-1))
-            .ToList();
+        // db.Set<WebSessionDataEntity>()
+        //     .Join(db.Set<WebSessionEntity>(),
+        //         sd => sd.WebSessionId,
+        //         s => s.Id,
+        //         (sd, s) => new { sd.Id, s.UpdateTime })
+        //     .Where(e => e.UpdateTime < DateTime.Now.AddHours(-1))
+        //     .ToList();
+
+        // string salt = passwordService.GenerateSalt();
+        // string passwordEncrypt = passwordService.Encrypt("123456", salt);
+        // var user = new UserEntity {
+        //     LoginName = "admin",
+        //     UserName = "管理员",
+        //     Password = passwordEncrypt,
+        //     Salt = salt,
+        // };
+        //
+        // db.Add<UserEntity>(user);
+        //
+        // db.SaveChanges();
 
         return Json(new JsonResultData {
             Success = true,

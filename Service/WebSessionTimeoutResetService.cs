@@ -24,11 +24,21 @@ public class WebSessionTimeoutResetService
             return;
         }
 
-        db.Set<WebSessionEntity>()
+        int count = db.Set<WebSessionEntity>()
             .Where(e => e.SessionId == sessionId)
             .ExecuteUpdate(e => e
                 .SetProperty(x => x.UpdateTime, DateTime.Now)
             );
+
+        if (count == 0)
+        {
+            var webSession = new WebSessionEntity {
+                SessionId = sessionId,
+            };
+
+            db.Add<WebSessionEntity>(webSession);
+            db.SaveChanges();
+        }
 
         // 做 web session 的清理
         if (runCount % 10000 == 0) // runCount 初始化为0，保证第一次能得到清理，后面10000次清理一次

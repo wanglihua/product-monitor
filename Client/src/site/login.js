@@ -1,25 +1,23 @@
 import axios from "axios";
-import { Alert, Button, Checkbox, Form, Input, Space, theme } from 'antd';
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router";
-import { getTitle } from "../core/config";
-import { isNotEmptyStr } from '../core/empty';
+import {Alert, Button, Checkbox, Form, Input, Space, theme} from 'antd';
+import {useRef, useState} from "react";
+import {useNavigate} from "react-router";
+import {getTitle} from "../core/config";
+import {isNotEmptyStr} from '../core/empty';
 import Captcha from './captcha';
 import useSiteContext from './site-context';
 
-import { LockOutlined, SafetyOutlined, UserOutlined } from "@ant-design/icons"
-import { useEffect } from "react";
+import {LockOutlined, SafetyOutlined, UserOutlined} from "@ant-design/icons"
+import {useEffect} from "react";
 
 const Login = () => {
     document.title = getTitle("登录");
 
     const navigate = useNavigate();
-    const { token } = theme.useToken();
-    const { post, showSuccess, setUser, showMask, hideMask } = useSiteContext();
+    const {token} = theme.useToken();
+    const {post, showSuccess, setUser, showMask, hideMask} = useSiteContext();
 
-    const [respResult, setRespResult] = useState({ success: true, message: "" });
-
-    const [adminLogin, setAdminLogin] = useState(false);
+    const [respResult, setRespResult] = useState({success: true, message: ""});
 
     const form = useRef();
     const captcha = useRef();
@@ -31,9 +29,9 @@ const Login = () => {
     }, []);
 
     return (
-        <div style={{ margin: "100px auto", maxWidth: "580px", backgroundColor: "white", padding: "60px 100px" }}>
-            <div style={{ textAlign: "center" }}>
-                <h3 style={{ fontSize: "28px" }}>用户登录</h3>
+        <div style={{margin: "100px auto", maxWidth: "580px", backgroundColor: "white", padding: "60px 100px"}}>
+            <div style={{textAlign: "center"}}>
+                <h3 style={{fontSize: "28px"}}>用户登录</h3>
             </div>
             {respResult.success === false && (
                 <Alert
@@ -42,7 +40,7 @@ const Login = () => {
                     closable
                     message="错误"
                     description={respResult.message}
-                    style={{ margin: "5px 0 20px 0" }}
+                    style={{margin: "5px 0 20px 0"}}
                 />
             )}
 
@@ -64,7 +62,6 @@ const Login = () => {
                         "loginName": values.loginName,
                         "password": values.password,
                         "captcha": captchaValue,
-                        "adminLogin": adminLogin,
                     }, function (response) {
                         // setMask(false);
                         hideMask();
@@ -91,12 +88,7 @@ const Login = () => {
 
                         showSuccess(res.message);
 
-                        if (adminLogin) {
-                            navigate("/admin");
-                        }
-                        else {
-                            navigate("/");
-                        }
+                        navigate("/");
                     });
                 }}
             >
@@ -111,7 +103,7 @@ const Login = () => {
                     ]}
                 >
                     <Input
-                        prefix={<UserOutlined style={{ color: "#1677ff" }} />}
+                        prefix={<UserOutlined style={{color: "#1677ff"}}/>}
                         maxLength={20}
                         placeholder="登录名"
                         allowClear
@@ -128,7 +120,7 @@ const Login = () => {
                     ]}
                 >
                     <Input.Password
-                        prefix={<LockOutlined style={{ color: "#1677ff" }} />}
+                        prefix={<LockOutlined style={{color: "#1677ff"}}/>}
                         maxLength={18}
                         placeholder="密码"
                         allowClear
@@ -138,13 +130,15 @@ const Login = () => {
                     label="验证码"
                     name="captcha"
                     extra={
-                        <div style={{ margin: "10px 0 0 10px" }}>
+                        <div style={{margin: "10px 0 0 10px"}}>
                             <Space>
-                                <Captcha ref={captcha} />
+                                <Captcha ref={captcha}/>
                                 &nbsp;
                                 <span
                                     className='link-btn'
-                                    onClick={() => { captcha.current.refresh(); }}
+                                    onClick={() => {
+                                        captcha.current.refresh();
+                                    }}
                                 >
                                     看不清, 换一个
                                 </span>
@@ -159,17 +153,17 @@ const Login = () => {
                     ]}
                 >
                     <Input
-                        prefix={<SafetyOutlined style={{ color: "#1677ff" }} />}
+                        prefix={<SafetyOutlined style={{color: "#1677ff"}}/>}
                         placeholder="验证码"
                         maxLength={4}
                         allowClear
                     />
                 </Form.Item>
 
-                <Form.Item style={{ marginTop: token.formButtonMarginTop, textAlign: "center" }}>
+                <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "center"}}>
                     <Space>
-                        <Button type="primary" size="large" htmlType="submit" style={{ width: "180px" }}>
-                            <i className="iconfont icon-login" />
+                        <Button type="primary" size="large" htmlType="submit" style={{width: "180px"}}>
+                            <i className="iconfont icon-login"/>
                             &nbsp;
                             登录
                         </Button>

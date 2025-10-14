@@ -16,3 +16,7 @@ CREATE TABLE tbl_user
 );
 
 -- todo 再加一个状态字段
+
+-- 密码 123456
+INSERT INTO tbl_user (id, login_name, user_name, password, salt, last_login_time, create_time, update_time)
+VALUES (1, 'admin', N'管理员', '3e9122575ea7e252f3a3c104d534c4f17fd6a720', '550bea8abc', null, '2025-10-01', '2025-10-01');

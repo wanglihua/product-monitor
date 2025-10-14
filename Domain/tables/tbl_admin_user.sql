@@ -10,3 +10,7 @@ CREATE TABLE tbl_admin_user
     CONSTRAINT fk_admin_user_user_id FOREIGN KEY (user_id) REFERENCES tbl_user (id),
     INDEX ix_admin_user_user_id (user_id),
 );
+
+INSERT INTO tbl_admin_user(id, user_id, create_time)
+VALUES (1, 1, '2025-10-01');
+

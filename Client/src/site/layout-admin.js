@@ -38,7 +38,7 @@ const LayoutAdmin = () => {
 
     useEffect(() => {
         axios.request({
-            url: "/api/admin/login/check",
+            url: "/api/login/check",
             method: 'post',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -70,9 +70,9 @@ const LayoutAdmin = () => {
         {
             "title": <><HomeOutlined /><span>Home</span></>,
             onClick: (e) => {
-                navigate("/admin")
+                navigate("/")
             },
-            className: "home-breadcrum",
+            className: "home-breadcrumb",
         }
     ];
 
