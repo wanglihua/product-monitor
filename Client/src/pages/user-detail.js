@@ -1,5 +1,5 @@
-import { Button, ConfigProvider, Descriptions, Form, Input, Modal, Select, Space, theme } from "antd";
-import React, { useRef, useState } from "react";
+import {Button, ConfigProvider, Descriptions, Form, Input, Modal, Select, Space, theme} from "antd";
+import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 
 const UserDetailInner = (props) => {
@@ -8,8 +8,8 @@ const UserDetailInner = (props) => {
     const self = props.self;
     const loadUserList = props.loadUserList;
 
-    const { token } = theme.useToken();
-    const { post, showSuccess, showError } = useSiteContext();
+    const {token} = theme.useToken();
+    const {post, showSuccess, showError} = useSiteContext();
 
     let passwordRequired = false;
 
@@ -53,7 +53,7 @@ const UserDetailInner = (props) => {
             }}
             afterOpenChange={(open) => {
                 if (open === true) {
-                    post("/api/admin/user/detail", {
+                    post("/api/user/detail", {
                         "id": userId
                     }, function (response) {
                         const res = response.data;
@@ -93,7 +93,7 @@ const UserDetailInner = (props) => {
                     size='middle'
                     requiredMark={false}
                     onFinish={(values) => {
-                        post("/api/admin/user/save", {
+                        post("/api/user/save", {
                             id: userId,
                             loginName: values.loginName,
                             userName: values.userName,
@@ -110,7 +110,8 @@ const UserDetailInner = (props) => {
                             showSuccess(res.message);
 
                             if (loadUserList) {
-                                loadUserList();;
+                                loadUserList();
+                                ;
                             }
 
                             self.hide();
@@ -122,7 +123,7 @@ const UserDetailInner = (props) => {
                         layout="horizontal"
                         size="small"
                         column={1}
-                        labelStyle={{ width: "120px" }}
+                        labelStyle={{width: "120px"}}
                     >
                         <Descriptions.Item label="登录名">
                             <Form.Item
@@ -197,23 +198,9 @@ const UserDetailInner = (props) => {
                                 />
                             </Form.Item>
                         </Descriptions.Item>
-
-                        <Descriptions.Item label="状态">
-                            <Form.Item
-                                name="status"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请选择用户状态!',
-                                    },
-                                ]}
-                            >
-                                <Select options={state.statusList} />
-                            </Form.Item>
-                        </Descriptions.Item>
                     </Descriptions>
 
-                    <Form.Item style={{ marginTop: token.formButtonMarginTop, textAlign: "right" }}>
+                    <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "right"}}>
                         <Space>
                             <Button type="primary" size="large" htmlType="submit">
                                 保存

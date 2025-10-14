@@ -70,20 +70,59 @@ public class UserDetailModelEditValidator : AbstractValidator<UserDetailModel>
         RuleFor(e => e.UserName).NotEmpty().WithMessage("用户名不能为空！");
         RuleFor(e => e.UserName).MaximumLength(100).WithMessage("用户名长度不能超过100！");
 
-        RuleFor(e => e.Password).MinimumLength(6).WithMessage("密码名长度不能小于6！");
-        RuleFor(e => e.Password).MaximumLength(20).WithMessage("密码名长度不能超过20！");
+        RuleFor(e => e.Password)
+            .Must((e, p) => {
+                if (string.IsNullOrWhiteSpace(e.Password) == false && p.Length < 6)
+                {
+                    return false;
+                }
 
-        RuleFor(e => e.PasswordAgain).MinimumLength(6).WithMessage("密码重输长度不能小于6！");
-        RuleFor(e => e.PasswordAgain).MaximumLength(20).WithMessage("密码重输长度不能超过20！");
+                return true;
+            })
+            .WithMessage("密码名长度不能小于6！");
+
+        RuleFor(e => e.Password)
+            .Must((e, p) => {
+                if (string.IsNullOrWhiteSpace(e.Password) == false && p.Length > 20)
+                {
+                    return false;
+                }
+
+                return true;
+            })
+            .WithMessage("密码名长度不能超过20！");
 
         RuleFor(e => e.PasswordAgain)
             .Must((e, p) => {
-                if (string.IsNullOrWhiteSpace(e.Password) && string.IsNullOrWhiteSpace(e.PasswordAgain))
+                if (string.IsNullOrWhiteSpace(e.PasswordAgain) == false && p.Length < 6)
                 {
-                    return true;
+                    return false;
                 }
 
-                return e.PasswordAgain == e.Password;
+                return true;
+            })
+            .WithMessage("密码重输长度不能小于6！");
+
+        RuleFor(e => e.PasswordAgain)
+            .Must((e, p) => {
+                if (string.IsNullOrWhiteSpace(e.PasswordAgain) == false && p.Length > 20)
+                {
+                    return false;
+                }
+
+                return true;
+            })
+            .WithMessage("密码重输长度不能超过20！");
+
+        RuleFor(e => e.PasswordAgain)
+            .Must((e, p) => {
+                // 其中有一个 不 为空的时候, 就比较
+                if (string.IsNullOrWhiteSpace(e.Password) == false || string.IsNullOrWhiteSpace(e.PasswordAgain) == false)
+                {
+                    return e.PasswordAgain == e.Password;
+                }
+
+                return true;
             })
             .WithMessage("密码和密码重输不相等！");
     }

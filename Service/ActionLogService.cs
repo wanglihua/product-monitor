@@ -22,7 +22,7 @@ public class ActionLogService
     {
         var actionLog = new ActionLogEntity {
             UserId = userId,
-            Type = ActionLogType.UserLogin,
+            Type = type,
             ActionDesc = actionDesc,
         };
 

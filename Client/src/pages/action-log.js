@@ -108,7 +108,7 @@ const ActionLog = () => {
                     </Button>
                 </Space>
             </div>
-            <div style={{ padding: "10px 0" }}>
+            <div style={{padding: "10px 0"}}>
                 <Table columns={actionLogListColumns} rowKey="id"
                        tableLayout="auto"
                        dataSource={state.actionLogList}

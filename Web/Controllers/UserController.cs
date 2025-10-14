@@ -157,6 +157,44 @@ public class UserController : Controller
         else
         {
             ValidationUtil.Validate<UserDetailModelEditValidator, UserDetailModel>(model);
+            //
+            // string password = model.Password;
+            // if (string.IsNullOrWhiteSpace(password) == false)
+            // {
+            //     password = password.Trim();
+            //     if (password.Length < 6)
+            //     {
+            //         throw new ValidationException("密码名长度不能小于6！");
+            //     }
+            //
+            //     if (password.Length > 20)
+            //     {
+            //         throw new ValidationException("密码名长度不能超过20！");
+            //     }
+            //
+            //     string passwordAgain = model.Password;
+            //     if (string.IsNullOrWhiteSpace(passwordAgain) == true)
+            //     {
+            //         throw new ValidationException("密码重输不能为空！");
+            //     }
+            //
+            //     passwordAgain = passwordAgain.Trim();
+            //
+            //     if (passwordAgain.Length < 6)
+            //     {
+            //         throw new ValidationException("密码重输长度不能小于6！");
+            //     }
+            //
+            //     if (passwordAgain.Length > 20)
+            //     {
+            //         throw new ValidationException("密码重输长度不能超过20！");
+            //     }
+            //
+            //     if (passwordAgain != password)
+            //     {
+            //         throw new ValidationException("密码和密码重输不相等！");
+            //     }
+            // }
         }
 
         long loginUserId = userLoginService.GetLoginUserId();

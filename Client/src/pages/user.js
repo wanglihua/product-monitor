@@ -24,7 +24,7 @@ const User = () => {
     });
 
     const loadUserList = () => {
-        post("/api/admin/user/list", listParam, function (response) {
+        post("/api/user/list", listParam, function (response) {
             const res = response.data;
             if (res.success !== true) {
                 showError(res.message);
@@ -75,15 +75,6 @@ const User = () => {
             sorter: true,
         },
         {
-            title: "状态",
-            dataIndex: "status",
-            width: "120px",
-            sorter: true,
-            render: (status) => {
-                return <Tag color={status.color}>{status.name}</Tag>;
-            },
-        },
-        {
             title: "操作",
             align: "center",
             render: (text, record, index) => {
@@ -97,7 +88,7 @@ const User = () => {
                         </Button>
                         <Button color="danger" variant="text" size="small" style={{ fontSize: "12px" }} onClick={(e) => {
                             showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/admin/user/delete", {
+                                post("/api/user/delete", {
                                     id: record.id,
                                 }, function (response) {
                                     const res = response.data;
@@ -131,65 +122,63 @@ const User = () => {
             <Title title="用户" menuKey="user" breadcrumb={[
                 { title: "用户" },
             ]} />
-            <Space direction="vertical" size="large">
-                <div>
-                    <Space>
-                        <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名查询" style={{ width: 220 }} />
-                        <Input ref={userNameQueryRef} addonBefore="用户名" placeholder="用户名查询" style={{ width: 220 }} />
-                        <Button
-                            color="default"
-                            icon={<SearchOutlined />}
-                            onClick={(e) => {
-                                const loginNameQuery = loginNameQueryRef.current.input.value;
-                                const userNameQuery = userNameQueryRef.current.input.value;
 
-                                setListParam((pre) => {
-                                    return {
-                                        ...pre,
-                                        loginNameQuery: loginNameQuery,
-                                        userNameQuery: userNameQuery,
-                                    };
-                                });
-                            }}
-                        >
-                            查询
-                        </Button>
-                        <Button
-                            color="default"
-                            icon={<UserAddOutlined style={{ color: "green" }} />}
-                            onClick={(e) => {
-                                userDetail.current.show(0);
-                            }}
-                        >
-                            添加
-                        </Button>
-                    </Space>
-                </div>
+            <div>
+                <Space>
+                    <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名查询" style={{width: 220}}/>
+                    <Input ref={userNameQueryRef} addonBefore="用户名" placeholder="用户名查询" style={{width: 220}}/>
+                    <Button
+                        color="default"
+                        icon={<SearchOutlined/>}
+                        onClick={(e) => {
+                            const loginNameQuery = loginNameQueryRef.current.input.value;
+                            const userNameQuery = userNameQueryRef.current.input.value;
 
-                <div>
-                    <Table columns={userListColumns} rowKey="id"
-                        dataSource={state.userList}
-                        pagination={{
-                            current: listParam.currentPage,
-                            pageSize: listParam.pageSize,
-                            total: state.userCount,
-                            showQuickJumper: true,
-                            showSizeChanger: true,
-                            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
-                        }}
-                        onChange={(pagination, filters, sorter, extra) => {
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    currentPage: pagination.current,
-                                    pageSize: pagination.pageSize,
-                                    sortField: sorter.field,
-                                    sortOrder: sorter.order,
+                                    loginNameQuery: loginNameQuery,
+                                    userNameQuery: userNameQuery,
                                 };
                             });
-                        }} />
-                </div>
-            </Space>
+                        }}
+                    >
+                        查询
+                    </Button>
+                    <Button
+                        color="default"
+                        icon={<UserAddOutlined style={{color: "green"}}/>}
+                        onClick={(e) => {
+                            userDetail.current.show(0);
+                        }}
+                    >
+                        添加
+                    </Button>
+                </Space>
+            </div>
+            <div style={{padding: "10px 0"}}>
+                <Table columns={userListColumns} rowKey="id"
+                       dataSource={state.userList}
+                       pagination={{
+                           current: listParam.currentPage,
+                           pageSize: listParam.pageSize,
+                           total: state.userCount,
+                           showQuickJumper: true,
+                           showSizeChanger: true,
+                           showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
+                       }}
+                       onChange={(pagination, filters, sorter, extra) => {
+                           setListParam((pre) => {
+                               return {
+                                   ...pre,
+                                   currentPage: pagination.current,
+                                   pageSize: pagination.pageSize,
+                                   sortField: sorter.field,
+                                   sortOrder: sorter.order,
+                               };
+                           });
+                       }}/>
+            </div>
             <UserDetail ref={userDetail} loadUserList={loadUserList} />
         </div>
     );

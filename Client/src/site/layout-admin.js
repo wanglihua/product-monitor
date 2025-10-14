@@ -1,7 +1,7 @@
 import axios from "axios";
-import React, { useEffect } from 'react';
-import { Avatar, Breadcrumb, Button, Flex, ConfigProvider, Dropdown, Layout, Menu, Space, theme } from "antd";
-import { Outlet, useNavigate } from "react-router";
+import React, {useEffect} from 'react';
+import {Avatar, Breadcrumb, Button, Flex, ConfigProvider, Dropdown, Layout, Menu, Space, theme} from "antd";
+import {Outlet, useNavigate} from "react-router";
 
 import {
     HomeOutlined,
@@ -16,10 +16,10 @@ import {
 } from '@ant-design/icons';
 
 import useSiteContext from "./site-context";
-import { isNotEmptyArray } from "../core/empty";
+import {isNotEmptyArray} from "../core/empty";
 
 const LayoutAdmin = () => {
-    const { token } = theme.useToken();
+    const {token} = theme.useToken();
 
     const {
         post,
@@ -34,7 +34,7 @@ const LayoutAdmin = () => {
 
     const navigate = useNavigate();
 
-    const menuItemStyle = { paddingLeft: "18px" };
+    const menuItemStyle = {paddingLeft: "18px"};
 
     useEffect(() => {
         axios.request({
@@ -68,7 +68,7 @@ const LayoutAdmin = () => {
 
     let breadcrumbItems = [
         {
-            "title": <><HomeOutlined /><span>Home</span></>,
+            "title": <><HomeOutlined/><span>Home</span></>,
             onClick: (e) => {
                 navigate("/")
             },
@@ -89,14 +89,14 @@ const LayoutAdmin = () => {
                 alignItems: 'center',
             }}>
                 <Flex align="center" justify="space-between" style={{width: "100%"}}>
-                    <span style={{ color: "white", fontSize: "22px" }}>
+                    <span style={{color: "white", fontSize: "22px"}}>
                         <span>管理平台</span>
                     </span>
 
-                    <span style={{ cursor: 'pointer' }}>
+                    <span style={{cursor: 'pointer'}}>
                         <Dropdown placement="bottomRight" menu={{
                             items: [
-                                { key: 'logout', label: (<><PoweroffOutlined />&nbsp;<span>退出登录</span></>) },
+                                {key: 'logout', label: (<><PoweroffOutlined/>&nbsp;<span>退出登录</span></>)},
                             ],
                             onClick: (e) => {
                                 if (e.key === "logout") {
@@ -118,8 +118,8 @@ const LayoutAdmin = () => {
                             },
                         }}>
                             <Space>
-                                <span style={{ color: 'white' }}>{user.loginName} {user.userName}</span>
-                                <Avatar icon={<UserOutlined />} style={{marginTop: "-3px"}}/>
+                                <span style={{color: 'white'}}>{user.loginName} {user.userName}</span>
+                                <Avatar icon={<UserOutlined/>} style={{marginTop: "-3px"}}/>
                             </Space>
                         </Dropdown>
                     </span>
@@ -149,49 +149,43 @@ const LayoutAdmin = () => {
                             selectedKeys={[menuActiveKey]}
                             items={[
                                 {
-                                    key: "chat",
-                                    icon: <WechatOutlined style={{ color: "#1677ff" }} />,
-                                    label: "对话",
-                                    style: menuItemStyle,
-                                    onClick: () => {
-                                        navigate("/admin/chat");
-                                    }
+                                    key: "basic-setting",
+                                    icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                    label: "基础设置",
+                                    children: [
+                                        {
+                                            key: "user",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "用户",
+                                            onClick: () => {
+                                                navigate("/user");
+                                            }
+                                        },
+                                        {
+                                            key: "admin-user",
+                                            icon: <TeamOutlined style={{color: "#1677ff"}}/>,
+                                            label: "管理员",
+
+                                            onClick: () => {
+                                                navigate("/admin/user");
+                                            }
+                                        },
+                                    ],
                                 },
                                 {
-                                    key: "preset-question",
-                                    icon: <QuestionCircleOutlined style={{ color: "#1677ff" }} />,
-                                    label: "预设问题",
-                                    style: menuItemStyle,
-                                    onClick: () => {
-                                        navigate("/admin/preset/question");
-                                    }
-                                },
-                                {
-                                    key: "user",
-                                    icon: <UserOutlined style={{ color: "#1677ff" }} />,
-                                    label: "用户",
-                                    style: menuItemStyle,
-                                    onClick: () => {
-                                        navigate("/admin/user");
-                                    }
-                                },
-                                {
-                                    key: "admin-user",
-                                    icon: <TeamOutlined style={{ color: "#1677ff" }} />,
-                                    label: "管理员",
-                                    style: menuItemStyle,
-                                    onClick: () => {
-                                        navigate("/admin/admin-user");
-                                    }
-                                },
-                                {
-                                    key: "action-log",
-                                    icon: <SolutionOutlined style={{ color: "#1677ff" }} />,
-                                    label: "操作日志",
-                                    style: menuItemStyle,
-                                    onClick: () => {
-                                        navigate("/action/log");
-                                    }
+                                    key: "system-manage",
+                                    icon: <SolutionOutlined style={{color: "#1677ff"}}/>,
+                                    label: "系统管理",
+                                    children: [
+                                        {
+                                            key: "action-log",
+                                            icon: <SolutionOutlined style={{color: "#1677ff"}}/>,
+                                            label: "操作日志",
+                                            onClick: () => {
+                                                navigate("/action/log");
+                                            }
+                                        },
+                                    ],
                                 },
                             ]}
                         >
@@ -203,7 +197,7 @@ const LayoutAdmin = () => {
                     <Flex justify="flex-start">
                         <Button
                             type="text"
-                            icon={sidebarCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                            icon={sidebarCollapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
                             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
                             style={{
                                 fontSize: '16px',
@@ -212,8 +206,8 @@ const LayoutAdmin = () => {
                             }}
                         />
                         <Breadcrumb
-                            style={{ margin: "10px 10px 0 15px" }}
-                            items={breadcrumbItems} />
+                            style={{margin: "10px 10px 0 15px"}}
+                            items={breadcrumbItems}/>
                     </Flex>
                     <Layout.Content style={{
                         padding: "20px",
@@ -222,7 +216,7 @@ const LayoutAdmin = () => {
                         backgroundColor: token.colorBgContainer,
                         borderRadius: token.borderRadiusLG,
                     }}>
-                        <Outlet />
+                        <Outlet/>
                     </Layout.Content>
                 </Layout>
             </Layout></Layout>
