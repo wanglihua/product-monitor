@@ -33,6 +33,11 @@ public class ActionLogType : CodeTypeBase
     /// 管理员移除
     /// </summary>
     public static readonly ActionLogType AdminUserRemove = new(0012_0000, "管理员移除");
+    
+    /// <summary>
+    /// 权限资源数据更新
+    /// </summary>
+    public static readonly ActionLogType PassResDataInit = new(0014_0000, "权限资源数据更新");
 
     /// <summary>
     /// None
@@ -46,6 +51,7 @@ public class ActionLogType : CodeTypeBase
         UserDelete,
         AdminUserAdd,
         AdminUserRemove,
+        PassResDataInit,
     };
 
     private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);
