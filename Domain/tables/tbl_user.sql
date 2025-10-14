@@ -14,3 +14,5 @@ CREATE TABLE tbl_user
     CONSTRAINT pk_user PRIMARY KEY (id),
     INDEX ix_user_login_name (login_name)
 );
+
+-- todo 再加一个状态字段
