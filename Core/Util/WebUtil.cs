@@ -157,7 +157,7 @@ public static class WebUtil
 
         if (string.IsNullOrWhiteSpace(clientIp))
         {
-            clientIp = string.Empty;
+            clientIp = "";
         }
 
         return clientIp;

@@ -9,19 +9,19 @@ public class LoginParam
     /// 登录名
     /// </summary>
     [JsonProperty("loginName")]
-    public string LoginName { get; set; } = string.Empty;
+    public string LoginName { get; set; } = "";
 
     /// <summary>
     /// 密码
     /// </summary>
     [JsonProperty("password")]
-    public string Password { get; set; } = string.Empty;
+    public string Password { get; set; } = "";
 
     /// <summary>
     /// 验证码
     /// </summary>
     [JsonProperty("captcha")]
-    public string Captcha { get; set; } = string.Empty;
+    public string Captcha { get; set; } = "";
 }
 
 public class LoginParamValidator : AbstractValidator<LoginParam>

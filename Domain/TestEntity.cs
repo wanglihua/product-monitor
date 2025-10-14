@@ -7,5 +7,5 @@ public class TestEntity : Entity
     /// <summary>
     /// 名称
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } = "";
 }

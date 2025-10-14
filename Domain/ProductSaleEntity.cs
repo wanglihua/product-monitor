@@ -40,7 +40,7 @@ public class ProductSaleEntity : Entity
     /// <summary>
     /// 版本号
     /// </summary>
-    public string Version { get; set; } = string.Empty;
+    public string Version { get; set; } = "";
 
     /// <summary>
     /// 销售时间
@@ -57,5 +57,5 @@ public class ProductSaleEntity : Entity
     /// <summary>
     /// 备注
     /// </summary>
-    public string Description { get; set; } = string.Empty;
+    public string Description { get; set; } = "";
 }

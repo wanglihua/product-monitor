@@ -18,18 +18,15 @@ public class LoginController : Controller
     private readonly Db db;
     private readonly UserLoginService userLoginService;
     private readonly CaptchaService captchaService;
-    private readonly PasswordService passwordService;
 
     public LoginController(
         Db db,
         UserLoginService userLoginService,
-        CaptchaService captchaService,
-        PasswordService passwordService)
+        CaptchaService captchaService)
     {
         this.db = db;
         this.userLoginService = userLoginService;
         this.captchaService = captchaService;
-        this.passwordService = passwordService;
     }
 
     [HttpPost]

@@ -26,11 +26,11 @@ public class ListParam
     /// 排序字段
     /// </summary>
     [JsonProperty("sortField")]
-    public string SortField { get; set; } = string.Empty;
+    public string SortField { get; set; } = "";
 
     /// <summary>
     /// 排序顺序
     /// </summary>
     [JsonProperty("sortOrder")]
-    public string SortOrder { get; set; } = string.Empty;
+    public string SortOrder { get; set; } = "";
 }

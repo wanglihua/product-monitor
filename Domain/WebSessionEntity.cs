@@ -4,5 +4,5 @@ namespace Domain;
 
 public class WebSessionEntity : Entity
 {
-    public string SessionId { get; set; } = string.Empty;
+    public string SessionId { get; set; } = "";
 }

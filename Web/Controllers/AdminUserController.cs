@@ -1,0 +1,176 @@
+﻿using System.Linq.Expressions;
+using Core;
+using Core.Auth;
+using Core.Database;
+using Core.Util;
+using Core.Web;
+using Domain;
+using Microsoft.AspNetCore.Mvc;
+using NLog;
+using Web.Models.AdminUser;
+
+namespace Web.Controllers;
+
+[Auth(AdminOnly = true)]
+public class AdminUserController : Controller
+{
+    private static readonly Logger log = LogManager.GetCurrentClassLogger();
+
+    private readonly Db db;
+
+    public AdminUserController(Db db)
+    {
+        this.db = db;
+    }
+
+    private class AdminUserJoinItem
+    {
+        public AdminUserEntity Admin { get; set; } = new();
+
+        public UserEntity User { get; set; } = new();
+    }
+
+    [HttpPost]
+    [Route("/api/admin/user/list")]
+    public IActionResult List([FromBody] AdminUserListParam param)
+    {
+        IQueryable<AdminUserJoinItem> query = db.Set<AdminUserEntity>()
+            .Join(db.Set<UserEntity>(),
+                admin => admin.UserId,
+                user => user.Id,
+                (admin, user) => new AdminUserJoinItem { Admin = admin, User = user }
+            );
+
+        if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
+        {
+            string loginNameQuery = param.LoginNameQuery.Trim();
+            query = query.Where(e => e.User.LoginName.Contains(loginNameQuery));
+        }
+
+        if (string.IsNullOrWhiteSpace(param.UserNameQuery) == false)
+        {
+            string userNameQuery = param.UserNameQuery.Trim();
+            query = query.Where(e => e.User.UserName.Contains(userNameQuery));
+        }
+
+        int adminCount = query.Count();
+
+        // 排序字段
+        Expression<Func<AdminUserJoinItem, object>> sortField = e => e.Admin.Id;
+        if (string.IsNullOrWhiteSpace(param.SortField) == false)
+        {
+            string sortFieldParam = param.SortField.Trim().ToUpper();
+            if (sortFieldParam == nameof(AdminUserListItem.CreateTime).ToUpper())
+            {
+                sortField = e => e.Admin.CreateTime;
+            }
+        }
+
+        // 排序顺序
+        string sortOrder = param.SortOrder;
+        if (sortOrder == SortOrder.Ascend)
+        {
+            query = query.OrderBy(sortField);
+        }
+        else
+        {
+            query = query.OrderByDescending(sortField);
+        }
+
+        var adminList = query
+            .Skip(param.PageIndex * param.PageSize)
+            .Take(param.PageSize)
+            .ToList();
+
+        var adminItemList = adminList
+            .Select(e => new AdminUserListItem {
+                Id = e.Admin.Id,
+                LoginName = e.User.LoginName,
+                UserName = e.User.UserName,
+                CreateTime = e.Admin.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+            })
+            .ToList();
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "success",
+            Data = new Dictionary<string, object> {
+                { "adminList", adminItemList },
+                { "adminCount", adminCount },
+            }
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/admin/user/add/save")]
+    public IActionResult AddSave([FromBody] AdminUserAddSaveParam param)
+    {
+        ValidationUtil.Validate<AdminUserAddSaveParamValidator, AdminUserAddSaveParam>(param);
+
+        string loginName = param.LoginName.Trim();
+        var user = db.Set<UserEntity>()
+            .Where(e => e.LoginName == loginName)
+            .Take(1)
+            .SingleOrDefault();
+        if (user == null)
+        {
+            throw new ValidationException($"指定的登录名 {loginName} 不存在！");
+        }
+
+        long userId = user.Id;
+        var admin = db.Set<AdminUserEntity>()
+            .Where(e => e.UserId == userId)
+            .Take(1)
+            .SingleOrDefault();
+        if (admin != null)
+        {
+            throw new ValidationException($"指定的登录名 {loginName} 已经是管理员！");
+        }
+
+        admin = new AdminUserEntity {
+            UserId = userId,
+        };
+
+        db.Add<AdminUserEntity>(admin);
+        db.SaveChanges();
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "添加成功！",
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/admin/user/remove")]
+    public IActionResult Remove([FromBody] IdParam param)
+    {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
+        long adminId = param.Id;
+
+        Transactional.Wrap(db, () => {
+            var admin = db.Set<AdminUserEntity>().Find(adminId);
+            if (admin == null)
+            {
+                throw new ValidationException($"指定的管理员#{adminId}不存在！");
+            }
+
+            var adminOther = db.Set<AdminUserEntity>()
+                .Where(e => e.Id != adminId)
+                .Take(1)
+                .SingleOrDefault();
+            if (adminOther == null)
+            {
+                throw new ValidationException("必需至少保留一位管理员！");
+            }
+
+            db.Remove<AdminUserEntity>(admin);
+            db.SaveChanges();
+        });
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "移除成功！",
+        });
+    }
+}

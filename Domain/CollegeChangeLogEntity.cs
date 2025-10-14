@@ -6,5 +6,5 @@ public class CollegeChangeLogEntity : EntityNoUpdate
 {
     public long CollegeId { get; set; }
 
-    public string ChangeDesc { get; set; } = string.Empty;
+    public string ChangeDesc { get; set; } = "";
 }

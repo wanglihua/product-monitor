@@ -8,5 +8,5 @@ public class ActionLogEntity : EntityNoUpdate
 
     public long UserId { get; set; }
 
-    public string ActionDesc { get; set; } = string.Empty;
+    public string ActionDesc { get; set; } = "";
 }

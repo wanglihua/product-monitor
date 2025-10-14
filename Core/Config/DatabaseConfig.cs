@@ -22,5 +22,5 @@ public static class DatabaseConfig
         }
     }
 
-    public static string ConnectionString { get; private set; } = string.Empty;
+    public static string ConnectionString { get; private set; } = "";
 }

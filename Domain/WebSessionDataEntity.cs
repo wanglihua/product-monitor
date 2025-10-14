@@ -8,5 +8,5 @@ public class WebSessionDataEntity : Entity
 
     public WebSessionDataType Type { get; set; } = WebSessionDataType.None;
 
-    public string Data { get; set; } = string.Empty;
+    public string Data { get; set; } = "";
 }

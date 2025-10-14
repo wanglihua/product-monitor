@@ -4,5 +4,5 @@ namespace Domain;
 
 public class GroupEntity : Entity
 {
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } = "";
 }

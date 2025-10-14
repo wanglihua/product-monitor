@@ -18,7 +18,7 @@ public class WebSessionService
 
     private static readonly string SessionIdCookieKey = "session_id";
 
-    public string SessionId { get; set; } = string.Empty;
+    public string SessionId { get; set; } = "";
 
     public string GetSessionIdFromRequest(HttpRequest request)
     {
