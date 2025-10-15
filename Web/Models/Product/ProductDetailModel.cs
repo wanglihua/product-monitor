@@ -44,8 +44,8 @@ public class ProductDetailModelValidator : AbstractValidator<ProductDetailModel>
         RuleFor(e => e.VersionUpdateTime).NotNull().WithMessage("版本更新时间不能为空!");
         RuleFor(e => e.VersionUpdateTime).NotEmpty().WithMessage("版本更新时间不能为空!");
         RuleFor(e => e.VersionUpdateTime)
-            .Must(p => DateTime.TryParseExact(p, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var versionUpdateTime))
-            // .Must(p => DateTime.TryParse(p, out var versionUpdateTime))
+            // .Must(p => DateTime.TryParseExact(p, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var versionUpdateTime))
+            .Must(p => DateTime.TryParse(p, out var versionUpdateTime))
             .WithMessage("版本更新时间格式不正确!");
     }
 }

@@ -67,7 +67,7 @@ const ProductDetailInner = (props) => {
                             version: data.version,
                             versionUpdateBase: data.versionUpdateBase,
                             versionUpdateDesc: data.versionUpdateDesc,
-                            versionUpdateTime: data.versionUpdateTime,
+                            versionUpdateTime: dayjs(data.versionUpdateTime),
                         });
                     });
                 }
@@ -178,19 +178,20 @@ const ProductDetailInner = (props) => {
                                     },
                                 ]}
                             >
+                                {/*
                                 <Input
                                     maxLength={30}
                                     placeholder="更新时间"
                                     allowClear
                                 />
-                                {/*
+                                */}
+                                
                                 <DatePicker
                                     style={{width: "100%"}}
-                                    format={"yyyy-MM-dd"}
                                     placeholder="更新时间"
                                     allowClear
                                 />
-                                */}
+
                             </Form.Item>
                         </Descriptions.Item>
 

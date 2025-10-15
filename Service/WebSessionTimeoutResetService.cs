@@ -1,13 +1,17 @@
 ﻿using Core;
 using Core.Web;
 using Domain;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 
 namespace Service;
 
 [Service(ServiceType.Scoped)]
 public class WebSessionTimeoutResetService
 {
+    private static readonly Logger log = LogManager.GetCurrentClassLogger();
+
     private static int runCount = 0;
 
     private readonly Db db;
@@ -34,13 +38,29 @@ public class WebSessionTimeoutResetService
 
         if (count == 0)
         {
-            var webSession = new WebSessionEntity {
-                SessionId = sessionId,
-                UpdateCount = 0,
-            };
+            // 这里并发时, 有时会出问题
+            try
+            {
+                var webSession = new WebSessionEntity {
+                    SessionId = sessionId,
+                    UpdateCount = 0,
+                };
 
-            db.Add<WebSessionEntity>(webSession);
-            db.SaveChanges();
+                db.Add<WebSessionEntity>(webSession);
+                db.SaveChanges();
+            }
+            catch (DbUpdateException exp)
+            {
+                // 吃掉这个重复插入导致的唯一键异常, 暂时这么处理
+                if (exp.InnerException is SqlException sqlEx && sqlEx.Message.Contains("ix_web_session_session_id"))
+                {
+                    log.Error(exp);
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         // 做 web session 的清理

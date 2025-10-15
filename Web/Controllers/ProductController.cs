@@ -172,8 +172,8 @@ public class ProductController : Controller
         product.Version = model.Version;
         product.VersionUpdateBase = model.VersionUpdateBase ?? "";
         product.VersionUpdateDesc = model.VersionUpdateDesc ?? "";
-        product.VersionUpdateTime = DateTime.ParseExact(model.VersionUpdateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-        // product.VersionUpdateTime = DateTime.Parse(model.VersionUpdateTime).Date;
+        // product.VersionUpdateTime = DateTime.ParseExact(model.VersionUpdateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+        product.VersionUpdateTime = DateTime.Parse(model.VersionUpdateTime).Date;
 
         if (isCreate == true)
         {
