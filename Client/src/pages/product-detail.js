@@ -1,4 +1,4 @@
-import {Button, ConfigProvider, Descriptions, Form, Input, Modal, Select, Space, theme} from "antd";
+import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Select, Space, theme} from "antd";
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 
@@ -147,12 +147,6 @@ const ProductDetailInner = (props) => {
                         <Descriptions.Item label="更新基础">
                             <Form.Item
                                 name="versionUpdateBase"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入更新基础!',
-                                    },
-                                ]}
                             >
                                 <Input
                                     maxLength={30}
@@ -172,8 +166,8 @@ const ProductDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={30}
+                                <DatePicker
+                                    style={{ width: "100%"}}
                                     placeholder="更新时间"
                                     allowClear
                                 />
@@ -183,12 +177,6 @@ const ProductDetailInner = (props) => {
                         <Descriptions.Item label="更新内容">
                             <Form.Item
                                 name="versionUpdateDesc"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入更新内容!',
-                                    },
-                                ]}
                             >
                                 <Input.TextArea
                                     rows={2}
