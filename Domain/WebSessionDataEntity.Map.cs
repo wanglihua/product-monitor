@@ -16,6 +16,11 @@ public class WebSessionDataEntityMap : IEntityTypeConfiguration<WebSessionDataEn
             .HasColumnName("web_session_id")
             .IsRequired(true);
 
+        builder.Property(e => e.SessionId)
+            .HasColumnName("session_id")
+            .HasMaxLength(64)
+            .IsRequired(true);
+
         builder.Property(e => e.Type)
             .HasConversion<WebSessionDataTypeValueConverter>()
             .HasColumnName("type_code")

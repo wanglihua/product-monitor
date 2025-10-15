@@ -1,6 +1,7 @@
 import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Select, Space, theme} from "antd";
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
+import dayjs from "dayjs";
 
 const ProductDetailInner = (props) => {
     const productId = props.productId;
@@ -57,6 +58,9 @@ const ProductDetailInner = (props) => {
                         }
 
                         const data = res.data;
+
+                        // console.log(data.versionUpdateTime);
+                        // console.log(dayjs(data.versionUpdateTime));
 
                         form.current.setFieldsValue({
                             name: data.name,
@@ -174,12 +178,19 @@ const ProductDetailInner = (props) => {
                                     },
                                 ]}
                             >
+                                <Input
+                                    maxLength={30}
+                                    placeholder="更新时间"
+                                    allowClear
+                                />
+                                {/*
                                 <DatePicker
                                     style={{width: "100%"}}
                                     format={"yyyy-MM-dd"}
                                     placeholder="更新时间"
                                     allowClear
                                 />
+                                */}
                             </Form.Item>
                         </Descriptions.Item>
 

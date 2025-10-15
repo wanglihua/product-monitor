@@ -11,7 +11,7 @@ const Product = () => {
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
-        productQuery: "",
+        nameQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -71,7 +71,6 @@ const Product = () => {
         },
         {
             title: "操作",
-            align: "center",
             render: (text, record, index) => {
                 return (
                     <Space>
@@ -109,70 +108,67 @@ const Product = () => {
         loadProductList();
     }, [JSON.stringify(listParam)]);
 
-    const productQueryRef = useRef();
+    const nameQueryRef = useRef();
 
     return (
         <div>
             <Title title="产品目录" menuKey="product" breadcrumb={[
                 {title: "产品目录"},
             ]}/>
-            <Space direction="vertical" size="large">
-                <div>
-                    <Space>
-                        <Input ref={productQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 320}}/>
-                        <Button
-                            color="default"
-                            icon={<SearchOutlined/>}
-                            onClick={(e) => {
-                                const productQuery = productQueryRef.current.input.value;
+            <div>
+                <Space>
+                    <Input ref={nameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 320}}/>
+                    <Button
+                        color="default"
+                        icon={<SearchOutlined/>}
+                        onClick={(e) => {
+                            const nameQuery = nameQueryRef.current.input.value;
 
-                                setListParam((pre) => {
-                                    return {
-                                        ...pre,
-                                        productQuery: productQuery,
-                                    };
-                                });
-                            }}
-                        >
-                            查询
-                        </Button>
-                        <Button
-                            color="default"
-                            icon={<PlusCircleOutlined style={{color: "green"}}/>}
-                            onClick={(e) => {
-                                productDetail.current.show(0);
-                            }}
-                        >
-                            添加
-                        </Button>
-                    </Space>
-                </div>
-
-                <div>
-                    <Table columns={productListColumns} rowKey="id"
-                           dataSource={state.productList}
-                           pagination={{
-                               current: listParam.currentPage,
-                               pageSize: listParam.pageSize,
-                               total: state.userCount,
-                               showQuickJumper: true,
-                               showSizeChanger: true,
-                               showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
-                           }}
-                           onChange={(pagination, filters, sorter, extra) => {
-                               setListParam((pre) => {
-                                   return {
-                                       ...pre,
-                                       currentPage: pagination.current,
-                                       pageSize: pagination.pageSize,
-                                       sortField: sorter.field,
-                                       sortOrder: sorter.order,
-                                   };
-                               });
-                           }}
-                    />
-                </div>
-            </Space>
+                            setListParam((pre) => {
+                                return {
+                                    ...pre,
+                                    nameQuery: nameQuery,
+                                };
+                            });
+                        }}
+                    >
+                        查询
+                    </Button>
+                    <Button
+                        color="default"
+                        icon={<PlusCircleOutlined style={{color: "green"}}/>}
+                        onClick={(e) => {
+                            productDetail.current.show(0);
+                        }}
+                    >
+                        添加
+                    </Button>
+                </Space>
+            </div>
+            <div style={{padding: "10px 0"}}>
+                <Table columns={productListColumns} rowKey="id"
+                       dataSource={state.productList}
+                       pagination={{
+                           current: listParam.currentPage,
+                           pageSize: listParam.pageSize,
+                           total: state.userCount,
+                           showQuickJumper: true,
+                           showSizeChanger: true,
+                           showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
+                       }}
+                       onChange={(pagination, filters, sorter, extra) => {
+                           setListParam((pre) => {
+                               return {
+                                   ...pre,
+                                   currentPage: pagination.current,
+                                   pageSize: pagination.pageSize,
+                                   sortField: sorter.field,
+                                   sortOrder: sorter.order,
+                               };
+                           });
+                       }}
+                />
+            </div>
             <ProductDetail ref={productDetail} loadProductList={loadProductList}/>
         </div>
     );

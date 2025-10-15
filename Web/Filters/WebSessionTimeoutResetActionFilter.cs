@@ -8,23 +8,27 @@ public class WebSessionTimeoutResetActionFilter : IActionFilter
 {
     private readonly WebSessionService webSessionService;
     private readonly WebSessionTimeoutResetService webSessionTimeoutResetService;
+    private readonly UserLoginService userLoginService;
 
     public WebSessionTimeoutResetActionFilter(
         WebSessionService webSessionService,
-        WebSessionTimeoutResetService webSessionTimeoutResetService
+        WebSessionTimeoutResetService webSessionTimeoutResetService,
+        UserLoginService userLoginService
     )
     {
         this.webSessionService = webSessionService;
         this.webSessionTimeoutResetService = webSessionTimeoutResetService;
+        this.userLoginService = userLoginService;
     }
 
     public void OnActionExecuting(ActionExecutingContext context)
     {
-        string webSessionId = webSessionService.SessionId;
+        string sessionId = webSessionService.SessionId;
 
-        if (string.IsNullOrEmpty(webSessionId) == false)
+        if (string.IsNullOrEmpty(sessionId) == false)
         {
-            webSessionTimeoutResetService.ResetTimeout(webSessionId);
+            webSessionTimeoutResetService.ResetTimeout(sessionId);
+            userLoginService.ResetLoginTimeout(sessionId);
         }
     }
 

@@ -42,34 +42,14 @@ public class UserLoginService
         return "/login";
     }
 
-    public void ResetLoginTimeout()
+    public void ResetLoginTimeout(string sessionId)
     {
-        string sessionId = webSessionService.SessionId;
-        var webSession = db.Set<WebSessionEntity>()
-            .Where(e => e.SessionId == sessionId)
-            .Take(1)
-            .SingleOrDefault();
-
-        if (webSession == null)
-        {
-            return;
-        }
-
-        long webSessionId = webSession.Id;
-
-        var userLoginSessionData = db.Set<WebSessionDataEntity>()
-            .Where(e => e.WebSessionId == webSessionId && e.Type == WebSessionDataType.LoginUserId)
-            .Take(1)
-            .FirstOrDefault();
-        if (userLoginSessionData == null)
-        {
-            return;
-        }
-
-        userLoginSessionData.UpdateTime = DateTime.Now;
-        db.Update<WebSessionDataEntity>(userLoginSessionData);
-
-        db.SaveChanges();
+        DateTime now = DateTime.Now;
+        db.Set<WebSessionDataEntity>()
+            .Where(e => e.SessionId == sessionId && e.Type == WebSessionDataType.LoginUserId)
+            .ExecuteUpdate(e => e
+                .SetProperty(x => x.UpdateTime, now)
+            );
     }
 
     private string GetLoginUserIdCacheKey(string sessionId)
@@ -87,19 +67,8 @@ public class UserLoginService
             return loginUserId;
         }
 
-        var webSession = db.Set<WebSessionEntity>()
-            .Where(e => e.SessionId == sessionId)
-            .Take(1)
-            .SingleOrDefault();
-        if (webSession == null)
-        {
-            return 0;
-        }
-
-        long webSessionId = webSession.Id;
-
         var userLoginSessionData = db.Set<WebSessionDataEntity>()
-            .Where(e => e.WebSessionId == webSessionId && e.Type == WebSessionDataType.LoginUserId)
+            .Where(e => e.SessionId == sessionId && e.Type == WebSessionDataType.LoginUserId)
             .Take(1)
             .FirstOrDefault();
         if (userLoginSessionData == null)
@@ -204,6 +173,7 @@ public class UserLoginService
         {
             userLoginSessionData = new WebSessionDataEntity {
                 WebSessionId = webSessionId,
+                SessionId = sessionId,
                 Type = WebSessionDataType.LoginUserId,
                 Data = user.Id.ToString(),
             };
@@ -238,29 +208,10 @@ public class UserLoginService
         string isAdminCacheKey = GetIsAdminCacheKey(loginUserId);
         memoryCache.Remove(isAdminCacheKey);
 
-        var webSession = db.Set<WebSessionEntity>()
+        // 会有级联删除关联 session data
+        db.Set<WebSessionEntity>()
             .Where(e => e.SessionId == sessionId)
-            .Take(1)
-            .SingleOrDefault();
-        if (webSession == null)
-        {
-            return;
-        }
-
-        long webSessionId = webSession.Id;
-
-        db.Set<WebSessionDataEntity>()
-            .Where(e => e.WebSessionId == webSessionId && e.Type == WebSessionDataType.LoginUserId)
-            .ExecuteDelete<WebSessionDataEntity>(); //  这个泛型参数是故意放进去的
-
-        // 用上面的方式更高效
-        // var userLoginSessionDataList = db.Set<WebSessionDataEntity>()
-        //     .Where(e => e.WebSessionId == webSessionId && e.Type == WebSessionDataType.LoginUserId)
-        //     .ToList();
-        // foreach (var userLoginSessionData in userLoginSessionDataList)
-        // {
-        //     db.Remove<WebSessionDataEntity>(userLoginSessionData);
-        // }
+            .ExecuteDelete();
 
         db.SaveChanges();
     }
