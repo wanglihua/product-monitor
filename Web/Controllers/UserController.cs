@@ -201,7 +201,7 @@ public class UserController : Controller
 
         UserEntity? user = null;
         string loginName = model.LoginName.Trim();
-        if (isCreate)
+        if (isCreate == true)
         {
             user = new UserEntity();
 
@@ -244,7 +244,7 @@ public class UserController : Controller
             user.Password = passwordService.Encrypt(model.Password.Trim(), salt);
         }
 
-        if (isCreate)
+        if (isCreate == true)
         {
             db.Add<UserEntity>(user);
         }
@@ -255,7 +255,7 @@ public class UserController : Controller
 
         db.SaveChanges();
 
-        if (isCreate)
+        if (isCreate == true)
         {
             string actionDesc = $"{user.LoginName}#{user.Id}";
             actionLogService.Add(loginUserId, ActionLogType.UserCreate, actionDesc);
@@ -278,8 +278,6 @@ public class UserController : Controller
     public IActionResult Delete([FromBody] IdParam param)
     {
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
-
-        long loginUserId = userLoginService.GetLoginUserId();
 
         long userId = param.Id;
         var user = db.Set<UserEntity>().Find(userId);
@@ -309,6 +307,7 @@ public class UserController : Controller
 
         db.SaveChanges();
 
+        long loginUserId = userLoginService.GetLoginUserId();
         string actionDesc = $"{user.LoginName}#{user.Id}";
         actionLogService.Add(loginUserId, ActionLogType.UserDelete, actionDesc);
 

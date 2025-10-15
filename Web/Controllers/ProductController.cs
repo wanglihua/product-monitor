@@ -1,6 +1,9 @@
-﻿using System.Linq.Expressions;
+﻿using System.Globalization;
+using System.Linq.Expressions;
+using Core;
 using Core.Auth;
 using Core.Database;
+using Core.Util;
 using Core.Web;
 using Domain;
 using Domain.PassRes;
@@ -138,6 +141,92 @@ public class ProductController : Controller
             Success = true,
             Message = "success",
             Data = model,
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product/save")]
+    [Transactional(true)]
+    public IActionResult Save([FromBody] ProductDetailModel model)
+    {
+        ValidationUtil.Validate<ProductDetailModelValidator, ProductDetailModel>(model);
+
+        long productId = model.Id;
+        bool isCreate = productId == 0;
+
+        ProductEntity? product;
+        if (isCreate == true)
+        {
+            product = new ProductEntity();
+        }
+        else
+        {
+            product = db.Set<ProductEntity>().Find(productId);
+            if (product == null)
+            {
+                throw new ValidationException($"指定的产品目录#{productId}不存在!");
+            }
+        }
+
+        product.Name = model.Name;
+        product.Version = model.Version;
+        product.VersionUpdateBase = model.VersionUpdateBase ?? "";
+        product.VersionUpdateDesc = model.VersionUpdateDesc ?? "";
+        product.VersionUpdateTime = DateTime.ParseExact(model.VersionUpdateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+        if (isCreate == true)
+        {
+            db.Add<ProductEntity>(product);
+        }
+        else
+        {
+            db.Update<ProductEntity>(product);
+        }
+
+        db.SaveChanges();
+
+        long loginUserId = userLoginService.GetLoginUserId();
+        if (isCreate == true)
+        {
+            string actionDesc = $"{product.Name}#{product.Id}";
+            actionLogService.Add(loginUserId, ActionLogType.ProductCreate, actionDesc);
+        }
+        else
+        {
+            string actionDesc = $"{product.Name}#{product.Id}";
+            actionLogService.Add(loginUserId, ActionLogType.ProductUpdate, actionDesc);
+        }
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "保存成功！",
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product/delete")]
+    [Transactional(true)]
+    public IActionResult Delete([FromBody] IdParam param)
+    {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
+        long productId = param.Id;
+        var product = db.Set<ProductEntity>().Find(productId);
+        if (product == null)
+        {
+            throw new ValidationException($"指定的产品目录#{productId}不存在!");
+        }
+
+        db.Remove<ProductEntity>(product);
+        db.SaveChanges();
+
+        long loginUserId = userLoginService.GetLoginUserId();
+        string actionDesc = $"{product.Name}#{product.Id}";
+        actionLogService.Add(loginUserId, ActionLogType.ProductDelete, actionDesc);
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "删除成功！",
         });
     }
 }

@@ -38,6 +38,21 @@ public class ActionLogType : CodeTypeBase
     /// 权限资源数据更新
     /// </summary>
     public static readonly ActionLogType PassResDataInit = new(0014_0000, "权限资源数据更新");
+    
+    /// <summary>
+    /// 产品目录创建
+    /// </summary>
+    public static readonly ActionLogType ProductCreate = new(0016_0000, "产品目录创建");
+
+    /// <summary>
+    /// 产品目录更新
+    /// </summary>
+    public static readonly ActionLogType ProductUpdate = new(0018_0000, "产品目录更新");
+
+    /// <summary>
+    /// 产品目录删除
+    /// </summary>
+    public static readonly ActionLogType ProductDelete = new(0020_0000, "产品目录删除");
 
     /// <summary>
     /// None
@@ -52,6 +67,9 @@ public class ActionLogType : CodeTypeBase
         AdminUserAdd,
         AdminUserRemove,
         PassResDataInit,
+        ProductCreate,
+        ProductUpdate,
+        ProductDelete,
     };
 
     private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);
