@@ -24,9 +24,7 @@ const UserDetailInner = (props) => {
         passwordRequired = false;
     }
 
-    const [state, setState] = useState({
-        statusList: [],
-    });
+    const [state, setState] = useState({});
 
     const form = useRef();
 
@@ -64,14 +62,9 @@ const UserDetailInner = (props) => {
 
                         const data = res.data;
 
-                        setState({
-                            statusList: data.statusList,
-                        });
-
                         form.current.setFieldsValue({
                             loginName: data.loginName,
                             userName: data.userName,
-                            status: data.status,
                         });
                     });
                 }
@@ -99,7 +92,6 @@ const UserDetailInner = (props) => {
                             userName: values.userName,
                             password: values.password,
                             passwordAgain: values.passwordAgain,
-                            status: values.status,
                         }, function (response) {
                             const res = response.data;
                             if (res.success === false) {

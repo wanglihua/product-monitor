@@ -53,7 +53,7 @@ const Product = () => {
             },
         },
         {
-            title: "名称",
+            title: "产品名称",
             dataIndex: "name",
             width: "580px",
         },
@@ -119,7 +119,7 @@ const Product = () => {
             <Space direction="vertical" size="large">
                 <div>
                     <Space>
-                        <Input ref={productQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                        <Input ref={productQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 320}}/>
                         <Button
                             color="default"
                             icon={<SearchOutlined/>}

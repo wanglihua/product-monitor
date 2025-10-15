@@ -3,26 +3,24 @@ import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 
 const ProductDetailInner = (props) => {
-    const questionId = props.questionId;
+    const productId = props.productId;
     const open = props.open;
     const self = props.self;
-    const loadQuestionList = props.loadQuestionList;
+    const loadProductList = props.loadProductList;
 
     const {token} = theme.useToken();
     const {post, showSuccess, showError} = useSiteContext();
 
     const title = useRef("");
-    if (questionId === 0) {
+    if (productId === 0) {
         title.current = "产品新增";
     }
 
-    if (questionId > 0) {
+    if (productId > 0) {
         title.current = "产品编辑";
     }
 
-    const [state, setState] = useState({
-        statusList: [],
-    });
+    const [state, setState] = useState({});
 
     const form = useRef();
 
@@ -34,23 +32,23 @@ const ProductDetailInner = (props) => {
             footer={null}
             open={open}
             onOk={() => {
-                if (loadQuestionList) {
-                    loadQuestionList();
+                if (loadProductList) {
+                    loadProductList();
                 }
 
                 self.hide();
             }}
             onCancel={() => {
-                if (loadQuestionList) {
-                    loadQuestionList();
+                if (loadProductList) {
+                    loadProductList();
                 }
 
                 self.hide();
             }}
             afterOpenChange={(open) => {
                 if (open === true) {
-                    post("/api/admin/preset/question/detail", {
-                        "id": questionId
+                    post("/api/product/detail", {
+                        "id": productId
                     }, function (response) {
                         const res = response.data;
                         if (res.success !== true) {
@@ -59,10 +57,6 @@ const ProductDetailInner = (props) => {
                         }
 
                         const data = res.data;
-
-                        setState({
-                            statusList: data.statusList,
-                        });
 
                         form.current.setFieldsValue({
                             question: data.question,
@@ -88,7 +82,7 @@ const ProductDetailInner = (props) => {
                     requiredMark={false}
                     onFinish={(values) => {
                         post("/api/admin/preset/question/save", {
-                            id: questionId,
+                            id: productId,
                             question: values.question,
                         }, function (response) {
                             const res = response.data;
@@ -99,9 +93,8 @@ const ProductDetailInner = (props) => {
 
                             showSuccess(res.message);
 
-                            if (loadQuestionList) {
-                                loadQuestionList();
-                                ;
+                            if (loadProductList) {
+                                loadProductList();
                             }
 
                             self.hide();
@@ -115,19 +108,92 @@ const ProductDetailInner = (props) => {
                         column={1}
                         labelStyle={{width: "120px"}}
                     >
-                        <Descriptions.Item label="名称">
+                        <Descriptions.Item label="产品名称">
                             <Form.Item
                                 name="name"
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入名称!',
+                                        message: '请输入产品名称!',
                                     },
                                 ]}
                             >
                                 <Input
                                     maxLength={30}
-                                    placeholder="名称"
+                                    placeholder="产品名称"
+                                    allowClear
+                                />
+                            </Form.Item>
+                        </Descriptions.Item>
+
+                        <Descriptions.Item label="版本号">
+                            <Form.Item
+                                name="version"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请输入版本号!',
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    maxLength={30}
+                                    placeholder="版本号"
+                                    allowClear
+                                />
+                            </Form.Item>
+                        </Descriptions.Item>
+
+                        <Descriptions.Item label="更新基础">
+                            <Form.Item
+                                name="versionUpdateBase"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请输入更新基础!',
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    maxLength={30}
+                                    placeholder="更新基础"
+                                    allowClear
+                                />
+                            </Form.Item>
+                        </Descriptions.Item>
+
+                        <Descriptions.Item label="更新时间">
+                            <Form.Item
+                                name="versionUpdateTime"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请输入更新时间!',
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    maxLength={30}
+                                    placeholder="更新时间"
+                                    allowClear
+                                />
+                            </Form.Item>
+                        </Descriptions.Item>
+
+                        <Descriptions.Item label="更新内容">
+                            <Form.Item
+                                name="versionUpdateDesc"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请输入更新内容!',
+                                    },
+                                ]}
+                            >
+                                <Input.TextArea
+                                    rows={2}
+                                    maxLength={500}
+                                    placeholder="更新内容"
                                     allowClear
                                 />
                             </Form.Item>
@@ -158,39 +224,39 @@ class ProductDetail extends React.Component {
     constructor(props) {
         super(props);
 
-        this.loadQuestionList = props.loadQuestionList;
+        this.loadProductList = props.loadProductList;
 
         this.state = {
-            questionId: -1,
+            productId: -1,
             open: false,
         };
     }
 
-    show = (questionId) => {
+    show = (productId) => {
         this.setState({
-            questionId: questionId,
+            productId: productId,
             open: true,
         });
     }
 
     hide = () => {
         this.setState({
-            questionId: -1,
+            productId: -1,
             open: false,
         });
     }
 
     render() {
-        const questionId = this.state.questionId;
+        const productId = this.state.productId;
         const open = this.state.open;
-        const loadQuestionList = this.loadQuestionList;
+        const loadProductList = this.loadProductList;
 
         return (
             <ProductDetailInner
-                questionId={questionId}
+                productId={productId}
                 open={open}
                 self={this}
-                loadQuestionList={loadQuestionList}
+                loadProductList={loadProductList}
             />
         )
     }

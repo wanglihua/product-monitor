@@ -96,9 +96,48 @@ public class ProductController : Controller
             Success = true,
             Message = "success",
             Data = new Dictionary<string, object> {
-                ["productList"] =  productItemList,
-                ["productCount"] =  productCount,
+                ["productList"] = productItemList,
+                ["productCount"] = productCount,
             },
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product/detail")]
+    [Transactional(false)]
+    public IActionResult Detail([FromBody] IdParam param)
+    {
+        long productId = param.Id;
+
+        var model = new ProductDetailModel {
+            Id = 0,
+            Name = "",
+            Version = "",
+            VersionUpdateBase = "",
+            VersionUpdateDesc = "",
+            VersionUpdateTime = "",
+        };
+
+        if (productId > 0)
+        {
+            var product = db.Set<ProductEntity>().Find(productId);
+            if (product != null)
+            {
+                model = new ProductDetailModel {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Version = product.Version,
+                    VersionUpdateBase = product.VersionUpdateBase,
+                    VersionUpdateDesc = product.VersionUpdateDesc,
+                    VersionUpdateTime = product.VersionUpdateTime.ToString("yyyy-MM-dd"),
+                };
+            }
+        }
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "success",
+            Data = model,
         });
     }
 }
