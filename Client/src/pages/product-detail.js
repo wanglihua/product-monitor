@@ -59,7 +59,11 @@ const ProductDetailInner = (props) => {
                         const data = res.data;
 
                         form.current.setFieldsValue({
-                            question: data.question,
+                            name: data.name,
+                            version: data.version,
+                            versionUpdateBase: data.versionUpdateBase,
+                            versionUpdateDesc: data.versionUpdateDesc,
+                            versionUpdateTime: data.versionUpdateTime,
                         });
                     });
                 }
@@ -81,9 +85,13 @@ const ProductDetailInner = (props) => {
                     size='middle'
                     requiredMark={false}
                     onFinish={(values) => {
-                        post("/api/admin/preset/question/save", {
+                        post("/api/product/save", {
                             id: productId,
-                            question: values.question,
+                            name: values.name,
+                            version: values.version,
+                            versionUpdateBase: values.versionUpdateBase,
+                            versionUpdateDesc: values.versionUpdateDesc,
+                            versionUpdateTime: values.versionUpdateTime,
                         }, function (response) {
                             const res = response.data;
                             if (res.success === false) {
@@ -167,7 +175,8 @@ const ProductDetailInner = (props) => {
                                 ]}
                             >
                                 <DatePicker
-                                    style={{ width: "100%"}}
+                                    style={{width: "100%"}}
+                                    format={"yyyy-MM-dd"}
                                     placeholder="更新时间"
                                     allowClear
                                 />

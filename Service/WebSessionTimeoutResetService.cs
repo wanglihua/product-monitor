@@ -24,16 +24,19 @@ public class WebSessionTimeoutResetService
             return;
         }
 
+        DateTime now = DateTime.Now;
         int count = db.Set<WebSessionEntity>()
             .Where(e => e.SessionId == sessionId)
             .ExecuteUpdate(e => e
-                .SetProperty(x => x.UpdateTime, DateTime.Now)
+                .SetProperty(x => x.UpdateTime, now)
+                .SetProperty(x => x.UpdateCount, x => (x.UpdateCount + 1) % 100000)
             );
 
         if (count == 0)
         {
             var webSession = new WebSessionEntity {
                 SessionId = sessionId,
+                UpdateCount = 0,
             };
 
             db.Add<WebSessionEntity>(webSession);
