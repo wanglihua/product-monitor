@@ -76,7 +76,6 @@ const User = () => {
         },
         {
             title: "操作",
-            align: "center",
             render: (text, record, index) => {
                 return (
                     <Space>

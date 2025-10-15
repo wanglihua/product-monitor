@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, Input, Space, Table } from 'antd';
-import { DeleteOutlined, SearchOutlined, UserAddOutlined } from '@ant-design/icons';
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, Input, Space, Table} from 'antd';
+import {DeleteOutlined, SearchOutlined, UserAddOutlined} from '@ant-design/icons';
 import AdminUserDetail from "./admin-user-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
 const AdminUser = () => {
-    const { post, showConfirm, showError, showSuccess } = useSiteContext();
+    const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
         loginNameQuery: "",
@@ -24,7 +24,7 @@ const AdminUser = () => {
     });
 
     const loadAdminList = () => {
-        post("/api/admin/admin-user/list", listParam, function (response) {
+        post("/api/admin/user/list", listParam, function (response) {
             const res = response.data;
             if (res.success !== true) {
                 showError(res.message);
@@ -70,13 +70,12 @@ const AdminUser = () => {
         },
         {
             title: "操作",
-            align: "center",
             render: (text, record, index) => {
                 return (
                     <Space>
-                        <Button color="danger" variant="text" size="small" style={{ fontSize: "12px" }} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/admin/admin-user/remove", {
+                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                            showConfirm("确认要移除吗！", "确认", () => {
+                                post("/api/admin/user/remove", {
                                     id: record.id,
                                 }, function (response) {
                                     const res = response.data;
@@ -90,7 +89,7 @@ const AdminUser = () => {
                                 });
                             });
                         }}>
-                            <DeleteOutlined />移除
+                            <DeleteOutlined/>移除
                         </Button>
                     </Space>
                 );
@@ -108,68 +107,66 @@ const AdminUser = () => {
     return (
         <div>
             <Title title="管理员" menuKey="admin-user" breadcrumb={[
-                { title: "管理员" },
-            ]} />
-            <Space direction="vertical" size="large">
-                <div>
-                    <Space>
-                        <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名查询" style={{ width: 220 }} />
-                        <Input ref={userNameQueryRef} addonBefore="用户名" placeholder="用户名查询" style={{ width: 220 }} />
-                        <Button
-                            color="default"
-                            icon={<SearchOutlined />}
-                            onClick={(e) => {
-                                const loginNameQuery = loginNameQueryRef.current.input.value;
-                                const userNameQuery = userNameQueryRef.current.input.value;
+                {title: "管理员"},
+            ]}/>
+            <div>
+                <Space>
+                    <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名查询" style={{width: 220}}/>
+                    <Input ref={userNameQueryRef} addonBefore="用户名" placeholder="用户名查询" style={{width: 220}}/>
+                    <Button
+                        color="default"
+                        icon={<SearchOutlined/>}
+                        onClick={(e) => {
+                            const loginNameQuery = loginNameQueryRef.current.input.value;
+                            const userNameQuery = userNameQueryRef.current.input.value;
 
-                                setListParam((pre) => {
-                                    return {
-                                        ...pre,
-                                        loginNameQuery: loginNameQuery,
-                                        userNameQuery: userNameQuery,
-                                    };
-                                });
-                            }}
-                        >
-                            查询
-                        </Button>
-                        <Button
-                            color="default"
-                            icon={<UserAddOutlined style={{ color: "green" }} />}
-                            onClick={(e) => {
-                                adminUserDetail.current.show(0);
-                            }}
-                        >
-                            添加
-                        </Button>
-                    </Space>
-                </div>
-
-                <div>
-                    <Table columns={adminListColumns} rowKey="id"
-                        dataSource={state.adminList}
-                        pagination={{
-                            current: listParam.currentPage,
-                            pageSize: listParam.pageSize,
-                            total: state.adminCount,
-                            showQuickJumper: true,
-                            showSizeChanger: true,
-                            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
-                        }}
-                        onChange={(pagination, filters, sorter, extra) => {
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    currentPage: pagination.current,
-                                    pageSize: pagination.pageSize,
-                                    sortField: sorter.field,
-                                    sortOrder: sorter.order,
+                                    loginNameQuery: loginNameQuery,
+                                    userNameQuery: userNameQuery,
                                 };
                             });
-                        }} />
-                </div>
-            </Space>
-            <AdminUserDetail ref={adminUserDetail} loadAdminList={loadAdminList} />
+                        }}
+                    >
+                        查询
+                    </Button>
+                    <Button
+                        color="default"
+                        icon={<UserAddOutlined style={{color: "green"}}/>}
+                        onClick={(e) => {
+                            adminUserDetail.current.show(0);
+                        }}
+                    >
+                        添加
+                    </Button>
+                </Space>
+            </div>
+
+            <div style={{padding: "10px 0"}}>
+                <Table columns={adminListColumns} rowKey="id"
+                       dataSource={state.adminList}
+                       pagination={{
+                           current: listParam.currentPage,
+                           pageSize: listParam.pageSize,
+                           total: state.adminCount,
+                           showQuickJumper: true,
+                           showSizeChanger: true,
+                           showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
+                       }}
+                       onChange={(pagination, filters, sorter, extra) => {
+                           setListParam((pre) => {
+                               return {
+                                   ...pre,
+                                   currentPage: pagination.current,
+                                   pageSize: pagination.pageSize,
+                                   sortField: sorter.field,
+                                   sortOrder: sorter.order,
+                               };
+                           });
+                       }}/>
+            </div>
+            <AdminUserDetail ref={adminUserDetail} loadAdminList={loadAdminList}/>
         </div>
     );
 };

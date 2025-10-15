@@ -1,5 +1,5 @@
-import { Button, ConfigProvider, Descriptions, Form, Input, Modal, Select, Space, theme } from "antd";
-import React, { useRef, useState } from "react";
+import {Button, ConfigProvider, Descriptions, Form, Input, Modal, Space, theme} from "antd";
+import React, {useRef} from "react";
 import useSiteContext from "../site/site-context";
 
 const AdminUserDetailInner = (props) => {
@@ -58,7 +58,7 @@ const AdminUserDetailInner = (props) => {
                     size='middle'
                     requiredMark={false}
                     onFinish={(values) => {
-                        post("/api/admin/admin-user/add/save", {
+                        post("/api/admin/user/add/save", {
                             loginName: values.loginName
                         }, function (response) {
                             const res = response.data;
