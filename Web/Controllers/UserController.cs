@@ -103,8 +103,8 @@ public class UserController : Controller
             Success = true,
             Message = "success",
             Data = new Dictionary<string, object> {
-                { "userList", userItemList },
-                { "userCount", userCount },
+                ["userList"] = userItemList,
+                ["userCount"] = userCount,
             }
         });
     }

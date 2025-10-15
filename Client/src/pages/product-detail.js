@@ -2,7 +2,7 @@ import { Button, ConfigProvider, Descriptions, Form, Input, Modal, Select, Space
 import React, { useRef, useState } from "react";
 import useSiteContext from "../site/site-context";
 
-const PresetQuestionDetailInner = (props) => {
+const ProductDetailInner = (props) => {
     const questionId = props.questionId;
     const open = props.open;
     const self = props.self;
@@ -154,7 +154,7 @@ const PresetQuestionDetailInner = (props) => {
     );
 };
 
-class PresetQuestionDetail extends React.Component {
+class ProductDetail extends React.Component {
     constructor(props) {
         super(props);
 
@@ -186,7 +186,7 @@ class PresetQuestionDetail extends React.Component {
         const loadQuestionList = this.loadQuestionList;
 
         return (
-            <PresetQuestionDetailInner
+            <ProductDetailInner
                 questionId={questionId}
                 open={open}
                 self={this}
@@ -196,4 +196,4 @@ class PresetQuestionDetail extends React.Component {
     }
 }
 
-export default PresetQuestionDetail;
+export default ProductDetail;

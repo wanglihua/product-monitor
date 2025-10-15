@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Input, Space, Table } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined } from '@ant-design/icons';
-import PresetQuestionDetail from "./preset-question-detail";
+import ProductDetail from "./product-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
-const PresetQuestion = () => {
+const Product = () => {
 
     const { post, showConfirm, showError, showSuccess } = useSiteContext();
 
@@ -23,7 +23,7 @@ const PresetQuestion = () => {
         questionCount: 0,
     });
 
-    const loadQuestionList = () => {
+    const loadProductList = () => {
         post("/api/admin/preset/question/list", listParam, function (response) {
             const res = response.data;
             if (res.success !== true) {
@@ -93,7 +93,7 @@ const PresetQuestion = () => {
                                     }
 
                                     showSuccess(res.message);
-                                    loadQuestionList();
+                                    loadProductList();
                                 });
                             });
                         }}>
@@ -106,7 +106,7 @@ const PresetQuestion = () => {
     ];
 
     useEffect(() => {
-        loadQuestionList();
+        loadProductList();
     }, [JSON.stringify(listParam)]);
 
     const questionQueryRef = useRef();
@@ -173,9 +173,9 @@ const PresetQuestion = () => {
                     />
                 </div>
             </Space>
-            <PresetQuestionDetail ref={questionDetail} loadQuestionList={loadQuestionList} />
+            <ProductDetail ref={questionDetail} loadProductList={loadProductList} />
         </div>
     );
 };
 
-export default PresetQuestion;
+export default Product;
