@@ -27,11 +27,11 @@ public class UserDetailModelCreateValidator : AbstractValidator<UserDetailModel>
     {
         RuleFor(e => e.LoginName).NotNull().WithMessage("登录名不能为空！");
         RuleFor(e => e.LoginName).NotEmpty().WithMessage("登录名不能为空！");
-        RuleFor(e => e.LoginName).MaximumLength(100).WithMessage("登录名长度不能超过100！");
+        RuleFor(e => e.LoginName).MaximumLength(30).WithMessage("登录名长度不能超过30！");
 
         RuleFor(e => e.UserName).NotNull().WithMessage("用户名不能为空！");
         RuleFor(e => e.UserName).NotEmpty().WithMessage("用户名不能为空！");
-        RuleFor(e => e.UserName).MaximumLength(100).WithMessage("用户名长度不能超过100！");
+        RuleFor(e => e.UserName).MaximumLength(30).WithMessage("用户名长度不能超过30！");
 
         RuleFor(e => e.Password).NotNull().WithMessage("密码不能为空！");
         RuleFor(e => e.Password).NotEmpty().WithMessage("密码不能为空！");
@@ -64,11 +64,11 @@ public class UserDetailModelEditValidator : AbstractValidator<UserDetailModel>
 
         RuleFor(e => e.LoginName).NotNull().WithMessage("登录名不能为空！");
         RuleFor(e => e.LoginName).NotEmpty().WithMessage("登录名不能为空！");
-        RuleFor(e => e.LoginName).MaximumLength(100).WithMessage("登录名长度不能超过100！");
+        RuleFor(e => e.LoginName).MaximumLength(30).WithMessage("登录名长度不能超过30！");
 
         RuleFor(e => e.UserName).NotNull().WithMessage("用户名不能为空！");
         RuleFor(e => e.UserName).NotEmpty().WithMessage("用户名不能为空！");
-        RuleFor(e => e.UserName).MaximumLength(100).WithMessage("用户名长度不能超过100！");
+        RuleFor(e => e.UserName).MaximumLength(30).WithMessage("用户名长度不能超过30！");
 
         RuleFor(e => e.Password)
             .Must((e, p) => {

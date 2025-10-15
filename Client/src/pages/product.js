@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, Input, Space, Table } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, Input, Space, Table} from 'antd';
+import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import ProductDetail from "./product-detail";
 
 import useSiteContext from "../site/site-context";
@@ -8,10 +8,10 @@ import Title from "../site/title";
 
 const Product = () => {
 
-    const { post, showConfirm, showError, showSuccess } = useSiteContext();
+    const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
-        questionQuery: "",
+        productQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -19,12 +19,12 @@ const Product = () => {
     });
 
     const [state, setState] = useState({
-        questionList: [],
-        questionCount: 0,
+        productList: [],
+        productCount: 0,
     });
 
     const loadProductList = () => {
-        post("/api/admin/preset/question/list", listParam, function (response) {
+        post("/api/product/list", listParam, function (response) {
             const res = response.data;
             if (res.success !== true) {
                 showError(res.message);
@@ -34,16 +34,16 @@ const Product = () => {
             setState((pre) => {
                 return {
                     ...pre,
-                    questionList: res.data.questionList,
-                    questionCount: res.data.questionCount,
+                    productList: res.data.productList,
+                    productCount: res.data.productCount,
                 };
             });
         });
     };
 
-    const questionDetail = useRef();
+    const productDetail = useRef();
 
-    const questionListColumns = [
+    const productListColumns = [
         {
             title: "序号",
             width: "80px",
@@ -53,8 +53,8 @@ const Product = () => {
             },
         },
         {
-            title: "问题",
-            dataIndex: "question",
+            title: "名称",
+            dataIndex: "name",
             width: "580px",
         },
         {
@@ -75,15 +75,15 @@ const Product = () => {
             render: (text, record, index) => {
                 return (
                     <Space>
-                        <Button color="primary" variant="text" size="small" style={{ fontSize: "12px" }} onClick={(e) => {
-                            const questionId = record.id;
-                            questionDetail.current.show(questionId);
+                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                            const productId = record.id;
+                            productDetail.current.show(productId);
                         }}>
-                            <EditOutlined />编辑
+                            <EditOutlined/>编辑
                         </Button>
-                        <Button color="danger" variant="text" size="small" style={{ fontSize: "12px" }} onClick={(e) => {
+                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/admin/preset/question/delete", {
+                                post("/api/product/delete", {
                                     id: record.id,
                                 }, function (response) {
                                     const res = response.data;
@@ -97,7 +97,7 @@ const Product = () => {
                                 });
                             });
                         }}>
-                            <DeleteOutlined />删除
+                            <DeleteOutlined/>删除
                         </Button>
                     </Space>
                 );
@@ -109,27 +109,27 @@ const Product = () => {
         loadProductList();
     }, [JSON.stringify(listParam)]);
 
-    const questionQueryRef = useRef();
+    const productQueryRef = useRef();
 
     return (
         <div>
-            <Title title="预设问题" menuKey="preset-question" breadcrumb={[
-                { title: "预设问题" },
-            ]} />
+            <Title title="产品目录" menuKey="product" breadcrumb={[
+                {title: "产品目录"},
+            ]}/>
             <Space direction="vertical" size="large">
                 <div>
                     <Space>
-                        <Input ref={questionQueryRef} addonBefore="问题" placeholder="问题查询" style={{ width: 320 }} />
+                        <Input ref={productQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
                         <Button
                             color="default"
-                            icon={<SearchOutlined />}
+                            icon={<SearchOutlined/>}
                             onClick={(e) => {
-                                const questionQuery = questionQueryRef.current.input.value;
+                                const productQuery = productQueryRef.current.input.value;
 
                                 setListParam((pre) => {
                                     return {
                                         ...pre,
-                                        questionQuery: questionQuery,
+                                        productQuery: productQuery,
                                     };
                                 });
                             }}
@@ -138,9 +138,9 @@ const Product = () => {
                         </Button>
                         <Button
                             color="default"
-                            icon={<PlusCircleOutlined style={{ color: "green" }} />}
+                            icon={<PlusCircleOutlined style={{color: "green"}}/>}
                             onClick={(e) => {
-                                questionDetail.current.show(0);
+                                productDetail.current.show(0);
                             }}
                         >
                             添加
@@ -149,31 +149,31 @@ const Product = () => {
                 </div>
 
                 <div>
-                    <Table columns={questionListColumns} rowKey="id"
-                        dataSource={state.questionList}
-                        pagination={{
-                            current: listParam.currentPage,
-                            pageSize: listParam.pageSize,
-                            total: state.userCount,
-                            showQuickJumper: true,
-                            showSizeChanger: true,
-                            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
-                        }}
-                        onChange={(pagination, filters, sorter, extra) => {
-                            setListParam((pre) => {
-                                return {
-                                    ...pre,
-                                    currentPage: pagination.current,
-                                    pageSize: pagination.pageSize,
-                                    sortField: sorter.field,
-                                    sortOrder: sorter.order,
-                                };
-                            });
-                        }}
+                    <Table columns={productListColumns} rowKey="id"
+                           dataSource={state.productList}
+                           pagination={{
+                               current: listParam.currentPage,
+                               pageSize: listParam.pageSize,
+                               total: state.userCount,
+                               showQuickJumper: true,
+                               showSizeChanger: true,
+                               showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
+                           }}
+                           onChange={(pagination, filters, sorter, extra) => {
+                               setListParam((pre) => {
+                                   return {
+                                       ...pre,
+                                       currentPage: pagination.current,
+                                       pageSize: pagination.pageSize,
+                                       sortField: sorter.field,
+                                       sortOrder: sorter.order,
+                                   };
+                               });
+                           }}
                     />
                 </div>
             </Space>
-            <ProductDetail ref={questionDetail} loadProductList={loadProductList} />
+            <ProductDetail ref={productDetail} loadProductList={loadProductList}/>
         </div>
     );
 };

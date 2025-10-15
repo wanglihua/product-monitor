@@ -1,5 +1,5 @@
-import { Button, ConfigProvider, Descriptions, Form, Input, Modal, Select, Space, theme } from "antd";
-import React, { useRef, useState } from "react";
+import {Button, ConfigProvider, Descriptions, Form, Input, Modal, Select, Space, theme} from "antd";
+import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 
 const ProductDetailInner = (props) => {
@@ -8,16 +8,16 @@ const ProductDetailInner = (props) => {
     const self = props.self;
     const loadQuestionList = props.loadQuestionList;
 
-    const { token } = theme.useToken();
-    const { post, showSuccess, showError } = useSiteContext();
+    const {token} = theme.useToken();
+    const {post, showSuccess, showError} = useSiteContext();
 
     const title = useRef("");
     if (questionId === 0) {
-        title.current = "预设问题新增";
+        title.current = "产品新增";
     }
 
     if (questionId > 0) {
-        title.current = "预设问题编辑";
+        title.current = "产品编辑";
     }
 
     const [state, setState] = useState({
@@ -100,7 +100,8 @@ const ProductDetailInner = (props) => {
                             showSuccess(res.message);
 
                             if (loadQuestionList) {
-                                loadQuestionList();;
+                                loadQuestionList();
+                                ;
                             }
 
                             self.hide();
@@ -112,29 +113,28 @@ const ProductDetailInner = (props) => {
                         layout="horizontal"
                         size="small"
                         column={1}
-                        labelStyle={{ width: "120px" }}
+                        labelStyle={{width: "120px"}}
                     >
-                        <Descriptions.Item label="问题">
+                        <Descriptions.Item label="名称">
                             <Form.Item
-                                name="question"
+                                name="name"
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入问题!',
+                                        message: '请输入名称!',
                                     },
                                 ]}
                             >
-                                <Input.TextArea 
-                                    rows={4}
-                                    maxLength={300}
-                                    placeholder="问题"
+                                <Input
+                                    maxLength={30}
+                                    placeholder="名称"
                                     allowClear
                                 />
                             </Form.Item>
                         </Descriptions.Item>
                     </Descriptions>
 
-                    <Form.Item style={{ marginTop: token.formButtonMarginTop, textAlign: "right" }}>
+                    <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "right"}}>
                         <Space>
                             <Button type="primary" size="large" htmlType="submit">
                                 保存

@@ -154,6 +154,14 @@ const LayoutAdmin = () => {
                                     label: "基础设置",
                                     children: [
                                         {
+                                            key: "product",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "产品目录",
+                                            onClick: () => {
+                                                navigate("/product");
+                                            }
+                                        },
+                                        {
                                             key: "user",
                                             icon: <UserOutlined style={{color: "#1677ff"}}/>,
                                             label: "用户",
