@@ -55,7 +55,22 @@ const Product = () => {
         {
             title: "产品名称",
             dataIndex: "name",
-            width: "580px",
+            width: "200px",
+        },
+        {
+            title: "版本号",
+            dataIndex: "version",
+            width: "200px",
+        },
+        {
+            title: "更新基础",
+            dataIndex: "versionUpdateBase",
+            width: "200px",
+        },
+        {
+            title: "更新时间",
+            dataIndex: "versionUpdateTime",
+            width: "110px",
         },
         {
             title: "创建时间",
