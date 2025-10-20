@@ -32,20 +32,20 @@ public class WebSessionTimeoutResetService
         int count = db.Set<WebSessionEntity>()
             .Where(e => e.SessionId == sessionId)
             .ExecuteUpdate(e => e
-                .SetProperty(x => x.UpdateTime, now)
-                .SetProperty(x => x.UpdateCount, x => (x.UpdateCount + 1) % 100000)
+                    .SetProperty(x => x.UpdateTime, now)
+                    .SetProperty(x => x.UpdateCount, x => (x.UpdateCount + 1) % 100000) // 加了这个好像也没啥用
             );
 
         if (count == 0)
         {
+            var webSession = new WebSessionEntity {
+                SessionId = sessionId,
+                UpdateCount = 0,
+            };
+
             // 这里并发时, 有时会出问题
             try
             {
-                var webSession = new WebSessionEntity {
-                    SessionId = sessionId,
-                    UpdateCount = 0,
-                };
-
                 db.Add<WebSessionEntity>(webSession);
                 db.SaveChanges();
             }
@@ -54,6 +54,10 @@ public class WebSessionTimeoutResetService
                 // 吃掉这个重复插入导致的唯一键异常, 暂时这么处理
                 if (exp.InnerException is SqlException sqlEx && sqlEx.Message.Contains("ix_web_session_session_id"))
                 {
+                    db.ChangeTracker.TrackGraph(webSession, e => {
+                        // 设置成分离的, 否则后面 SaveChanges() 的时候他还会试图保存
+                        e.Entry.State = EntityState.Detached;
+                    });
                     log.Error(exp);
                 }
                 else
