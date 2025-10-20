@@ -2,6 +2,9 @@
 
 namespace Domain;
 
+/// <summary>
+/// 网址类型
+/// </summary>
 public class ProductUrlType : CodeTypeBase
 {
     /// <summary>
