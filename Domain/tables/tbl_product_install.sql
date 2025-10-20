@@ -7,7 +7,7 @@
 
     version_sale    NVARCHAR(32)  NOT NULL,
     version_install NVARCHAR(32)  NOT NULL,
-    install_time    DATETIME      NOT NULL,
+    install_date    DATETIME      NOT NULL,
     update_url      NVARCHAR(256) NOT NULL,
     login_user      NVARCHAR(128) NOT NULL,
     login_password  NVARCHAR(128) NOT NULL,
