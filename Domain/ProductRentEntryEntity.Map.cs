@@ -13,7 +13,7 @@ public class ProductRentEntryEntityMap : IEntityTypeConfiguration<ProductRentEnt
         EntityMap.Configure(builder);
 
         builder.Property(e => e.ProductRentId)
-            .HasColumnName("tbl_product_rent_id")
+            .HasColumnName("product_rent_id")
             .IsRequired(true);
 
         builder.Property(e => e.TotalDays)

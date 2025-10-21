@@ -1,4 +1,4 @@
-﻿using Core;
+using Core;
 
 namespace Domain;
 
@@ -19,18 +19,17 @@ public class ProductRentEntryEntity : Entity
 
     /// <summary>
     /// 开始时间
-    /// 存的是日期
     /// </summary>
     public DateTime BeginDate { get; set; }
 
     /// <summary>
     /// 结束时间
-    /// 存的是日期
     /// </summary>
     public DateTime EndDate { get; set; }
 
     /// <summary>
     /// 备注
     /// </summary>
-    public string Description { get; set; } = "";
+    public string Description { get; set; } = ""; 
+
 }
