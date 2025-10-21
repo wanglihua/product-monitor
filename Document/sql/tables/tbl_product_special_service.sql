@@ -24,3 +24,21 @@
     CONSTRAINT fk_product_special_service_product_id FOREIGN KEY (product_id) REFERENCES tbl_product (id),
     INDEX ix_product_special_service_product_id (product_id)
 );
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'特殊售后', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'学校', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'college_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'product_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'售后时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'service_date';
+EXEC sp_AddExtendedProperty 'MS_Description', N'售后次数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'service_count';
+EXEC sp_AddExtendedProperty 'MS_Description', N'售后网址', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'service_url';
+EXEC sp_AddExtendedProperty 'MS_Description', N'售后账号', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'login_user';
+EXEC sp_AddExtendedProperty 'MS_Description', N'售后密码', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'login_password';
+EXEC sp_AddExtendedProperty 'MS_Description', N'联系老师', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'contact_teacher';
+EXEC sp_AddExtendedProperty 'MS_Description', N'联系电话', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'contact_mobile';
+EXEC sp_AddExtendedProperty 'MS_Description', N'售后问题', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'description';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'create_time';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_special_service', 'COLUMN', 'update_time';

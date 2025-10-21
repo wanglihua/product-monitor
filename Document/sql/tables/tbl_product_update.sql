@@ -28,3 +28,23 @@
     INDEX ix_product_update_product_id (product_id)
 );
 
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品更新', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'学校', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'college_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'product_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'销售版本', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'version_sale';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新版本', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'version_update';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新次数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'update_count';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新网址', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'update_url';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新账号', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'login_user';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新密码', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'login_password';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'update_date';
+EXEC sp_AddExtendedProperty 'MS_Description', N'业务经理', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'sales_manager';
+EXEC sp_AddExtendedProperty 'MS_Description', N'联系老师', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'contact_teacher';
+EXEC sp_AddExtendedProperty 'MS_Description', N'联系电话', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'contact_mobile';
+EXEC sp_AddExtendedProperty 'MS_Description', N'其他备注', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'description';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'create_time';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_update', 'COLUMN', 'update_time';
