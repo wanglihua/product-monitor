@@ -26,19 +26,11 @@
     INDEX ix_product_install_product_id (product_id),
 );
 
-EXEC sp_AddExtendedProperty 'MS_Description', N'产品安装', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install'
-GO
-
-EXEC sp_AddExtendedProperty 'MS_Description', N'学校', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'college_id'
-GO
-
-EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'product_id'
-GO
-
-EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'product_id'
-GO
-
-EXEC sp_AddExtendedProperty 'MS_Description', N'销售版本', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'version_sale'
-GO
-
-
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品安装', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install';
+EXEC sp_AddExtendedProperty 'MS_Description', N'学校', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'college_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'product_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'销售版本', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'version_sale';
+EXEC sp_AddExtendedProperty 'MS_Description', N'安装版本', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'version_install';
+EXEC sp_AddExtendedProperty 'MS_Description', N'安装时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'install_date';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新网址', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'update_url';
+EXEC sp_AddExtendedProperty 'MS_Description', N'系统账号', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'login_user';

@@ -1,0 +1,56 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" %>
+<%@ Assembly Name="CodeSmith.Engine" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.Engine" %>
+<%@ Import Namespace="SchemaExplorer" %>
+
+<%@ Property Name="DbTable" Type="SchemaExplorer.TableSchema" %>
+
+<script runat="template">
+    public string GetPropertyType(DbType dbType)
+    {
+        if (dbType == DbType.Int32)
+        {
+            return "int";
+        }
+        
+        if (dbType == DbType.Int64)
+        {
+            return "long";
+        }
+        
+        if (dbType == DbType.String)
+        {
+            return "string";
+        }
+
+        if (dbType == DbType.DateTime)
+        {
+            return "DateTime";
+        }
+
+        return "unknow";
+    }
+</script>
+
+/// <summary>
+/// <%=  DbTable.Description %>
+/// </summary>
+public class <%= StringUtil.ToPascalCase(DbTable.Name.Substring(3)) %>Entity : Entity
+{
+<% 
+var columnList = DbTable.Columns
+        .Where(e => e.Name != "id" && e.Name != "create_time" && e.Name != "update_time")
+        .ToList();
+foreach (ColumnSchema column in columnList)
+{ 
+%>
+    /// <summary>
+    /// <%=  column.Description %>
+    /// </summary>
+    public <%= GetPropertyType(column.DataType) %> <%= StringUtil.ToPascalCase(column.Name) %> { get; set; }
+
+<%
+}
+%>
+}
