@@ -1,4 +1,4 @@
-﻿using Core;
+using Core;
 
 namespace Domain;
 
@@ -8,7 +8,7 @@ namespace Domain;
 public class ProductRentEntity : Entity
 {
     /// <summary>
-    /// 学校 
+    /// 学校
     /// </summary>
     public long CollegeId { get; set; }
 
@@ -23,7 +23,7 @@ public class ProductRentEntity : Entity
     public int RentTimes { get; set; }
 
     /// <summary>
-    /// 售后次数
+    /// 租赁次数
     /// </summary>
     public int ServiceTimes { get; set; }
 
@@ -31,7 +31,7 @@ public class ProductRentEntity : Entity
     /// 累计天数
     /// </summary>
     public int TotalDays { get; set; }
-    
+
     /// <summary>
     /// 剩余天数
     /// </summary>
@@ -39,18 +39,17 @@ public class ProductRentEntity : Entity
 
     /// <summary>
     /// 开始时间
-    /// 存的是日期
     /// </summary>
     public DateTime BeginDate { get; set; }
 
     /// <summary>
     /// 结束时间
-    /// 存的是日期
     /// </summary>
     public DateTime EndDate { get; set; }
 
     /// <summary>
     /// 备注
     /// </summary>
-    public string Description { get; set; } = "";
+    public string Description { get; set; } = ""; 
+
 }
