@@ -1,4 +1,4 @@
-﻿using Core;
+using Core;
 
 namespace Domain;
 
@@ -23,9 +23,9 @@ public class ProductEvalEntity : Entity
     public int EvalTimes { get; set; }
 
     /// <summary>
-    /// 售后次数
+    /// 销售次数
     /// </summary>
-    public int ServiceTimes { get; set; }
+    public int SaleTimes { get; set; }
 
     /// <summary>
     /// 累计天数
@@ -39,18 +39,17 @@ public class ProductEvalEntity : Entity
 
     /// <summary>
     /// 开始时间
-    /// 存的是日期
     /// </summary>
     public DateTime BeginDate { get; set; }
 
     /// <summary>
     /// 结束时间
-    /// 存的是日期
     /// </summary>
     public DateTime EndDate { get; set; }
 
     /// <summary>
     /// 备注
     /// </summary>
-    public string Description { get; set; } = "";
+    public string Description { get; set; } = ""; 
+
 }

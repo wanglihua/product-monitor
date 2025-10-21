@@ -12,6 +12,10 @@ public class ProductEvalEntityMap : IEntityTypeConfiguration<ProductEvalEntity>
 
         EntityMap.Configure(builder);
 
+        builder.Property(e => e.CollegeId)
+            .HasColumnName("college_id")
+            .IsRequired(true);
+
         builder.Property(e => e.ProductId)
             .HasColumnName("product_id")
             .IsRequired(true);
@@ -20,8 +24,8 @@ public class ProductEvalEntityMap : IEntityTypeConfiguration<ProductEvalEntity>
             .HasColumnName("eval_times")
             .IsRequired(true);
 
-        builder.Property(e => e.ServiceTimes)
-            .HasColumnName("service_times")
+        builder.Property(e => e.SaleTimes)
+            .HasColumnName("sale_times")
             .IsRequired(true);
 
         builder.Property(e => e.TotalDays)
