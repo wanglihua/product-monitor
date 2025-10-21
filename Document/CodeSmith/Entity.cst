@@ -32,9 +32,12 @@
         return "unknow";
     }
 </script>
+using Core;
+
+namespace Domain;
 
 /// <summary>
-/// <%=  DbTable.Description %>
+/// <%= DbTable.Description %>
 /// </summary>
 public class <%= StringUtil.ToPascalCase(DbTable.Name.Substring(3)) %>Entity : Entity
 {
@@ -46,7 +49,7 @@ foreach (ColumnSchema column in columnList)
 { 
 %>
     /// <summary>
-    /// <%=  column.Description %>
+    /// <%= column.Description %>
     /// </summary>
     public <%= GetPropertyType(column.DataType) %> <%= StringUtil.ToPascalCase(column.Name) %> { get; set; }
 

@@ -27,3 +27,4 @@
     CONSTRAINT fk_product_update_product_id FOREIGN KEY (product_id) REFERENCES tbl_product (id),
     INDEX ix_product_update_product_id (product_id)
 );
+
