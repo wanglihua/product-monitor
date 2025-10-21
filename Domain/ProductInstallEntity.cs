@@ -1,4 +1,4 @@
-﻿using Core;
+using Core;
 
 namespace Domain;
 
@@ -20,12 +20,12 @@ public class ProductInstallEntity : Entity
     /// <summary>
     /// 销售版本
     /// </summary>
-    public string VersionSale { get; set; } = "";
+    public string VersionSale { get; set; } = ""; 
 
     /// <summary>
     /// 安装版本
     /// </summary>
-    public string VersionInstall { get; set; } = "";
+    public string VersionInstall { get; set; } = ""; 
 
     /// <summary>
     /// 安装时间
@@ -35,30 +35,31 @@ public class ProductInstallEntity : Entity
     /// <summary>
     /// 更新网址
     /// </summary>
-    public string UpdateUrl { get; set; } = "";
+    public string UpdateUrl { get; set; } = ""; 
 
     /// <summary>
     /// 系统账号
     /// </summary>
-    public string LoginUser { get; set; } = "";
+    public string LoginUser { get; set; } = ""; 
 
     /// <summary>
     /// 系统密码
     /// </summary>
-    public string LoginPassword { get; set; } = "";
+    public string LoginPassword { get; set; } = ""; 
 
     /// <summary>
     /// 联系教师
     /// </summary>
-    public string ContactTeacher { get; set; } = "";
+    public string ContactTeacher { get; set; } = ""; 
 
     /// <summary>
     /// 联系电话
     /// </summary>
-    public string ContactMobile { get; set; } = "";
+    public string ContactMobile { get; set; } = ""; 
 
     /// <summary>
     /// 其他备注
     /// </summary>
-    public string Description { get; set; } = "";
+    public string Description { get; set; } = ""; 
+
 }
