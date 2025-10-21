@@ -7,29 +7,42 @@
 <%@ Property Name="DbTable" Type="SchemaExplorer.TableSchema" %>
 
 <script runat="template">
-    public string GetPropertyType(DbType dbType)
+    public string GetPropertyType(ColumnSchema column)
     {
+        DbType dbType = column.DataType;
+        string typeName = "";
+        
         if (dbType == DbType.Int32)
         {
-            return "int";
+            typeName = "int";
         }
         
         if (dbType == DbType.Int64)
         {
-            return "long";
+            typeName =  "long";
         }
         
         if (dbType == DbType.String)
         {
-            return "string";
+            typeName =  "string";
         }
 
         if (dbType == DbType.DateTime)
         {
-            return "DateTime";
+            typeName =  "DateTime";
+        }
+        
+        if (string.IsNullOrWhiteSpace(typeName) == true)
+        {
+            typeName = "unknow";
+        }
+        
+        if (column.AllowDBNull == true)
+        {
+            typeName = typeName + "?";
         }
 
-        return "unknow";
+        return typeName;
     }
 </script>
 using Core;
@@ -51,7 +64,7 @@ foreach (ColumnSchema column in columnList)
     /// <summary>
     /// <%= column.Description %>
     /// </summary>
-    public <%= GetPropertyType(column.DataType) %> <%= StringUtil.ToPascalCase(column.Name) %> { get; set; }
+    public <%= GetPropertyType(column) %> <%= StringUtil.ToPascalCase(column.Name) %> { get; set; }<% if (column.DataType == DbType.String && column.AllowDBNull == false) { %> = ""; <% } %>
 
 <%
 }
