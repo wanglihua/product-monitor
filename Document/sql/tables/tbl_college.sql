@@ -20,7 +20,7 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', '
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'院校标识码', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college', 'COLUMN', 'code';
 EXEC sp_AddExtendedProperty 'MS_Description', N'院校名称', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college', 'COLUMN', 'name';
-EXEC sp_AddExtendedProperty 'MS_Description', N'身份', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college', 'COLUMN', 'province';
+EXEC sp_AddExtendedProperty 'MS_Description', N'省份', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college', 'COLUMN', 'province';
 EXEC sp_AddExtendedProperty 'MS_Description', N'办学层次', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college', 'COLUMN', 'level';
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college', 'COLUMN', 'create_time';

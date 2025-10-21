@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using Core;
 using Core.Auth;
 using Core.Database;
@@ -168,11 +167,10 @@ public class ProductController : Controller
             }
         }
 
-        product.Name = model.Name;
-        product.Version = model.Version;
+        product.Name = model.Name ?? "";
+        product.Version = model.Version ?? "";
         product.VersionUpdateBase = model.VersionUpdateBase ?? "";
         product.VersionUpdateDesc = model.VersionUpdateDesc ?? "";
-        // product.VersionUpdateTime = DateTime.ParseExact(model.VersionUpdateTime, "yyyy-MM-dd", CultureInfo.InvariantCulture);
         product.VersionUpdateTime = DateTime.Parse(model.VersionUpdateTime).Date;
 
         if (isCreate == true)
