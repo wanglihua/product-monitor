@@ -1,4 +1,4 @@
-﻿using Core;
+using Core;
 
 namespace Domain;
 
@@ -19,13 +19,11 @@ public class ProductEvalEntryEntity : Entity
 
     /// <summary>
     /// 开始时间
-    /// 存的是日期
     /// </summary>
     public DateTime BeginDate { get; set; }
 
     /// <summary>
     /// 结束时间
-    /// 存的是日期
     /// </summary>
     public DateTime EndDate { get; set; }
 
