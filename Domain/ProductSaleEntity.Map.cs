@@ -1,4 +1,4 @@
-﻿using Core;
+using Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -32,7 +32,7 @@ public class ProductSaleEntityMap : IEntityTypeConfiguration<ProductSaleEntity>
             .HasColumnName("update_times")
             .IsRequired(true);
 
-        builder.Property(e => e.ServiceTime)
+        builder.Property(e => e.ServiceTimes)
             .HasColumnName("service_times")
             .IsRequired(true);
 
@@ -40,11 +40,11 @@ public class ProductSaleEntityMap : IEntityTypeConfiguration<ProductSaleEntity>
             .HasColumnName("version")
             .HasMaxLength(32)
             .IsRequired(true);
-        
+
         builder.Property(e => e.SaleDate)
             .HasColumnName("sale_date")
             .IsRequired(true);
-        
+
         builder.Property(e => e.ServiceExpireDate)
             .HasColumnName("service_expire_date")
             .IsRequired(true);

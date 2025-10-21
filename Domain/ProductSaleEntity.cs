@@ -1,4 +1,5 @@
-﻿using Core;
+
+using Core;
 
 namespace Domain;
 
@@ -35,27 +36,26 @@ public class ProductSaleEntity : Entity
     /// <summary>
     /// 售后次数
     /// </summary>
-    public int ServiceTime { get; set; }
+    public int ServiceTimes { get; set; }
 
     /// <summary>
     /// 版本号
     /// </summary>
-    public string Version { get; set; } = "";
+    public string Version { get; set; } = ""; 
 
     /// <summary>
     /// 销售时间
-    /// 存的是日期
     /// </summary>
     public DateTime SaleDate { get; set; }
 
     /// <summary>
     /// 服务到期时间
-    /// 存的是日期
     /// </summary>
     public DateTime ServiceExpireDate { get; set; }
 
     /// <summary>
     /// 备注
     /// </summary>
-    public string Description { get; set; } = "";
+    public string Description { get; set; } = ""; 
+
 }
