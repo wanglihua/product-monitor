@@ -9,8 +9,8 @@
     total_days  INT           NOT NULL,
     remain_days INT           NOT NULL,
 
-    begin_date  DATE          NOT NULL,
-    end_date    DATE          NOT NULL,
+    begin_date  DATETIME      NOT NULL,
+    end_date    DATETIME      NOT NULL,
 
     description NVARCHAR(512) NOT NULL,
 
@@ -22,4 +22,6 @@
     INDEX ix_product_eval_product_id (product_id),
     CONSTRAINT fk_product_eval_college_id FOREIGN KEY (college_id) REFERENCES tbl_college (id),
     INDEX ix_college_eval_college_id (college_id),
-);
+)
+
+-- DROP TABLE tbl_product_eval;

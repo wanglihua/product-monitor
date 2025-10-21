@@ -5,9 +5,9 @@
 
     version             NVARCHAR(32)  NOT NULL,
 
-    sale_date           DATE          NOT NULL,
-    service_expire_date DATE          NOT NULL,
-    
+    sale_date           DATETIME      NOT NULL,
+    service_expire_date DATETIME      NOT NULL,
+
     description         NVARCHAR(512) NOT NULL,
 
     create_time         DATETIME      NOT NULL,
@@ -18,3 +18,5 @@
     CONSTRAINT fk_product_sale_entry_product_sale_id FOREIGN KEY (product_sale_id) REFERENCES tbl_product_sale (id),
     INDEX ix_product_sale_entry_product_sale_id (product_sale_id),
 );
+
+-- DROP TABLE tbl_product_sale_entry;

@@ -5,8 +5,8 @@
 
     total_days      INT           NOT NULL,
 
-    begin_date      DATE          NOT NULL,
-    end_date        DATE          NOT NULL,
+    begin_date      DATETIME      NOT NULL,
+    end_date        DATETIME      NOT NULL,
 
     description     NVARCHAR(512) NOT NULL,
 
@@ -19,3 +19,5 @@
     INDEX ix_product_eval_entry_product_eval_id (product_eval_id),
 
 );
+
+-- DROP TABLE tbl_product_eval_entry;

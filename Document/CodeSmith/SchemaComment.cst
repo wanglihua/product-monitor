@@ -1,0 +1,26 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="SQL" %>
+<%@ Assembly Name="CodeSmith.Engine" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="CodeSmith.Engine" %>
+<%@ Import Namespace="SchemaExplorer" %>
+
+<%@ Property Name="DbTable" Type="SchemaExplorer.TableSchema" %>
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'', 'SCHEMA', 'dbo', 'TABLE', '<%= DbTable.Name %>';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', '<%= DbTable.Name %>', 'COLUMN', 'id';
+
+<% 
+var columnList = DbTable.Columns
+        .Where(e => e.Name != "id" && e.Name != "create_time" && e.Name != "update_time")
+        .ToList();
+foreach (ColumnSchema column in columnList)
+{ 
+%>
+EXEC sp_AddExtendedProperty 'MS_Description', N'', 'SCHEMA', 'dbo', 'TABLE', '<%= DbTable.Name %>', 'COLUMN', '<%= column.Name %>';
+<%
+}
+%>
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', '<%= DbTable.Name %>', 'COLUMN', 'create_time';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', '<%= DbTable.Name %>', 'COLUMN', 'update_time';

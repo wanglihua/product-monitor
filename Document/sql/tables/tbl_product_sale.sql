@@ -11,8 +11,8 @@
 
     version             NVARCHAR(32)  NOT NULL,
 
-    sale_date           DATE          NOT NULL,
-    service_expire_date DATE          NOT NULL,
+    sale_date           DATETIME      NOT NULL,
+    service_expire_date DATETIME      NOT NULL,
 
     description         NVARCHAR(512) NOT NULL,
 
@@ -25,3 +25,5 @@
     CONSTRAINT fk_product_sale_college_id FOREIGN KEY (college_id) REFERENCES tbl_college (id),
     INDEX ix_college_sale_college_id (college_id),
 );
+
+-- DROP TABLE tbl_product_sale;

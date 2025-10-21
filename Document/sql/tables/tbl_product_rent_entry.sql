@@ -5,8 +5,8 @@ CREATE TABLE tbl_product_rent_entry
 
     total_days      INT           NOT NULL,
 
-    begin_date      DATE          NOT NULL,
-    end_date        DATE          NOT NULL,
+    begin_date      DATETIME      NOT NULL,
+    end_date        DATETIME      NOT NULL,
 
     description     NVARCHAR(512) NOT NULL,
 
@@ -18,3 +18,5 @@ CREATE TABLE tbl_product_rent_entry
     CONSTRAINT fk_product_rent_entry_product_rent_id FOREIGN KEY (product_rent_id) REFERENCES tbl_product_rent (id),
     INDEX ix_product_rent_entry_product_rent_id (product_rent_id),
 );
+
+-- DROP TABLE tbl_product_rent_entry;
