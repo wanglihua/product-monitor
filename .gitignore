@@ -7,6 +7,8 @@ Core/bin
 Core/obj
 Domain/bin
 Domain/obj
+Document/bin
+Document/obj
 Service/bin
 Service/obj
 Web/bin

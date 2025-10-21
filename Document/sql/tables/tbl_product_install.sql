@@ -25,3 +25,20 @@
     CONSTRAINT fk_product_install_product_id FOREIGN KEY (product_id) REFERENCES tbl_product (id),
     INDEX ix_product_install_product_id (product_id),
 );
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品安装', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install'
+GO
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'学校', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'college_id'
+GO
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'product_id'
+GO
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'product_id'
+GO
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'销售版本', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_install', 'COLUMN', 'version_sale'
+GO
+
+
