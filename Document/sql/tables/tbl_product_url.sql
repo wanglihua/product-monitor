@@ -15,3 +15,15 @@
     CONSTRAINT pk_product_url PRIMARY KEY (id)
 );
 
+EXEC sp_AddExtendedProperty 'MS_Description', N'网址管理', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品名称', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'name';
+EXEC sp_AddExtendedProperty 'MS_Description', N'网址', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'url';
+EXEC sp_AddExtendedProperty 'MS_Description', N'类型', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'type_code';
+EXEC sp_AddExtendedProperty 'MS_Description', N'账号', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'login_user';
+EXEC sp_AddExtendedProperty 'MS_Description', N'密码', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'login_password';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'create_time';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'update_time';

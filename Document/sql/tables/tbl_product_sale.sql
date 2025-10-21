@@ -27,3 +27,21 @@
 );
 
 -- DROP TABLE tbl_product_sale;
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'销售目录', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'学校', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'college_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'product_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'销售次数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'sale_times';
+EXEC sp_AddExtendedProperty 'MS_Description', N'安装次数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'install_times';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新次数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'update_times';
+EXEC sp_AddExtendedProperty 'MS_Description', N'售后次数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'service_times';
+EXEC sp_AddExtendedProperty 'MS_Description', N'版本号', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'version';
+EXEC sp_AddExtendedProperty 'MS_Description', N'销售时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'sale_date';
+EXEC sp_AddExtendedProperty 'MS_Description', N'服务到期时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'service_expire_date';
+EXEC sp_AddExtendedProperty 'MS_Description', N'备注', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'description';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'create_time';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale', 'COLUMN', 'update_time';

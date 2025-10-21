@@ -12,7 +12,7 @@ public class ProductVersionEntity : Entity
     public int Major { get; set; }
 
     /// <summary>
-    /// 此版本号
+    /// 次版本号
     /// </summary>
     public int Minor { get; set; }
 

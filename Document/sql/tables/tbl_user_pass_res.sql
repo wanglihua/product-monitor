@@ -13,3 +13,12 @@ CREATE TABLE tbl_user_pass_res
     CONSTRAINT fk_user_pass_res_pass_res_id FOREIGN KEY (pass_res_id) REFERENCES tbl_pass_res (id),
     INDEX ix_user_pass_res_pass_res_id (pass_res_id)
 );
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'用户授权', 'SCHEMA', 'dbo', 'TABLE', 'tbl_user_pass_res';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_user_pass_res', 'COLUMN', 'id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'用户', 'SCHEMA', 'dbo', 'TABLE', 'tbl_user_pass_res', 'COLUMN', 'user_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'授权资源', 'SCHEMA', 'dbo', 'TABLE', 'tbl_user_pass_res', 'COLUMN', 'pass_res_id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_user_pass_res', 'COLUMN', 'create_time';

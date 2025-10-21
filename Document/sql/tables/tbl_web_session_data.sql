@@ -16,3 +16,15 @@ CREATE TABLE tbl_web_session_data
     INDEX ix_web_session_data_session_id (session_id),
     INDEX ix_web_session_data_update_time (update_time)
 );
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Session数据', 'SCHEMA', 'dbo', 'TABLE', 'tbl_web_session_data';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_web_session_data', 'COLUMN', 'id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Web Session', 'SCHEMA', 'dbo', 'TABLE', 'tbl_web_session_data', 'COLUMN', 'web_session_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'Session Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_web_session_data', 'COLUMN', 'session_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'数据类型', 'SCHEMA', 'dbo', 'TABLE', 'tbl_web_session_data', 'COLUMN', 'type_code';
+EXEC sp_AddExtendedProperty 'MS_Description', N'Session数据', 'SCHEMA', 'dbo', 'TABLE', 'tbl_web_session_data', 'COLUMN', 'data';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_web_session_data', 'COLUMN', 'create_time';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_web_session_data', 'COLUMN', 'update_time';

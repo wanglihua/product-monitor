@@ -20,3 +20,16 @@
 );
 
 -- DROP TABLE tbl_product_sale_entry;
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'销售目录明细', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale_entry';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale_entry', 'COLUMN', 'id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'销售目录 ', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale_entry', 'COLUMN', 'product_sale_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'版本号', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale_entry', 'COLUMN', 'version';
+EXEC sp_AddExtendedProperty 'MS_Description', N'销售时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale_entry', 'COLUMN', 'sale_date';
+EXEC sp_AddExtendedProperty 'MS_Description', N'服务到期时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale_entry', 'COLUMN', 'service_expire_date';
+EXEC sp_AddExtendedProperty 'MS_Description', N'备注', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale_entry', 'COLUMN', 'description';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale_entry', 'COLUMN', 'create_time';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_sale_entry', 'COLUMN', 'update_time';

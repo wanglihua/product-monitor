@@ -20,3 +20,16 @@ CREATE TABLE tbl_product_rent_entry
 );
 
 -- DROP TABLE tbl_product_rent_entry;
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'租赁目录明细', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry', 'COLUMN', 'id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'租赁目录', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry', 'COLUMN', 'product_rent_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'累计天数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry', 'COLUMN', 'total_days';
+EXEC sp_AddExtendedProperty 'MS_Description', N'开始时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry', 'COLUMN', 'begin_date';
+EXEC sp_AddExtendedProperty 'MS_Description', N'结束时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry', 'COLUMN', 'end_date';
+EXEC sp_AddExtendedProperty 'MS_Description', N'备注', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry', 'COLUMN', 'description';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry', 'COLUMN', 'create_time';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry', 'COLUMN', 'update_time';

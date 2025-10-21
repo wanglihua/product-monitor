@@ -12,3 +12,13 @@
     CONSTRAINT fk_college_change_log_college_id FOREIGN KEY (college_id) REFERENCES tbl_college (id),
     INDEX ix_college_change_log_college_id (college_id)
 );
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'院校更新记录', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college_change_log';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college_change_log', 'COLUMN', 'id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'院校', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college_change_log', 'COLUMN', 'college_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新描述', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college_change_log', 'COLUMN', 'change_desc';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college_change_log', 'COLUMN', 'create_time';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college_change_log', 'COLUMN', 'update_time';

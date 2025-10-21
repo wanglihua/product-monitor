@@ -25,3 +25,20 @@
 )
 
 -- DROP TABLE tbl_product_eval;
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'试用目录', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'学校', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'college_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'product_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'试用次数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'eval_times';
+EXEC sp_AddExtendedProperty 'MS_Description', N'销售次数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'sale_times';
+EXEC sp_AddExtendedProperty 'MS_Description', N'累计天数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'total_days';
+EXEC sp_AddExtendedProperty 'MS_Description', N'剩余天数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'remain_days';
+EXEC sp_AddExtendedProperty 'MS_Description', N'开始时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'begin_date';
+EXEC sp_AddExtendedProperty 'MS_Description', N'结束时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'end_date';
+EXEC sp_AddExtendedProperty 'MS_Description', N'备注', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'description';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'create_time';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'update_time';
