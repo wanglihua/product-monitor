@@ -12,6 +12,7 @@ import ActionLog from "./pages/action-log";
 import Product from "./pages/product";
 import College from "./pages/college";
 import ProductUrl from "./pages/product-url";
+import ProductSale from "./pages/product-sale";
 
 const Router = () => {
     return (
@@ -23,6 +24,7 @@ const Router = () => {
                     <Route path="/product" element={<Product/>}/>
                     <Route path="/college" element={<College/>}/>
                     <Route path="/product-url" element={<ProductUrl/>}/>
+                    <Route path="/product-sale" element={<ProductSale/>}/>
                     <Route path="/user" element={<User/>}/>
                     <Route path="/admin/user" element={<AdminUser/>}/>
                     <Route path="/action/log" element={<ActionLog/>}/>

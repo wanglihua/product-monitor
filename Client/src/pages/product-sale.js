@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import ProductSaleDetail from "./productSale-detail";
+import ProductSaleDetail from "./product-sale-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
@@ -157,7 +157,7 @@ const ProductSale = () => {
 
     return (
         <div>
-            <Title title="销售目录" menuKey="productSale" breadcrumb={[
+            <Title title="销售目录" menuKey="product-sale" breadcrumb={[
                 {title: "销售目录"},
             ]}/>
             <div>

@@ -152,6 +152,22 @@ const LayoutAdmin = () => {
                             selectedKeys={[menuActiveKey]}
                             items={[
                                 {
+                                    key: "project-manage",
+                                    icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                    label: "项目管理",
+                                    children: [
+                                        {
+                                            key: "product-sale",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "销售目录",
+                                            onClick: () => {
+                                                navigate("/product-sale");
+                                            }
+                                        },
+
+                                    ],
+                                },
+                                {
                                     key: "basic-setting",
                                     icon: <UserOutlined style={{color: "#1677ff"}}/>,
                                     label: "基础设置",
