@@ -8,7 +8,7 @@ import "./app.css";
 import Router from "./router";
 import {SiteContext} from "./site/site-context";
 
-const App = () =>  {
+const App = () => {
     const [notificationApi, notificationContextHolder] = notification.useNotification();
     const [modal, modalContextHolder] = Modal.useModal();
 
@@ -92,7 +92,7 @@ const App = () =>  {
 
         modal.confirm({
             title: title,
-            icon: <ExclamationCircleFilled />,
+            icon: <ExclamationCircleFilled/>,
             content: message,
             okText: "确认",
             cancelText: "取消",
@@ -184,10 +184,10 @@ const App = () =>  {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
     const [breadcrumb, setBreadcrumb] = useState([]);
 
-    // 这个即用于 admin, 也用于 user
+    const [menuOpenKeys, setMenuOpenKeys] = useState([]);
     const [menuActiveKey, setMenuActiveKey] = useState("");
 
-    const [user, setUser] = useState({ userId: 0, loginName: "", userName: "" });
+    const [user, setUser] = useState({userId: 0, loginName: "", userName: ""});
 
     const siteContextValue = {
         post,
@@ -203,6 +203,8 @@ const App = () =>  {
         setSidebarCollapsed,
         breadcrumb,
         setBreadcrumb,
+        menuOpenKeys,
+        setMenuOpenKeys,
         menuActiveKey,
         setMenuActiveKey,
         user,
@@ -219,7 +221,7 @@ const App = () =>  {
                     // 这几个是自己定义的名称
                     formMaxWidth: '800px',
                     formButtonMarginTop: '40px',
-                    popConfirmDescStyle: { minWidth: "180px", minHeight: "50px" },
+                    popConfirmDescStyle: {minWidth: "180px", minHeight: "50px"},
                 },
                 components: {
                     Menu: {},
@@ -257,14 +259,14 @@ const App = () =>  {
                                 paddingTop: "20px",
                                 opacity: 1,
                             }}>
-                                <Spin size="large" />
+                                <Spin size="large"/>
                             </div>
                         </div>
                     </div>
                 )}
 
                 <BrowserRouter basename="">
-                    <Router />
+                    <Router/>
                 </BrowserRouter>
 
             </SiteContext.Provider>

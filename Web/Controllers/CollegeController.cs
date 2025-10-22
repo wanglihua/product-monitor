@@ -40,6 +40,12 @@ public class CollegeController : Controller
     {
         IQueryable<CollegeEntity> query = db.Set<CollegeEntity>();
 
+        if (string.IsNullOrWhiteSpace(param.CodeQuery) == false)
+        {
+            string codeQuery = param.CodeQuery.Trim();
+            query = query.Where(p => p.Name.Contains(codeQuery));
+        }
+        
         if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
         {
             string nameQuery = param.NameQuery.Trim();

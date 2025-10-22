@@ -11,6 +11,7 @@ const College = () => {
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
+        codeQuery: "",
         nameQuery: "",
         currentPage: 1,
         pageSize: 15,
@@ -55,7 +56,7 @@ const College = () => {
         {
             title: "院校标识码",
             dataIndex: "code",
-            width: "200px",
+            width: "120px",
         },
         {
             title: "院校名称",
@@ -65,12 +66,12 @@ const College = () => {
         {
             title: "省份",
             dataIndex: "province",
-            width: "200px",
+            width: "80px",
         },
         {
             title: "办学层次",
             dataIndex: "level",
-            width: "200px",
+            width: "100px",
         },
         {
             title: "创建时间",
@@ -123,25 +124,29 @@ const College = () => {
         loadCollegeList();
     }, [JSON.stringify(listParam)]);
 
+    const codeQueryRef = useRef();
     const nameQueryRef = useRef();
 
     return (
         <div>
-            <Title title="院校目录" menuKey="college" breadcrumb={[
+            <Title title="院校目录" parentMenuKeys={["basic-setting"]} menuKey="college" breadcrumb={[
                 {title: "院校目录"},
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={codeQueryRef} addonBefore="标识" placeholder="标识查询" style={{width: 180}}/>
+                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 280}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
+                            const codeQuery = codeQueryRef.current.input.value;
                             const nameQuery = nameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
+                                    codeQuery: codeQuery,
                                     nameQuery: nameQuery,
                                 };
                             });

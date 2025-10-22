@@ -127,7 +127,7 @@ const Product = () => {
 
     return (
         <div>
-            <Title title="产品目录" menuKey="product" breadcrumb={[
+            <Title title="产品目录" parentMenuKeys={["basic-setting"]} menuKey="product" breadcrumb={[
                 {title: "产品目录"},
             ]}/>
             <div>

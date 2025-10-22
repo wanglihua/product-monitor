@@ -118,7 +118,7 @@ const User = () => {
 
     return (
         <div>
-            <Title title="用户" menuKey="user" breadcrumb={[
+            <Title title="用户" parentMenuKeys={["system-manage", "user"]} menuKey="user" breadcrumb={[
                 { title: "用户" },
             ]} />
 

@@ -1,35 +1,36 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 
-import { getTitle } from "../core/config";
+import {getTitle} from "../core/config";
 import useSiteContext from "./site-context";
-import { isEmptyStr, isNotEmptyArray } from "../core/empty";
+import {isEmptyStr, isNotEmptyArray} from "../core/empty";
 
 const Title = (props) => {
     const title = props.title;
     const breadcrumb = props.breadcrumb;
+    const parentMenuKeys = props.parentMenuKeys ? props.parentMenuKeys : [];
     const menuKey = props.menuKey ? props.menuKey : "";
     const displayStyle = isEmptyStr(title) ? "none" : "block";
 
-    const { setBreadcrumb, setMenuActiveKey } = useSiteContext();
+    const {setBreadcrumb, setMenuOpenKeys, setMenuActiveKey} = useSiteContext();
 
     useEffect(() => {
         document.title = getTitle(title);
 
         if (isNotEmptyArray(breadcrumb)) {
             setBreadcrumb(breadcrumb);
-        }
-        else {
+        } else {
             setBreadcrumb([]);
         }
 
     }, [title]);
 
     useEffect(() => {
+        setMenuOpenKeys(parentMenuKeys);
         setMenuActiveKey(menuKey);
     }, [menuKey]);
 
     return (
-        <h1 className="page-title" style={{ display: displayStyle }}>
+        <h1 className="page-title" style={{display: displayStyle}}>
             {title}
         </h1>
     );

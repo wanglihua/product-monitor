@@ -29,6 +29,7 @@ const LayoutAdmin = () => {
         user,
         setUser,
         breadcrumb,
+        menuOpenKeys,
         menuActiveKey,
     } = useSiteContext();
 
@@ -146,6 +147,7 @@ const LayoutAdmin = () => {
                         <Menu
                             theme="light"
                             mode="inline"
+                            defaultOpenKeys={menuOpenKeys}
                             selectedKeys={[menuActiveKey]}
                             items={[
                                 {
@@ -161,6 +163,22 @@ const LayoutAdmin = () => {
                                                 navigate("/product");
                                             }
                                         },
+                                        {
+                                            key: "college",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "院校目录",
+                                            onClick: () => {
+                                                navigate("/college");
+                                            }
+                                        },
+
+                                    ],
+                                },
+                                {
+                                    key: "system-manage",
+                                    icon: <SolutionOutlined style={{color: "#1677ff"}}/>,
+                                    label: "系统管理",
+                                    children: [
                                         {
                                             key: "user",
                                             icon: <UserOutlined style={{color: "#1677ff"}}/>,
@@ -178,13 +196,6 @@ const LayoutAdmin = () => {
                                                 navigate("/admin/user");
                                             }
                                         },
-                                    ],
-                                },
-                                {
-                                    key: "system-manage",
-                                    icon: <SolutionOutlined style={{color: "#1677ff"}}/>,
-                                    label: "系统管理",
-                                    children: [
                                         {
                                             key: "action-log",
                                             icon: <SolutionOutlined style={{color: "#1677ff"}}/>,
