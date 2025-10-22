@@ -1,4 +1,4 @@
-﻿using Core;
+using Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,12 +22,12 @@ public class ProductUpdateEntityMap : IEntityTypeConfiguration<ProductUpdateEnti
 
         builder.Property(e => e.VersionSale)
             .HasColumnName("version_sale")
-            .HasMaxLength(32) 
+            .HasMaxLength(32)
             .IsRequired(true);
 
         builder.Property(e => e.VersionUpdate)
             .HasColumnName("version_update")
-            .HasMaxLength(32) 
+            .HasMaxLength(32)
             .IsRequired(true);
 
         builder.Property(e => e.UpdateCount)
@@ -36,17 +36,17 @@ public class ProductUpdateEntityMap : IEntityTypeConfiguration<ProductUpdateEnti
 
         builder.Property(e => e.UpdateUrl)
             .HasColumnName("update_url")
-            .HasMaxLength(256) 
+            .HasMaxLength(256)
             .IsRequired(true);
 
         builder.Property(e => e.LoginUser)
             .HasColumnName("login_user")
-            .HasMaxLength(128) 
+            .HasMaxLength(128)
             .IsRequired(true);
 
         builder.Property(e => e.LoginPassword)
             .HasColumnName("login_password")
-            .HasMaxLength(128) 
+            .HasMaxLength(128)
             .IsRequired(true);
 
         builder.Property(e => e.UpdateDate)
@@ -55,22 +55,22 @@ public class ProductUpdateEntityMap : IEntityTypeConfiguration<ProductUpdateEnti
 
         builder.Property(e => e.SalesManager)
             .HasColumnName("sales_manager")
-            .HasMaxLength(32) 
+            .HasMaxLength(32)
             .IsRequired(true);
 
         builder.Property(e => e.ContactTeacher)
             .HasColumnName("contact_teacher")
-            .HasMaxLength(32) 
+            .HasMaxLength(32)
             .IsRequired(true);
 
         builder.Property(e => e.ContactMobile)
             .HasColumnName("contact_mobile")
-            .HasMaxLength(32) 
+            .HasMaxLength(32)
             .IsRequired(true);
 
         builder.Property(e => e.Description)
             .HasColumnName("description")
-            .HasMaxLength(512) 
+            .HasMaxLength(512)
             .IsRequired(true);
     }
 }

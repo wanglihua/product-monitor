@@ -1,4 +1,4 @@
-﻿using Core;
+using Core;
 
 namespace Domain;
 
@@ -71,4 +71,5 @@ public class ProductUpdateEntity : Entity
     /// 其他备注
     /// </summary>
     public string Description { get; set; } = ""; 
+
 }
