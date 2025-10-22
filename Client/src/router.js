@@ -13,6 +13,7 @@ import Product from "./pages/product";
 import College from "./pages/college";
 import ProductUrl from "./pages/product-url";
 import ProductSale from "./pages/product-sale";
+import ProductRent from "./pages/product-rent";
 
 const Router = () => {
     return (
@@ -25,6 +26,7 @@ const Router = () => {
                     <Route path="/college" element={<College/>}/>
                     <Route path="/product-url" element={<ProductUrl/>}/>
                     <Route path="/product-sale" element={<ProductSale/>}/>
+                    <Route path="/product-rent" element={<ProductRent/>}/>
                     <Route path="/user" element={<User/>}/>
                     <Route path="/admin/user" element={<AdminUser/>}/>
                     <Route path="/action/log" element={<ActionLog/>}/>

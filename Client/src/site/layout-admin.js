@@ -164,6 +164,14 @@ const LayoutAdmin = () => {
                                                 navigate("/product-sale");
                                             }
                                         },
+                                        {
+                                            key: "product-rent",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "租赁目录",
+                                            onClick: () => {
+                                                navigate("/product-rent");
+                                            }
+                                        },
 
                                     ],
                                 },
