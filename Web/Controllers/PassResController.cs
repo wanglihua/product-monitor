@@ -10,7 +10,7 @@ using Web.Models.PassRes;
 
 namespace Web.Controllers;
 
-[Auth(PassRes.BasicSetting.PassRes)]
+[Auth(PassRes.SystemManage.PassRes)]
 public class PassResController : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();

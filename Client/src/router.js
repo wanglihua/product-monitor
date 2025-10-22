@@ -10,6 +10,7 @@ import Home from "./pages/home";
 import AdminUser from "./pages/admin-user";
 import ActionLog from "./pages/action-log";
 import Product from "./pages/product";
+import College from "./pages/college";
 
 const Router = () => {
     return (
@@ -19,6 +20,7 @@ const Router = () => {
                 <Route element={<LayoutAdmin/>}>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/product" element={<Product/>}/>
+                    <Route path="/college" element={<College/>}/>
                     <Route path="/user" element={<User/>}/>
                     <Route path="/admin/user" element={<AdminUser/>}/>
                     <Route path="/action/log" element={<ActionLog/>}/>

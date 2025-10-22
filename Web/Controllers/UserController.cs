@@ -13,7 +13,7 @@ using Web.Models.User;
 
 namespace Web.Controllers;
 
-[Auth(PassRes.BasicSetting.User)]
+[Auth(PassRes.SystemManage.User)]
 public class UserController : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
