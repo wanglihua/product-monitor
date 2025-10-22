@@ -36,5 +36,10 @@ public class ProductUrlEntityMap : IEntityTypeConfiguration<ProductUrlEntity>
             .HasColumnName("login_password")
             .HasMaxLength(128)
             .IsRequired(true);
+
+        builder.Property(e => e.Description)
+            .HasColumnName("description")
+            .HasMaxLength(512)
+            .IsRequired(true);
     }
 }

@@ -1,3 +1,4 @@
+using System.Drawing;
 using Domain;
 using FluentValidation;
 using Newtonsoft.Json;
@@ -23,6 +24,9 @@ public class ProductUrlDetailModel
 
     [JsonProperty("loginPassword")]
     public string LoginPassword { get; set; } = "";
+
+    [JsonProperty("description")]
+    public string Description { get; set; } = "";
 }
 
 public class ProductUrlDetailModelValidator : AbstractValidator<ProductUrlDetailModel>
@@ -46,5 +50,7 @@ public class ProductUrlDetailModelValidator : AbstractValidator<ProductUrlDetail
         RuleFor(e => e.LoginPassword).NotNull().WithMessage("密码不能为空!");
         RuleFor(e => e.LoginPassword).NotEmpty().WithMessage("密码不能为空!");
         RuleFor(e => e.LoginPassword).MaximumLength(128).WithMessage("密码最大长度不能超过128!");
+
+        RuleFor(e => e.Description).MaximumLength(512).WithMessage("备注最大长度不能超过128!");
     }
 }

@@ -33,4 +33,8 @@ public class ProductUrlEntity : Entity
     /// </summary>
     public string LoginPassword { get; set; } = ""; 
 
+    /// <summary>
+    /// 备注
+    /// </summary>
+    public string Description { get; set; } = "";
 }

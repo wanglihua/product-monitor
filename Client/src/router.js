@@ -11,6 +11,7 @@ import AdminUser from "./pages/admin-user";
 import ActionLog from "./pages/action-log";
 import Product from "./pages/product";
 import College from "./pages/college";
+import ProductUrl from "./pages/product-url";
 
 const Router = () => {
     return (
@@ -21,6 +22,7 @@ const Router = () => {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/product" element={<Product/>}/>
                     <Route path="/college" element={<College/>}/>
+                    <Route path="/product-url" element={<ProductUrl/>}/>
                     <Route path="/user" element={<User/>}/>
                     <Route path="/admin/user" element={<AdminUser/>}/>
                     <Route path="/action/log" element={<ActionLog/>}/>

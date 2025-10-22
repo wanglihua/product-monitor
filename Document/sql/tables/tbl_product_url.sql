@@ -9,11 +9,15 @@
     login_user     NVARCHAR(128) NOT NULL,
     login_password NVARCHAR(128) NOT NULL,
 
+    description    NVARCHAR(512) NOT NULL,
+
     create_time    DATETIME      NOT NULL,
     update_time    DATETIME      NOT NULL,
 
     CONSTRAINT pk_product_url PRIMARY KEY (id)
 );
+
+-- DROP TABLE tbl_product_url;
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'网址管理', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url';
 

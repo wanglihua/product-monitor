@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import ProductUrlDetail from "./productUrl-detail";
+import ProductUrlDetail from "./product-url-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
@@ -53,6 +53,11 @@ const ProductUrl = () => {
             },
         },
         {
+            title: "类型",
+            dataIndex: "typeName",
+            width: "100px",
+        },
+        {
             title: "产品名称",
             dataIndex: "name",
             width: "200px",
@@ -60,23 +65,18 @@ const ProductUrl = () => {
         {
             title: "网址",
             dataIndex: "url",
-            width: "200px",
+            width: "300px",
         },
-        {
-            title: "类型",
-            dataIndex: "typeCode",
-            width: "200px",
-        },
-        {
-            title: "账号",
-            dataIndex: "loginUser",
-            width: "200px",
-        },
-        {
-            title: "密码",
-            dataIndex: "loginPassword",
-            width: "200px",
-        },
+        // {
+        //     title: "账号",
+        //     dataIndex: "loginUser",
+        //     width: "200px",
+        // },
+        // {
+        //     title: "密码",
+        //     dataIndex: "loginPassword",
+        //     width: "200px",
+        // },
         {
             title: "创建时间",
             dataIndex: "createTime",
@@ -137,7 +137,7 @@ const ProductUrl = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={nameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}

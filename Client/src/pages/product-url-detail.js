@@ -65,6 +65,7 @@ const ProductUrlDetailInner = (props) => {
                             typeCode: data.typeCode,
                             loginUser: data.loginUser,
                             loginPassword: data.loginPassword,
+                            description: data.description,
                         });
                     });
                 }
@@ -93,6 +94,7 @@ const ProductUrlDetailInner = (props) => {
                             typeCode: values.typeCode,
                             loginUser: values.loginUser,
                             loginPassword: values.loginPassword,
+                            description: values.description,
                         }, function (response) {
                             const res = response.data;
                             if (res.success === false) {
@@ -198,6 +200,21 @@ const ProductUrlDetailInner = (props) => {
                                 <Input
                                     maxLength={128}
                                     placeholder="密码"
+                                    allowClear
+                                />
+                            </Form.Item>
+                        </Descriptions.Item>
+
+                        <Descriptions.Item label="备注">
+                            <Form.Item
+                                name="description"
+                                rules={[
+                                ]}
+                            >
+                                <Input.TextArea
+                                    rows={3}
+                                    maxLength={512}
+                                    placeholder="备注"
                                     allowClear
                                 />
                             </Form.Item>

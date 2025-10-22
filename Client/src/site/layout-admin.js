@@ -144,6 +144,7 @@ const LayoutAdmin = () => {
                             },
                         },
                     }}>
+                        {/* defaultOpenKeys 不工作, 不知道为啥 */}
                         <Menu
                             theme="light"
                             mode="inline"
@@ -169,6 +170,14 @@ const LayoutAdmin = () => {
                                             label: "院校目录",
                                             onClick: () => {
                                                 navigate("/college");
+                                            }
+                                        },
+                                        {
+                                            key: "productUrl",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "网址管理",
+                                            onClick: () => {
+                                                navigate("/product-url");
                                             }
                                         },
 

@@ -127,11 +127,12 @@ public class ProductUrlController : Controller
             {
                 model = new ProductUrlDetailModel {
                     Id = productUrl.Id,
-                Name = productUrl.Name,
-                Url = productUrl.Url,
-                TypeCode = productUrl.Type.Code,
-                LoginUser = productUrl.LoginUser,
-                LoginPassword = productUrl.LoginPassword,
+                    Name = productUrl.Name,
+                    Url = productUrl.Url,
+                    TypeCode = productUrl.Type.Code,
+                    LoginUser = productUrl.LoginUser,
+                    LoginPassword = productUrl.LoginPassword,
+                    Description = productUrl.Description,
                 };
             }
         }
@@ -172,6 +173,7 @@ public class ProductUrlController : Controller
         productUrl.Type = ProductUrlType.GetByCode(model.TypeCode);
         productUrl.LoginUser = model.LoginUser ?? "";
         productUrl.LoginPassword = model.LoginPassword ?? "";
+        productUrl.Description = model.Description ?? "";
 
         if (isCreate == true)
         {
