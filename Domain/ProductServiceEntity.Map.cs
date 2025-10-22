@@ -1,4 +1,4 @@
-﻿using Core;
+using Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -34,32 +34,32 @@ public class ProductServiceEntityMap : IEntityTypeConfiguration<ProductServiceEn
 
         builder.Property(e => e.ServiceUrl)
             .HasColumnName("service_url")
-            .HasMaxLength(256) 
+            .HasMaxLength(256)
             .IsRequired(true);
 
         builder.Property(e => e.LoginUser)
             .HasColumnName("login_user")
-            .HasMaxLength(128) 
+            .HasMaxLength(128)
             .IsRequired(true);
 
         builder.Property(e => e.LoginPassword)
             .HasColumnName("login_password")
-            .HasMaxLength(128) 
+            .HasMaxLength(128)
             .IsRequired(true);
 
         builder.Property(e => e.ContactTeacher)
             .HasColumnName("contact_teacher")
-            .HasMaxLength(32) 
+            .HasMaxLength(32)
             .IsRequired(true);
 
         builder.Property(e => e.ContactMobile)
             .HasColumnName("contact_mobile")
-            .HasMaxLength(32) 
+            .HasMaxLength(32)
             .IsRequired(true);
 
         builder.Property(e => e.Description)
             .HasColumnName("description")
-            .HasMaxLength(512) 
+            .HasMaxLength(512)
             .IsRequired(true);
     }
 }
