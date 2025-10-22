@@ -172,7 +172,14 @@ const LayoutAdmin = () => {
                                                 navigate("/product-rent");
                                             }
                                         },
-
+                                        {
+                                            key: "product-eval",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "试用目录",
+                                            onClick: () => {
+                                                navigate("/product-eval");
+                                            }
+                                        },
                                     ],
                                 },
                                 {
