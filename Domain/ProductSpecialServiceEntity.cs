@@ -1,4 +1,4 @@
-﻿using Core;
+using Core;
 
 namespace Domain;
 
@@ -30,30 +30,31 @@ public class ProductSpecialServiceEntity : Entity
     /// <summary>
     /// 售后网址
     /// </summary>
-    public string ServiceUrl { get; set; } = "";
+    public string ServiceUrl { get; set; } = ""; 
 
     /// <summary>
     /// 售后账号
     /// </summary>
-    public string LoginUser { get; set; } = "";
+    public string LoginUser { get; set; } = ""; 
 
     /// <summary>
     /// 售后密码
     /// </summary>
-    public string LoginPassword { get; set; } = "";
+    public string LoginPassword { get; set; } = ""; 
 
     /// <summary>
     /// 联系老师
     /// </summary>
-    public string ContactTeacher { get; set; } = "";
+    public string ContactTeacher { get; set; } = ""; 
 
     /// <summary>
     /// 联系电话
     /// </summary>
-    public string ContactMobile { get; set; } = "";
+    public string ContactMobile { get; set; } = ""; 
 
     /// <summary>
     /// 售后问题
     /// </summary>
-    public string Description { get; set; } = "";
+    public string Description { get; set; } = ""; 
+
 }
