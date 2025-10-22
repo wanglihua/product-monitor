@@ -15,6 +15,10 @@ import ProductUrl from "./pages/product-url";
 import ProductSale from "./pages/product-sale";
 import ProductRent from "./pages/product-rent";
 import ProductEval from "./pages/product-eval";
+import ProductInstall from "./pages/product-install";
+import ProductUpdate from "./pages/product-update";
+import ProductService from "./pages/product-service";
+import ProductSpecialService from "./pages/product-special-service";
 
 const Router = () => {
     return (
@@ -29,6 +33,10 @@ const Router = () => {
                     <Route path="/product-sale" element={<ProductSale/>}/>
                     <Route path="/product-rent" element={<ProductRent/>}/>
                     <Route path="/product-eval" element={<ProductEval/>}/>
+                    <Route path="/product-install" element={<ProductInstall/>}/>
+                    <Route path="/product-update" element={<ProductUpdate/>}/>
+                    <Route path="/product-service" element={<ProductService/>}/>
+                    <Route path="/product-special-service" element={<ProductSpecialService/>}/>
                     <Route path="/user" element={<User/>}/>
                     <Route path="/admin/user" element={<AdminUser/>}/>
                     <Route path="/action/log" element={<ActionLog/>}/>

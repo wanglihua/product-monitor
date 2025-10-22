@@ -152,6 +152,45 @@ const LayoutAdmin = () => {
                             selectedKeys={[menuActiveKey]}
                             items={[
                                 {
+                                    key: "product-service",
+                                    icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                    label: "产品服务",
+                                    children: [
+                                        {
+                                            key: "product-install",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "产品安装",
+                                            onClick: () => {
+                                                navigate("/product-install");
+                                            }
+                                        },
+                                        {
+                                            key: "product-update",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "产品更新",
+                                            onClick: () => {
+                                                navigate("/product-update");
+                                            }
+                                        },
+                                        {
+                                            key: "product-service",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "售后服务",
+                                            onClick: () => {
+                                                navigate("/product-Service");
+                                            }
+                                        },
+                                        {
+                                            key: "product-special-Service",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "特殊售后",
+                                            onClick: () => {
+                                                navigate("/product-special-Service");
+                                            }
+                                        },
+                                    ],
+                                },
+                                {
                                     key: "project-manage",
                                     icon: <UserOutlined style={{color: "#1677ff"}}/>,
                                     label: "项目管理",
