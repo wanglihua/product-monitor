@@ -1,6 +1,5 @@
 ﻿using Core.Auth;
 using Core.Database;
-using Core.Web;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
@@ -21,30 +20,30 @@ public class ProductSelectController : Controller
     }
 
     [HttpPost("/api/product/select/data")]
-    [Transactional]
+    [Transactional(false)]
     public IActionResult Data([FromBody] ProductSelectDataQueryParam param)
     {
         IQueryable<ProductEntity> query = db.Set<ProductEntity>();
 
-        if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
+        if (string.IsNullOrWhiteSpace(param.Search) == false)
         {
-            string nameQuery = param.NameQuery.Trim();
-            query = query.Where(e => e.Name.Contains(nameQuery));
+            string search = param.Search.Trim();
+            query = query.Where(e => e.Name.Contains(search));
         }
 
         var productList = query.OrderBy(e => e.Id).Take(10).ToList();
 
-        var productOptionList = productList
-            .Select(e => new SelectOption {
-                Value = e.Id,
-                Label = e.Name,
+        var productItemList = productList
+            .Select(e => new Dictionary<string, object>() {
+                ["value"] = e.Id,
+                ["label"] = e.Name,
             })
             .ToList();
 
         return Json(new Dictionary<string, object> {
             ["success"] = true,
             ["message"] = "success",
-            ["productList"] = productOptionList,
+            ["productList"] = productItemList,
         });
     }
 }

@@ -4,6 +4,6 @@ namespace Web.Models.ProductSelect;
 
 public class ProductSelectDataQueryParam
 {
-    [JsonProperty("nameQuery")]
-    public string NameQuery { get; set; } = "";
+    [JsonProperty("search")]
+    public string Search { get; set; } = "";
 }
