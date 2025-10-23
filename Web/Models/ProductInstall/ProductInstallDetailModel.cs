@@ -86,8 +86,6 @@ public class ProductInstallDetailModelValidator : AbstractValidator<ProductInsta
         RuleFor(e => e.ContactMobile).NotEmpty().WithMessage("联系电话不能为空!");
         RuleFor(e => e.ContactMobile).MaximumLength(32).WithMessage("联系电话最大长度不能超过32!");
 
-        RuleFor(e => e.Description).NotNull().WithMessage("其他备注不能为空!");
-        RuleFor(e => e.Description).NotEmpty().WithMessage("其他备注不能为空!");
         RuleFor(e => e.Description).MaximumLength(512).WithMessage("其他备注最大长度不能超过512!");
     }
 }

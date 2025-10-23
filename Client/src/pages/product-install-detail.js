@@ -28,7 +28,7 @@ const ProductInstallDetailInner = (props) => {
     return (
         <Modal
             title={title.current}
-            width="680px"
+            width="880px"
             destroyOnClose={true}
             footer={null}
             open={open}
@@ -126,7 +126,7 @@ const ProductInstallDetailInner = (props) => {
                         bordered={true}
                         layout="horizontal"
                         size="small"
-                        column={1}
+                        column={2}
                         labelStyle={{width: "120px"}}
                     >
                         <Descriptions.Item label="学校">
@@ -303,13 +303,10 @@ const ProductInstallDetailInner = (props) => {
                             <Form.Item
                                 name="description"
                                 rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入其他备注!',
-                                    },
                                 ]}
                             >
-                                <Input
+                                <Input.TextArea
+                                    rows={2}
                                     maxLength={512}
                                     placeholder="其他备注"
                                     allowClear

@@ -11,7 +11,8 @@ const ProductInstall = () => {
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        collegeNameQuery: "",
+        productNameQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -132,8 +133,8 @@ const ProductInstall = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={collegeNameQueryRef} addonBefore="学校名称" placeholder="学校名称查询" style={{width: 320}}/>
-                    <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 320}}/>
+                    <Input ref={collegeNameQueryRef} addonBefore="学校名称" placeholder="学校名称查询" style={{width: 280}}/>
+                    <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
