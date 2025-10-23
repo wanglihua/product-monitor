@@ -1,3 +1,4 @@
+using Domain;
 using FluentValidation;
 using Newtonsoft.Json;
 
@@ -46,6 +47,14 @@ public class ProductServiceDetailModel
 
     [JsonProperty("description")]
     public string Description { get; set; } = "";
+
+    [JsonProperty("projectTypeList")]
+    public IList<Dictionary<string, object>> ProjectTypeList => ProjectType.GetList()
+        .Select(e => new Dictionary<string, object> {
+            ["value"] = e.Code,
+            ["label"] = e.Name,
+        })
+        .ToList();
 }
 
 public class ProductServiceDetailModelValidator : AbstractValidator<ProductServiceDetailModel>

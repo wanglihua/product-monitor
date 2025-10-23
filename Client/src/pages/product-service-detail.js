@@ -23,6 +23,7 @@ const ProductServiceDetailInner = (props) => {
 
     const [state, setState] = useState({});
 
+    const [projectTypeOptions, setProjectTypeOptions] = useState([]);
     const [collegeSelectOptions, setCollegeSelectOptions] = useState([]);
     const [productSelectOptions, setProductSelectOptions] = useState([]);
 
@@ -62,6 +63,7 @@ const ProductServiceDetailInner = (props) => {
 
                         const data = res.data;
 
+                        let projectTypeCode = undefined;
                         let collegeId = undefined;
                         let productId = undefined;
 
@@ -77,12 +79,16 @@ const ProductServiceDetailInner = (props) => {
                                 value: productId,
                                 label: data.productName,
                             }]);
+
+                            projectTypeCode = data.projectTypeCode;
                         }
+
+                        setProjectTypeOptions(data.projectTypeList)
 
                         form.current.setFieldsValue({
                             collegeId: collegeId,
                             productId: productId,
-                            projectTypeCode: data.projectTypeCode,
+                            projectTypeCode: projectTypeCode,
                             serviceDate: dayjs(data.serviceDate),
                             serviceCount: data.serviceCount,
                             serviceUrl: data.serviceUrl,
@@ -219,10 +225,9 @@ const ProductServiceDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={4}
-                                    placeholder="项目类型"
-                                    allowClear
+                                <Select
+                                    placeholder="请选择项目类型"
+                                    options={projectTypeOptions}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
