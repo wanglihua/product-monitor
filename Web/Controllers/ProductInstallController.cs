@@ -164,7 +164,7 @@ public class ProductInstallController : Controller
             ProductId = 0,
             VersionSale = "",
             VersionInstall = "",
-            InstallDate = "",
+            InstallDate = DateTime.Today.ToString("yyyy-MM-dd"),
             UpdateUrl = "",
             LoginUser = "",
             LoginPassword = "",

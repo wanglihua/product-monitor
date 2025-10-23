@@ -59,9 +59,6 @@ const ProductDetailInner = (props) => {
 
                         const data = res.data;
 
-                        // console.log(data.versionUpdateTime);
-                        // console.log(dayjs(data.versionUpdateTime));
-
                         form.current.setFieldsValue({
                             name: data.name,
                             version: data.version,
@@ -168,7 +165,7 @@ const ProductDetailInner = (props) => {
                             </Form.Item>
                         </Descriptions.Item>
 
-                        <Descriptions.Item label="更新时间">
+                        <Descriptions.Item label="版本更新时间">
                             <Form.Item
                                 name="versionUpdateTime"
                                 rules={[
@@ -178,20 +175,11 @@ const ProductDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                {/*
-                                <Input
-                                    maxLength={30}
-                                    placeholder="更新时间"
-                                    allowClear
-                                />
-                                */}
-                                
                                 <DatePicker
                                     style={{width: "100%"}}
-                                    placeholder="更新时间"
+                                    placeholder="版本更新时间"
                                     allowClear
                                 />
-
                             </Form.Item>
                         </Descriptions.Item>
 

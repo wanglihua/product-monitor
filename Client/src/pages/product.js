@@ -68,9 +68,9 @@ const Product = () => {
             width: "200px",
         },
         {
-            title: "更新时间",
+            title: "版本更新时间",
             dataIndex: "versionUpdateTime",
-            width: "110px",
+            width: "120px",
         },
         {
             title: "创建时间",

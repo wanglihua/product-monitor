@@ -64,7 +64,7 @@ const ProductInstallDetailInner = (props) => {
                             productId: data.productId,
                             versionSale: data.versionSale,
                             versionInstall: data.versionInstall,
-                            installDate: data.installDate,
+                            installDate: dayjs(data.installDate),
                             updateUrl: data.updateUrl,
                             loginUser: data.loginUser,
                             loginPassword: data.loginPassword,
@@ -207,8 +207,8 @@ const ProductInstallDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
+                                <DatePicker
+                                    style={{width: "100%"}}
                                     placeholder="安装时间"
                                     allowClear
                                 />

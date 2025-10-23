@@ -117,7 +117,7 @@ public class ProductController : Controller
             Version = "",
             VersionUpdateBase = "",
             VersionUpdateDesc = "",
-            VersionUpdateTime = "",
+            VersionUpdateTime = DateTime.Today.ToString("yyyy-MM-dd"),
         };
 
         if (productId > 0)
