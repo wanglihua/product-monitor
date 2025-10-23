@@ -100,13 +100,14 @@ public class ProductUrlController : Controller
             })
             .ToList();
 
-        var productUrlTypeList = new List<Dictionary<string, object?>>();
-        productUrlTypeList.Add(new Dictionary<string, object?> {
-            ["value"] = null,
-            ["label"] = "类型查询",
-        });
+        var productUrlTypeList = new List<Dictionary<string, object>> {
+            new Dictionary<string, object> {
+                ["value"] = "",
+                ["label"] = "类型查询",
+            }
+        };
         productUrlTypeList.AddRange(ProductUrlType.GetList()
-            .Select(e => new Dictionary<string, object?> {
+            .Select(e => new Dictionary<string, object> {
                 ["value"] = e.Code,
                 ["label"] = e.Name,
             })
