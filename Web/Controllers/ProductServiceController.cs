@@ -164,7 +164,7 @@ public class ProductServiceController : Controller
             CollegeId = 0,
             ProductId = 0,
             ProjectTypeCode = 0,
-            ServiceDate = "",
+            ServiceDate = DateTime.Today.ToString("yyyy-MM-dd"),
             ServiceCount = 0,
             ServiceUrl = "",
             LoginUser = "",
@@ -228,6 +228,8 @@ public class ProductServiceController : Controller
     {
         ValidationUtil.Validate<ProductServiceDetailModelValidator, ProductServiceDetailModel>(model);
 
+        long loginUserId = userLoginService.GetLoginUserId();
+
         long productServiceId = model.Id;
         bool isCreate = productServiceId == 0;
 
@@ -256,6 +258,7 @@ public class ProductServiceController : Controller
         productService.ContactTeacher = model.ContactTeacher ?? "";
         productService.ContactMobile = model.ContactMobile ?? "";
         productService.Description = model.Description ?? "";
+        productService.UserId = loginUserId;
 
         if (isCreate == true)
         {
@@ -268,7 +271,6 @@ public class ProductServiceController : Controller
 
         db.SaveChanges();
 
-        long loginUserId = userLoginService.GetLoginUserId();
         if (isCreate == true)
         {
             string actionDesc = $"#{productService.Id}";

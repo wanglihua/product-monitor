@@ -256,7 +256,6 @@ const ProductInstallDetailInner = (props) => {
                                 <DatePicker
                                     style={{width: "100%"}}
                                     placeholder="安装时间"
-                                    allowClear
                                 />
                             </Form.Item>
                         </Descriptions.Item>

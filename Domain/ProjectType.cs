@@ -15,7 +15,7 @@ public class ProjectType : CodeTypeBase
     /// <summary>
     /// 租赁项目
     /// </summary>
-    public static readonly ProjectType Rent = new(1_00, "租赁项目");
+    public static readonly ProjectType Rent = new(2_00, "租赁项目");
 
     /// <summary>
     /// None

@@ -178,7 +178,6 @@ const ProductDetailInner = (props) => {
                                 <DatePicker
                                     style={{width: "100%"}}
                                     placeholder="版本更新时间"
-                                    allowClear
                                 />
                             </Form.Item>
                         </Descriptions.Item>
