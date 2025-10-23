@@ -173,19 +173,19 @@ const LayoutAdmin = () => {
                                             }
                                         },
                                         {
-                                            key: "product-sale-service",
+                                            key: "product-service",
                                             icon: <UserOutlined style={{color: "#1677ff"}}/>,
                                             label: "售后维护",
                                             onClick: () => {
-                                                navigate("/product-Service");
+                                                navigate("/product-service");
                                             }
                                         },
                                         {
-                                            key: "product-special-Service",
+                                            key: "product-special-service",
                                             icon: <UserOutlined style={{color: "#1677ff"}}/>,
                                             label: "特殊售后",
                                             onClick: () => {
-                                                navigate("/product-special-Service");
+                                                navigate("/product-special-service");
                                             }
                                         },
                                     ],
