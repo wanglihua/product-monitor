@@ -40,6 +40,12 @@ public class ProductUrlController : Controller
     {
         IQueryable<ProductUrlEntity> query = db.Set<ProductUrlEntity>();
 
+        var typeQuery = ProductUrlType.GetByCode(param.TypeQuery);
+        if (typeQuery != ProductUrlType.None)
+        {
+            query = query.Where(e => e.Type == typeQuery);
+        }
+
         if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
         {
             string nameQuery = param.NameQuery.Trim();
@@ -94,12 +100,25 @@ public class ProductUrlController : Controller
             })
             .ToList();
 
+        var productUrlTypeList = new List<Dictionary<string, object?>>();
+        productUrlTypeList.Add(new Dictionary<string, object?> {
+            ["value"] = null,
+            ["label"] = "类型查询",
+        });
+        productUrlTypeList.AddRange(ProductUrlType.GetList()
+            .Select(e => new Dictionary<string, object?> {
+                ["value"] = e.Code,
+                ["label"] = e.Name,
+            })
+        );
+
         return Json(new JsonResultData {
             Success = true,
             Message = "success",
             Data = new Dictionary<string, object> {
                 ["productUrlList"] = productUrlItemList,
                 ["productUrlCount"] = productUrlCount,
+                ["productUrlTypeList"] = productUrlTypeList,
             },
         });
     }

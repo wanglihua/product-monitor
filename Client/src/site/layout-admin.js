@@ -173,7 +173,7 @@ const LayoutAdmin = () => {
                                             }
                                         },
                                         {
-                                            key: "product-service",
+                                            key: "product-sale-service",
                                             icon: <UserOutlined style={{color: "#1677ff"}}/>,
                                             label: "售后维护",
                                             onClick: () => {
@@ -243,7 +243,7 @@ const LayoutAdmin = () => {
                                             }
                                         },
                                         {
-                                            key: "productUrl",
+                                            key: "product-url",
                                             icon: <UserOutlined style={{color: "#1677ff"}}/>,
                                             label: "网址管理",
                                             onClick: () => {

@@ -23,6 +23,8 @@ const ProductUrlDetailInner = (props) => {
 
     const [state, setState] = useState({});
 
+    const [productUrlTypeOptions, setProductUrlTypeOptions] = useState([]);
+
     const form = useRef();
 
     return (
@@ -59,10 +61,17 @@ const ProductUrlDetailInner = (props) => {
 
                         const data = res.data;
 
+                        let typeCode = undefined;
+                        if (productUrlId > 0) {
+                            typeCode = data.typeCode;
+                        }
+
+                        setProductUrlTypeOptions(data.productUrlTypeList)
+
                         form.current.setFieldsValue({
                             name: data.name,
                             url: data.url,
-                            typeCode: data.typeCode,
+                            typeCode: typeCode,
                             loginUser: data.loginUser,
                             loginPassword: data.loginPassword,
                             description: data.description,
@@ -163,10 +172,9 @@ const ProductUrlDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={4}
-                                    placeholder="类型"
-                                    allowClear
+                                <Select
+                                    placeholder="请选择类型"
+                                    options={productUrlTypeOptions}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -208,8 +216,7 @@ const ProductUrlDetailInner = (props) => {
                         <Descriptions.Item label="备注">
                             <Form.Item
                                 name="description"
-                                rules={[
-                                ]}
+                                rules={[]}
                             >
                                 <Input.TextArea
                                     rows={3}

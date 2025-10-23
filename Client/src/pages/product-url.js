@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
+import {Button, Input, Select, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import ProductUrlDetail from "./product-url-detail";
 
@@ -11,6 +11,7 @@ const ProductUrl = () => {
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
+        typeQuery: 0,
         nameQuery: "",
         currentPage: 1,
         pageSize: 15,
@@ -21,6 +22,7 @@ const ProductUrl = () => {
     const [state, setState] = useState({
         productUrlList: [],
         productUrlCount: 0,
+        productUrlTypeList: [],
     });
 
     const loadProductUrlList = () => {
@@ -36,6 +38,7 @@ const ProductUrl = () => {
                     ...pre,
                     productUrlList: res.data.productUrlList,
                     productUrlCount: res.data.productUrlCount,
+                    productUrlTypeList: res.data.productUrlTypeList,
                 };
             });
         });
@@ -128,15 +131,19 @@ const ProductUrl = () => {
         loadProductUrlList();
     }, [JSON.stringify(listParam)]);
 
+    const typeQueryRef = useRef();
     const nameQueryRef = useRef();
 
     return (
         <div>
-            <Title title="网址管理" menuKey="productUrl" breadcrumb={[
+            <Title title="网址管理" menuKey="product-url" breadcrumb={[
                 {title: "网址管理"},
             ]}/>
             <div>
                 <Space>
+                    <Select options={state.productUrlTypeList} addonbefore="类型" placeholder="类型查询" style={{width: 120}} onSelect={(val) => {
+                        typeQueryRef.current = val;
+                    }}/>
                     <Input ref={nameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>
                     <Button
                         color="default"
@@ -147,6 +154,7 @@ const ProductUrl = () => {
                             setListParam((pre) => {
                                 return {
                                     ...pre,
+                                    typeQuery: typeQueryRef.current,
                                     nameQuery: nameQuery,
                                 };
                             });

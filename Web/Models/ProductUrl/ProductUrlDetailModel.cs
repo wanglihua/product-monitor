@@ -27,6 +27,14 @@ public class ProductUrlDetailModel
 
     [JsonProperty("description")]
     public string Description { get; set; } = "";
+
+    [JsonProperty("productUrlTypeList")]
+    public IList<Dictionary<string, object>> ProductUrlTypeList => ProductUrlType.GetList()
+        .Select(e => new Dictionary<string, object> {
+            ["value"] = e.Code,
+            ["label"] = e.Name,
+        })
+        .ToList();
 }
 
 public class ProductUrlDetailModelValidator : AbstractValidator<ProductUrlDetailModel>
