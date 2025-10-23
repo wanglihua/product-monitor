@@ -20,8 +20,9 @@ public class ProductServiceEntityMap : IEntityTypeConfiguration<ProductServiceEn
             .HasColumnName("product_id")
             .IsRequired(true);
 
-        builder.Property(e => e.ProjectTypeCode)
+        builder.Property(e => e.ProjectType)
             .HasColumnName("project_type_code")
+            .HasConversion<ProjectTypeValueConverter>()
             .IsRequired(true);
 
         builder.Property(e => e.ServiceDate)

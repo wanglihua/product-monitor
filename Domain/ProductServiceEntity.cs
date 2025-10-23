@@ -20,7 +20,7 @@ public class ProductServiceEntity : Entity
     /// <summary>
     /// 项目类型
     /// </summary>
-    public int ProjectTypeCode { get; set; }
+    public ProjectType ProjectType { get; set; } = ProjectType.None;
 
     /// <summary>
     /// 售后时间
@@ -35,35 +35,35 @@ public class ProductServiceEntity : Entity
     /// <summary>
     /// 售后网址
     /// </summary>
-    public string ServiceUrl { get; set; } = ""; 
+    public string ServiceUrl { get; set; } = "";
 
     /// <summary>
     /// 售后账号
     /// </summary>
-    public string LoginUser { get; set; } = ""; 
+    public string LoginUser { get; set; } = "";
 
     /// <summary>
     /// 售后密码
     /// </summary>
-    public string LoginPassword { get; set; } = ""; 
+    public string LoginPassword { get; set; } = "";
 
     /// <summary>
     /// 联系老师
     /// </summary>
-    public string ContactTeacher { get; set; } = ""; 
+    public string ContactTeacher { get; set; } = "";
 
     /// <summary>
     /// 联系电话
     /// </summary>
-    public string ContactMobile { get; set; } = ""; 
+    public string ContactMobile { get; set; } = "";
 
     /// <summary>
     /// 售后问题
     /// </summary>
-    public string Description { get; set; } = ""; 
+    public string Description { get; set; } = "";
 
     /// <summary>
     /// 记录人
     /// </summary>
-    public long UserId  { get; set; }
+    public long UserId { get; set; }
 }

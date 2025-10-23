@@ -175,7 +175,7 @@ const LayoutAdmin = () => {
                                         {
                                             key: "product-sale-service",
                                             icon: <UserOutlined style={{color: "#1677ff"}}/>,
-                                            label: "售后服务",
+                                            label: "售后维护",
                                             onClick: () => {
                                                 navigate("/product-Service");
                                             }
