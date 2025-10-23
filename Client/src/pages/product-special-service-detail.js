@@ -23,12 +23,15 @@ const ProductSpecialServiceDetailInner = (props) => {
 
     const [state, setState] = useState({});
 
+    const [collegeSelectOptions, setCollegeSelectOptions] = useState([]);
+    const [productSelectOptions, setProductSelectOptions] = useState([]);
+
     const form = useRef();
 
     return (
         <Modal
             title={title.current}
-            width="680px"
+            width="880px"
             destroyOnClose={true}
             footer={null}
             open={open}
@@ -59,10 +62,27 @@ const ProductSpecialServiceDetailInner = (props) => {
 
                         const data = res.data;
 
+                        let collegeId = undefined;
+                        let productId = undefined;
+
+                        if (productSpecialServiceId > 0) {
+                            collegeId = data.collegeId;
+                            setCollegeSelectOptions([{
+                                value: collegeId,
+                                label: data.collegeName,
+                            }]);
+
+                            productId = data.productId;
+                            setProductSelectOptions([{
+                                value: productId,
+                                label: data.productName,
+                            }]);
+                        }
+
                         form.current.setFieldsValue({
-                            collegeId: data.collegeId,
-                            productId: data.productId,
-                            serviceDate: data.serviceDate,
+                            collegeId: collegeId,
+                            productId: productId,
+                            serviceDate: dayjs(data.serviceDate),
                             serviceCount: data.serviceCount,
                             serviceUrl: data.serviceUrl,
                             loginUser: data.loginUser,
@@ -124,7 +144,7 @@ const ProductSpecialServiceDetailInner = (props) => {
                         bordered={true}
                         layout="horizontal"
                         size="small"
-                        column={1}
+                        column={2}
                         labelStyle={{width: "120px"}}
                     >
                         <Descriptions.Item label="学校">
@@ -133,14 +153,27 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入学校!',
+                                        message: '请选择学校!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="学校"
-                                    allowClear
+                                <Select
+                                    showSearch={true}
+                                    placeholder="请搜索选择学校"
+                                    options={collegeSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/college/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setCollegeSelectOptions(res.collegeList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -150,14 +183,27 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入产品!',
+                                        message: '请选择产品!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="产品"
-                                    allowClear
+                                <Select
+                                    showSearch={true}
+                                    placeholder="请搜索选择产品"
+                                    options={productSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/product/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setProductSelectOptions(res.productList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -171,10 +217,9 @@ const ProductSpecialServiceDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
+                                <DatePicker
+                                    style={{width: "100%"}}
                                     placeholder="售后时间"
-                                    allowClear
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -280,6 +325,10 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 />
                             </Form.Item>
                         </Descriptions.Item>
+                        <Descriptions.Item label="">
+                            <Form.Item>
+                            </Form.Item>
+                        </Descriptions.Item>
                         <Descriptions.Item label="售后问题">
                             <Form.Item
                                 name="description"
@@ -290,7 +339,7 @@ const ProductSpecialServiceDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
+                                <Input.TextArea
                                     maxLength={512}
                                     placeholder="售后问题"
                                     allowClear
