@@ -23,12 +23,15 @@ const ProductUpdateDetailInner = (props) => {
 
     const [state, setState] = useState({});
 
+    const [collegeSelectOptions, setCollegeSelectOptions] = useState([]);
+    const [productSelectOptions, setProductSelectOptions] = useState([]);
+
     const form = useRef();
 
     return (
         <Modal
             title={title.current}
-            width="680px"
+            width="880px"
             destroyOnClose={true}
             footer={null}
             open={open}
@@ -59,16 +62,33 @@ const ProductUpdateDetailInner = (props) => {
 
                         const data = res.data;
 
+                        let collegeId = undefined;
+                        let productId = undefined;
+
+                        if (productUpdateId > 0) {
+                            collegeId = data.collegeId;
+                            setCollegeSelectOptions([{
+                                value: collegeId,
+                                label: data.collegeName,
+                            }]);
+
+                            productId = data.productId;
+                            setProductSelectOptions([{
+                                value: productId,
+                                label: data.productName,
+                            }]);
+                        }
+
                         form.current.setFieldsValue({
-                            collegeId: data.collegeId,
-                            productId: data.productId,
+                            collegeId: collegeId,
+                            productId: productId,
                             versionSale: data.versionSale,
                             versionUpdate: data.versionUpdate,
                             updateCount: data.updateCount,
                             updateUrl: data.updateUrl,
                             loginUser: data.loginUser,
                             loginPassword: data.loginPassword,
-                            updateDate: data.updateDate,
+                            updateDate: dayjs(data.updateDate),
                             salesManager: data.salesManager,
                             contactTeacher: data.contactTeacher,
                             contactMobile: data.contactMobile,
@@ -130,7 +150,7 @@ const ProductUpdateDetailInner = (props) => {
                         bordered={true}
                         layout="horizontal"
                         size="small"
-                        column={1}
+                        column={2}
                         labelStyle={{width: "120px"}}
                     >
                         <Descriptions.Item label="学校">
@@ -139,14 +159,27 @@ const ProductUpdateDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入学校!',
+                                        message: '请选择学校!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="学校"
-                                    allowClear
+                                <Select
+                                    showSearch={true}
+                                    placeholder="请搜索选择学校"
+                                    options={collegeSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/college/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setCollegeSelectOptions(res.collegeList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -156,14 +189,27 @@ const ProductUpdateDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入产品!',
+                                        message: '请选择产品!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="产品"
-                                    allowClear
+                                <Select
+                                    showSearch={true}
+                                    placeholder="请搜索选择产品"
+                                    options={productSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/product/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setProductSelectOptions(res.productList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -279,8 +325,8 @@ const ProductUpdateDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
+                                <DatePicker
+                                    style={{width: "100%"}}
                                     placeholder="更新时间"
                                     allowClear
                                 />

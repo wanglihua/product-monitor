@@ -72,9 +72,6 @@ public class ProductUpdateDetailModelValidator : AbstractValidator<ProductUpdate
         RuleFor(e => e.VersionUpdate).NotEmpty().WithMessage("更新版本不能为空!");
         RuleFor(e => e.VersionUpdate).MaximumLength(32).WithMessage("更新版本最大长度不能超过32!");
 
-        RuleFor(e => e.UpdateCount).NotNull().WithMessage("更新次数不能为空!");
-        RuleFor(e => e.UpdateCount).NotEmpty().WithMessage("更新次数不能为空!");
-
         RuleFor(e => e.UpdateUrl).NotNull().WithMessage("更新网址不能为空!");
         RuleFor(e => e.UpdateUrl).NotEmpty().WithMessage("更新网址不能为空!");
         RuleFor(e => e.UpdateUrl).MaximumLength(256).WithMessage("更新网址最大长度不能超过256!");

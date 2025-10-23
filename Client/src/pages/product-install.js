@@ -82,7 +82,6 @@ const ProductInstall = () => {
             title: "记录人",
             dataIndex: "userName",
             width: "120px",
-            sorter: true,
         },
         {
             title: "操作",
