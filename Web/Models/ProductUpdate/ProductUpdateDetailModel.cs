@@ -11,8 +11,14 @@ public class ProductUpdateDetailModel
     [JsonProperty("collegeId")]
     public long CollegeId { get; set; }
 
+    [JsonProperty("collegeName")]
+    public string CollegeName { get; set; } = "";
+
     [JsonProperty("productId")]
     public long ProductId { get; set; }
+
+    [JsonProperty("productName")]
+    public string ProductName { get; set; } = "";
 
     [JsonProperty("versionSale")]
     public string VersionSale { get; set; } = "";
@@ -99,8 +105,6 @@ public class ProductUpdateDetailModelValidator : AbstractValidator<ProductUpdate
         RuleFor(e => e.ContactMobile).NotEmpty().WithMessage("联系电话不能为空!");
         RuleFor(e => e.ContactMobile).MaximumLength(32).WithMessage("联系电话最大长度不能超过32!");
 
-        RuleFor(e => e.Description).NotNull().WithMessage("其他备注不能为空!");
-        RuleFor(e => e.Description).NotEmpty().WithMessage("其他备注不能为空!");
         RuleFor(e => e.Description).MaximumLength(512).WithMessage("其他备注最大长度不能超过512!");
     }
 }
