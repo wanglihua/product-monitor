@@ -136,6 +136,7 @@ public class ProductInstallController : Controller
                 ContactTeacher = e.ProductInstall.ContactTeacher,
                 ContactMobile = e.ProductInstall.ContactMobile,
                 Description = e.ProductInstall.Description,
+                UserName = e.User.UserName,
                 CreateTime = e.ProductInstall.CreateTime.ToString("yyyy-MM-dd HH:mm"),
                 UpdateTime = e.ProductInstall.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
@@ -229,6 +230,8 @@ public class ProductInstallController : Controller
     {
         ValidationUtil.Validate<ProductInstallDetailModelValidator, ProductInstallDetailModel>(model);
 
+        long loginUserId = userLoginService.GetLoginUserId();
+
         long productInstallId = model.Id;
         bool isCreate = productInstallId == 0;
 
@@ -257,6 +260,7 @@ public class ProductInstallController : Controller
         productInstall.ContactTeacher = model.ContactTeacher ?? "";
         productInstall.ContactMobile = model.ContactMobile ?? "";
         productInstall.Description = model.Description ?? "";
+        productInstall.UserId = loginUserId;
 
         if (isCreate == true)
         {
@@ -269,7 +273,6 @@ public class ProductInstallController : Controller
 
         db.SaveChanges();
 
-        long loginUserId = userLoginService.GetLoginUserId();
         if (isCreate == true)
         {
             string actionDesc = $"#{productInstall.Id}";

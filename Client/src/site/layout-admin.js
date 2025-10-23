@@ -173,7 +173,7 @@ const LayoutAdmin = () => {
                                             }
                                         },
                                         {
-                                            key: "product-service",
+                                            key: "product-sale-service",
                                             icon: <UserOutlined style={{color: "#1677ff"}}/>,
                                             label: "售后服务",
                                             onClick: () => {

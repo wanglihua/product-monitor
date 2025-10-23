@@ -56,32 +56,32 @@ const ProductInstall = () => {
         {
             title: "学校",
             dataIndex: "collegeName",
-            width: "200px",
+            width: "180px",
         },
         {
             title: "产品",
             dataIndex: "productName",
-            width: "200px",
+            width: "180px",
         },
         {
             title: "销售版本",
             dataIndex: "versionSale",
-            width: "200px",
+            width: "120px",
         },
         {
             title: "安装版本",
             dataIndex: "versionInstall",
-            width: "200px",
+            width: "120px",
         },
         {
             title: "安装时间",
             dataIndex: "installDate",
-            width: "200px",
+            width: "110px",
         },
         {
             title: "记录人",
-            dataIndex: "updateTime",
-            width: "150px",
+            dataIndex: "userName",
+            width: "120px",
             sorter: true,
         },
         {

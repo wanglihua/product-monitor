@@ -37,7 +37,7 @@ public class CollegeSelectController : Controller
         var collegeItemList = collegeList
             .Select(e => new Dictionary<string, object> {
                 ["value"] = e.Id,
-                ["label"] = $"{e.Code} {e.Name}",
+                ["label"] = e.Name,
                 ["code"] = e.Code,
                 ["name"] = e.Name,
             })

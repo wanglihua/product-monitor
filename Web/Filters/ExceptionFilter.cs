@@ -24,6 +24,11 @@ public class ExceptionFilter : IExceptionFilter
             return;
         }
 
+        if (exp.InnerException != null)
+        {
+            exp = exp.InnerException;
+        }
+
         string message = exp.Message;
 
         var request = context.HttpContext.Request;

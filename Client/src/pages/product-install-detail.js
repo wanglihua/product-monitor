@@ -23,6 +23,9 @@ const ProductInstallDetailInner = (props) => {
 
     const [state, setState] = useState({});
 
+    const [collegeSelectOptions, setCollegeSelectOptions] = useState([]);
+    const [productSelectOptions, setProductSelectOptions] = useState([]);
+
     const form = useRef();
 
     return (
@@ -58,6 +61,16 @@ const ProductInstallDetailInner = (props) => {
                         }
 
                         const data = res.data;
+
+                        setCollegeSelectOptions([{
+                            value: data.collegeId,
+                            label: data.collegeName,
+                        }]);
+
+                        setProductSelectOptions([{
+                            value: data.productId,
+                            label: data.productName,
+                        }]);
 
                         form.current.setFieldsValue({
                             collegeId: data.collegeId,
@@ -135,14 +148,27 @@ const ProductInstallDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入学校!',
+                                        message: '请选择学校!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="学校"
-                                    allowClear
+                                <Select
+                                    showSearch={true}
+                                    placeholder="请搜索选择学校"
+                                    options={collegeSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/college/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setCollegeSelectOptions(res.collegeList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -152,14 +178,27 @@ const ProductInstallDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入产品!',
+                                        message: '请选择产品!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="产品"
-                                    allowClear
+                                <Select
+                                    showSearch={true}
+                                    placeholder="请搜索选择产品"
+                                    options={productSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/product/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setProductSelectOptions(res.productList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -302,8 +341,7 @@ const ProductInstallDetailInner = (props) => {
                         <Descriptions.Item label="其他备注">
                             <Form.Item
                                 name="description"
-                                rules={[
-                                ]}
+                                rules={[]}
                             >
                                 <Input.TextArea
                                     rows={2}
