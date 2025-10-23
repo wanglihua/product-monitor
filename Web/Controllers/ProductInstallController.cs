@@ -75,11 +75,16 @@ public class ProductInstallController : Controller
                     User = u,
                 });
 
-
         if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
         {
             string collegeNameQuery = param.CollegeNameQuery.Trim();
             query = query.Where(e => e.College.Name.Contains(collegeNameQuery));
+        }
+        
+        if (string.IsNullOrWhiteSpace(param.ProductNameQuery) == false)
+        {
+            string productNameQuery = param.ProductNameQuery.Trim();
+            query = query.Where(e => e.Product.Name.Contains(productNameQuery));
         }
 
         int productInstallCount = query.Count();

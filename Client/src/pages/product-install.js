@@ -54,12 +54,12 @@ const ProductInstall = () => {
         },
         {
             title: "学校",
-            dataIndex: "collegeId",
+            dataIndex: "collegeName",
             width: "200px",
         },
         {
             title: "产品",
-            dataIndex: "productId",
+            dataIndex: "productName",
             width: "200px",
         },
         {
@@ -78,43 +78,7 @@ const ProductInstall = () => {
             width: "200px",
         },
         {
-            title: "更新网址",
-            dataIndex: "updateUrl",
-            width: "200px",
-        },
-        {
-            title: "系统账号",
-            dataIndex: "loginUser",
-            width: "200px",
-        },
-        {
-            title: "系统密码",
-            dataIndex: "loginPassword",
-            width: "200px",
-        },
-        {
-            title: "联系教师",
-            dataIndex: "contactTeacher",
-            width: "200px",
-        },
-        {
-            title: "联系电话",
-            dataIndex: "contactMobile",
-            width: "200px",
-        },
-        {
-            title: "其他备注",
-            dataIndex: "description",
-            width: "200px",
-        },
-        {
-            title: "创建时间",
-            dataIndex: "createTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
+            title: "记录人",
             dataIndex: "updateTime",
             width: "150px",
             sorter: true,
@@ -158,7 +122,8 @@ const ProductInstall = () => {
         loadProductInstallList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const collegeNameQueryRef = useRef();
+    const productNameQueryRef = useRef();
 
     return (
         <div>
@@ -167,17 +132,20 @@ const ProductInstall = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={collegeNameQueryRef} addonBefore="学校名称" placeholder="学校名称查询" style={{width: 320}}/>
+                    <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 320}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const collegeNameQuery = collegeNameQueryRef.current.input.value;
+                            const productNameQuery = productNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    collegeNameQuery: collegeNameQuery,
+                                    productNameQuery: productNameQuery,
                                 };
                             });
                         }}
