@@ -33,35 +33,71 @@ public class ProductInstallController : Controller
         this.actionLogService = actionLogService;
     }
 
+    private class ProductInstallJoinItem
+    {
+        public ProductInstallEntity ProductInstall { get; set; } = new();
+
+        public CollegeEntity College { get; set; } = new();
+
+        public ProductEntity Product { get; set; } = new();
+
+        public UserEntity User { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/product-install/list")]
     [Transactional(false)]
     public IActionResult List([FromBody] ProductInstallListParam param)
     {
-        IQueryable<ProductInstallEntity> query = db.Set<ProductInstallEntity>();
+        IQueryable<ProductInstallJoinItem> query = db.Set<ProductInstallEntity>()
+            .Join(db.Set<CollegeEntity>(),
+                pi => pi.CollegeId,
+                c => c.Id,
+                (pi, c) => new ProductInstallJoinItem {
+                    ProductInstall = pi,
+                    College = c,
+                })
+            .Join(db.Set<ProductEntity>(),
+                pii => pii.ProductInstall.ProductId,
+                p => p.Id,
+                (pii, p) => new ProductInstallJoinItem {
+                    ProductInstall = pii.ProductInstall,
+                    College = pii.College,
+                    Product = p,
+                })
+            .Join(db.Set<UserEntity>(),
+                pii => pii.ProductInstall.UserId,
+                u => u.Id,
+                (pii, u) => new ProductInstallJoinItem {
+                    ProductInstall = pii.ProductInstall,
+                    College = pii.College,
+                    Product = pii.Product,
+                    User = u,
+                });
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(p => p.Name.Contains(nameQuery));
-        // }
+
+        if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
+        {
+            string collegeNameQuery = param.CollegeNameQuery.Trim();
+            query = query.Where(e => e.College.Name.Contains(collegeNameQuery));
+        }
 
         int productInstallCount = query.Count();
 
         // 排序字段
-        Expression<Func<ProductInstallEntity, object>> sortField = e => e.Id;
+        Expression<Func<ProductInstallJoinItem, object>> sortField = e => e.ProductInstall.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
             if (sortFieldParam == nameof(ProductInstallListItem.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.ProductInstall.CreateTime;
             }
 
             if (sortFieldParam == nameof(ProductInstallListItem.UpdateTime).ToUpper())
             {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.ProductInstall.UpdateTime;
             }
         }
 
@@ -83,20 +119,20 @@ public class ProductInstallController : Controller
 
         var productInstallItemList = productInstallList
             .Select(e => new ProductInstallListItem {
-                Id = e.Id,
-                CollegeId = e.CollegeId,
-                ProductId = e.ProductId,
-                VersionSale = e.VersionSale,
-                VersionInstall = e.VersionInstall,
-                InstallDate = e.InstallDate.ToString("yyyy-MM-dd"),
-                UpdateUrl = e.UpdateUrl,
-                LoginUser = e.LoginUser,
-                LoginPassword = e.LoginPassword,
-                ContactTeacher = e.ContactTeacher,
-                ContactMobile = e.ContactMobile,
-                Description = e.Description,
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.ProductInstall.Id,
+                CollegeName = e.College.Name,
+                ProductName = e.Product.Name,
+                VersionSale = e.ProductInstall.VersionSale,
+                VersionInstall = e.ProductInstall.VersionInstall,
+                InstallDate = e.ProductInstall.InstallDate.ToString("yyyy-MM-dd"),
+                UpdateUrl = e.ProductInstall.UpdateUrl,
+                LoginUser = e.ProductInstall.LoginUser,
+                LoginPassword = e.ProductInstall.LoginPassword,
+                ContactTeacher = e.ProductInstall.ContactTeacher,
+                ContactMobile = e.ProductInstall.ContactMobile,
+                Description = e.ProductInstall.Description,
+                CreateTime = e.ProductInstall.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ProductInstall.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

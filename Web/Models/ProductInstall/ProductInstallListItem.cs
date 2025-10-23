@@ -7,11 +7,11 @@ public class ProductInstallListItem
     [JsonProperty("id")]
     public long Id { get; set; }
 
-    [JsonProperty("collegeId")]
-    public long CollegeId { get; set; }
+    [JsonProperty("collegeName")]
+    public string CollegeName { get; set; } = "";
 
-    [JsonProperty("productId")]
-    public long ProductId { get; set; }
+    [JsonProperty("productName")]
+    public string ProductName { get; set; } = "";
 
     [JsonProperty("versionSale")]
     public string VersionSale { get; set; } = "";
@@ -45,4 +45,7 @@ public class ProductInstallListItem
 
     [JsonProperty("updateTime")]
     public string UpdateTime { get; set; } = "";
+
+    [JsonProperty("userName")]
+    public string UserName { get; set; } = "";
 }

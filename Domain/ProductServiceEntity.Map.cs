@@ -61,5 +61,9 @@ public class ProductServiceEntityMap : IEntityTypeConfiguration<ProductServiceEn
             .HasColumnName("description")
             .HasMaxLength(512)
             .IsRequired(true);
+
+        builder.Property(e => e.UserId)
+            .HasColumnName("user_id")
+            .IsRequired(true);
     }
 }

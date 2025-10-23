@@ -57,4 +57,8 @@ public class ProductSpecialServiceEntity : Entity
     /// </summary>
     public string Description { get; set; } = ""; 
 
+    /// <summary>
+    /// 记录人
+    /// </summary>
+    public long UserId  { get; set; }
 }

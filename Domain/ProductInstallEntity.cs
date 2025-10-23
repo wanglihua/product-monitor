@@ -61,5 +61,9 @@ public class ProductInstallEntity : Entity
     /// 其他备注
     /// </summary>
     public string Description { get; set; } = ""; 
-
+    
+    /// <summary>
+    /// 记录人
+    /// </summary>
+    public long UserId  { get; set; }
 }

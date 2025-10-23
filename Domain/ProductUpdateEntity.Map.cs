@@ -72,5 +72,9 @@ public class ProductUpdateEntityMap : IEntityTypeConfiguration<ProductUpdateEnti
             .HasColumnName("description")
             .HasMaxLength(512)
             .IsRequired(true);
+        
+        builder.Property(e => e.UserId)
+            .HasColumnName("user_id")
+            .IsRequired(true);
     }
 }

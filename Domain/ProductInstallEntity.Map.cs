@@ -63,5 +63,9 @@ public class ProductInstallEntityMap : IEntityTypeConfiguration<ProductInstallEn
             .HasColumnName("description")
             .HasMaxLength(512)
             .IsRequired(true);
+
+        builder.Property(e => e.UserId)
+            .HasColumnName("user_id")
+            .IsRequired(true);
     }
 }
