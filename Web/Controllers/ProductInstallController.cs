@@ -80,7 +80,7 @@ public class ProductInstallController : Controller
             string collegeNameQuery = param.CollegeNameQuery.Trim();
             query = query.Where(e => e.College.Name.Contains(collegeNameQuery));
         }
-        
+
         if (string.IsNullOrWhiteSpace(param.ProductNameQuery) == false)
         {
             string productNameQuery = param.ProductNameQuery.Trim();
@@ -161,7 +161,9 @@ public class ProductInstallController : Controller
         var model = new ProductInstallDetailModel {
             Id = 0,
             CollegeId = 0,
+            CollegeName = "",
             ProductId = 0,
+            ProductName = "",
             VersionSale = "",
             VersionInstall = "",
             InstallDate = DateTime.Today.ToString("yyyy-MM-dd"),
@@ -176,23 +178,41 @@ public class ProductInstallController : Controller
         if (productInstallId > 0)
         {
             var productInstall = db.Set<ProductInstallEntity>().Find(productInstallId);
-            if (productInstall != null)
+            if (productInstall == null)
             {
-                model = new ProductInstallDetailModel {
-                    Id = productInstall.Id,
-                    CollegeId = productInstall.CollegeId,
-                    ProductId = productInstall.ProductId,
-                    VersionSale = productInstall.VersionSale,
-                    VersionInstall = productInstall.VersionInstall,
-                    InstallDate = productInstall.InstallDate.ToString("yyyy-MM-dd"),
-                    UpdateUrl = productInstall.UpdateUrl,
-                    LoginUser = productInstall.LoginUser,
-                    LoginPassword = productInstall.LoginPassword,
-                    ContactTeacher = productInstall.ContactTeacher,
-                    ContactMobile = productInstall.ContactMobile,
-                    Description = productInstall.Description,
-                };
+                throw new ValidationException($"指定的产品安装#{productInstallId}不存在!");
             }
+
+            long collegeId = productInstall.CollegeId;
+            var college = db.Find<CollegeEntity>(collegeId);
+            if (college == null)
+            {
+                throw new ValidationException($"指定的学校#{collegeId}不存在!");
+            }
+
+            long productId = productInstall.ProductId;
+            var product = db.Find<ProductEntity>(productId);
+            if (product == null)
+            {
+                throw new ValidationException($"指定的产品#{productId}不存在!");
+            }
+
+            model = new ProductInstallDetailModel {
+                Id = productInstall.Id,
+                CollegeId = productInstall.CollegeId,
+                CollegeName = college.Name,
+                ProductId = productInstall.ProductId,
+                ProductName = product.Name,
+                VersionSale = productInstall.VersionSale,
+                VersionInstall = productInstall.VersionInstall,
+                InstallDate = productInstall.InstallDate.ToString("yyyy-MM-dd"),
+                UpdateUrl = productInstall.UpdateUrl,
+                LoginUser = productInstall.LoginUser,
+                LoginPassword = productInstall.LoginPassword,
+                ContactTeacher = productInstall.ContactTeacher,
+                ContactMobile = productInstall.ContactMobile,
+                Description = productInstall.Description,
+            };
         }
 
         return Json(new JsonResultData {

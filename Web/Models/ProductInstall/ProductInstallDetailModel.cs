@@ -11,8 +11,14 @@ public class ProductInstallDetailModel
     [JsonProperty("collegeId")]
     public long CollegeId { get; set; }
 
+    [JsonProperty("collegeName")]
+    public string CollegeName { get; set; } = "";
+
     [JsonProperty("productId")]
     public long ProductId { get; set; }
+
+    [JsonProperty("productName")]
+    public string ProductName { get; set; } = "";
 
     [JsonProperty("versionSale")]
     public string VersionSale { get; set; } = "";
