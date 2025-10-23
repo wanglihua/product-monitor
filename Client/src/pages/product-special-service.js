@@ -54,65 +54,34 @@ const ProductSpecialService = () => {
         },
         {
             title: "学校",
-            dataIndex: "collegeId",
-            width: "200px",
+            dataIndex: "collegeName",
+            width: "180px",
         },
         {
             title: "产品",
-            dataIndex: "productId",
-            width: "200px",
-        },
-        {
-            title: "售后时间",
-            dataIndex: "serviceDate",
-            width: "200px",
-        },
-        {
-            title: "售后次数",
-            dataIndex: "serviceCount",
-            width: "200px",
-        },
-        {
-            title: "售后网址",
-            dataIndex: "serviceUrl",
-            width: "200px",
-        },
-        {
-            title: "售后账号",
-            dataIndex: "loginUser",
-            width: "200px",
-        },
-        {
-            title: "售后密码",
-            dataIndex: "loginPassword",
-            width: "200px",
+            dataIndex: "productName",
+            width: "180px",
         },
         {
             title: "联系老师",
             dataIndex: "contactTeacher",
-            width: "200px",
+            width: "120px",
         },
         {
-            title: "联系电话",
-            dataIndex: "contactMobile",
-            width: "200px",
+            title: "售后次数",
+            dataIndex: "serviceCount",
+            width: "110px",
         },
         {
-            title: "售后问题",
-            dataIndex: "description",
-            width: "200px",
-        },
-        {
-            title: "创建时间",
-            dataIndex: "createTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
+            title: "记录时间",
             dataIndex: "updateTime",
             width: "150px",
             sorter: true,
+        },
+        {
+            title: "记录人",
+            dataIndex: "userName",
+            width: "100px",
         },
         {
             title: "操作",
@@ -153,7 +122,8 @@ const ProductSpecialService = () => {
         loadProductSpecialServiceList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const collegeNameQueryRef = useRef();
+    const productNameQueryRef = useRef();
 
     return (
         <div>
@@ -162,17 +132,20 @@ const ProductSpecialService = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={collegeNameQueryRef} addonBefore="学校名称" placeholder="学校名称查询" style={{width: 280}}/>
+                    <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const collegeNameQuery = collegeNameQueryRef.current.input.value;
+                            const productNameQuery = productNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    collegeNameQuery: collegeNameQuery,
+                                    productNameQuery: productNameQuery,
                                 };
                             });
                         }}
