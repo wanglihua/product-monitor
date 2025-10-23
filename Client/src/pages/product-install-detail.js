@@ -62,19 +62,26 @@ const ProductInstallDetailInner = (props) => {
 
                         const data = res.data;
 
-                        setCollegeSelectOptions([{
-                            value: data.collegeId,
-                            label: data.collegeName,
-                        }]);
+                        let collegeId = undefined;
+                        let productId = undefined;
 
-                        setProductSelectOptions([{
-                            value: data.productId,
-                            label: data.productName,
-                        }]);
+                        if (productInstallId > 0) {
+                            collegeId = data.collegeId;
+                            setCollegeSelectOptions([{
+                                value: collegeId,
+                                label: data.collegeName,
+                            }]);
+
+                            productId = data.productId;
+                            setProductSelectOptions([{
+                                value: productId,
+                                label: data.productName,
+                            }]);
+                        }
 
                         form.current.setFieldsValue({
-                            collegeId: data.collegeId,
-                            productId: data.productId,
+                            collegeId: collegeId,
+                            productId: productId,
                             versionSale: data.versionSale,
                             versionInstall: data.versionInstall,
                             installDate: dayjs(data.installDate),
