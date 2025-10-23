@@ -51,10 +51,10 @@ public class ProductUpdateController : Controller
     {
         IQueryable<ProductUpdateJoinItem> query = db.Set<ProductUpdateEntity>()
             .Join(db.Set<CollegeEntity>(),
-                pi => pi.CollegeId,
+                pu => pu.CollegeId,
                 c => c.Id,
-                (pi, c) => new ProductUpdateJoinItem {
-                    ProductUpdate = pi,
+                (pu, c) => new ProductUpdateJoinItem {
+                    ProductUpdate = pu,
                     College = c,
                 })
             .Join(db.Set<ProductEntity>(),

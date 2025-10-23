@@ -51,10 +51,10 @@ public class ProductServiceController : Controller
     {
         IQueryable<ProductServiceJoinItem> query = db.Set<ProductServiceEntity>()
             .Join(db.Set<CollegeEntity>(),
-                pi => pi.CollegeId,
+                ps => ps.CollegeId,
                 c => c.Id,
-                (pi, c) => new ProductServiceJoinItem {
-                    ProductService = pi,
+                (ps, c) => new ProductServiceJoinItem {
+                    ProductService = ps,
                     College = c,
                 })
             .Join(db.Set<ProductEntity>(),

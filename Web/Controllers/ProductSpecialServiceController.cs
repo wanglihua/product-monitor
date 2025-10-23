@@ -33,35 +33,76 @@ public class ProductSpecialServiceController : Controller
         this.actionLogService = actionLogService;
     }
 
+    private class ProductSpecialServiceJoinItem
+    {
+        public ProductSpecialServiceEntity ProductSpecialService { get; set; } = new();
+
+        public CollegeEntity College { get; set; } = new();
+
+        public ProductEntity Product { get; set; } = new();
+
+        public UserEntity User { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/product-special-service/list")]
     [Transactional(false)]
     public IActionResult List([FromBody] ProductSpecialServiceListParam param)
     {
-        IQueryable<ProductSpecialServiceEntity> query = db.Set<ProductSpecialServiceEntity>();
+        IQueryable<ProductSpecialServiceJoinItem> query = db.Set<ProductSpecialServiceEntity>()
+            .Join(db.Set<CollegeEntity>(),
+                pss => pss.CollegeId,
+                c => c.Id,
+                (pss, c) => new ProductSpecialServiceJoinItem {
+                    ProductSpecialService = pss,
+                    College = c,
+                })
+            .Join(db.Set<ProductEntity>(),
+                pii => pii.ProductSpecialService.ProductId,
+                p => p.Id,
+                (pii, p) => new ProductSpecialServiceJoinItem {
+                    ProductSpecialService = pii.ProductSpecialService,
+                    College = pii.College,
+                    Product = p,
+                })
+            .Join(db.Set<UserEntity>(),
+                pii => pii.ProductSpecialService.UserId,
+                u => u.Id,
+                (pii, u) => new ProductSpecialServiceJoinItem {
+                    ProductSpecialService = pii.ProductSpecialService,
+                    College = pii.College,
+                    Product = pii.Product,
+                    User = u,
+                });
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(p => p.Name.Contains(nameQuery));
-        // }
+        if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
+        {
+            string collegeNameQuery = param.CollegeNameQuery.Trim();
+            query = query.Where(e => e.College.Name.Contains(collegeNameQuery));
+        }
+
+        if (string.IsNullOrWhiteSpace(param.ProductNameQuery) == false)
+        {
+            string productNameQuery = param.ProductNameQuery.Trim();
+            query = query.Where(e => e.Product.Name.Contains(productNameQuery));
+        }
 
         int productSpecialServiceCount = query.Count();
 
         // 排序字段
-        Expression<Func<ProductSpecialServiceEntity, object>> sortField = e => e.Id;
+        Expression<Func<ProductSpecialServiceJoinItem, object>> sortField = e => e.ProductSpecialService.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
             if (sortFieldParam == nameof(ProductSpecialServiceListItem.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.ProductSpecialService.CreateTime;
             }
 
             if (sortFieldParam == nameof(ProductSpecialServiceListItem.UpdateTime).ToUpper())
             {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.ProductSpecialService.UpdateTime;
             }
         }
 
@@ -83,19 +124,20 @@ public class ProductSpecialServiceController : Controller
 
         var productSpecialServiceItemList = productSpecialServiceList
             .Select(e => new ProductSpecialServiceListItem {
-                Id = e.Id,
-                CollegeId = e.CollegeId,
-                ProductId = e.ProductId,
-                ServiceDate = e.ServiceDate.ToString("yyyy-MM-dd"),
-                ServiceCount = e.ServiceCount,
-                ServiceUrl = e.ServiceUrl,
-                LoginUser = e.LoginUser,
-                LoginPassword = e.LoginPassword,
-                ContactTeacher = e.ContactTeacher,
-                ContactMobile = e.ContactMobile,
-                Description = e.Description,
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.ProductSpecialService.Id,
+                CollegeName = e.College.Name,
+                ProductName = e.Product.Name,
+                ServiceDate = e.ProductSpecialService.ServiceDate.ToString("yyyy-MM-dd"),
+                ServiceCount = e.ProductSpecialService.ServiceCount,
+                ServiceUrl = e.ProductSpecialService.ServiceUrl,
+                LoginUser = e.ProductSpecialService.LoginUser,
+                LoginPassword = e.ProductSpecialService.LoginPassword,
+                ContactTeacher = e.ProductSpecialService.ContactTeacher,
+                ContactMobile = e.ProductSpecialService.ContactMobile,
+                Description = e.ProductSpecialService.Description,
+                UserName = e.User.UserName,
+                CreateTime = e.ProductSpecialService.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ProductSpecialService.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
@@ -119,8 +161,10 @@ public class ProductSpecialServiceController : Controller
         var model = new ProductSpecialServiceDetailModel {
             Id = 0,
             CollegeId = 0,
+            CollegeName = "",
             ProductId = 0,
-            ServiceDate = "",
+            ProductName = "",
+            ServiceDate = DateTime.Today.ToString("yyyy-MM-dd"),
             ServiceCount = 0,
             ServiceUrl = "",
             LoginUser = "",
@@ -133,22 +177,41 @@ public class ProductSpecialServiceController : Controller
         if (productSpecialServiceId > 0)
         {
             var productSpecialService = db.Set<ProductSpecialServiceEntity>().Find(productSpecialServiceId);
-            if (productSpecialService != null)
+
+            if (productSpecialService == null)
             {
-                model = new ProductSpecialServiceDetailModel {
-                    Id = productSpecialService.Id,
-                    CollegeId = productSpecialService.CollegeId,
-                    ProductId = productSpecialService.ProductId,
-                    ServiceDate = productSpecialService.ServiceDate.ToString("yyyy-MM-dd"),
-                    ServiceCount = productSpecialService.ServiceCount,
-                    ServiceUrl = productSpecialService.ServiceUrl,
-                    LoginUser = productSpecialService.LoginUser,
-                    LoginPassword = productSpecialService.LoginPassword,
-                    ContactTeacher = productSpecialService.ContactTeacher,
-                    ContactMobile = productSpecialService.ContactMobile,
-                    Description = productSpecialService.Description,
-                };
+                throw new ValidationException($"指定的产品安装#{productSpecialServiceId}不存在!");
             }
+
+            long collegeId = productSpecialService.CollegeId;
+            var college = db.Find<CollegeEntity>(collegeId);
+            if (college == null)
+            {
+                throw new ValidationException($"指定的学校#{collegeId}不存在!");
+            }
+
+            long productId = productSpecialService.ProductId;
+            var product = db.Find<ProductEntity>(productId);
+            if (product == null)
+            {
+                throw new ValidationException($"指定的产品#{productId}不存在!");
+            }
+
+            model = new ProductSpecialServiceDetailModel {
+                Id = productSpecialService.Id,
+                CollegeId = productSpecialService.CollegeId,
+                CollegeName = college.Name,
+                ProductId = productSpecialService.ProductId,
+                ProductName = product.Name,
+                ServiceDate = productSpecialService.ServiceDate.ToString("yyyy-MM-dd"),
+                ServiceCount = productSpecialService.ServiceCount,
+                ServiceUrl = productSpecialService.ServiceUrl,
+                LoginUser = productSpecialService.LoginUser,
+                LoginPassword = productSpecialService.LoginPassword,
+                ContactTeacher = productSpecialService.ContactTeacher,
+                ContactMobile = productSpecialService.ContactMobile,
+                Description = productSpecialService.Description,
+            };
         }
 
         return Json(new JsonResultData {
@@ -164,6 +227,8 @@ public class ProductSpecialServiceController : Controller
     public IActionResult Save([FromBody] ProductSpecialServiceDetailModel model)
     {
         ValidationUtil.Validate<ProductSpecialServiceDetailModelValidator, ProductSpecialServiceDetailModel>(model);
+
+        long loginUserId = userLoginService.GetLoginUserId();
 
         long productSpecialServiceId = model.Id;
         bool isCreate = productSpecialServiceId == 0;
@@ -192,6 +257,7 @@ public class ProductSpecialServiceController : Controller
         productSpecialService.ContactTeacher = model.ContactTeacher ?? "";
         productSpecialService.ContactMobile = model.ContactMobile ?? "";
         productSpecialService.Description = model.Description ?? "";
+        productSpecialService.UserId = loginUserId;
 
         if (isCreate == true)
         {
@@ -204,7 +270,6 @@ public class ProductSpecialServiceController : Controller
 
         db.SaveChanges();
 
-        long loginUserId = userLoginService.GetLoginUserId();
         if (isCreate == true)
         {
             string actionDesc = $"#{productSpecialService.Id}";

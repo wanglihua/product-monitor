@@ -11,8 +11,14 @@ public class ProductSpecialServiceDetailModel
     [JsonProperty("collegeId")]
     public long CollegeId { get; set; }
 
+    [JsonProperty("collegeName")]
+    public string CollegeName { get; set; } = "";
+
     [JsonProperty("productId")]
     public long ProductId { get; set; }
+
+    [JsonProperty("productName")]
+    public string ProductName { get; set; } = "";
 
     [JsonProperty("serviceDate")]
     public string ServiceDate { get; set; } = "";
@@ -54,9 +60,6 @@ public class ProductSpecialServiceDetailModelValidator : AbstractValidator<Produ
         RuleFor(e => e.ServiceDate)
             .Must(p => DateTime.TryParse(p, out var serviceDate))
             .WithMessage("售后时间格式不正确!");
-
-        RuleFor(e => e.ServiceCount).NotNull().WithMessage("售后次数不能为空!");
-        RuleFor(e => e.ServiceCount).NotEmpty().WithMessage("售后次数不能为空!");
 
         RuleFor(e => e.ServiceUrl).NotNull().WithMessage("售后网址不能为空!");
         RuleFor(e => e.ServiceUrl).NotEmpty().WithMessage("售后网址不能为空!");
