@@ -50,6 +50,5 @@ public class ProductEvalEntity : Entity
     /// <summary>
     /// 备注
     /// </summary>
-    public string Description { get; set; } = ""; 
-
+    public string Description { get; set; } = "";
 }
