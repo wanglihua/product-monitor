@@ -33,35 +33,65 @@ public class ProductEvalController : Controller
         this.actionLogService = actionLogService;
     }
 
+    private class ProductEvalJoinItem
+    {
+        public ProductEvalEntity ProductEval { get; set; } = new();
+
+        public CollegeEntity College { get; set; } = new();
+
+        public ProductEntity Product { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/product-eval/list")]
     [Transactional(false)]
     public IActionResult List([FromBody] ProductEvalListParam param)
     {
-        IQueryable<ProductEvalEntity> query = db.Set<ProductEvalEntity>();
+        IQueryable<ProductEvalJoinItem> query = db.Set<ProductEvalEntity>()
+            .Join(db.Set<CollegeEntity>(),
+                ps => ps.CollegeId,
+                c => c.Id,
+                (ps, c) => new ProductEvalJoinItem {
+                    ProductEval = ps,
+                    College = c,
+                })
+            .Join(db.Set<ProductEntity>(),
+                ps => ps.ProductEval.ProductId,
+                p => p.Id,
+                (ps, p) => new ProductEvalJoinItem {
+                    ProductEval = ps.ProductEval,
+                    College = ps.College,
+                    Product = p,
+                });
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(p => p.Name.Contains(nameQuery));
-        // }
+        if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
+        {
+            string collegeNameQuery = param.CollegeNameQuery.Trim();
+            query = query.Where(e => e.College.Name.Contains(collegeNameQuery));
+        }
+
+        if (string.IsNullOrWhiteSpace(param.ProductNameQuery) == false)
+        {
+            string productNameQuery = param.ProductNameQuery.Trim();
+            query = query.Where(e => e.Product.Name.Contains(productNameQuery));
+        }
 
         int productEvalCount = query.Count();
 
         // 排序字段
-        Expression<Func<ProductEvalEntity, object>> sortField = e => e.Id;
+        Expression<Func<ProductEvalJoinItem, object>> sortField = e => e.ProductEval.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
             if (sortFieldParam == nameof(ProductEvalListItem.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.ProductEval.CreateTime;
             }
 
             if (sortFieldParam == nameof(ProductEvalListItem.UpdateTime).ToUpper())
             {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.ProductEval.UpdateTime;
             }
         }
 
@@ -83,18 +113,18 @@ public class ProductEvalController : Controller
 
         var productEvalItemList = productEvalList
             .Select(e => new ProductEvalListItem {
-                Id = e.Id,
-                CollegeId = e.CollegeId,
-                ProductId = e.ProductId,
-                EvalTimes = e.EvalTimes,
-                ServiceTimes = e.ServiceTimes,
-                TotalDays = e.TotalDays,
-                RemainDays = e.RemainDays,
-                BeginDate = e.BeginDate.ToString("yyyy-MM-dd"),
-                EndDate = e.EndDate.ToString("yyyy-MM-dd"),
-                Description = e.Description,
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.ProductEval.Id,
+                CollegeName = e.College.Name,
+                ProductName = e.Product.Name,
+                EvalTimes = e.ProductEval.EvalTimes,
+                ServiceTimes = e.ProductEval.ServiceTimes,
+                TotalDays = e.ProductEval.TotalDays,
+                RemainDays = e.ProductEval.RemainDays,
+                BeginDate = e.ProductEval.BeginDate.ToString("yyyy-MM-dd"),
+                EndDate = e.ProductEval.EndDate.ToString("yyyy-MM-dd"),
+                Description = e.ProductEval.Description,
+                CreateTime = e.ProductEval.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ProductEval.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
