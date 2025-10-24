@@ -49,18 +49,18 @@ public class ProductSaleController : Controller
     {
         IQueryable<ProductSaleJoinItem> query = db.Set<ProductSaleEntity>()
             .Join(db.Set<CollegeEntity>(),
-                pi => pi.CollegeId,
+                ps => ps.CollegeId,
                 c => c.Id,
-                (pi, c) => new ProductSaleJoinItem {
-                    ProductSale = pi,
+                (ps, c) => new ProductSaleJoinItem {
+                    ProductSale = ps,
                     College = c,
                 })
             .Join(db.Set<ProductEntity>(),
-                pii => pii.ProductSale.ProductId,
+                ps => ps.ProductSale.ProductId,
                 p => p.Id,
-                (pii, p) => new ProductSaleJoinItem {
-                    ProductSale = pii.ProductSale,
-                    College = pii.College,
+                (ps, p) => new ProductSaleJoinItem {
+                    ProductSale = ps.ProductSale,
+                    College = ps.College,
                     Product = p,
                 });
 

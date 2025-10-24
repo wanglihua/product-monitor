@@ -58,20 +58,20 @@ public class ProductUpdateController : Controller
                     College = c,
                 })
             .Join(db.Set<ProductEntity>(),
-                pii => pii.ProductUpdate.ProductId,
+                pu => pu.ProductUpdate.ProductId,
                 p => p.Id,
-                (pii, p) => new ProductUpdateJoinItem {
-                    ProductUpdate = pii.ProductUpdate,
-                    College = pii.College,
+                (pu, p) => new ProductUpdateJoinItem {
+                    ProductUpdate = pu.ProductUpdate,
+                    College = pu.College,
                     Product = p,
                 })
             .Join(db.Set<UserEntity>(),
-                pii => pii.ProductUpdate.UserId,
+                pu => pu.ProductUpdate.UserId,
                 u => u.Id,
-                (pii, u) => new ProductUpdateJoinItem {
-                    ProductUpdate = pii.ProductUpdate,
-                    College = pii.College,
-                    Product = pii.Product,
+                (pu, u) => new ProductUpdateJoinItem {
+                    ProductUpdate = pu.ProductUpdate,
+                    College = pu.College,
+                    Product = pu.Product,
                     User = u,
                 });
 

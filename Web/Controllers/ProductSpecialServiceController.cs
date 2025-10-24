@@ -58,20 +58,20 @@ public class ProductSpecialServiceController : Controller
                     College = c,
                 })
             .Join(db.Set<ProductEntity>(),
-                pii => pii.ProductSpecialService.ProductId,
+                pss => pss.ProductSpecialService.ProductId,
                 p => p.Id,
-                (pii, p) => new ProductSpecialServiceJoinItem {
-                    ProductSpecialService = pii.ProductSpecialService,
-                    College = pii.College,
+                (pss, p) => new ProductSpecialServiceJoinItem {
+                    ProductSpecialService = pss.ProductSpecialService,
+                    College = pss.College,
                     Product = p,
                 })
             .Join(db.Set<UserEntity>(),
-                pii => pii.ProductSpecialService.UserId,
+                pss => pss.ProductSpecialService.UserId,
                 u => u.Id,
-                (pii, u) => new ProductSpecialServiceJoinItem {
-                    ProductSpecialService = pii.ProductSpecialService,
-                    College = pii.College,
-                    Product = pii.Product,
+                (pss, u) => new ProductSpecialServiceJoinItem {
+                    ProductSpecialService = pss.ProductSpecialService,
+                    College = pss.College,
+                    Product = pss.Product,
                     User = u,
                 });
 

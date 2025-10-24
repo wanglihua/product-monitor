@@ -58,20 +58,20 @@ public class ProductInstallController : Controller
                     College = c,
                 })
             .Join(db.Set<ProductEntity>(),
-                pii => pii.ProductInstall.ProductId,
+                pi => pi.ProductInstall.ProductId,
                 p => p.Id,
-                (pii, p) => new ProductInstallJoinItem {
-                    ProductInstall = pii.ProductInstall,
-                    College = pii.College,
+                (pi, p) => new ProductInstallJoinItem {
+                    ProductInstall = pi.ProductInstall,
+                    College = pi.College,
                     Product = p,
                 })
             .Join(db.Set<UserEntity>(),
-                pii => pii.ProductInstall.UserId,
+                pi => pi.ProductInstall.UserId,
                 u => u.Id,
-                (pii, u) => new ProductInstallJoinItem {
-                    ProductInstall = pii.ProductInstall,
-                    College = pii.College,
-                    Product = pii.Product,
+                (pi, u) => new ProductInstallJoinItem {
+                    ProductInstall = pi.ProductInstall,
+                    College = pi.College,
+                    Product = pi.Product,
                     User = u,
                 });
 

@@ -58,11 +58,11 @@ public class ProductServiceController : Controller
                     College = c,
                 })
             .Join(db.Set<ProductEntity>(),
-                pii => pii.ProductService.ProductId,
+                ps => ps.ProductService.ProductId,
                 p => p.Id,
-                (pii, p) => new ProductServiceJoinItem {
-                    ProductService = pii.ProductService,
-                    College = pii.College,
+                (ps, p) => new ProductServiceJoinItem {
+                    ProductService = ps.ProductService,
+                    College = ps.College,
                     Product = p,
                 })
             .Join(db.Set<UserEntity>(),

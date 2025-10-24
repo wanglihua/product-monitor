@@ -68,7 +68,7 @@ const ProductSale = () => {
             dataIndex: "saleTimes",
             width: "320px",
             render: (value, record, index) => {
-                return <span>{record.saleTimes} / {record.installTimes} / {record.updateTimes} / {record.serviceTimes}</span>
+                return <span><span>销售:</span>{record.saleTimes} / <span>安装:</span>{record.installTimes} / <span>更新:</span>{record.updateTimes} / <span>售后:</span>{record.serviceTimes}</span>
             },
         },
         {

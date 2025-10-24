@@ -32,36 +32,66 @@ public class ProductRentController : Controller
         this.userLoginService = userLoginService;
         this.actionLogService = actionLogService;
     }
+    
+    private class ProductRentJoinItem
+    {
+        public ProductRentEntity ProductRent { get; set; } = new();
+
+        public CollegeEntity College { get; set; } = new();
+
+        public ProductEntity Product { get; set; } = new();
+    }
 
     [HttpPost]
     [Route("/api/product-rent/list")]
     [Transactional(false)]
     public IActionResult List([FromBody] ProductRentListParam param)
     {
-        IQueryable<ProductRentEntity> query = db.Set<ProductRentEntity>();
+        IQueryable<ProductRentJoinItem> query = db.Set<ProductRentEntity>()
+            .Join(db.Set<CollegeEntity>(),
+                pr => pr.CollegeId,
+                c => c.Id,
+                (pr, c) => new ProductRentJoinItem {
+                    ProductRent = pr,
+                    College = c,
+                })
+            .Join(db.Set<ProductEntity>(),
+                pr => pr.ProductRent.ProductId,
+                p => p.Id,
+                (pr, p) => new ProductRentJoinItem {
+                    ProductRent = pr.ProductRent,
+                    College = pr.College,
+                    Product = p,
+                });
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(p => p.Name.Contains(nameQuery));
-        // }
+        if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
+        {
+            string collegeNameQuery = param.CollegeNameQuery.Trim();
+            query = query.Where(e => e.College.Name.Contains(collegeNameQuery));
+        }
+
+        if (string.IsNullOrWhiteSpace(param.ProductNameQuery) == false)
+        {
+            string productNameQuery = param.ProductNameQuery.Trim();
+            query = query.Where(e => e.Product.Name.Contains(productNameQuery));
+        }
 
         int productRentCount = query.Count();
 
         // 排序字段
-        Expression<Func<ProductRentEntity, object>> sortField = e => e.Id;
+        Expression<Func<ProductRentJoinItem, object>> sortField = e => e.ProductRent.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
             if (sortFieldParam == nameof(ProductRentListItem.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.ProductRent.CreateTime;
             }
 
             if (sortFieldParam == nameof(ProductRentListItem.UpdateTime).ToUpper())
             {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.ProductRent.UpdateTime;
             }
         }
 
@@ -83,18 +113,18 @@ public class ProductRentController : Controller
 
         var productRentItemList = productRentList
             .Select(e => new ProductRentListItem {
-                Id = e.Id,
-                CollegeId = e.CollegeId,
-                ProductId = e.ProductId,
-                RentTimes = e.RentTimes,
-                ServiceTimes = e.ServiceTimes,
-                TotalDays = e.TotalDays,
-                RemainDays = e.RemainDays,
-                BeginDate = e.BeginDate.ToString("yyyy-MM-dd"),
-                EndDate = e.EndDate.ToString("yyyy-MM-dd"),
-                Description = e.Description,
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.ProductRent.Id,
+                CollegeId = e.ProductRent.CollegeId,
+                ProductId = e.ProductRent.ProductId,
+                RentTimes = e.ProductRent.RentTimes,
+                ServiceTimes = e.ProductRent.ServiceTimes,
+                TotalDays = e.ProductRent.TotalDays,
+                RemainDays = e.ProductRent.RemainDays,
+                BeginDate = e.ProductRent.BeginDate.ToString("yyyy-MM-dd"),
+                EndDate = e.ProductRent.EndDate.ToString("yyyy-MM-dd"),
+                Description = e.ProductRent.Description,
+                CreateTime = e.ProductRent.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ProductRent.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
