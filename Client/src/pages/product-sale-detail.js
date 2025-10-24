@@ -28,7 +28,7 @@ const ProductSaleDetailInner = (props) => {
     return (
         <Modal
             title={title.current}
-            width="680px"
+            width="880px"
             destroyOnClose={true}
             footer={null}
             open={open}
@@ -124,7 +124,7 @@ const ProductSaleDetailInner = (props) => {
                         bordered={true}
                         layout="horizontal"
                         size="small"
-                        column={1}
+                        column={2}
                         labelStyle={{width: "120px"}}
                     >
                         <Descriptions.Item label="学校">
@@ -157,74 +157,6 @@ const ProductSaleDetailInner = (props) => {
                                 <Input
                                     maxLength={8}
                                     placeholder="产品"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="销售次数">
-                            <Form.Item
-                                name="saleTimes"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入销售次数!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={4}
-                                    placeholder="销售次数"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="安装次数">
-                            <Form.Item
-                                name="installTimes"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入安装次数!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={4}
-                                    placeholder="安装次数"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="更新次数">
-                            <Form.Item
-                                name="updateTimes"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入更新次数!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={4}
-                                    placeholder="更新次数"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="售后次数">
-                            <Form.Item
-                                name="serviceTimes"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入售后次数!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={4}
-                                    placeholder="售后次数"
                                     allowClear
                                 />
                             </Form.Item>
@@ -280,6 +212,10 @@ const ProductSaleDetailInner = (props) => {
                                 />
                             </Form.Item>
                         </Descriptions.Item>
+                        <Descriptions.Item label="">
+                            <Form.Item>
+                            </Form.Item>
+                        </Descriptions.Item>
                         <Descriptions.Item label="备注">
                             <Form.Item
                                 name="description"
@@ -290,7 +226,8 @@ const ProductSaleDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
+                                <Input.TextArea
+                                    rows={2}
                                     maxLength={512}
                                     placeholder="备注"
                                     allowClear

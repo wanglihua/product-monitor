@@ -28,7 +28,7 @@ const ProductEvalDetailInner = (props) => {
     return (
         <Modal
             title={title.current}
-            width="680px"
+            width="880px"
             destroyOnClose={true}
             footer={null}
             open={open}
@@ -122,7 +122,7 @@ const ProductEvalDetailInner = (props) => {
                         bordered={true}
                         layout="horizontal"
                         size="small"
-                        column={1}
+                        column={2}
                         labelStyle={{width: "120px"}}
                     >
                         <Descriptions.Item label="学校">
@@ -155,74 +155,6 @@ const ProductEvalDetailInner = (props) => {
                                 <Input
                                     maxLength={8}
                                     placeholder="产品"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="试用次数">
-                            <Form.Item
-                                name="evalTimes"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入试用次数!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={4}
-                                    placeholder="试用次数"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="销售次数">
-                            <Form.Item
-                                name="saleTimes"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入销售次数!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={4}
-                                    placeholder="销售次数"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="累计天数">
-                            <Form.Item
-                                name="totalDays"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入累计天数!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={4}
-                                    placeholder="累计天数"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="剩余天数">
-                            <Form.Item
-                                name="remainDays"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入剩余天数!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={4}
-                                    placeholder="剩余天数"
                                     allowClear
                                 />
                             </Form.Item>
@@ -271,7 +203,8 @@ const ProductEvalDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
+                                <Input.TextArea
+                                    rows={2}
                                     maxLength={512}
                                     placeholder="备注"
                                     allowClear
