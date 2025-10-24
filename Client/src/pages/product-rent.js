@@ -66,7 +66,7 @@ const ProductRent = () => {
         {
             title: "租赁次数",
             dataIndex: "rentTimes",
-            width: "110px",
+            width: "90px",
         },
         {
             title: "售后次数",
@@ -76,22 +76,22 @@ const ProductRent = () => {
         {
             title: "累计天数",
             dataIndex: "totalDays",
-            width: "110px",
+            width: "90px",
         },
         {
             title: "剩余天数",
             dataIndex: "remainDays",
-            width: "110px",
+            width: "90px",
         },
         {
             title: "开始时间",
             dataIndex: "beginDate",
-            width: "150px",
+            width: "110px",
         },
         {
             title: "结束时间",
             dataIndex: "endDate",
-            width: "150px",
+            width: "110px",
         },
         {
             title: "操作",
