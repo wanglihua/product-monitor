@@ -1,6 +1,8 @@
 ﻿using Core;
 using Core.Config;
+using Core.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using NLog;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
@@ -31,7 +33,23 @@ public class Db : DbContext
             DatabaseConfig.ReadConfig(StaticConfigurationManager.Configuration);
         }
 
-        optionsBuilder.UseSqlServer(DatabaseConfig.ConnectionString);
+        optionsBuilder.UseSqlServer(DatabaseConfig.ConnectionString, options => {
+            /*
+                100: SQL Server 2008
+                110: SQL Server 2012
+                120: SQL Server 2014
+                130: SQL Server 2016
+                140: SQL Server 2017
+                150: SQL Server 2019
+                160: SQL Server 2022
+             */
+
+            //  options.UseCompatibilityLevel(100); 这个要 ef core 8.0才行
+        });
+
+        // ef core 7.0 中暂时用这个办法来支持 sqlserver 2008 分页
+        optionsBuilder.ReplaceService<IQueryTranslationPostprocessorFactory, SqlServer2008QueryTranslationPostprocessorFactory>();
+
         // 这里不用这个了 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution); // 对 no tracking 的 entity Update 时 会更新所有字段
 
 #if DEBUG
