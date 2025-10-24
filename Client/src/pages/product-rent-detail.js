@@ -176,19 +176,19 @@ const ProductRentDetailInner = (props) => {
                                 />
                             </Form.Item>
                         </Descriptions.Item>
-                        <Descriptions.Item label="租赁次数">
+                        <Descriptions.Item label="售后次数">
                             <Form.Item
                                 name="serviceTimes"
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入租赁次数!',
+                                        message: '请输入售后次数!',
                                     },
                                 ]}
                             >
                                 <Input
                                     maxLength={4}
-                                    placeholder="租赁次数"
+                                    placeholder="售后次数"
                                     allowClear
                                 />
                             </Form.Item>

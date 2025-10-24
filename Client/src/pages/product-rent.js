@@ -11,7 +11,8 @@ const ProductRent = () => {
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        collegeNameQuery: "",
+        productNameQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -54,60 +55,43 @@ const ProductRent = () => {
         },
         {
             title: "学校",
-            dataIndex: "collegeId",
-            width: "200px",
+            dataIndex: "collegeName",
+            width: "180px",
         },
         {
             title: "产品",
-            dataIndex: "productId",
-            width: "200px",
+            dataIndex: "productName",
+            width: "180px",
         },
         {
             title: "租赁次数",
             dataIndex: "rentTimes",
-            width: "200px",
+            width: "110px",
         },
         {
-            title: "租赁次数",
+            title: "售后次数",
             dataIndex: "serviceTimes",
-            width: "200px",
+            width: "90px",
         },
         {
             title: "累计天数",
             dataIndex: "totalDays",
-            width: "200px",
+            width: "110px",
         },
         {
             title: "剩余天数",
             dataIndex: "remainDays",
-            width: "200px",
+            width: "110px",
         },
         {
             title: "开始时间",
             dataIndex: "beginDate",
-            width: "200px",
+            width: "150px",
         },
         {
             title: "结束时间",
             dataIndex: "endDate",
-            width: "200px",
-        },
-        {
-            title: "备注",
-            dataIndex: "description",
-            width: "200px",
-        },
-        {
-            title: "创建时间",
-            dataIndex: "createTime",
             width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
-            dataIndex: "updateTime",
-            width: "150px",
-            sorter: true,
         },
         {
             title: "操作",
@@ -148,7 +132,8 @@ const ProductRent = () => {
         loadProductRentList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const collegeNameQueryRef = useRef();
+    const productNameQueryRef = useRef();
 
     return (
         <div>
@@ -157,17 +142,20 @@ const ProductRent = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={collegeNameQueryRef} addonBefore="学校名称" placeholder="学校名称查询" style={{width: 280}}/>
+                    <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const collegeNameQuery = collegeNameQueryRef.current.input.value;
+                            const productNameQuery = productNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    collegeNameQuery: collegeNameQuery,
+                                    productNameQuery: productNameQuery,
                                 };
                             });
                         }}

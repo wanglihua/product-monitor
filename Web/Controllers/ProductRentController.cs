@@ -32,7 +32,7 @@ public class ProductRentController : Controller
         this.userLoginService = userLoginService;
         this.actionLogService = actionLogService;
     }
-    
+
     private class ProductRentJoinItem
     {
         public ProductRentEntity ProductRent { get; set; } = new();
@@ -114,8 +114,8 @@ public class ProductRentController : Controller
         var productRentItemList = productRentList
             .Select(e => new ProductRentListItem {
                 Id = e.ProductRent.Id,
-                CollegeId = e.ProductRent.CollegeId,
-                ProductId = e.ProductRent.ProductId,
+                CollegeName = e.College.Name,
+                ProductName = e.Product.Name,
                 RentTimes = e.ProductRent.RentTimes,
                 ServiceTimes = e.ProductRent.ServiceTimes,
                 TotalDays = e.ProductRent.TotalDays,

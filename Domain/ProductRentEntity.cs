@@ -23,7 +23,7 @@ public class ProductRentEntity : Entity
     public int RentTimes { get; set; }
 
     /// <summary>
-    /// 租赁次数
+    /// 售后次数
     /// </summary>
     public int ServiceTimes { get; set; }
 
