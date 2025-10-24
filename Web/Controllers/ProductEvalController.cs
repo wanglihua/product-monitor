@@ -87,7 +87,7 @@ public class ProductEvalController : Controller
                 CollegeId = e.CollegeId,
                 ProductId = e.ProductId,
                 EvalTimes = e.EvalTimes,
-                SaleTimes = e.SaleTimes,
+                ServiceTimes = e.ServiceTimes,
                 TotalDays = e.TotalDays,
                 RemainDays = e.RemainDays,
                 BeginDate = e.BeginDate.ToString("yyyy-MM-dd"),
@@ -120,7 +120,7 @@ public class ProductEvalController : Controller
             CollegeId = 0,
             ProductId = 0,
             EvalTimes = 0,
-            SaleTimes = 0,
+            ServiceTimes = 0,
             TotalDays = 0,
             RemainDays = 0,
             BeginDate = "",
@@ -138,7 +138,7 @@ public class ProductEvalController : Controller
                     CollegeId = productEval.CollegeId,
                     ProductId = productEval.ProductId,
                     EvalTimes = productEval.EvalTimes,
-                    SaleTimes = productEval.SaleTimes,
+                    ServiceTimes = productEval.ServiceTimes,
                     TotalDays = productEval.TotalDays,
                     RemainDays = productEval.RemainDays,
                     BeginDate = productEval.BeginDate.ToString("yyyy-MM-dd"),
@@ -182,7 +182,7 @@ public class ProductEvalController : Controller
         productEval.CollegeId = model.CollegeId;
         productEval.ProductId = model.ProductId;
         productEval.EvalTimes = model.EvalTimes;
-        productEval.SaleTimes = model.SaleTimes;
+        productEval.ServiceTimes = model.ServiceTimes;
         productEval.TotalDays = model.TotalDays;
         productEval.RemainDays = model.RemainDays;
         productEval.BeginDate = DateTime.Parse(model.BeginDate).Date;

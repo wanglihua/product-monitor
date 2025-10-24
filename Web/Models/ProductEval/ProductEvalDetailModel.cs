@@ -17,8 +17,8 @@ public class ProductEvalDetailModel
     [JsonProperty("evalTimes")]
     public int EvalTimes { get; set; }
 
-    [JsonProperty("saleTimes")]
-    public int SaleTimes { get; set; }
+    [JsonProperty("serviceTimes")]
+    public int ServiceTimes { get; set; }
 
     [JsonProperty("totalDays")]
     public int TotalDays { get; set; }
@@ -49,8 +49,8 @@ public class ProductEvalDetailModelValidator : AbstractValidator<ProductEvalDeta
         RuleFor(e => e.EvalTimes).NotNull().WithMessage("试用次数不能为空!");
         RuleFor(e => e.EvalTimes).NotEmpty().WithMessage("试用次数不能为空!");
 
-        RuleFor(e => e.SaleTimes).NotNull().WithMessage("销售次数不能为空!");
-        RuleFor(e => e.SaleTimes).NotEmpty().WithMessage("销售次数不能为空!");
+        RuleFor(e => e.ServiceTimes).NotNull().WithMessage("销售次数不能为空!");
+        RuleFor(e => e.ServiceTimes).NotEmpty().WithMessage("销售次数不能为空!");
 
         RuleFor(e => e.TotalDays).NotNull().WithMessage("累计天数不能为空!");
         RuleFor(e => e.TotalDays).NotEmpty().WithMessage("累计天数不能为空!");

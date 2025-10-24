@@ -16,8 +16,8 @@ public class ProductEvalListItem
     [JsonProperty("evalTimes")]
     public int EvalTimes { get; set; }
 
-    [JsonProperty("saleTimes")]
-    public int SaleTimes { get; set; }
+    [JsonProperty("serviceTimes")]
+    public int ServiceTimes { get; set; }
 
     [JsonProperty("totalDays")]
     public int TotalDays { get; set; }

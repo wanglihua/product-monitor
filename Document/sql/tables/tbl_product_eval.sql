@@ -1,21 +1,21 @@
 ﻿CREATE TABLE tbl_product_eval
 (
-    id          BIGINT        NOT NULL,
-    college_id  BIGINT        NOT NULL,
-    product_id  BIGINT        NOT NULL,
+    id            BIGINT        NOT NULL,
+    college_id    BIGINT        NOT NULL,
+    product_id    BIGINT        NOT NULL,
 
-    eval_times  INT           NOT NULL,
-    sale_times  INT           NOT NULL,
-    total_days  INT           NOT NULL,
-    remain_days INT           NOT NULL,
+    eval_times    INT           NOT NULL,
+    service_times INT           NOT NULL,
+    total_days    INT           NOT NULL,
+    remain_days   INT           NOT NULL,
 
-    begin_date  DATETIME      NOT NULL,
-    end_date    DATETIME      NOT NULL,
+    begin_date    DATETIME      NOT NULL,
+    end_date      DATETIME      NOT NULL,
 
-    description NVARCHAR(512) NOT NULL,
+    description   NVARCHAR(512) NOT NULL,
 
-    create_time DATETIME      NOT NULL,
-    update_time DATETIME      NOT NULL,
+    create_time   DATETIME      NOT NULL,
+    update_time   DATETIME      NOT NULL,
 
     CONSTRAINT pk_product_eval PRIMARY KEY (id),
     CONSTRAINT fk_product_eval_product_id FOREIGN KEY (product_id) REFERENCES tbl_product (id),
@@ -33,7 +33,7 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', '
 EXEC sp_AddExtendedProperty 'MS_Description', N'学校', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'college_id';
 EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'product_id';
 EXEC sp_AddExtendedProperty 'MS_Description', N'试用次数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'eval_times';
-EXEC sp_AddExtendedProperty 'MS_Description', N'销售次数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'sale_times';
+EXEC sp_AddExtendedProperty 'MS_Description', N'售后次数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'service_times';
 EXEC sp_AddExtendedProperty 'MS_Description', N'累计天数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'total_days';
 EXEC sp_AddExtendedProperty 'MS_Description', N'剩余天数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'remain_days';
 EXEC sp_AddExtendedProperty 'MS_Description', N'开始时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_eval', 'COLUMN', 'begin_date';

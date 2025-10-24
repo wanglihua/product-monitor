@@ -24,8 +24,8 @@ public class ProductEvalEntityMap : IEntityTypeConfiguration<ProductEvalEntity>
             .HasColumnName("eval_times")
             .IsRequired(true);
 
-        builder.Property(e => e.SaleTimes)
-            .HasColumnName("sale_times")
+        builder.Property(e => e.ServiceTimes)
+            .HasColumnName("service_times")
             .IsRequired(true);
 
         builder.Property(e => e.TotalDays)

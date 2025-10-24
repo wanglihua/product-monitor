@@ -23,9 +23,9 @@ public class ProductEvalEntity : Entity
     public int EvalTimes { get; set; }
 
     /// <summary>
-    /// 销售次数
+    /// 售后次数
     /// </summary>
-    public int SaleTimes { get; set; }
+    public int ServiceTimes { get; set; }
 
     /// <summary>
     /// 累计天数
