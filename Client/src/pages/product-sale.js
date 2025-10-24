@@ -11,7 +11,8 @@ const ProductSale = () => {
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        collegeNameQuery: "",
+        productNameQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -54,65 +55,36 @@ const ProductSale = () => {
         },
         {
             title: "学校",
-            dataIndex: "collegeId",
-            width: "200px",
+            dataIndex: "collegeName",
+            width: "180px",
         },
         {
             title: "产品",
-            dataIndex: "productId",
-            width: "200px",
+            dataIndex: "productName",
+            width: "180px",
         },
         {
-            title: "销售次数",
+            title: "销售次数 / 安装次数 / 更新次数 / 售后次数",
             dataIndex: "saleTimes",
-            width: "200px",
-        },
-        {
-            title: "安装次数",
-            dataIndex: "installTimes",
-            width: "200px",
-        },
-        {
-            title: "更新次数",
-            dataIndex: "updateTimes",
-            width: "200px",
-        },
-        {
-            title: "售后次数",
-            dataIndex: "serviceTimes",
-            width: "200px",
+            width: "320px",
+            render: (value, record, index) => {
+                return <span>{record.saleTimes} / {record.installTimes} / {record.updateTimes} / {record.serviceTimes}</span>
+            },
         },
         {
             title: "版本号",
             dataIndex: "version",
-            width: "200px",
+            width: "110px",
         },
         {
             title: "销售时间",
             dataIndex: "saleDate",
-            width: "200px",
+            width: "150px",
         },
         {
             title: "服务到期时间",
             dataIndex: "serviceExpireDate",
-            width: "200px",
-        },
-        {
-            title: "备注",
-            dataIndex: "description",
-            width: "200px",
-        },
-        {
-            title: "创建时间",
-            dataIndex: "createTime",
             width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
-            dataIndex: "updateTime",
-            width: "150px",
-            sorter: true,
         },
         {
             title: "操作",
@@ -153,7 +125,8 @@ const ProductSale = () => {
         loadProductSaleList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const collegeNameQueryRef = useRef();
+    const productNameQueryRef = useRef();
 
     return (
         <div>
@@ -162,17 +135,20 @@ const ProductSale = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={collegeNameQueryRef} addonBefore="学校名称" placeholder="学校名称查询" style={{width: 280}}/>
+                    <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const collegeNameQuery = collegeNameQueryRef.current.input.value;
+                            const productNameQuery = productNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    collegeNameQuery: collegeNameQuery,
+                                    productNameQuery: productNameQuery,
                                 };
                             });
                         }}

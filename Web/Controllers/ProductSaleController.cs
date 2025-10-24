@@ -33,35 +33,65 @@ public class ProductSaleController : Controller
         this.actionLogService = actionLogService;
     }
 
+    private class ProductSaleJoinItem
+    {
+        public ProductSaleEntity ProductSale { get; set; } = new();
+
+        public CollegeEntity College { get; set; } = new();
+
+        public ProductEntity Product { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/product-sale/list")]
     [Transactional(false)]
     public IActionResult List([FromBody] ProductSaleListParam param)
     {
-        IQueryable<ProductSaleEntity> query = db.Set<ProductSaleEntity>();
+        IQueryable<ProductSaleJoinItem> query = db.Set<ProductSaleEntity>()
+            .Join(db.Set<CollegeEntity>(),
+                pi => pi.CollegeId,
+                c => c.Id,
+                (pi, c) => new ProductSaleJoinItem {
+                    ProductSale = pi,
+                    College = c,
+                })
+            .Join(db.Set<ProductEntity>(),
+                pii => pii.ProductSale.ProductId,
+                p => p.Id,
+                (pii, p) => new ProductSaleJoinItem {
+                    ProductSale = pii.ProductSale,
+                    College = pii.College,
+                    Product = p,
+                });
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(p => p.Name.Contains(nameQuery));
-        // }
+        if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
+        {
+            string collegeNameQuery = param.CollegeNameQuery.Trim();
+            query = query.Where(e => e.College.Name.Contains(collegeNameQuery));
+        }
+
+        if (string.IsNullOrWhiteSpace(param.ProductNameQuery) == false)
+        {
+            string productNameQuery = param.ProductNameQuery.Trim();
+            query = query.Where(e => e.Product.Name.Contains(productNameQuery));
+        }
 
         int productSaleCount = query.Count();
 
         // 排序字段
-        Expression<Func<ProductSaleEntity, object>> sortField = e => e.Id;
+        Expression<Func<ProductSaleJoinItem, object>> sortField = e => e.ProductSale.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
             if (sortFieldParam == nameof(ProductSaleListItem.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.ProductSale.CreateTime;
             }
 
             if (sortFieldParam == nameof(ProductSaleListItem.UpdateTime).ToUpper())
             {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.ProductSale.UpdateTime;
             }
         }
 
@@ -83,19 +113,19 @@ public class ProductSaleController : Controller
 
         var productSaleItemList = productSaleList
             .Select(e => new ProductSaleListItem {
-                Id = e.Id,
-                CollegeId = e.CollegeId,
-                ProductId = e.ProductId,
-                SaleTimes = e.SaleTimes,
-                InstallTimes = e.InstallTimes,
-                UpdateTimes = e.UpdateTimes,
-                ServiceTimes = e.ServiceTimes,
-                Version = e.Version,
-                SaleDate = e.SaleDate.ToString("yyyy-MM-dd"),
-                ServiceExpireDate = e.ServiceExpireDate.ToString("yyyy-MM-dd"),
-                Description = e.Description,
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.ProductSale.Id,
+                CollegeName = e.College.Name,
+                ProductName = e.Product.Name,
+                SaleTimes = e.ProductSale.SaleTimes,
+                InstallTimes = e.ProductSale.InstallTimes,
+                UpdateTimes = e.ProductSale.UpdateTimes,
+                ServiceTimes = e.ProductSale.ServiceTimes,
+                Version = e.ProductSale.Version,
+                SaleDate = e.ProductSale.SaleDate.ToString("yyyy-MM-dd"),
+                ServiceExpireDate = e.ProductSale.ServiceExpireDate.ToString("yyyy-MM-dd"),
+                Description = e.ProductSale.Description,
+                CreateTime = e.ProductSale.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ProductSale.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
@@ -137,16 +167,16 @@ public class ProductSaleController : Controller
             {
                 model = new ProductSaleDetailModel {
                     Id = productSale.Id,
-                CollegeId = productSale.CollegeId,
-                ProductId = productSale.ProductId,
-                SaleTimes = productSale.SaleTimes,
-                InstallTimes = productSale.InstallTimes,
-                UpdateTimes = productSale.UpdateTimes,
-                ServiceTimes = productSale.ServiceTimes,
-                Version = productSale.Version,
-                SaleDate = productSale.SaleDate.ToString("yyyy-MM-dd"),
-                ServiceExpireDate = productSale.ServiceExpireDate.ToString("yyyy-MM-dd"),
-                Description = productSale.Description,
+                    CollegeId = productSale.CollegeId,
+                    ProductId = productSale.ProductId,
+                    SaleTimes = productSale.SaleTimes,
+                    InstallTimes = productSale.InstallTimes,
+                    UpdateTimes = productSale.UpdateTimes,
+                    ServiceTimes = productSale.ServiceTimes,
+                    Version = productSale.Version,
+                    SaleDate = productSale.SaleDate.ToString("yyyy-MM-dd"),
+                    ServiceExpireDate = productSale.ServiceExpireDate.ToString("yyyy-MM-dd"),
+                    Description = productSale.Description,
                 };
             }
         }
