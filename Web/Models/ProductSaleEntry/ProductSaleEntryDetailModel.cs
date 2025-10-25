@@ -11,6 +11,20 @@ public class ProductSaleEntryDetailModel
     [JsonProperty("productSaleId")]
     public long ProductSaleId { get; set; }
 
+    [JsonProperty("collegeId")]
+    public long CollegeId { get; set; }
+
+    // 只用于显示
+    [JsonProperty("collegeName")]
+    public string CollegeName { get; set; } = "";
+
+    [JsonProperty("productId")]
+    public long ProductId { get; set; }
+
+    // 只用于显示
+    [JsonProperty("productName")]
+    public string ProductName { get; set; } = "";
+
     [JsonProperty("version")]
     public string Version { get; set; } = "";
 
@@ -28,8 +42,10 @@ public class ProductSaleEntryDetailModelValidator : AbstractValidator<ProductSal
 {
     public ProductSaleEntryDetailModelValidator()
     {
-        RuleFor(e => e.ProductSaleId).NotNull().WithMessage("销售目录 不能为空!");
-        RuleFor(e => e.ProductSaleId).NotEmpty().WithMessage("销售目录 不能为空!");
+        //  这几个关系较复杂，放到 action 中
+        // RuleFor(e => e.ProductSaleId).Must(p => p > 0).WithMessage("销售目录 不能为空!");
+        // RuleFor(e => e.CollegeId).Must(p => p > 0).WithMessage("学校 不能为空!");
+        // RuleFor(e => e.ProductId).Must(p => p > 0).WithMessage("产品 不能为空!");
 
         RuleFor(e => e.Version).NotNull().WithMessage("版本号不能为空!");
         RuleFor(e => e.Version).NotEmpty().WithMessage("版本号不能为空!");

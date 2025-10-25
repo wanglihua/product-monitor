@@ -148,17 +148,59 @@ public class ProductSaleEntryController : Controller
     [Transactional(true)]
     public IActionResult Save([FromBody] ProductSaleEntryDetailModel model)
     {
+        long productSaleId = 0;
+        long collegeId = model.CollegeId;
+        long productId = model.ProductId;
+
+        if (model.Id <= 0)
+        {
+            if (model.ProductSaleId > 0)
+            {
+                productSaleId = model.ProductSaleId;
+                var productSale = db.Find<ProductSaleEntity>(productSaleId);
+                if (productSale == null)
+                {
+                    throw new ValidationException($"指定的销售目录#{productSaleId}不存在！");
+                }
+            }
+            else
+            {
+                if (model.CollegeId <= 0)
+                {
+                    throw new ValidationException("学校不能为空!");
+                }
+
+                collegeId = model.CollegeId;
+                var college = db.Set<CollegeEntity>().Find(collegeId);
+                if (college == null)
+                {
+                    throw new ValidationException($"指定的学校#{collegeId}不存在!");
+                }
+
+                if (model.ProductId <= 0)
+                {
+                    throw new ValidationException("产品不能为空!");
+                }
+
+                productId = model.ProductId;
+                var product = db.Find<ProductEntity>(productId);
+                if (product == null)
+                {
+                    throw new ValidationException($"指定的产品#{productId}不存在!");
+                }
+            }
+        }
+
         ValidationUtil.Validate<ProductSaleEntryDetailModelValidator, ProductSaleEntryDetailModel>(model);
+        
+        long loginUserId = userLoginService.GetLoginUserId();
 
         long productSaleEntryId = model.Id;
         bool isCreate = productSaleEntryId == 0;
+        bool createProductSale = false;
 
         ProductSaleEntryEntity? productSaleEntry;
-        if (isCreate == true)
-        {
-            productSaleEntry = new ProductSaleEntryEntity();
-        }
-        else
+        if (isCreate == false)
         {
             productSaleEntry = db.Set<ProductSaleEntryEntity>().Find(productSaleEntryId);
             if (productSaleEntry == null)
@@ -166,8 +208,29 @@ public class ProductSaleEntryController : Controller
                 throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
             }
         }
+        else
+        {
+            productSaleEntry = new ProductSaleEntryEntity();
 
-        productSaleEntry.ProductSaleId = model.ProductSaleId;
+            if (productSaleId > 0)
+            {
+                productSaleEntry.ProductSaleId = productSaleId;
+            }
+            else
+            {
+                var productSale = db.Set<ProductSaleEntity>()
+                    .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+                    .Take(1)
+                    .SingleOrDefault();
+                if (productSale != null)
+                {
+                    throw new ValidationException($"学校#{collegeId}和产品#{productId}对应的销售目录已经存在!");
+                }
+
+                // todo 先创建销售目录
+            }
+        }
+
         productSaleEntry.Version = model.Version ?? "";
         productSaleEntry.SaleDate = DateTime.Parse(model.SaleDate).Date;
         productSaleEntry.ServiceExpireDate = DateTime.Parse(model.ServiceExpireDate).Date;
@@ -183,8 +246,7 @@ public class ProductSaleEntryController : Controller
         }
 
         db.SaveChanges();
-
-        long loginUserId = userLoginService.GetLoginUserId();
+        
         if (isCreate == true)
         {
             string actionDesc = $"#{productSaleEntry.Id}";
@@ -220,8 +282,33 @@ public class ProductSaleEntryController : Controller
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
-        string actionDesc = $"#{productSaleEntry.Id}";
-        actionLogService.Add(loginUserId, ActionLogType.ProductSaleEntryDelete, actionDesc);
+        string entryActionDesc = $"#{productSaleEntry.Id}";
+        actionLogService.Add(loginUserId, ActionLogType.ProductSaleEntryDelete, entryActionDesc);
+
+        // 删除最后一个明细数据的时候，删除主数据
+        long productSaleId = productSaleEntry.ProductSaleId;
+        var productSaleEntryExists = db.Set<ProductSaleEntryEntity>()
+            .Where(e => e.ProductSaleId == productSaleId)
+            .Take(1)
+            .SingleOrDefault();
+        if (productSaleEntryExists == null)
+        {
+            // 如果最后一个明细也不存在了， 就删除主数据
+            var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
+            if (productSale == null)
+            {
+                // 一般肯定存在的
+                throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
+            }
+
+            db.Remove<ProductSaleEntity>(productSale);
+            db.SaveChanges();
+
+            string actionDesc = $"#{productSale.Id}";
+            actionLogService.Add(loginUserId, ActionLogType.ProductSaleDelete, actionDesc);
+        }
+
+        db.SaveChanges();
 
         return Json(new JsonResultData {
             Success = true,

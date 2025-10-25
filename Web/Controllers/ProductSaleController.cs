@@ -188,6 +188,9 @@ public class ProductSaleController : Controller
         });
     }
 
+    /// <summary>
+    /// todo 这个其实不需要，到时删除 
+    /// </summary>
     [HttpPost]
     [Route("/api/product-sale/save")]
     [Transactional(true)]
@@ -249,33 +252,6 @@ public class ProductSaleController : Controller
         return Json(new JsonResultData {
             Success = true,
             Message = "保存成功！",
-        });
-    }
-
-    [HttpPost]
-    [Route("/api/product-sale/delete")]
-    [Transactional(true)]
-    public IActionResult Delete([FromBody] IdParam param)
-    {
-        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
-
-        long productSaleId = param.Id;
-        var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
-        if (productSale == null)
-        {
-            throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
-        }
-
-        db.Remove<ProductSaleEntity>(productSale);
-        db.SaveChanges();
-
-        long loginUserId = userLoginService.GetLoginUserId();
-        string actionDesc = $"#{productSale.Id}";
-        actionLogService.Add(loginUserId, ActionLogType.ProductSaleDelete, actionDesc);
-
-        return Json(new JsonResultData {
-            Success = true,
-            Message = "删除成功！",
         });
     }
 }
