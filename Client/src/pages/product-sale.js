@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import ProductSaleDetail from "./product-sale-detail";
+import ProductSaleEntryDetail from "./product-sale-entry-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
@@ -42,7 +42,7 @@ const ProductSale = () => {
         });
     };
 
-    const productSaleDetail = useRef();
+    const productSaleEntryDetail = useRef();
 
     const productSaleListColumns = [
         {
@@ -92,8 +92,7 @@ const ProductSale = () => {
                 return (
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            const productSaleId = record.id;
-                            productSaleDetail.current.show(productSaleId);
+                            productSaleEntryDetail.current.show(productSaleId);
                         }}>
                             <EditOutlined/>编辑
                         </Button>
@@ -159,7 +158,7 @@ const ProductSale = () => {
                         color="default"
                         icon={<PlusCircleOutlined style={{color: "green"}}/>}
                         onClick={(e) => {
-                            productSaleDetail.current.show(0);
+                            productSaleEntryDetail.current.show(0);
                         }}
                     >
                         添加
@@ -190,7 +189,7 @@ const ProductSale = () => {
                        }}
                 />
             </div>
-            <ProductSaleDetail ref={productSaleDetail} loadProductSaleList={loadProductSaleList}/>
+            <ProductSaleEntryDetail ref={productSaleEntryDetail} loadProductSaleList={loadProductSaleList}/>
         </div>
     );
 };

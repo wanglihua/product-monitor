@@ -432,7 +432,7 @@ class ProductUpdateDetail extends React.Component {
         this.loadProductUpdateList = props.loadProductUpdateList;
 
         this.state = {
-            productUpdateId: -1,
+            productUpdateId: 0,
             open: false,
         };
     }
@@ -446,7 +446,7 @@ class ProductUpdateDetail extends React.Component {
 
     hide = () => {
         this.setState({
-            productUpdateId: -1,
+            productUpdateId: 0,
             open: false,
         });
     }

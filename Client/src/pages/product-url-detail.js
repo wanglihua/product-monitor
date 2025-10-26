@@ -255,7 +255,7 @@ class ProductUrlDetail extends React.Component {
         this.loadProductUrlList = props.loadProductUrlList;
 
         this.state = {
-            productUrlId: -1,
+            productUrlId: 0,
             open: false,
         };
     }
@@ -269,7 +269,7 @@ class ProductUrlDetail extends React.Component {
 
     hide = () => {
         this.setState({
-            productUrlId: -1,
+            productUrlId: 0,
             open: false,
         });
     }

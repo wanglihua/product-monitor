@@ -130,7 +130,7 @@ class AdminUserDetail extends React.Component {
         this.loadAdminList = props.loadAdminList;
 
         this.state = {
-            adminId: -1,
+            adminId: 0,
             open: false,
         };
     }
@@ -144,7 +144,7 @@ class AdminUserDetail extends React.Component {
 
     hide = () => {
         this.setState({
-            adminId: -1,
+            adminId: 0,
             open: false,
         });
     }

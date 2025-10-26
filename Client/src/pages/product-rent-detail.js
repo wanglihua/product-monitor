@@ -240,7 +240,7 @@ class ProductRentDetail extends React.Component {
         this.loadProductRentList = props.loadProductRentList;
 
         this.state = {
-            productRentId: -1,
+            productRentId: 0,
             open: false,
         };
     }
@@ -254,7 +254,7 @@ class ProductRentDetail extends React.Component {
 
     hide = () => {
         this.setState({
-            productRentId: -1,
+            productRentId: 0,
             open: false,
         });
     }

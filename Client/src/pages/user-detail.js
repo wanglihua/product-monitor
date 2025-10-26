@@ -220,7 +220,7 @@ class UserDetail extends React.Component {
         this.loadUserList = props.loadUserList;
 
         this.state = {
-            userId: -1,
+            userId: 0,
             open: false,
         };
     }
@@ -234,7 +234,7 @@ class UserDetail extends React.Component {
 
     hide = () => {
         this.setState({
-            userId: -1,
+            userId: 0,
             open: false,
         });
     }

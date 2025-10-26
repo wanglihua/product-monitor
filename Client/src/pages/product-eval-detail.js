@@ -240,7 +240,7 @@ class ProductEvalDetail extends React.Component {
         this.loadProductEvalList = props.loadProductEvalList;
 
         this.state = {
-            productEvalId: -1,
+            productEvalId: 0,
             open: false,
         };
     }
@@ -254,7 +254,7 @@ class ProductEvalDetail extends React.Component {
 
     hide = () => {
         this.setState({
-            productEvalId: -1,
+            productEvalId: 0,
             open: false,
         });
     }

@@ -379,7 +379,7 @@ class ProductSpecialServiceDetail extends React.Component {
         this.loadProductSpecialServiceList = props.loadProductSpecialServiceList;
 
         this.state = {
-            productSpecialServiceId: -1,
+            productSpecialServiceId: 0,
             open: false,
         };
     }
@@ -393,7 +393,7 @@ class ProductSpecialServiceDetail extends React.Component {
 
     hide = () => {
         this.setState({
-            productSpecialServiceId: -1,
+            productSpecialServiceId: 0,
             open: false,
         });
     }

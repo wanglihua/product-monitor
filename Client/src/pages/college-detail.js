@@ -212,7 +212,7 @@ class CollegeDetail extends React.Component {
         this.loadCollegeList = props.loadCollegeList;
 
         this.state = {
-            collegeId: -1,
+            collegeId: 0,
             open: false,
         };
     }
@@ -226,7 +226,7 @@ class CollegeDetail extends React.Component {
 
     hide = () => {
         this.setState({
-            collegeId: -1,
+            collegeId: 0,
             open: false,
         });
     }

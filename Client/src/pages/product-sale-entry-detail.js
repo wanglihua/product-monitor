@@ -3,22 +3,24 @@ import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
 
-const ProductSaleDetailInner = (props) => {
+const ProductSaleEntryDetailInner = (props) => {
+    const productSaleEntryId = props.productSaleEntryId;
     const productSaleId = props.productSaleId;
     const open = props.open;
     const self = props.self;
     const loadProductSaleList = props.loadProductSaleList;
+    const loadProductSaleEntryList = props.loadProductSaleEntryList;
 
     const {token} = theme.useToken();
     const {post, showSuccess, showError} = useSiteContext();
 
     const title = useRef("");
-    if (productSaleId === 0) {
-        title.current = "销售目录新增";
+    if (productSaleEntryId === 0) {
+        title.current = "销售目录明细新增";
     }
 
-    if (productSaleId > 0) {
-        title.current = "销售目录编辑";
+    if (productSaleEntryId > 0) {
+        title.current = "销售目录明细编辑";
     }
 
     const [state, setState] = useState({});
@@ -48,7 +50,7 @@ const ProductSaleDetailInner = (props) => {
             }}
             afterOpenChange={(open) => {
                 if (open === true) {
-                    post("/api/product-sale/detail", {
+                    post("/api/product-sale-entry/detail", {
                         "id": productSaleId
                     }, function (response) {
                         const res = response.data;
@@ -92,7 +94,8 @@ const ProductSaleDetailInner = (props) => {
                     requiredMark={false}
                     onFinish={(values) => {
                         post("/api/product-sale/save", {
-                            id: productSaleId,
+                            id: productSaleEntryId,
+                            productSaleId: productSaleId,
                             collegeId: values.collegeId,
                             productId: values.productId,
                             saleTimes: values.saleTimes,
@@ -256,14 +259,15 @@ const ProductSaleDetailInner = (props) => {
     );
 };
 
-class ProductSaleDetail extends React.Component {
+class ProductSaleEntryDetail extends React.Component {
     constructor(props) {
         super(props);
 
         this.loadProductSaleList = props.loadProductSaleList;
 
         this.state = {
-            productSaleId: -1,
+
+            productSaleId: 0,
             open: false,
         };
     }
@@ -277,7 +281,7 @@ class ProductSaleDetail extends React.Component {
 
     hide = () => {
         this.setState({
-            productSaleId: -1,
+            productSaleId: 0,
             open: false,
         });
     }
@@ -288,7 +292,7 @@ class ProductSaleDetail extends React.Component {
         const loadProductSaleList = this.loadProductSaleList;
 
         return (
-            <ProductSaleDetailInner
+            <ProductSaleEntryDetailInner
                 productSaleId={productSaleId}
                 open={open}
                 self={this}
@@ -298,4 +302,4 @@ class ProductSaleDetail extends React.Component {
     }
 }
 
-export default ProductSaleDetail;
+export default ProductSaleEntryDetail;

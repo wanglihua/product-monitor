@@ -390,7 +390,7 @@ class ProductInstallDetail extends React.Component {
         this.loadProductInstallList = props.loadProductInstallList;
 
         this.state = {
-            productInstallId: -1,
+            productInstallId: 0,
             open: false,
         };
     }
@@ -404,7 +404,7 @@ class ProductInstallDetail extends React.Component {
 
     hide = () => {
         this.setState({
-            productInstallId: -1,
+            productInstallId: 0,
             open: false,
         });
     }
