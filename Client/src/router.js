@@ -5,6 +5,7 @@ import Login from "./site/login";
 import LayoutSite from "./site/layout-site";
 import LayoutAdmin from "./site/layout-admin";
 import PageNotFound from "./site/page-not-found";
+import Test from "./pages/test";
 import User from "./pages/user";
 import Home from "./pages/home";
 import AdminUser from "./pages/admin-user";
@@ -27,6 +28,7 @@ const Router = () => {
                 <Route path="/login" element={<Login/>}/>
                 <Route element={<LayoutAdmin/>}>
                     <Route path="/" element={<Home/>}/>
+                    <Route path="/test" element={<Test/>}/>
                     <Route path="/product" element={<Product/>}/>
                     <Route path="/college" element={<College/>}/>
                     <Route path="/product-url" element={<ProductUrl/>}/>

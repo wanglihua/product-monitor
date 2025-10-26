@@ -165,6 +165,8 @@ const ProductUpdateDetailInner = (props) => {
                             >
                                 <Select
                                     showSearch={true}
+                                    filterOption={false}
+                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
                                     placeholder="请搜索选择学校"
                                     options={collegeSelectOptions}
                                     onSearch={(search) => {
@@ -195,6 +197,8 @@ const ProductUpdateDetailInner = (props) => {
                             >
                                 <Select
                                     showSearch={true}
+                                    filterOption={false}
+                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
                                     placeholder="请搜索选择产品"
                                     options={productSelectOptions}
                                     onSearch={(search) => {
