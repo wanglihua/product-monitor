@@ -68,7 +68,11 @@ const ProductSale = () => {
             dataIndex: "saleTimes",
             width: "320px",
             render: (value, record, index) => {
-                return <span><span>销售:</span>{record.saleTimes} / <span>安装:</span>{record.installTimes} / <span>更新:</span>{record.updateTimes} / <span>售后:</span>{record.serviceTimes}</span>
+                return (
+                    <span>
+                        <span>销售&nbsp;</span>{record.saleTimes}&nbsp;/&nbsp;<span>安装&nbsp;</span>{record.installTimes}&nbsp;/&nbsp;<span>更新&nbsp;</span>{record.updateTimes}&nbsp;/&nbsp;<span>售后&nbsp;</span>{record.serviceTimes}
+                    </span>
+                );
             },
         },
         {
@@ -129,7 +133,7 @@ const ProductSale = () => {
 
     return (
         <div>
-            <Title title="销售目录" menuKey="product-sale" breadcrumb={[
+            <Title title="销售目录" parentMenuKeys={["project-manage"]} menuKey="product-sale" breadcrumb={[
                 {title: "销售目录"},
             ]}/>
             <div>

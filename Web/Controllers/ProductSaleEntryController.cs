@@ -166,8 +166,8 @@ public class ProductSaleEntryController : Controller
             ProductId = productId,
             ProductName = productName,
             Version = "",
-            SaleDate = "",
-            ServiceExpireDate = "",
+            SaleDate = DateTime.Today.ToString("yyyy-MM-dd"),
+            ServiceExpireDate = DateTime.Today.ToString("yyyy-MM-dd"),
             Description = "",
         };
 
@@ -315,6 +315,8 @@ public class ProductSaleEntryController : Controller
             string actionDesc = $"#{productSaleEntry.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductSaleEntryUpdate, actionDesc);
         }
+
+        productSaleService.UpdateProductSaleByLatestData(productSaleId);
 
         return Json(new JsonResultData {
             Success = true,
