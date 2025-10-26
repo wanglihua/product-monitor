@@ -109,17 +109,62 @@ public class ProductSaleEntryController : Controller
     [HttpPost]
     [Route("/api/product-sale-entry/detail")]
     [Transactional(false)]
-    public IActionResult Detail([FromBody] IdParam param)
+    public IActionResult Detail([FromBody] ProductSaleEntryDetailParam param)
     {
-        long productSaleEntryId = param.Id;
+        long productSaleEntryId = param.ProductSaleEntryId;
+
+
+        long collegeId = 0;
+        string collegeName = "";
+        long productId = 0;
+        string productName = "";
+
+        long productSaleId = param.ProductSaleId;
+        if (productSaleEntryId > 0)
+        {
+            var productSaleEntry = db.Set<ProductSaleEntryEntity>().Find(productSaleEntryId);
+            if (productSaleEntry == null)
+            {
+                throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
+            }
+
+            productSaleId = productSaleEntry.ProductSaleId;
+        }
+
+        if (productSaleId > 0)
+        {
+            var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
+            if (productSale == null)
+            {
+                throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
+            }
+
+            collegeId = productSale.CollegeId;
+            var college = db.Set<CollegeEntity>().Find(collegeId);
+            if (college == null)
+            {
+                throw new ValidationException($"指定学校#{collegeId}不存在!");
+            }
+
+            collegeName = college.Name;
+
+            productId = productSale.ProductId;
+            var product = db.Set<ProductEntity>().Find(productId);
+            if (product == null)
+            {
+                throw new ValidationException($"指定产品#{productId}不存在!");
+            }
+
+            productName = product.Name;
+        }
 
         var model = new ProductSaleEntryDetailModel {
-            Id = 0,
-            ProductSaleId = 0,
-            CollegeId = 0,
-            CollegeName = "",
-            ProductId = 0,
-            ProductName = "",
+            Id = productSaleEntryId,
+            ProductSaleId = productSaleId,
+            CollegeId = collegeId,
+            CollegeName = collegeName,
+            ProductId = productId,
+            ProductName = productName,
             Version = "",
             SaleDate = "",
             ServiceExpireDate = "",
@@ -134,34 +179,13 @@ public class ProductSaleEntryController : Controller
                 throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
             }
 
-            long productSaleId = productSaleEntry.ProductSaleId;
-            var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
-            if (productSale == null)
-            {
-                throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
-            }
-
-            long collegeId = productSale.CollegeId;
-            var college = db.Set<CollegeEntity>().Find(collegeId);
-            if (college == null)
-            {
-                throw new ValidationException($"指定学校#{collegeId}不存在!");
-            }
-
-            long productId = productSale.ProductId;
-            var product = db.Set<ProductEntity>().Find(productId);
-            if (product == null)
-            {
-                throw new ValidationException($"指定产品#{productId}不存在!");
-            }
-
             model = new ProductSaleEntryDetailModel {
                 Id = productSaleEntry.Id,
                 ProductSaleId = productSaleEntry.ProductSaleId,
                 CollegeId = collegeId,
-                CollegeName = college.Name,
+                CollegeName = collegeName,
                 ProductId = productId,
-                ProductName = product.Name,
+                ProductName = productName,
                 Version = productSaleEntry.Version,
                 SaleDate = productSaleEntry.SaleDate.ToString("yyyy-MM-dd"),
                 ServiceExpireDate = productSaleEntry.ServiceExpireDate.ToString("yyyy-MM-dd"),
