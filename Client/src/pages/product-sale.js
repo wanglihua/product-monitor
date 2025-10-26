@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {useNavigate} from "react-router";
 import ProductSaleEntryDetail from "./product-sale-entry-detail";
 
 import useSiteContext from "../site/site-context";
@@ -96,27 +97,9 @@ const ProductSale = () => {
                 return (
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            productSaleEntryDetail.current.show(productSaleId);
+                            useNavigate("/product-sale-entry/" + record.productSaleId);
                         }}>
-                            <EditOutlined/>编辑
-                        </Button>
-                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/product-sale/delete", {
-                                    id: record.id,
-                                }, function (response) {
-                                    const res = response.data;
-                                    if (res.success !== true) {
-                                        showError(res.message);
-                                        return;
-                                    }
-
-                                    showSuccess(res.message);
-                                    loadProductSaleList();
-                                });
-                            });
-                        }}>
-                            <DeleteOutlined/>删除
+                            销售记录
                         </Button>
                     </Space>
                 );
