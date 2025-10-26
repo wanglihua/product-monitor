@@ -21,16 +21,19 @@ public class ProductSaleEntryController : Controller
     private readonly Db db;
     private readonly UserLoginService userLoginService;
     private readonly ActionLogService actionLogService;
+    private readonly ProductSaleService productSaleService;
 
     public ProductSaleEntryController(
         Db db,
         UserLoginService userLoginService,
-        ActionLogService actionLogService
+        ActionLogService actionLogService,
+        ProductSaleService productSaleService
     )
     {
         this.db = db;
         this.userLoginService = userLoginService;
         this.actionLogService = actionLogService;
+        this.productSaleService = productSaleService;
     }
 
     [HttpPost]
@@ -38,13 +41,12 @@ public class ProductSaleEntryController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ProductSaleEntryListParam param)
     {
+        ValidationUtil.Validate<ProductSaleEntryListParamValidator, ProductSaleEntryListParam>(param);
+
         IQueryable<ProductSaleEntryEntity> query = db.Set<ProductSaleEntryEntity>();
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(p => p.Name.Contains(nameQuery));
-        // }
+        long productSaleId = param.ProductSaleId;
+        query = query.Where(p => p.ProductSaleId == productSaleId);
 
         int productSaleEntryCount = query.Count();
 
@@ -114,6 +116,10 @@ public class ProductSaleEntryController : Controller
         var model = new ProductSaleEntryDetailModel {
             Id = 0,
             ProductSaleId = 0,
+            CollegeId = 0,
+            CollegeName = "",
+            ProductId = 0,
+            ProductName = "",
             Version = "",
             SaleDate = "",
             ServiceExpireDate = "",
@@ -123,17 +129,44 @@ public class ProductSaleEntryController : Controller
         if (productSaleEntryId > 0)
         {
             var productSaleEntry = db.Set<ProductSaleEntryEntity>().Find(productSaleEntryId);
-            if (productSaleEntry != null)
+            if (productSaleEntry == null)
             {
-                model = new ProductSaleEntryDetailModel {
-                    Id = productSaleEntry.Id,
-                    ProductSaleId = productSaleEntry.ProductSaleId,
-                    Version = productSaleEntry.Version,
-                    SaleDate = productSaleEntry.SaleDate.ToString("yyyy-MM-dd"),
-                    ServiceExpireDate = productSaleEntry.ServiceExpireDate.ToString("yyyy-MM-dd"),
-                    Description = productSaleEntry.Description,
-                };
+                throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
             }
+
+            long productSaleId = productSaleEntry.ProductSaleId;
+            var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
+            if (productSale == null)
+            {
+                throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
+            }
+
+            long collegeId = productSale.CollegeId;
+            var college = db.Set<CollegeEntity>().Find(collegeId);
+            if (college == null)
+            {
+                throw new ValidationException($"指定学校#{collegeId}不存在!");
+            }
+
+            long productId = productSale.ProductId;
+            var product = db.Set<ProductEntity>().Find(productId);
+            if (product == null)
+            {
+                throw new ValidationException($"指定产品#{productId}不存在!");
+            }
+
+            model = new ProductSaleEntryDetailModel {
+                Id = productSaleEntry.Id,
+                ProductSaleId = productSaleEntry.ProductSaleId,
+                CollegeId = collegeId,
+                CollegeName = college.Name,
+                ProductId = productId,
+                ProductName = product.Name,
+                Version = productSaleEntry.Version,
+                SaleDate = productSaleEntry.SaleDate.ToString("yyyy-MM-dd"),
+                ServiceExpireDate = productSaleEntry.ServiceExpireDate.ToString("yyyy-MM-dd"),
+                Description = productSaleEntry.Description,
+            };
         }
 
         return Json(new JsonResultData {
@@ -192,12 +225,11 @@ public class ProductSaleEntryController : Controller
         }
 
         ValidationUtil.Validate<ProductSaleEntryDetailModelValidator, ProductSaleEntryDetailModel>(model);
-        
+
         long loginUserId = userLoginService.GetLoginUserId();
 
         long productSaleEntryId = model.Id;
         bool isCreate = productSaleEntryId == 0;
-        bool createProductSale = false;
 
         ProductSaleEntryEntity? productSaleEntry;
         if (isCreate == false)
@@ -227,7 +259,9 @@ public class ProductSaleEntryController : Controller
                     throw new ValidationException($"学校#{collegeId}和产品#{productId}对应的销售目录已经存在!");
                 }
 
-                // todo 先创建销售目录
+                // 先创建销售目录
+                productSaleId = productSaleService.Create(collegeId, productId, loginUserId);
+                productSaleEntry.ProductSaleId = productSaleId;
             }
         }
 
@@ -246,7 +280,7 @@ public class ProductSaleEntryController : Controller
         }
 
         db.SaveChanges();
-        
+
         if (isCreate == true)
         {
             string actionDesc = $"#{productSaleEntry.Id}";

@@ -9,7 +9,9 @@ import Title from "../site/title";
 const Test = () => {
     const {post, showSuccess, showError} = useSiteContext();
 
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState([
+        {value: 1, label: "test1"}
+    ]);
 
     return (
         <div>
@@ -19,6 +21,8 @@ const Test = () => {
 
             <Space>
                 <Select
+                    disabled={true}
+                    value={1}
                     showSearch={true}
                     options={options}
                     filterOption={false}
