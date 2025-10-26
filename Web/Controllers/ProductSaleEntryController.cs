@@ -159,7 +159,7 @@ public class ProductSaleEntryController : Controller
         }
 
         var model = new ProductSaleEntryDetailModel {
-            Id = productSaleEntryId,
+            ProductSaleEntryId = productSaleEntryId,
             ProductSaleId = productSaleId,
             CollegeId = collegeId,
             CollegeName = collegeName,
@@ -180,7 +180,7 @@ public class ProductSaleEntryController : Controller
             }
 
             model = new ProductSaleEntryDetailModel {
-                Id = productSaleEntry.Id,
+                ProductSaleEntryId = productSaleEntry.Id,
                 ProductSaleId = productSaleEntry.ProductSaleId,
                 CollegeId = collegeId,
                 CollegeName = collegeName,
@@ -209,7 +209,7 @@ public class ProductSaleEntryController : Controller
         long collegeId = model.CollegeId;
         long productId = model.ProductId;
 
-        if (model.Id <= 0)
+        if (model.ProductSaleEntryId <= 0)
         {
             if (model.ProductSaleId > 0)
             {
@@ -252,7 +252,7 @@ public class ProductSaleEntryController : Controller
 
         long loginUserId = userLoginService.GetLoginUserId();
 
-        long productSaleEntryId = model.Id;
+        long productSaleEntryId = model.ProductSaleEntryId;
         bool isCreate = productSaleEntryId == 0;
 
         ProductSaleEntryEntity? productSaleEntry;

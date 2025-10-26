@@ -5,8 +5,8 @@ namespace Web.Models.ProductSaleEntry;
 
 public class ProductSaleEntryDetailModel
 {
-    [JsonProperty("id")]
-    public long Id { get; set; }
+    [JsonProperty("productSaleEntryId")]
+    public long ProductSaleEntryId { get; set; }
 
     [JsonProperty("productSaleId")]
     public long ProductSaleId { get; set; }

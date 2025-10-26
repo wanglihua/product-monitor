@@ -39,11 +39,19 @@ const ProductSaleEntryDetailInner = (props) => {
                     loadProductSaleList();
                 }
 
+                if (loadProductSaleEntryList) {
+                    loadProductSaleEntryList();
+                }
+
                 self.hide();
             }}
             onCancel={() => {
                 if (loadProductSaleList) {
                     loadProductSaleList();
+                }
+
+                if (loadProductSaleEntryList) {
+                    loadProductSaleEntryList();
                 }
 
                 self.hide();
@@ -64,13 +72,9 @@ const ProductSaleEntryDetailInner = (props) => {
                         form.current.setFieldsValue({
                             collegeId: data.collegeId,
                             productId: data.productId,
-                            saleTimes: data.saleTimes,
-                            installTimes: data.installTimes,
-                            updateTimes: data.updateTimes,
-                            serviceTimes: data.serviceTimes,
                             version: data.version,
-                            saleDate: data.saleDate,
-                            serviceExpireDate: data.serviceExpireDate,
+                            saleDate: dayjs(data.saleDate),
+                            serviceExpireDate: dayjs(data.serviceExpireDate),
                             description: data.description,
                         });
                     });
@@ -93,15 +97,11 @@ const ProductSaleEntryDetailInner = (props) => {
                     size='middle'
                     requiredMark={false}
                     onFinish={(values) => {
-                        post("/api/product-sale/save", {
-                            id: productSaleEntryId,
+                        post("/api/product-sale-entry/save", {
+                            productSaleEntryId: productSaleEntryId,
                             productSaleId: productSaleId,
                             collegeId: values.collegeId,
                             productId: values.productId,
-                            saleTimes: values.saleTimes,
-                            installTimes: values.installTimes,
-                            updateTimes: values.updateTimes,
-                            serviceTimes: values.serviceTimes,
                             version: values.version,
                             saleDate: values.saleDate,
                             serviceExpireDate: values.serviceExpireDate,
@@ -117,6 +117,10 @@ const ProductSaleEntryDetailInner = (props) => {
 
                             if (loadProductSaleList) {
                                 loadProductSaleList();
+                            }
+
+                            if (loadProductSaleEntryList) {
+                                loadProductSaleEntryList();
                             }
 
                             self.hide();
@@ -264,6 +268,7 @@ class ProductSaleEntryDetail extends React.Component {
         super(props);
 
         this.loadProductSaleList = props.loadProductSaleList;
+        this.loadProductSaleEntryList = props.loadProductSaleEntryList;
 
         this.state = {
 
@@ -290,6 +295,7 @@ class ProductSaleEntryDetail extends React.Component {
         const productSaleId = this.state.productSaleId;
         const open = this.state.open;
         const loadProductSaleList = this.loadProductSaleList;
+        const loadProductSaleEntryList = this.loadProductSaleEntryList;
 
         return (
             <ProductSaleEntryDetailInner
@@ -297,6 +303,7 @@ class ProductSaleEntryDetail extends React.Component {
                 open={open}
                 self={this}
                 loadProductSaleList={loadProductSaleList}
+                loadProductSaleEntryList={loadProductSaleEntryList}
             />
         )
     }
