@@ -3,7 +3,7 @@ import {ConfigProvider, Modal, notification, Spin} from "antd";
 import zhCn from "antd/locale/zh_CN";
 import axios from "axios";
 import React, {useState} from "react";
-import {BrowserRouter, useNavigate} from "react-router";
+import {BrowserRouter} from "react-router";
 import "./app.css";
 import Router from "./router";
 import {SiteContext} from "./site/site-context";

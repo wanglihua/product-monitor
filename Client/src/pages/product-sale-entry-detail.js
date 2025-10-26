@@ -329,19 +329,20 @@ class ProductSaleEntryDetail extends React.Component {
     constructor(props) {
         super(props);
 
+        const productSaleId = props.productSaleId;
         this.loadProductSaleList = props.loadProductSaleList;
         this.loadProductSaleEntryList = props.loadProductSaleEntryList;
 
         this.state = {
-
-            productSaleId: 0,
+            productSaleEntryId: 0,
+            productSaleId: productSaleId,
             open: false,
         };
     }
 
-    show = (productSaleId) => {
+    show = (productSaleEntryId) => {
         this.setState({
-            productSaleId: productSaleId,
+            productSaleEntryId: productSaleEntryId,
             open: true,
         });
     }

@@ -14,6 +14,7 @@ import Product from "./pages/product";
 import College from "./pages/college";
 import ProductUrl from "./pages/product-url";
 import ProductSale from "./pages/product-sale";
+import ProductSaleEntry from "./pages/product-sale-entry";
 import ProductRent from "./pages/product-rent";
 import ProductEval from "./pages/product-eval";
 import ProductInstall from "./pages/product-install";
@@ -33,6 +34,7 @@ const Router = () => {
                     <Route path="/college" element={<College/>}/>
                     <Route path="/product-url" element={<ProductUrl/>}/>
                     <Route path="/product-sale" element={<ProductSale/>}/>
+                    <Route path="/product-sale-entry/:productSaleId" element={<ProductSaleEntry/>}/>
                     <Route path="/product-rent" element={<ProductRent/>}/>
                     <Route path="/product-eval" element={<ProductEval/>}/>
                     <Route path="/product-install" element={<ProductInstall/>}/>

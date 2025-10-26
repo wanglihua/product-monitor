@@ -10,6 +10,8 @@ import Title from "../site/title";
 const ProductSale = () => {
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+    
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         collegeNameQuery: "",
@@ -97,7 +99,7 @@ const ProductSale = () => {
                 return (
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            useNavigate("/product-sale-entry/" + record.productSaleId);
+                            navigate("/product-sale-entry/" + record.id);
                         }}>
                             销售记录
                         </Button>
