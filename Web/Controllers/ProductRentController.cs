@@ -1,14 +1,11 @@
 using System.Linq.Expressions;
-using Core;
 using Core.Auth;
 using Core.Database;
-using Core.Util;
 using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
-using Service;
 using Web.Models.ProductRent;
 
 namespace Web.Controllers;
@@ -19,18 +16,12 @@ public class ProductRentController : Controller
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
     private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
 
     public ProductRentController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService
+        Db db
     )
     {
         this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
     }
 
     private class ProductRentJoinItem
@@ -135,143 +126,6 @@ public class ProductRentController : Controller
                 ["productRentList"] = productRentItemList,
                 ["productRentCount"] = productRentCount,
             },
-        });
-    }
-
-    [HttpPost]
-    [Route("/api/product-rent/detail")]
-    [Transactional(false)]
-    public IActionResult Detail([FromBody] IdParam param)
-    {
-        long productRentId = param.Id;
-
-        var model = new ProductRentDetailModel {
-            Id = 0,
-            CollegeId = 0,
-            ProductId = 0,
-            RentTimes = 0,
-            ServiceTimes = 0,
-            TotalDays = 0,
-            RemainDays = 0,
-            BeginDate = "",
-            EndDate = "",
-            Description = "",
-        };
-
-        if (productRentId > 0)
-        {
-            var productRent = db.Set<ProductRentEntity>().Find(productRentId);
-            if (productRent != null)
-            {
-                model = new ProductRentDetailModel {
-                    Id = productRent.Id,
-                    CollegeId = productRent.CollegeId,
-                    ProductId = productRent.ProductId,
-                    RentTimes = productRent.RentTimes,
-                    ServiceTimes = productRent.ServiceTimes,
-                    TotalDays = productRent.TotalDays,
-                    RemainDays = productRent.RemainDays,
-                    BeginDate = productRent.BeginDate.ToString("yyyy-MM-dd"),
-                    EndDate = productRent.EndDate.ToString("yyyy-MM-dd"),
-                    Description = productRent.Description,
-                };
-            }
-        }
-
-        return Json(new JsonResultData {
-            Success = true,
-            Message = "success",
-            Data = model,
-        });
-    }
-
-    [HttpPost]
-    [Route("/api/product-rent/save")]
-    [Transactional(true)]
-    public IActionResult Save([FromBody] ProductRentDetailModel model)
-    {
-        ValidationUtil.Validate<ProductRentDetailModelValidator, ProductRentDetailModel>(model);
-
-        long productRentId = model.Id;
-        bool isCreate = productRentId == 0;
-
-        ProductRentEntity? productRent;
-        if (isCreate == true)
-        {
-            productRent = new ProductRentEntity();
-        }
-        else
-        {
-            productRent = db.Set<ProductRentEntity>().Find(productRentId);
-            if (productRent == null)
-            {
-                throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
-            }
-        }
-
-        productRent.CollegeId = model.CollegeId;
-        productRent.ProductId = model.ProductId;
-        productRent.RentTimes = model.RentTimes;
-        productRent.ServiceTimes = model.ServiceTimes;
-        productRent.TotalDays = model.TotalDays;
-        productRent.RemainDays = model.RemainDays;
-        productRent.BeginDate = DateTime.Parse(model.BeginDate).Date;
-        productRent.EndDate = DateTime.Parse(model.EndDate).Date;
-        productRent.Description = model.Description ?? "";
-
-        if (isCreate == true)
-        {
-            db.Add<ProductRentEntity>(productRent);
-        }
-        else
-        {
-            db.Update<ProductRentEntity>(productRent);
-        }
-
-        db.SaveChanges();
-
-        long loginUserId = userLoginService.GetLoginUserId();
-        if (isCreate == true)
-        {
-            string actionDesc = $"#{productRent.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.ProductRentCreate, actionDesc);
-        }
-        else
-        {
-            string actionDesc = $"#{productRent.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.ProductRentUpdate, actionDesc);
-        }
-
-        return Json(new JsonResultData {
-            Success = true,
-            Message = "保存成功！",
-        });
-    }
-
-    [HttpPost]
-    [Route("/api/product-rent/delete")]
-    [Transactional(true)]
-    public IActionResult Delete([FromBody] IdParam param)
-    {
-        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
-
-        long productRentId = param.Id;
-        var productRent = db.Set<ProductRentEntity>().Find(productRentId);
-        if (productRent == null)
-        {
-            throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
-        }
-
-        db.Remove<ProductRentEntity>(productRent);
-        db.SaveChanges();
-
-        long loginUserId = userLoginService.GetLoginUserId();
-        string actionDesc = $"#{productRent.Id}";
-        actionLogService.Add(loginUserId, ActionLogType.ProductRentDelete, actionDesc);
-
-        return Json(new JsonResultData {
-            Success = true,
-            Message = "删除成功！",
         });
     }
 }
