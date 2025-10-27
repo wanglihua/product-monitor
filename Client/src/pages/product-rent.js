@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import ProductRentDetail from "./product-rent-detail";
+import ProductRentEntryDetail from "./product-rent-entry-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
@@ -42,7 +42,7 @@ const ProductRent = () => {
         });
     };
 
-    const productRentDetail = useRef();
+    const productRentEntryDetail = useRef();
 
     const productRentListColumns = [
         {
@@ -100,7 +100,7 @@ const ProductRent = () => {
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const productRentId = record.id;
-                            productRentDetail.current.show(productRentId);
+                            productRentEntryDetail.current.show(productRentId);
                         }}>
                             <EditOutlined/>编辑
                         </Button>
@@ -166,7 +166,7 @@ const ProductRent = () => {
                         color="default"
                         icon={<PlusCircleOutlined style={{color: "green"}}/>}
                         onClick={(e) => {
-                            productRentDetail.current.show(0);
+                            productRentEntryDetail.current.show(0);
                         }}
                     >
                         添加
@@ -197,7 +197,7 @@ const ProductRent = () => {
                        }}
                 />
             </div>
-            <ProductRentDetail ref={productRentDetail} loadProductRentList={loadProductRentList}/>
+            <ProductRentEntryDetail ref={productRentEntryDetail} loadProductRentList={loadProductRentList}/>
         </div>
     );
 };

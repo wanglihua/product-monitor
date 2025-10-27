@@ -3,22 +3,22 @@ import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
 
-const ProductEvalDetailInner = (props) => {
-    const productEvalId = props.productEvalId;
+const ProductRentEntryDetailInner = (props) => {
+    const productRentId = props.productRentId;
     const open = props.open;
     const self = props.self;
-    const loadProductEvalList = props.loadProductEvalList;
+    const loadProductRentList = props.loadProductRentList;
 
     const {token} = theme.useToken();
     const {post, showSuccess, showError} = useSiteContext();
 
     const title = useRef("");
-    if (productEvalId === 0) {
-        title.current = "试用目录新增";
+    if (productRentId === 0) {
+        title.current = "租赁目录新增";
     }
 
-    if (productEvalId > 0) {
-        title.current = "试用目录编辑";
+    if (productRentId > 0) {
+        title.current = "租赁目录编辑";
     }
 
     const [state, setState] = useState({});
@@ -33,23 +33,23 @@ const ProductEvalDetailInner = (props) => {
             footer={null}
             open={open}
             onOk={() => {
-                if (loadProductEvalList) {
-                    loadProductEvalList();
+                if (loadProductRentList) {
+                    loadProductRentList();
                 }
 
                 self.hide();
             }}
             onCancel={() => {
-                if (loadProductEvalList) {
-                    loadProductEvalList();
+                if (loadProductRentList) {
+                    loadProductRentList();
                 }
 
                 self.hide();
             }}
             afterOpenChange={(open) => {
                 if (open === true) {
-                    post("/api/product-eval/detail", {
-                        "id": productEvalId
+                    post("/api/product-rent/detail", {
+                        "id": productRentId
                     }, function (response) {
                         const res = response.data;
                         if (res.success !== true) {
@@ -62,8 +62,8 @@ const ProductEvalDetailInner = (props) => {
                         form.current.setFieldsValue({
                             collegeId: data.collegeId,
                             productId: data.productId,
-                            evalTimes: data.evalTimes,
-                            saleTimes: data.saleTimes,
+                            rentTimes: data.rentTimes,
+                            serviceTimes: data.serviceTimes,
                             totalDays: data.totalDays,
                             remainDays: data.remainDays,
                             beginDate: data.beginDate,
@@ -90,12 +90,12 @@ const ProductEvalDetailInner = (props) => {
                     size='middle'
                     requiredMark={false}
                     onFinish={(values) => {
-                        post("/api/product-eval/save", {
-                            id: productEvalId,
+                        post("/api/product-rent/save", {
+                            id: productRentId,
                             collegeId: values.collegeId,
                             productId: values.productId,
-                            evalTimes: values.evalTimes,
-                            saleTimes: values.saleTimes,
+                            rentTimes: values.rentTimes,
+                            serviceTimes: values.serviceTimes,
                             totalDays: values.totalDays,
                             remainDays: values.remainDays,
                             beginDate: values.beginDate,
@@ -110,8 +110,8 @@ const ProductEvalDetailInner = (props) => {
 
                             showSuccess(res.message);
 
-                            if (loadProductEvalList) {
-                                loadProductEvalList();
+                            if (loadProductRentList) {
+                                loadProductRentList();
                             }
 
                             self.hide();
@@ -233,46 +233,46 @@ const ProductEvalDetailInner = (props) => {
     );
 };
 
-class ProductEvalDetail extends React.Component {
+class ProductRentEntryDetail extends React.Component {
     constructor(props) {
         super(props);
 
-        this.loadProductEvalList = props.loadProductEvalList;
+        this.loadProductRentList = props.loadProductRentList;
 
         this.state = {
-            productEvalId: 0,
+            productRentId: 0,
             open: false,
         };
     }
 
-    show = (productEvalId) => {
+    show = (productRentId) => {
         this.setState({
-            productEvalId: productEvalId,
+            productRentId: productRentId,
             open: true,
         });
     }
 
     hide = () => {
         this.setState({
-            productEvalId: 0,
+            productRentId: 0,
             open: false,
         });
     }
 
     render() {
-        const productEvalId = this.state.productEvalId;
+        const productRentId = this.state.productRentId;
         const open = this.state.open;
-        const loadProductEvalList = this.loadProductEvalList;
+        const loadProductRentList = this.loadProductRentList;
 
         return (
-            <ProductEvalDetailInner
-                productEvalId={productEvalId}
+            <ProductRentEntryDetailInner
+                productRentId={productRentId}
                 open={open}
                 self={this}
-                loadProductEvalList={loadProductEvalList}
+                loadProductRentList={loadProductRentList}
             />
         )
     }
 }
 
-export default ProductEvalDetail;
+export default ProductRentEntryDetail;

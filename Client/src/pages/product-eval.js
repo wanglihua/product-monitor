@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import ProductEvalDetail from "./product-eval-detail";
+import ProductEvalEntryDetail from "./product-eval-entry-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
@@ -42,7 +42,7 @@ const ProductEval = () => {
         });
     };
 
-    const productEvalDetail = useRef();
+    const productEvalEntryDetail = useRef();
 
     const productEvalListColumns = [
         {
@@ -100,7 +100,7 @@ const ProductEval = () => {
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const productEvalId = record.id;
-                            productEvalDetail.current.show(productEvalId);
+                            productEvalEntryDetail.current.show(productEvalId);
                         }}>
                             <EditOutlined/>编辑
                         </Button>
@@ -166,7 +166,7 @@ const ProductEval = () => {
                         color="default"
                         icon={<PlusCircleOutlined style={{color: "green"}}/>}
                         onClick={(e) => {
-                            productEvalDetail.current.show(0);
+                            productEvalEntryDetail.current.show(0);
                         }}
                     >
                         添加
@@ -197,7 +197,7 @@ const ProductEval = () => {
                        }}
                 />
             </div>
-            <ProductEvalDetail ref={productEvalDetail} loadProductEvalList={loadProductEvalList}/>
+            <ProductEvalEntryDetail ref={productEvalEntryDetail} loadProductEvalList={loadProductEvalList}/>
         </div>
     );
 };
