@@ -380,6 +380,7 @@ public class ProductSaleEntryController : Controller
         actionLogService.Add(loginUserId, ActionLogType.ProductSaleEntryDelete, entryActionDesc);
 
         // 删除最后一个明细数据的时候，删除主数据
+        bool productSaleDeleted = false;
         long productSaleId = productSaleEntry.ProductSaleId;
         var productSaleEntryExists = db.Set<ProductSaleEntryEntity>()
             .Where(e => e.ProductSaleId == productSaleId)
@@ -400,6 +401,8 @@ public class ProductSaleEntryController : Controller
 
             string actionDesc = $"#{productSale.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductSaleDelete, actionDesc);
+
+            productSaleDeleted = true;
         }
 
         db.SaveChanges();
@@ -407,6 +410,9 @@ public class ProductSaleEntryController : Controller
         return Json(new JsonResultData {
             Success = true,
             Message = "删除成功！",
+            Data = new Dictionary<string, object> {
+                ["productSaleDeleted"] = productSaleDeleted
+            },
         });
     }
 }

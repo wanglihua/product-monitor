@@ -1,7 +1,7 @@
 ﻿import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import {useParams} from "react-router";
+import {useParams, useNavigate} from "react-router";
 import ProductSaleEntryDetail from "./product-sale-entry-detail";
 
 import useSiteContext from "../site/site-context";
@@ -14,6 +14,8 @@ const ProductSaleEntry = () => {
     const productSaleId = params.productSaleId;
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         productSaleId: productSaleId,
@@ -117,6 +119,12 @@ const ProductSaleEntry = () => {
                                     }
 
                                     showSuccess(res.message);
+                                    
+                                    if (res.data && res.data.productSaleDeleted === true) {
+                                        navigate("/product-sale");
+                                        return;
+                                    }
+
                                     loadProductSaleEntryList();
                                 });
                             });
