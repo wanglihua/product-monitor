@@ -8,6 +8,9 @@ public class ProductSaleEntryListParam : ListParam
 {
     [JsonProperty("productSaleId")]
     public long ProductSaleId { get; set; }
+
+    [JsonProperty("versionQuery")]
+    public string VersionQuery { get; set; } = "";
 }
 
 public class ProductSaleEntryListParamValidator : AbstractValidator<ProductSaleEntryListParam>

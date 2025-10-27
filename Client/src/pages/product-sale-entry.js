@@ -27,6 +27,8 @@ const ProductSaleEntry = () => {
     const [state, setState] = useState({
         productSaleEntryList: [],
         productSaleEntryCount: 0,
+        collegeName: "",
+        productName: "",
     });
 
     const loadProductSaleEntryList = () => {
@@ -42,6 +44,8 @@ const ProductSaleEntry = () => {
                     ...pre,
                     productSaleEntryList: res.data.productSaleEntryList,
                     productSaleEntryCount: res.data.productSaleEntryCount,
+                    collegeName: res.data.collegeName,
+                    productName: res.data.productName,
                 };
             });
         });
@@ -129,26 +133,26 @@ const ProductSaleEntry = () => {
         loadProductSaleEntryList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const versionQueryRef = useRef();
 
     return (
         <div>
-            <Title title="销售目录明细" menuKey="product-sale-entry" breadcrumb={[
+            <Title title={`销售目录明细 学校:${state.collegeName} 产品:${state.productName}`} menuKey="product-sale-entry" breadcrumb={[
                 {title: "销售目录明细"},
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={versionQueryRef} addonBefore="版本号" placeholder="版本号查询" style={{width: 320}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const versionQuery = versionQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    versionQuery: versionQuery,
                                 };
                             });
                         }}

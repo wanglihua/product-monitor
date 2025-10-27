@@ -63,8 +63,8 @@ public class ProductSaleEntryDetailModelValidator : AbstractValidator<ProductSal
             .Must(p => DateTime.TryParse(p, out var serviceExpireDate))
             .WithMessage("服务到期时间格式不正确!");
 
-        RuleFor(e => e.Description).NotNull().WithMessage("备注不能为空!");
-        RuleFor(e => e.Description).NotEmpty().WithMessage("备注不能为空!");
+        // RuleFor(e => e.Description).NotNull().WithMessage("备注不能为空!");
+        // RuleFor(e => e.Description).NotEmpty().WithMessage("备注不能为空!");
         RuleFor(e => e.Description).MaximumLength(512).WithMessage("备注最大长度不能超过512!");
     }
 }

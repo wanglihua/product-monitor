@@ -289,10 +289,6 @@ const ProductSaleEntryDetailInner = (props) => {
                             <Form.Item
                                 name="description"
                                 rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入备注!',
-                                    },
                                 ]}
                             >
                                 <Input.TextArea
@@ -349,12 +345,13 @@ class ProductSaleEntryDetail extends React.Component {
 
     hide = () => {
         this.setState({
-            productSaleId: 0,
+            productSaleEntryId: 0,
             open: false,
         });
     }
 
     render() {
+        const productSaleEntryId = this.state.productSaleEntryId;
         const productSaleId = this.state.productSaleId;
         const open = this.state.open;
         const loadProductSaleList = this.loadProductSaleList;
@@ -362,6 +359,7 @@ class ProductSaleEntryDetail extends React.Component {
 
         return (
             <ProductSaleEntryDetailInner
+                productSaleEntryId={productSaleEntryId}
                 productSaleId={productSaleId}
                 open={open}
                 self={this}

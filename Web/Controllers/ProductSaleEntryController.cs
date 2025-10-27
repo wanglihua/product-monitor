@@ -46,7 +46,38 @@ public class ProductSaleEntryController : Controller
         IQueryable<ProductSaleEntryEntity> query = db.Set<ProductSaleEntryEntity>();
 
         long productSaleId = param.ProductSaleId;
+        var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
+        if (productSale == null)
+        {
+            throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
+        }
+
+        long collegeId = productSale.CollegeId;
+        var college = db.Set<CollegeEntity>().Find(collegeId);
+        if (college == null)
+        {
+            throw new ValidationException($"指定学校#{collegeId}不存在!");
+        }
+
+        string collegeName = college.Name;
+
+        long productId = productSale.ProductId;
+        var product = db.Set<ProductEntity>().Find(productId);
+        if (product == null)
+        {
+            throw new ValidationException($"指定产品#{productId}不存在!");
+        }
+
+        string productName = product.Name;
+
         query = query.Where(p => p.ProductSaleId == productSaleId);
+
+
+        if (string.IsNullOrWhiteSpace(param.VersionQuery) == false)
+        {
+            string versionQuery = param.VersionQuery.Trim();
+            query = query.Where(p => p.Version.Contains(versionQuery));
+        }
 
         int productSaleEntryCount = query.Count();
 
@@ -102,6 +133,8 @@ public class ProductSaleEntryController : Controller
             Data = new Dictionary<string, object> {
                 ["productSaleEntryList"] = productSaleEntryItemList,
                 ["productSaleEntryCount"] = productSaleEntryCount,
+                ["collegeName"] = collegeName,
+                ["productName"] = productName,
             },
         });
     }
@@ -316,6 +349,7 @@ public class ProductSaleEntryController : Controller
             actionLogService.Add(loginUserId, ActionLogType.ProductSaleEntryUpdate, actionDesc);
         }
 
+        productSaleId = productSaleEntry.ProductSaleId; // 从保存的实体里面再取一下, 肯定没错, 前面的路径里面有没对这个变量设值的情形
         productSaleService.UpdateProductSaleByLatestData(productSaleId);
 
         return Json(new JsonResultData {
