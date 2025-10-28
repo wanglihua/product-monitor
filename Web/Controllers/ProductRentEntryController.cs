@@ -314,6 +314,7 @@ public class ProductRentEntryController : Controller
 
         productRentEntry.BeginDate = DateTime.Parse(model.BeginDate).Date;
         productRentEntry.EndDate = DateTime.Parse(model.EndDate).Date;
+        productRentEntry.TotalDays = (int)((productRentEntry.EndDate - productRentEntry.BeginDate).TotalDays);
         productRentEntry.Description = model.Description ?? "";
 
         if (isCreate == true)

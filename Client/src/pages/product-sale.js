@@ -99,7 +99,8 @@ const ProductSale = () => {
                 return (
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            navigate("/product-sale-entry/" + record.id);
+                            const productSaleId = record.id;
+                            navigate("/product-sale-entry/" + productSaleId);
                         }}>
                             销售记录
                         </Button>

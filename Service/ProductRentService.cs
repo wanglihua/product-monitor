@@ -29,7 +29,7 @@ public class ProductRentService
             .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
             .Take(1)
             .SingleOrDefault();
-        if (productRent == null)
+        if (productRent != null)
         {
             throw new ValidationException($"学校#{collegeId}和产品#{productId}对应的租赁目录已经存在!");
         }

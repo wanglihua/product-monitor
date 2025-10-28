@@ -314,6 +314,7 @@ public class ProductEvalEntryController : Controller
 
         productEvalEntry.BeginDate = DateTime.Parse(model.BeginDate).Date;
         productEvalEntry.EndDate = DateTime.Parse(model.EndDate).Date;
+        productEvalEntry.TotalDays = (int)((productEvalEntry.EndDate - productEvalEntry.BeginDate).TotalDays);
         productEvalEntry.Description = model.Description ?? "";
 
         if (isCreate == true)
