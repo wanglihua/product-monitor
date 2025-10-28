@@ -4,30 +4,38 @@ import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
 
 const ProductEvalEntryDetailInner = (props) => {
+    const productEvalEntryId = props.productEvalEntryId;
     const productEvalId = props.productEvalId;
     const open = props.open;
     const self = props.self;
     const loadProductEvalList = props.loadProductEvalList;
+    const loadProductEvalEntryList = props.loadProductEvalEntryList;
 
     const {token} = theme.useToken();
     const {post, showSuccess, showError} = useSiteContext();
 
     const title = useRef("");
-    if (productEvalId === 0) {
-        title.current = "试用目录新增";
+    if (productEvalEntryId === 0) {
+        title.cureval = "试用目录明细新增";
     }
 
-    if (productEvalId > 0) {
-        title.current = "试用目录编辑";
+    if (productEvalEntryId > 0) {
+        title.cureval = "试用目录明细编辑";
     }
 
-    const [state, setState] = useState({});
+    const [state, setState] = useState({
+        collegeSelectDisabled: false,
+        productSelectDisabled: false,
+    });
+
+    const [collegeSelectOptions, setCollegeSelectOptions] = useState([]);
+    const [productSelectOptions, setProductSelectOptions] = useState([]);
 
     const form = useRef();
 
     return (
         <Modal
-            title={title.current}
+            title={title.cureval}
             width="880px"
             destroyOnClose={true}
             footer={null}
@@ -37,6 +45,10 @@ const ProductEvalEntryDetailInner = (props) => {
                     loadProductEvalList();
                 }
 
+                if (loadProductEvalEntryList) {
+                    loadProductEvalEntryList();
+                }
+
                 self.hide();
             }}
             onCancel={() => {
@@ -44,12 +56,17 @@ const ProductEvalEntryDetailInner = (props) => {
                     loadProductEvalList();
                 }
 
+                if (loadProductEvalEntryList) {
+                    loadProductEvalEntryList();
+                }
+
                 self.hide();
             }}
             afterOpenChange={(open) => {
                 if (open === true) {
-                    post("/api/product-eval/detail", {
-                        "id": productEvalId
+                    post("/api/product-eval-entry/detail", {
+                        "productEvalEntryId": productEvalEntryId,
+                        "productEvalId": productEvalId,
                     }, function (response) {
                         const res = response.data;
                         if (res.success !== true) {
@@ -59,15 +76,36 @@ const ProductEvalEntryDetailInner = (props) => {
 
                         const data = res.data;
 
-                        form.current.setFieldsValue({
-                            collegeId: data.collegeId,
-                            productId: data.productId,
-                            evalTimes: data.evalTimes,
-                            saleTimes: data.saleTimes,
-                            totalDays: data.totalDays,
-                            remainDays: data.remainDays,
-                            beginDate: data.beginDate,
-                            endDate: data.endDate,
+                        let collegeId = undefined;
+                        let productId = undefined;
+
+                        if (productEvalEntryId > 0 || productEvalId > 0) {
+                            collegeId = data.collegeId;
+                            setCollegeSelectOptions([{
+                                value: collegeId,
+                                label: data.collegeName,
+                            }]);
+
+                            productId = data.productId;
+                            setProductSelectOptions([{
+                                value: productId,
+                                label: data.productName,
+                            }]);
+
+                            setState((pre) => {
+                                return {
+                                    ...pre,
+                                    collegeSelectDisabled: true,
+                                    productSelectDisabled: true,
+                                };
+                            });
+                        }
+
+                        form.cureval.setFieldsValue({
+                            collegeId: collegeId,
+                            productId: productId,
+                            beginDate: dayjs(data.beginDate),
+                            endDate: dayjs(data.endDate),
                             description: data.description,
                         });
                     });
@@ -90,14 +128,11 @@ const ProductEvalEntryDetailInner = (props) => {
                     size='middle'
                     requiredMark={false}
                     onFinish={(values) => {
-                        post("/api/product-eval/save", {
-                            id: productEvalId,
+                        post("/api/product-eval-entry/save", {
+                            productEvalEntryId: productEvalEntryId,
+                            productEvalId: productEvalId,
                             collegeId: values.collegeId,
                             productId: values.productId,
-                            evalTimes: values.evalTimes,
-                            saleTimes: values.saleTimes,
-                            totalDays: values.totalDays,
-                            remainDays: values.remainDays,
                             beginDate: values.beginDate,
                             endDate: values.endDate,
                             description: values.description,
@@ -112,6 +147,10 @@ const ProductEvalEntryDetailInner = (props) => {
 
                             if (loadProductEvalList) {
                                 loadProductEvalList();
+                            }
+
+                            if (loadProductEvalEntryList) {
+                                loadProductEvalEntryList();
                             }
 
                             self.hide();
@@ -135,10 +174,26 @@ const ProductEvalEntryDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="学校"
-                                    allowClear
+                                <Select
+                                    disabled={state.collegeSelectDisabled}
+                                    showSearch={true}
+                                    filterOption={false}
+                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
+                                    placeholder="请搜索选择学校"
+                                    options={collegeSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/college/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setCollegeSelectOptions(res.collegeList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -152,10 +207,26 @@ const ProductEvalEntryDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="产品"
-                                    allowClear
+                                <Select
+                                    disabled={state.productSelectDisabled}
+                                    showSearch={true}
+                                    filterOption={false}
+                                    notFoundContent={"暂无数据"}
+                                    placeholder="请搜索选择产品"
+                                    options={productSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/product/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setProductSelectOptions(res.productList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -169,10 +240,9 @@ const ProductEvalEntryDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
+                                <DatePicker
+                                    style={{width: "100%"}}
                                     placeholder="开始时间"
-                                    allowClear
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -186,22 +256,16 @@ const ProductEvalEntryDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
+                                <DatePicker
+                                    style={{width: "100%"}}
                                     placeholder="结束时间"
-                                    allowClear
                                 />
                             </Form.Item>
                         </Descriptions.Item>
                         <Descriptions.Item label="备注">
                             <Form.Item
                                 name="description"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入备注!',
-                                    },
-                                ]}
+                                rules={[]}
                             >
                                 <Input.TextArea
                                     rows={2}
@@ -237,39 +301,46 @@ class ProductEvalEntryDetail extends React.Component {
     constructor(props) {
         super(props);
 
+        const productEvalId = props.productEvalId;
         this.loadProductEvalList = props.loadProductEvalList;
+        this.loadProductEvalEntryList = props.loadProductEvalEntryList;
 
         this.state = {
-            productEvalId: 0,
+            productEvalEntryId: 0,
+            productEvalId: productEvalId,
             open: false,
         };
     }
 
-    show = (productEvalId) => {
+    show = (productEvalEntryId) => {
         this.setState({
-            productEvalId: productEvalId,
+            productEvalEntryId: productEvalEntryId,
             open: true,
         });
     }
 
     hide = () => {
         this.setState({
-            productEvalId: 0,
+            productEvalEntryId: 0,
             open: false,
         });
     }
 
     render() {
+        const productEvalEntryId = this.state.productEvalEntryId;
         const productEvalId = this.state.productEvalId;
         const open = this.state.open;
         const loadProductEvalList = this.loadProductEvalList;
+        const loadProductEvalEntryList = this.loadProductEvalEntryList;
 
         return (
             <ProductEvalEntryDetailInner
+                productEvalEntryId={productEvalEntryId}
                 productEvalId={productEvalId}
                 open={open}
                 self={this}
                 loadProductEvalList={loadProductEvalList}
+                loadProductEvalEntryList={loadProductEvalEntryList}
             />
         )
     }

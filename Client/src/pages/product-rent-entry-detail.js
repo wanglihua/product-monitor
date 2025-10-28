@@ -4,24 +4,32 @@ import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
 
 const ProductRentEntryDetailInner = (props) => {
+    const productRentEntryId = props.productRentEntryId;
     const productRentId = props.productRentId;
     const open = props.open;
     const self = props.self;
     const loadProductRentList = props.loadProductRentList;
+    const loadProductRentEntryList = props.loadProductRentEntryList;
 
     const {token} = theme.useToken();
     const {post, showSuccess, showError} = useSiteContext();
 
     const title = useRef("");
-    if (productRentId === 0) {
-        title.current = "租赁目录新增";
+    if (productRentEntryId === 0) {
+        title.current = "租赁目录明细新增";
     }
 
-    if (productRentId > 0) {
-        title.current = "租赁目录编辑";
+    if (productRentEntryId > 0) {
+        title.current = "租赁目录明细编辑";
     }
 
-    const [state, setState] = useState({});
+    const [state, setState] = useState({
+        collegeSelectDisabled: false,
+        productSelectDisabled: false,
+    });
+
+    const [collegeSelectOptions, setCollegeSelectOptions] = useState([]);
+    const [productSelectOptions, setProductSelectOptions] = useState([]);
 
     const form = useRef();
 
@@ -37,6 +45,10 @@ const ProductRentEntryDetailInner = (props) => {
                     loadProductRentList();
                 }
 
+                if (loadProductRentEntryList) {
+                    loadProductRentEntryList();
+                }
+
                 self.hide();
             }}
             onCancel={() => {
@@ -44,12 +56,17 @@ const ProductRentEntryDetailInner = (props) => {
                     loadProductRentList();
                 }
 
+                if (loadProductRentEntryList) {
+                    loadProductRentEntryList();
+                }
+
                 self.hide();
             }}
             afterOpenChange={(open) => {
                 if (open === true) {
-                    post("/api/product-rent/detail", {
-                        "id": productRentId
+                    post("/api/product-rent-entry/detail", {
+                        "productRentEntryId": productRentEntryId,
+                        "productRentId": productRentId,
                     }, function (response) {
                         const res = response.data;
                         if (res.success !== true) {
@@ -59,15 +76,36 @@ const ProductRentEntryDetailInner = (props) => {
 
                         const data = res.data;
 
+                        let collegeId = undefined;
+                        let productId = undefined;
+
+                        if (productRentEntryId > 0 || productRentId > 0) {
+                            collegeId = data.collegeId;
+                            setCollegeSelectOptions([{
+                                value: collegeId,
+                                label: data.collegeName,
+                            }]);
+
+                            productId = data.productId;
+                            setProductSelectOptions([{
+                                value: productId,
+                                label: data.productName,
+                            }]);
+
+                            setState((pre) => {
+                                return {
+                                    ...pre,
+                                    collegeSelectDisabled: true,
+                                    productSelectDisabled: true,
+                                };
+                            });
+                        }
+
                         form.current.setFieldsValue({
-                            collegeId: data.collegeId,
-                            productId: data.productId,
-                            rentTimes: data.rentTimes,
-                            serviceTimes: data.serviceTimes,
-                            totalDays: data.totalDays,
-                            remainDays: data.remainDays,
-                            beginDate: data.beginDate,
-                            endDate: data.endDate,
+                            collegeId: collegeId,
+                            productId: productId,
+                            beginDate: dayjs(data.beginDate),
+                            endDate: dayjs(data.endDate),
                             description: data.description,
                         });
                     });
@@ -90,14 +128,11 @@ const ProductRentEntryDetailInner = (props) => {
                     size='middle'
                     requiredMark={false}
                     onFinish={(values) => {
-                        post("/api/product-rent/save", {
-                            id: productRentId,
+                        post("/api/product-rent-entry/save", {
+                            productRentEntryId: productRentEntryId,
+                            productRentId: productRentId,
                             collegeId: values.collegeId,
                             productId: values.productId,
-                            rentTimes: values.rentTimes,
-                            serviceTimes: values.serviceTimes,
-                            totalDays: values.totalDays,
-                            remainDays: values.remainDays,
                             beginDate: values.beginDate,
                             endDate: values.endDate,
                             description: values.description,
@@ -112,6 +147,10 @@ const ProductRentEntryDetailInner = (props) => {
 
                             if (loadProductRentList) {
                                 loadProductRentList();
+                            }
+
+                            if (loadProductRentEntryList) {
+                                loadProductRentEntryList();
                             }
 
                             self.hide();
@@ -135,10 +174,26 @@ const ProductRentEntryDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="学校"
-                                    allowClear
+                                <Select
+                                    disabled={state.collegeSelectDisabled}
+                                    showSearch={true}
+                                    filterOption={false}
+                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
+                                    placeholder="请搜索选择学校"
+                                    options={collegeSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/college/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setCollegeSelectOptions(res.collegeList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -152,10 +207,26 @@ const ProductRentEntryDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="产品"
-                                    allowClear
+                                <Select
+                                    disabled={state.productSelectDisabled}
+                                    showSearch={true}
+                                    filterOption={false}
+                                    notFoundContent={"暂无数据"}
+                                    placeholder="请搜索选择产品"
+                                    options={productSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/product/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setProductSelectOptions(res.productList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -169,10 +240,9 @@ const ProductRentEntryDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
+                                <DatePicker
+                                    style={{width: "100%"}}
                                     placeholder="开始时间"
-                                    allowClear
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -186,22 +256,16 @@ const ProductRentEntryDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
+                                <DatePicker
+                                    style={{width: "100%"}}
                                     placeholder="结束时间"
-                                    allowClear
                                 />
                             </Form.Item>
                         </Descriptions.Item>
                         <Descriptions.Item label="备注">
                             <Form.Item
                                 name="description"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入备注!',
-                                    },
-                                ]}
+                                rules={[]}
                             >
                                 <Input.TextArea
                                     rows={2}
@@ -237,39 +301,46 @@ class ProductRentEntryDetail extends React.Component {
     constructor(props) {
         super(props);
 
+        const productRentId = props.productRentId;
         this.loadProductRentList = props.loadProductRentList;
+        this.loadProductRentEntryList = props.loadProductRentEntryList;
 
         this.state = {
-            productRentId: 0,
+            productRentEntryId: 0,
+            productRentId: productRentId,
             open: false,
         };
     }
 
-    show = (productRentId) => {
+    show = (productRentEntryId) => {
         this.setState({
-            productRentId: productRentId,
+            productRentEntryId: productRentEntryId,
             open: true,
         });
     }
 
     hide = () => {
         this.setState({
-            productRentId: 0,
+            productRentEntryId: 0,
             open: false,
         });
     }
 
     render() {
+        const productRentEntryId = this.state.productRentEntryId;
         const productRentId = this.state.productRentId;
         const open = this.state.open;
         const loadProductRentList = this.loadProductRentList;
+        const loadProductRentEntryList = this.loadProductRentEntryList;
 
         return (
             <ProductRentEntryDetailInner
+                productRentEntryId={productRentEntryId}
                 productRentId={productRentId}
                 open={open}
                 self={this}
                 loadProductRentList={loadProductRentList}
+                loadProductRentEntryList={loadProductRentEntryList}
             />
         )
     }
