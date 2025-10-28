@@ -21,16 +21,19 @@ public class ProductRentEntryController : Controller
     private readonly Db db;
     private readonly UserLoginService userLoginService;
     private readonly ActionLogService actionLogService;
+    private readonly ProductRentService productRentService;
 
     public ProductRentEntryController(
         Db db,
         UserLoginService userLoginService,
-        ActionLogService actionLogService
+        ActionLogService actionLogService,
+        ProductRentService productRentService
     )
     {
         this.db = db;
         this.userLoginService = userLoginService;
         this.actionLogService = actionLogService;
+        this.productRentService = productRentService;
     }
 
     [HttpPost]
@@ -38,13 +41,36 @@ public class ProductRentEntryController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ProductRentEntryListParam param)
     {
+        ValidationUtil.Validate<ProductRentEntryListParamValidator, ProductRentEntryListParam>(param);
+
         IQueryable<ProductRentEntryEntity> query = db.Set<ProductRentEntryEntity>();
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(p => p.Name.Contains(nameQuery));
-        // }
+        long productRentId = param.ProductRentId;
+        var productRent = db.Set<ProductRentEntity>().Find(productRentId);
+        if (productRent == null)
+        {
+            throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
+        }
+
+        long collegeId = productRent.CollegeId;
+        var college = db.Set<CollegeEntity>().Find(collegeId);
+        if (college == null)
+        {
+            throw new ValidationException($"指定学校#{collegeId}不存在!");
+        }
+
+        string collegeName = college.Name;
+
+        long productId = productRent.ProductId;
+        var product = db.Set<ProductEntity>().Find(productId);
+        if (product == null)
+        {
+            throw new ValidationException($"指定产品#{productId}不存在!");
+        }
+
+        string productName = product.Name;
+
+        query = query.Where(p => p.ProductRentId == productRentId);
 
         int productRentEntryCount = query.Count();
 
@@ -100,6 +126,8 @@ public class ProductRentEntryController : Controller
             Data = new Dictionary<string, object> {
                 ["productRentEntryList"] = productRentEntryItemList,
                 ["productRentEntryCount"] = productRentEntryCount,
+                ["collegeName"] = collegeName,
+                ["productName"] = productName,
             },
         });
     }
@@ -107,33 +135,85 @@ public class ProductRentEntryController : Controller
     [HttpPost]
     [Route("/api/product-rent-entry/detail")]
     [Transactional(false)]
-    public IActionResult Detail([FromBody] IdParam param)
+    public IActionResult Detail([FromBody] ProductRentEntryDetailParam param)
     {
-        long productRentEntryId = param.Id;
+        long productRentEntryId = param.ProductRentEntryId;
+
+        long collegeId = 0;
+        string collegeName = "";
+        long productId = 0;
+        string productName = "";
+
+        long productRentId = param.ProductRentId;
+        if (productRentEntryId > 0)
+        {
+            var productRentEntry = db.Set<ProductRentEntryEntity>().Find(productRentEntryId);
+            if (productRentEntry == null)
+            {
+                throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
+            }
+
+            productRentId = productRentEntry.ProductRentId;
+        }
+
+        if (productRentId > 0)
+        {
+            var productRent = db.Set<ProductRentEntity>().Find(productRentId);
+            if (productRent == null)
+            {
+                throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
+            }
+
+            collegeId = productRent.CollegeId;
+            var college = db.Set<CollegeEntity>().Find(collegeId);
+            if (college == null)
+            {
+                throw new ValidationException($"指定学校#{collegeId}不存在!");
+            }
+
+            collegeName = college.Name;
+
+            productId = productRent.ProductId;
+            var product = db.Set<ProductEntity>().Find(productId);
+            if (product == null)
+            {
+                throw new ValidationException($"指定产品#{productId}不存在!");
+            }
+
+            productName = product.Name;
+        }
 
         var model = new ProductRentEntryDetailModel {
-            Id = 0,
-            ProductRentId = 0,
-            TotalDays = 0,
-            BeginDate = "",
-            EndDate = "",
+            ProductRentEntryId = productRentEntryId,
+            ProductRentId = productRentId,
+            CollegeId = collegeId,
+            CollegeName = collegeName,
+            ProductId = productId,
+            ProductName = productName,
+            BeginDate = DateTime.Today.ToString("yyyy-MM-dd"),
+            EndDate = DateTime.Today.ToString("yyyy-MM-dd"),
             Description = "",
         };
 
         if (productRentEntryId > 0)
         {
             var productRentEntry = db.Set<ProductRentEntryEntity>().Find(productRentEntryId);
-            if (productRentEntry != null)
+            if (productRentEntry == null)
             {
-                model = new ProductRentEntryDetailModel {
-                    Id = productRentEntry.Id,
-                    ProductRentId = productRentEntry.ProductRentId,
-                    TotalDays = productRentEntry.TotalDays,
-                    BeginDate = productRentEntry.BeginDate.ToString("yyyy-MM-dd"),
-                    EndDate = productRentEntry.EndDate.ToString("yyyy-MM-dd"),
-                    Description = productRentEntry.Description,
-                };
+                throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
             }
+
+            model = new ProductRentEntryDetailModel {
+                ProductRentEntryId = productRentEntry.Id,
+                ProductRentId = productRentEntry.ProductRentId,
+                CollegeId = collegeId,
+                CollegeName = collegeName,
+                ProductId = productId,
+                ProductName = productName,
+                BeginDate = productRentEntry.BeginDate.ToString("yyyy-MM-dd"),
+                EndDate = productRentEntry.EndDate.ToString("yyyy-MM-dd"),
+                Description = productRentEntry.Description,
+            };
         }
 
         return Json(new JsonResultData {
@@ -148,17 +228,58 @@ public class ProductRentEntryController : Controller
     [Transactional(true)]
     public IActionResult Save([FromBody] ProductRentEntryDetailModel model)
     {
+        long productRentId = 0;
+        long collegeId = model.CollegeId;
+        long productId = model.ProductId;
+
+        if (model.ProductRentEntryId <= 0)
+        {
+            if (model.ProductRentId > 0)
+            {
+                productRentId = model.ProductRentId;
+                var productRent = db.Find<ProductRentEntity>(productRentId);
+                if (productRent == null)
+                {
+                    throw new ValidationException($"指定的租赁目录#{productRentId}不存在！");
+                }
+            }
+            else
+            {
+                if (model.CollegeId <= 0)
+                {
+                    throw new ValidationException("学校不能为空!");
+                }
+
+                collegeId = model.CollegeId;
+                var college = db.Set<CollegeEntity>().Find(collegeId);
+                if (college == null)
+                {
+                    throw new ValidationException($"指定的学校#{collegeId}不存在!");
+                }
+
+                if (model.ProductId <= 0)
+                {
+                    throw new ValidationException("产品不能为空!");
+                }
+
+                productId = model.ProductId;
+                var product = db.Find<ProductEntity>(productId);
+                if (product == null)
+                {
+                    throw new ValidationException($"指定的产品#{productId}不存在!");
+                }
+            }
+        }
+
         ValidationUtil.Validate<ProductRentEntryDetailModelValidator, ProductRentEntryDetailModel>(model);
 
-        long productRentEntryId = model.Id;
+        long loginUserId = userLoginService.GetLoginUserId();
+
+        long productRentEntryId = model.ProductRentEntryId;
         bool isCreate = productRentEntryId == 0;
 
         ProductRentEntryEntity? productRentEntry;
-        if (isCreate == true)
-        {
-            productRentEntry = new ProductRentEntryEntity();
-        }
-        else
+        if (isCreate == false)
         {
             productRentEntry = db.Set<ProductRentEntryEntity>().Find(productRentEntryId);
             if (productRentEntry == null)
@@ -166,9 +287,31 @@ public class ProductRentEntryController : Controller
                 throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
             }
         }
+        else
+        {
+            productRentEntry = new ProductRentEntryEntity();
 
-        productRentEntry.ProductRentId = model.ProductRentId;
-        productRentEntry.TotalDays = model.TotalDays;
+            if (productRentId > 0)
+            {
+                productRentEntry.ProductRentId = productRentId;
+            }
+            else
+            {
+                var productRent = db.Set<ProductRentEntity>()
+                    .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+                    .Take(1)
+                    .SingleOrDefault();
+                if (productRent != null)
+                {
+                    throw new ValidationException($"学校#{collegeId}和产品#{productId}对应的租赁目录已经存在!");
+                }
+
+                // 先创建租赁目录
+                productRentId = productRentService.Create(collegeId, productId, loginUserId);
+                productRentEntry.ProductRentId = productRentId;
+            }
+        }
+
         productRentEntry.BeginDate = DateTime.Parse(model.BeginDate).Date;
         productRentEntry.EndDate = DateTime.Parse(model.EndDate).Date;
         productRentEntry.Description = model.Description ?? "";
@@ -184,7 +327,6 @@ public class ProductRentEntryController : Controller
 
         db.SaveChanges();
 
-        long loginUserId = userLoginService.GetLoginUserId();
         if (isCreate == true)
         {
             string actionDesc = $"#{productRentEntry.Id}";
@@ -195,6 +337,9 @@ public class ProductRentEntryController : Controller
             string actionDesc = $"#{productRentEntry.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductRentEntryUpdate, actionDesc);
         }
+
+        productRentId = productRentEntry.ProductRentId; // 从保存的实体里面再取一下, 肯定没错, 前面的路径里面有没对这个变量设值的情形
+        productRentService.UpdateProductRentByLatestData(productRentId);
 
         return Json(new JsonResultData {
             Success = true,
@@ -220,12 +365,43 @@ public class ProductRentEntryController : Controller
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
-        string actionDesc = $"#{productRentEntry.Id}";
-        actionLogService.Add(loginUserId, ActionLogType.ProductRentEntryDelete, actionDesc);
+        string entryActionDesc = $"#{productRentEntry.Id}";
+        actionLogService.Add(loginUserId, ActionLogType.ProductRentEntryDelete, entryActionDesc);
+
+        // 删除最后一个明细数据的时候，删除主数据
+        bool productRentDeleted = false;
+        long productRentId = productRentEntry.ProductRentId;
+        var productRentEntryExists = db.Set<ProductRentEntryEntity>()
+            .Where(e => e.ProductRentId == productRentId)
+            .Take(1)
+            .SingleOrDefault();
+        if (productRentEntryExists == null)
+        {
+            // 如果最后一个明细也不存在了， 就删除主数据
+            var productRent = db.Set<ProductRentEntity>().Find(productRentId);
+            if (productRent == null)
+            {
+                // 一般肯定存在的
+                throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
+            }
+
+            db.Remove<ProductRentEntity>(productRent);
+            db.SaveChanges();
+
+            string actionDesc = $"#{productRent.Id}";
+            actionLogService.Add(loginUserId, ActionLogType.ProductRentDelete, actionDesc);
+
+            productRentDeleted = true;
+        }
+
+        db.SaveChanges();
 
         return Json(new JsonResultData {
             Success = true,
             Message = "删除成功！",
+            Data = new Dictionary<string, object> {
+                ["productRentDeleted"] = productRentDeleted
+            },
         });
     }
 }

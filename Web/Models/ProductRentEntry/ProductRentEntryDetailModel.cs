@@ -5,11 +5,25 @@ namespace Web.Models.ProductRentEntry;
 
 public class ProductRentEntryDetailModel
 {
-    [JsonProperty("id")]
-    public long Id { get; set; }
+    [JsonProperty("productRentEntryId")]
+    public long ProductRentEntryId { get; set; }
 
     [JsonProperty("productRentId")]
     public long ProductRentId { get; set; }
+
+    [JsonProperty("collegeId")]
+    public long CollegeId { get; set; }
+
+    // 只用于显示
+    [JsonProperty("collegeName")]
+    public string CollegeName { get; set; } = "";
+
+    [JsonProperty("productId")]
+    public long ProductId { get; set; }
+
+    // 只用于显示
+    [JsonProperty("productName")]
+    public string ProductName { get; set; } = "";
 
     [JsonProperty("totalDays")]
     public int TotalDays { get; set; }
@@ -28,12 +42,6 @@ public class ProductRentEntryDetailModelValidator : AbstractValidator<ProductRen
 {
     public ProductRentEntryDetailModelValidator()
     {
-        RuleFor(e => e.ProductRentId).NotNull().WithMessage("租赁目录不能为空!");
-        RuleFor(e => e.ProductRentId).NotEmpty().WithMessage("租赁目录不能为空!");
-
-        RuleFor(e => e.TotalDays).NotNull().WithMessage("累计天数不能为空!");
-        RuleFor(e => e.TotalDays).NotEmpty().WithMessage("累计天数不能为空!");
-
         RuleFor(e => e.BeginDate).NotNull().WithMessage("开始时间不能为空!");
         RuleFor(e => e.BeginDate).NotEmpty().WithMessage("开始时间不能为空!");
         RuleFor(e => e.BeginDate)
@@ -46,8 +54,6 @@ public class ProductRentEntryDetailModelValidator : AbstractValidator<ProductRen
             .Must(p => DateTime.TryParse(p, out var endDate))
             .WithMessage("结束时间格式不正确!");
 
-        RuleFor(e => e.Description).NotNull().WithMessage("备注不能为空!");
-        RuleFor(e => e.Description).NotEmpty().WithMessage("备注不能为空!");
         RuleFor(e => e.Description).MaximumLength(512).WithMessage("备注最大长度不能超过512!");
     }
 }

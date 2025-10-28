@@ -146,7 +146,6 @@ public class ProductSaleEntryController : Controller
     {
         long productSaleEntryId = param.ProductSaleEntryId;
 
-
         long collegeId = 0;
         string collegeName = "";
         long productId = 0;
