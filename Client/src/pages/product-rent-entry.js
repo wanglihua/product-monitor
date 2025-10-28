@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {useParams, useNavigate} from "react-router";
 import ProductRentEntryDetail from "./product-rent-entry-detail";
 
 import useSiteContext from "../site/site-context";
@@ -8,10 +9,15 @@ import Title from "../site/title";
 
 const ProductRentEntry = () => {
 
+    const params = useParams();
+    const productRentId = params.productRentId;
+
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
+    const navigate = useNavigate();
+
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        productRentId: productRentId,
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -21,6 +27,8 @@ const ProductRentEntry = () => {
     const [state, setState] = useState({
         productRentEntryList: [],
         productRentEntryCount: 0,
+        collegeName: "",
+        productName: "",
     });
 
     const loadProductRentEntryList = () => {
@@ -36,6 +44,8 @@ const ProductRentEntry = () => {
                     ...pre,
                     productRentEntryList: res.data.productRentEntryList,
                     productRentEntryCount: res.data.productRentEntryCount,
+                    collegeName: res.data.collegeName,
+                    productName: res.data.productName,
                 };
             });
         });
@@ -53,29 +63,24 @@ const ProductRentEntry = () => {
             },
         },
         {
-            title: "租赁目录",
-            dataIndex: "productRentId",
-            width: "200px",
-        },
-        {
             title: "累计天数",
             dataIndex: "totalDays",
-            width: "200px",
+            width: "110px",
         },
         {
             title: "开始时间",
             dataIndex: "beginDate",
-            width: "200px",
+            width: "110px",
         },
         {
             title: "结束时间",
             dataIndex: "endDate",
-            width: "200px",
+            width: "110px",
         },
         {
             title: "备注",
             dataIndex: "description",
-            width: "200px",
+            width: "300px",
         },
         {
             title: "创建时间",
@@ -112,6 +117,12 @@ const ProductRentEntry = () => {
                                     }
 
                                     showSuccess(res.message);
+
+                                    if (res.data && res.data.productRentDeleted === true) {
+                                        navigate("/product-rent");
+                                        return;
+                                    }
+                                    
                                     loadProductRentEntryList();
                                 });
                             });
@@ -137,23 +148,6 @@ const ProductRentEntry = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
-                    <Button
-                        color="default"
-                        icon={<SearchOutlined/>}
-                        onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
-
-                            setListParam((pre) => {
-                                return {
-                                    ...pre,
-                                    nameQuery: nameQuery,
-                                };
-                            });
-                        }}
-                    >
-                        查询
-                    </Button>
                     <Button
                         color="default"
                         icon={<PlusCircleOutlined style={{color: "green"}}/>}
@@ -189,7 +183,7 @@ const ProductRentEntry = () => {
                        }}
                 />
             </div>
-            <ProductRentEntryDetail ref={productRentEntryDetail} loadProductRentEntryList={loadProductRentEntryList}/>
+            <ProductRentEntryDetail ref={productRentEntryDetail} productRentId={productRentId} loadProductRentEntryList={loadProductRentEntryList}/>
         </div>
     );
 };

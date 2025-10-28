@@ -53,29 +53,24 @@ const ProductEvalEntry = () => {
             },
         },
         {
-            title: "试用目录",
-            dataIndex: "productEvalId",
-            width: "200px",
-        },
-        {
             title: "累计天数",
             dataIndex: "totalDays",
-            width: "200px",
+            width: "110px",
         },
         {
             title: "开始时间",
             dataIndex: "beginDate",
-            width: "200px",
+            width: "110px",
         },
         {
             title: "结束时间",
             dataIndex: "endDate",
-            width: "200px",
+            width: "110px",
         },
         {
             title: "备注",
             dataIndex: "description",
-            width: "200px",
+            width: "300px",
         },
         {
             title: "创建时间",

@@ -7,7 +7,6 @@ import ProductSaleEntryDetail from "./product-sale-entry-detail";
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
-
 const ProductSaleEntry = () => {
 
     const params = useParams();
@@ -19,7 +18,7 @@ const ProductSaleEntry = () => {
 
     const [listParam, setListParam] = useState({
         productSaleId: productSaleId,
-        nameQuery: "",
+        versionQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -119,7 +118,7 @@ const ProductSaleEntry = () => {
                                     }
 
                                     showSuccess(res.message);
-                                    
+
                                     if (res.data && res.data.productSaleDeleted === true) {
                                         navigate("/product-sale");
                                         return;
