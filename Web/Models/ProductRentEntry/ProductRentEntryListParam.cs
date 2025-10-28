@@ -8,9 +8,6 @@ public class ProductRentEntryListParam : ListParam
 {
     [JsonProperty("productRentId")]
     public long ProductRentId { get; set; }
-
-    [JsonProperty("versionQuery")]
-    public string VersionQuery { get; set; } = "";
 }
 
 public class ProductRentEntryListParamValidator : AbstractValidator<ProductRentEntryListParam>
