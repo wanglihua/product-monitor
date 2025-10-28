@@ -27,7 +27,7 @@ const Test = () => {
                     options={options}
                     filterOption={false}
                     placeholder="请搜索选择学校"
-                    notFoundContent={"暂无数据"}
+                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
                     style={{
                         width: "280px",
                     }}

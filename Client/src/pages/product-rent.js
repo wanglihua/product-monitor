@@ -103,7 +103,7 @@ const ProductRent = () => {
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const productRentId = record.id;
-                            navigate("/product-rent-entry/" + productRentId);
+                            navigate(`/product-rent-entry/${productRentId}`);
                         }}>
                             租赁记录
                         </Button>

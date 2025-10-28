@@ -42,9 +42,6 @@ public class ProductEvalEntryDetailModelValidator : AbstractValidator<ProductEva
 {
     public ProductEvalEntryDetailModelValidator()
     {
-        RuleFor(e => e.ProductEvalId).NotNull().WithMessage("试用目录不能为空!");
-        RuleFor(e => e.ProductEvalId).NotEmpty().WithMessage("试用目录不能为空!");
-
         RuleFor(e => e.BeginDate).NotNull().WithMessage("开始时间不能为空!");
         RuleFor(e => e.BeginDate).NotEmpty().WithMessage("开始时间不能为空!");
         RuleFor(e => e.BeginDate)

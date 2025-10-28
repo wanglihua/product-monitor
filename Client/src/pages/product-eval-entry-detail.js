@@ -16,11 +16,11 @@ const ProductEvalEntryDetailInner = (props) => {
 
     const title = useRef("");
     if (productEvalEntryId === 0) {
-        title.cureval = "试用目录明细新增";
+        title.current = "试用目录明细新增";
     }
 
     if (productEvalEntryId > 0) {
-        title.cureval = "试用目录明细编辑";
+        title.current = "试用目录明细编辑";
     }
 
     const [state, setState] = useState({
@@ -35,7 +35,7 @@ const ProductEvalEntryDetailInner = (props) => {
 
     return (
         <Modal
-            title={title.cureval}
+            title={title.current}
             width="880px"
             destroyOnClose={true}
             footer={null}
@@ -101,7 +101,7 @@ const ProductEvalEntryDetailInner = (props) => {
                             });
                         }
 
-                        form.cureval.setFieldsValue({
+                        form.current.setFieldsValue({
                             collegeId: collegeId,
                             productId: productId,
                             beginDate: dayjs(data.beginDate),
@@ -211,7 +211,7 @@ const ProductEvalEntryDetailInner = (props) => {
                                     disabled={state.productSelectDisabled}
                                     showSearch={true}
                                     filterOption={false}
-                                    notFoundContent={"暂无数据"}
+                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
                                     placeholder="请搜索选择产品"
                                     options={productSelectOptions}
                                     onSearch={(search) => {
