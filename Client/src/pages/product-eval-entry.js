@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {useParams, useNavigate} from "react-router";
 import ProductEvalEntryDetail from "./product-eval-entry-detail";
 
 import useSiteContext from "../site/site-context";
@@ -8,10 +9,15 @@ import Title from "../site/title";
 
 const ProductEvalEntry = () => {
 
+    const params = useParams();
+    const productEvalId = params.productEvalId;
+
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
+    const navigate = useNavigate();
+
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        productEvalId: productEvalId,
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -21,6 +27,8 @@ const ProductEvalEntry = () => {
     const [state, setState] = useState({
         productEvalEntryList: [],
         productEvalEntryCount: 0,
+        collegeName: "",
+        productName: "",
     });
 
     const loadProductEvalEntryList = () => {
@@ -36,6 +44,8 @@ const ProductEvalEntry = () => {
                     ...pre,
                     productEvalEntryList: res.data.productEvalEntryList,
                     productEvalEntryCount: res.data.productEvalEntryCount,
+                    collegeName: res.data.collegeName,
+                    productName: res.data.productName,
                 };
             });
         });
@@ -107,6 +117,12 @@ const ProductEvalEntry = () => {
                                     }
 
                                     showSuccess(res.message);
+
+                                    if (res.data && res.data.productEvalDeleted === true) {
+                                        navigate("/product-rent");
+                                        return;
+                                    }
+
                                     loadProductEvalEntryList();
                                 });
                             });
@@ -132,23 +148,6 @@ const ProductEvalEntry = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
-                    <Button
-                        color="default"
-                        icon={<SearchOutlined/>}
-                        onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
-
-                            setListParam((pre) => {
-                                return {
-                                    ...pre,
-                                    nameQuery: nameQuery,
-                                };
-                            });
-                        }}
-                    >
-                        查询
-                    </Button>
                     <Button
                         color="default"
                         icon={<PlusCircleOutlined style={{color: "green"}}/>}
@@ -184,7 +183,7 @@ const ProductEvalEntry = () => {
                        }}
                 />
             </div>
-            <ProductEvalEntryDetail ref={productEvalEntryDetail} loadProductEvalEntryList={loadProductEvalEntryList}/>
+            <ProductEvalEntryDetail ref={productEvalEntryDetail} productEvalId={productEvalId} loadProductEvalEntryList={loadProductEvalEntryList}/>
         </div>
     );
 };
