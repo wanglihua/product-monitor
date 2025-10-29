@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using Core;
+﻿using Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,21 +16,23 @@ public class ProductVersionEntityMap : IEntityTypeConfiguration<ProductVersionEn
             .HasColumnName("product_id")
             .IsRequired(true);
 
-        builder.Property(e => e.Major)
-            .HasColumnName("major")
+        builder.Property(e => e.Version)
+            .HasColumnName("version")
+            .HasMaxLength(32)
             .IsRequired(true);
 
-        builder.Property(e => e.Minor)
-            .HasColumnName("minor")
+        builder.Property(e => e.VersionUpdateBase)
+            .HasColumnName("version_update_base")
+            .HasMaxLength(32)
             .IsRequired(true);
 
-        builder.Property(e => e.Revision)
-            .HasColumnName("revision")
+        builder.Property(e => e.VersionUpdateDesc)
+            .HasColumnName("version_update_desc")
+            .HasMaxLength(512)
             .IsRequired(true);
 
-        builder.Property(e => e.Description)
-            .HasColumnName("description")
-            .HasMaxLength(256)
+        builder.Property(e => e.VersionUpdateTime)
+            .HasColumnName("version_update_time")
             .IsRequired(true);
     }
 }

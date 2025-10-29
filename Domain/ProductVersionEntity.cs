@@ -4,25 +4,28 @@ namespace Domain;
 
 public class ProductVersionEntity : Entity
 {
+    /// <summary>
+    /// 产品
+    /// </summary>
     public long ProductId { get; set; }
 
     /// <summary>
-    /// 主版本号
+    /// 版本号
     /// </summary>
-    public int Major { get; set; }
+    public string Version { get; set; } = "";
 
     /// <summary>
-    /// 次版本号
+    /// 更新基础
     /// </summary>
-    public int Minor { get; set; }
+    public string VersionUpdateBase { get; set; } = "";
 
     /// <summary>
-    /// 修订号
+    /// 更新内容
     /// </summary>
-    public int Revision { get; set; }
+    public string VersionUpdateDesc { get; set; } = "";
 
     /// <summary>
-    /// 描述
+    /// 版本更新时间
     /// </summary>
-    public string Description { get; set; } = "";
+    public DateTime VersionUpdateTime { get; set; }
 }
