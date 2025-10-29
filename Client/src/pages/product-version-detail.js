@@ -19,11 +19,11 @@ const ProductVersionDetailInner = (props) => {
 
     const title = useRef("");
     if (productVersionId === 0) {
-        title.current = `${state.productName}版本新增`;
+        title.current = `产品${state.productName} 版本新增`;
     }
 
     if (productVersionId > 0) {
-        title.current = `${state.productName}版本编辑`;
+        title.current = `$产品${state.productName} 版本编辑`;
     }
 
     const form = useRef();
@@ -236,19 +236,21 @@ class ProductVersionDetail extends React.Component {
         this.setState((pre) => {
             return {
                 ...pre,
-                productId: 0,
+                productVersionId: 0,
                 open: false,
             };
         });
     }
 
     render() {
+        const productVersionId = this.state.productVersionId;
         const productId = this.state.productId;
         const open = this.state.open;
         const loadProductVersionList = this.loadProductVersionList;
 
         return (
             <ProductVersionDetailInner
+                productVersionId={productVersionId}
                 productId={productId}
                 open={open}
                 self={this}

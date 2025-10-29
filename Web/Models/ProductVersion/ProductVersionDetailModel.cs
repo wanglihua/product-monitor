@@ -22,6 +22,10 @@ public class ProductVersionDetailModel
 
     [JsonProperty("versionUpdateTime")]
     public string VersionUpdateTime { get; set; } = "";
+
+    // 只用于显示数据
+    [JsonProperty("productName")]
+    public string ProductName { get; set; } = "";
 }
 
 public class ProductVersionDetailModelValidator : AbstractValidator<ProductVersionDetailModel>

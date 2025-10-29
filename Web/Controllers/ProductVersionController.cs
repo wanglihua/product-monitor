@@ -140,6 +140,8 @@ public class ProductVersionController : Controller
             throw new ValidationException($"指定的产品#{productId}不存在!");
         }
 
+        string productName = product.Name;
+
         long productVersionId = param.ProductVersionId;
 
         var model = new ProductVersionDetailModel {
@@ -149,6 +151,7 @@ public class ProductVersionController : Controller
             VersionUpdateBase = "",
             VersionUpdateDesc = "",
             VersionUpdateTime = DateTime.Now.ToString("yyyy-MM-dd"),
+            ProductName = productName,
         };
 
         if (productVersionId > 0)
@@ -163,6 +166,7 @@ public class ProductVersionController : Controller
                     VersionUpdateBase = productVersion.VersionUpdateBase,
                     VersionUpdateDesc = productVersion.VersionUpdateDesc,
                     VersionUpdateTime = productVersion.VersionUpdateTime.ToString("yyyy-MM-dd"),
+                    ProductName = productName,
                 };
             }
         }
