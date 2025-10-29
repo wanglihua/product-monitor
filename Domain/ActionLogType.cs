@@ -236,6 +236,21 @@ public class ActionLogType : CodeTypeBase
     public static readonly ActionLogType ProductSpecialServiceDelete = new(0092_0000, "特殊售后删除");
 
     /// <summary>
+    /// 产品版本创建
+    /// </summary>
+    public static readonly ActionLogType ProductVersionCreate = new(0094_0000, "产品版本创建");
+
+    /// <summary>
+    /// 产品版本更新
+    /// </summary>
+    public static readonly ActionLogType ProductVersionUpdate = new(0096_0000, "产品版本更新");
+
+    /// <summary>
+    /// 产品版本删除
+    /// </summary>
+    public static readonly ActionLogType ProductVersionDelete = new(0098_0000, "产品版本删除");
+
+    /// <summary>
     /// None
     /// </summary>
     public static readonly ActionLogType None = new(0, "");
@@ -287,6 +302,9 @@ public class ActionLogType : CodeTypeBase
         ProductSpecialServiceCreate,
         ProductSpecialServiceUpdate,
         ProductSpecialServiceDelete,
+        ProductVersionCreate,
+        ProductVersionUpdate,
+        ProductVersionDelete,
     };
 
     private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);
