@@ -4,24 +4,27 @@ import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
 
 const ProductVersionDetailInner = (props) => {
+    const productVersionId = props.productVersionId;
     const productId = props.productId;
     const open = props.open;
     const self = props.self;
-    const loadProductList = props.loadProductList;
+    const loadProductVersionList = props.loadProductVersionList;
 
     const {token} = theme.useToken();
     const {post, showSuccess, showError} = useSiteContext();
 
+    const [state, setState] = useState({
+        productName: "",
+    });
+
     const title = useRef("");
-    if (productId === 0) {
-        title.current = "产品新增";
+    if (productVersionId === 0) {
+        title.current = `${state.productName}版本新增`;
     }
 
-    if (productId > 0) {
-        title.current = "产品编辑";
+    if (productVersionId > 0) {
+        title.current = `${state.productName}版本编辑`;
     }
-
-    const [state, setState] = useState({});
 
     const form = useRef();
 
@@ -33,23 +36,24 @@ const ProductVersionDetailInner = (props) => {
             footer={null}
             open={open}
             onOk={() => {
-                if (loadProductList) {
-                    loadProductList();
+                if (loadProductVersionList) {
+                    loadProductVersionList();
                 }
 
                 self.hide();
             }}
             onCancel={() => {
-                if (loadProductList) {
-                    loadProductList();
+                if (loadProductVersionList) {
+                    loadProductVersionList();
                 }
 
                 self.hide();
             }}
             afterOpenChange={(open) => {
                 if (open === true) {
-                    post("/api/product/detail", {
-                        "id": productId
+                    post("/api/product-version/detail", {
+                        "productVersionId": productVersionId,
+                        "productId": productId,
                     }, function (response) {
                         const res = response.data;
                         if (res.success !== true) {
@@ -60,11 +64,17 @@ const ProductVersionDetailInner = (props) => {
                         const data = res.data;
 
                         form.current.setFieldsValue({
-                            name: data.name,
                             version: data.version,
                             versionUpdateBase: data.versionUpdateBase,
                             versionUpdateDesc: data.versionUpdateDesc,
                             versionUpdateTime: dayjs(data.versionUpdateTime),
+                        });
+
+                        setState((pre) => {
+                            return {
+                                ...pre,
+                                productName: data.productName,
+                            };
                         });
                     });
                 }
@@ -88,7 +98,7 @@ const ProductVersionDetailInner = (props) => {
                     onFinish={(values) => {
                         post("/api/product/save", {
                             id: productId,
-                            name: values.name,
+                            productId: productId,
                             version: values.version,
                             versionUpdateBase: values.versionUpdateBase,
                             versionUpdateDesc: values.versionUpdateDesc,
@@ -102,8 +112,8 @@ const ProductVersionDetailInner = (props) => {
 
                             showSuccess(res.message);
 
-                            if (loadProductList) {
-                                loadProductList();
+                            if (loadProductVersionList) {
+                                loadProductVersionList();
                             }
 
                             self.hide();
@@ -117,24 +127,6 @@ const ProductVersionDetailInner = (props) => {
                         column={1}
                         labelStyle={{width: "120px"}}
                     >
-                        <Descriptions.Item label="产品名称">
-                            <Form.Item
-                                name="name"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入产品名称!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={30}
-                                    placeholder="产品名称"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-
                         <Descriptions.Item label="版本号">
                             <Form.Item
                                 name="version"
@@ -220,7 +212,7 @@ class ProductVersionDetail extends React.Component {
     constructor(props) {
         super(props);
 
-        this.loadProductList = props.loadProductList;
+        this.loadProductVersionList = props.loadProductVersionList;
 
         this.state = {
             productId: 0,
@@ -245,14 +237,14 @@ class ProductVersionDetail extends React.Component {
     render() {
         const productId = this.state.productId;
         const open = this.state.open;
-        const loadProductList = this.loadProductList;
+        const loadProductVersionList = this.loadProductVersionList;
 
         return (
             <ProductVersionDetailInner
                 productId={productId}
                 open={open}
                 self={this}
-                loadProductList={loadProductList}
+                loadProductVersionList={loadProductVersionList}
             />
         )
     }

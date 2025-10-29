@@ -50,6 +50,12 @@ public class ProductVersionController : Controller
 
         long productId = param.ProductId;
 
+        var product = db.Set<ProductEntity>().Find(productId);
+        if (product == null)
+        {
+            throw new ValidationException($"指定的产品#{productId}不存在!");
+        }
+
         IQueryable<ProductVersionJoinItem> query = db.Set<ProductVersionEntity>()
             .Join(db.Set<ProductEntity>(),
                 pv => pv.ProductId,
@@ -115,6 +121,7 @@ public class ProductVersionController : Controller
             Data = new Dictionary<string, object> {
                 ["productVersionList"] = productVersionItemList,
                 ["productVersionCount"] = productVersionCount,
+                ["productName"] = product.Name,
             },
         });
     }

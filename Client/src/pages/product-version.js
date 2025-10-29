@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {useParams} from "react-router";
 import ProductVersionDetail from "./product-version-detail";
 
 import useSiteContext from "../site/site-context";
@@ -8,10 +9,13 @@ import Title from "../site/title";
 
 const ProductVersion = () => {
 
+    const params = useParams();
+    const productId = params.productId;
+
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        productId: productId,
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -19,8 +23,9 @@ const ProductVersion = () => {
     });
 
     const [state, setState] = useState({
-        productList: [],
-        productCount: 0,
+        productVersionList: [],
+        productVersionCount: 0,
+        productName: "",
     });
 
     const loadProductVersionList = () => {
@@ -34,16 +39,17 @@ const ProductVersion = () => {
             setState((pre) => {
                 return {
                     ...pre,
-                    productList: res.data.productList,
-                    productCount: res.data.productCount,
+                    productVersionList: res.data.productVersionList,
+                    productVersionCount: res.data.productVersionCount,
+                    productName: res.data.productName,
                 };
             });
         });
     };
 
-    const productDetail = useRef();
+    const productVersionDetail = useRef();
 
-    const productListColumns = [
+    const productVersionListColumns = [
         {
             title: "序号",
             width: "80px",
@@ -51,11 +57,6 @@ const ProductVersion = () => {
             render: (text, record, index) => {
                 return <span>{(listParam.currentPage - 1) * listParam.pageSize + index + 1}</span>
             },
-        },
-        {
-            title: "产品名称",
-            dataIndex: "name",
-            width: "200px",
         },
         {
             title: "版本号",
@@ -90,8 +91,8 @@ const ProductVersion = () => {
                 return (
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            const productId = record.id;
-                            productDetail.current.show(productId);
+                            const productVersionId = record.id;
+                            productVersionDetail.current.show(productVersionId);
                         }}>
                             <EditOutlined/>编辑
                         </Button>
@@ -123,37 +124,18 @@ const ProductVersion = () => {
         loadProductVersionList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
-
     return (
         <div>
-            <Title title="产品目录" parentMenuKeys={["basic-setting"]} menuKey="product" breadcrumb={[
-                {title: "产品目录"},
+            <Title title={`产品版本 产品:${state.productName}`} parentMenuKeys={["basic-setting"]} menuKey="product" breadcrumb={[
+                {title: "产品版本"},
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 320}}/>
-                    <Button
-                        color="default"
-                        icon={<SearchOutlined/>}
-                        onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
-
-                            setListParam((pre) => {
-                                return {
-                                    ...pre,
-                                    nameQuery: nameQuery,
-                                };
-                            });
-                        }}
-                    >
-                        查询
-                    </Button>
                     <Button
                         color="default"
                         icon={<PlusCircleOutlined style={{color: "green"}}/>}
                         onClick={(e) => {
-                            productDetail.current.show(0);
+                            productVersionDetail.current.show(0);
                         }}
                     >
                         添加
@@ -161,8 +143,8 @@ const ProductVersion = () => {
                 </Space>
             </div>
             <div style={{padding: "10px 0"}}>
-                <Table columns={productListColumns} rowKey="id"
-                       dataSource={state.productList}
+                <Table columns={productVersionListColumns} rowKey="id"
+                       dataSource={state.productVersionList}
                        pagination={{
                            current: listParam.currentPage,
                            pageSize: listParam.pageSize,
@@ -184,7 +166,7 @@ const ProductVersion = () => {
                        }}
                 />
             </div>
-            <ProductVersionDetail ref={productDetail} loadProductVersionList={loadProductVersionList}/>
+            <ProductVersionDetail ref={productVersionDetail} productId={productId} loadProductVersionList={loadProductVersionList}/>
         </div>
     );
 };
