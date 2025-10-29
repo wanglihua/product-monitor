@@ -35,7 +35,7 @@ public class WebSessionDataType : CodeTypeBase
         return codeTypeList.ToList();
     }
 
-    public WebSessionDataType(int code, string name) : base(code, name)
+    private WebSessionDataType(int code, string name) : base(code, name)
     {
     }
 }

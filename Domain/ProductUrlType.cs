@@ -50,7 +50,7 @@ public class ProductUrlType : CodeTypeBase
         return codeTypeList.ToList();
     }
 
-    public ProductUrlType(int code, string name) : base(code, name)
+    private ProductUrlType(int code, string name) : base(code, name)
     {
     }
 }

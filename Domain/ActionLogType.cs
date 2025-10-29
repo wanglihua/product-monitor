@@ -33,12 +33,12 @@ public class ActionLogType : CodeTypeBase
     /// 管理员移除
     /// </summary>
     public static readonly ActionLogType AdminUserRemove = new(0012_0000, "管理员移除");
-    
+
     /// <summary>
     /// 权限资源数据更新
     /// </summary>
     public static readonly ActionLogType PassResDataInit = new(0014_0000, "权限资源数据更新");
-    
+
     /// <summary>
     /// 产品目录创建
     /// </summary>
@@ -53,7 +53,7 @@ public class ActionLogType : CodeTypeBase
     /// 产品目录删除
     /// </summary>
     public static readonly ActionLogType ProductDelete = new(0020_0000, "产品目录删除");
-    
+
     /// <summary>
     /// 院校目录创建
     /// </summary>
@@ -68,7 +68,7 @@ public class ActionLogType : CodeTypeBase
     /// 院校目录删除
     /// </summary>
     public static readonly ActionLogType CollegeDelete = new(0026_0000, "院校目录删除");
-    
+
     /// <summary>
     /// 网址管理创建
     /// </summary>
@@ -143,7 +143,7 @@ public class ActionLogType : CodeTypeBase
     /// 租赁目录明细删除
     /// </summary>
     public static readonly ActionLogType ProductRentEntryDelete = new(0056_0000, "租赁目录明细删除");
-    
+
 
     /// <summary>
     /// 试用目录创建
@@ -234,7 +234,7 @@ public class ActionLogType : CodeTypeBase
     /// 特殊售后删除
     /// </summary>
     public static readonly ActionLogType ProductSpecialServiceDelete = new(0092_0000, "特殊售后删除");
-    
+
     /// <summary>
     /// None
     /// </summary>
@@ -306,7 +306,7 @@ public class ActionLogType : CodeTypeBase
         return codeTypeList.ToList();
     }
 
-    public ActionLogType(int code, string name) : base(code, name)
+    private ActionLogType(int code, string name) : base(code, name)
     {
     }
 }

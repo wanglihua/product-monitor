@@ -44,7 +44,7 @@ public class ProjectType : CodeTypeBase
         return codeTypeList.ToList();
     }
 
-    public ProjectType(int code, string name) : base(code, name)
+    private ProjectType(int code, string name) : base(code, name)
     {
     }
 }
