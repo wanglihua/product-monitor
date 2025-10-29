@@ -22,6 +22,34 @@ public class CollegeLevelType : CodeTypeBase
     /// </summary>
     public static readonly CollegeLevelType VocationalSchool = new(3, "中职");
 
+    /// <summary>
+    /// None
+    /// </summary>
+    public static readonly CollegeLevelType None = new(0, "");
+
+    private static readonly IReadOnlyList<CollegeLevelType> codeTypeList = new List<CollegeLevelType>() {
+        Undergraduate,
+        JuniorCollege,
+        VocationalSchool,
+    };
+    
+    public static IList<CollegeLevelType> GetList()
+    {
+        return codeTypeList.ToList();
+    }
+
+    private static readonly IDictionary<int, CollegeLevelType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);
+    
+    public static CollegeLevelType GetByCode(int code)
+    {
+        if (codeTypeMap.TryGetValue(code, out var codeType))
+        {
+            return codeType;
+        }
+
+        return None;
+    }
+
     private CollegeLevelType(int code, string name) : base(code, name)
     {
     }
