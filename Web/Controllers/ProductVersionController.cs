@@ -104,14 +104,14 @@ public class ProductVersionController : Controller
 
         var productVersionItemList = productVersionList
             .Select(e => new ProductVersionListItem {
-                Id = e.Product.Id,
+                Id = e.ProductVersion.Id,
                 ProductName = e.Product.Name,
-                Version = e.Product.Version,
-                VersionUpdateBase = e.Product.VersionUpdateBase,
-                VersionUpdateDesc = e.Product.VersionUpdateDesc,
-                VersionUpdateTime = e.Product.VersionUpdateTime.ToString("yyyy-MM-dd"),
-                CreateTime = e.Product.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.Product.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Version = e.ProductVersion.Version,
+                VersionUpdateBase = e.ProductVersion.VersionUpdateBase,
+                VersionUpdateDesc = e.ProductVersion.VersionUpdateDesc,
+                VersionUpdateTime = e.ProductVersion.VersionUpdateTime.ToString("yyyy-MM-dd"),
+                CreateTime = e.ProductVersion.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ProductVersion.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

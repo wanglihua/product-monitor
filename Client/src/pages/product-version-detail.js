@@ -96,8 +96,8 @@ const ProductVersionDetailInner = (props) => {
                     size='middle'
                     requiredMark={false}
                     onFinish={(values) => {
-                        post("/api/product/save", {
-                            id: productId,
+                        post("/api/product-version/save", {
+                            id: productVersionId,
                             productId: productId,
                             version: values.version,
                             versionUpdateBase: values.versionUpdateBase,
