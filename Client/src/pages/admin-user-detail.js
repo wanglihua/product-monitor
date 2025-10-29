@@ -8,8 +8,8 @@ const AdminUserDetailInner = (props) => {
     const self = props.self;
     const loadAdminList = props.loadAdminList;
 
-    const { token } = theme.useToken();
-    const { post, showSuccess, showError } = useSiteContext();
+    const {token} = theme.useToken();
+    const {post, showSuccess, showError} = useSiteContext();
 
     const form = useRef();
 
@@ -70,7 +70,7 @@ const AdminUserDetailInner = (props) => {
                             showSuccess(res.message);
 
                             if (loadAdminList) {
-                                loadAdminList();;
+                                loadAdminList();
                             }
 
                             self.hide();
@@ -82,7 +82,7 @@ const AdminUserDetailInner = (props) => {
                         layout="horizontal"
                         size="small"
                         column={1}
-                        labelStyle={{ width: "120px" }}
+                        labelStyle={{width: "120px"}}
                     >
                         <Descriptions.Item label="登录名">
                             <Form.Item
@@ -103,7 +103,7 @@ const AdminUserDetailInner = (props) => {
                         </Descriptions.Item>
                     </Descriptions>
 
-                    <Form.Item style={{ marginTop: token.formButtonMarginTop, textAlign: "right" }}>
+                    <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "right"}}>
                         <Space>
                             <Button type="primary" size="large" htmlType="submit">
                                 保存
@@ -136,16 +136,22 @@ class AdminUserDetail extends React.Component {
     }
 
     show = (adminId) => {
-        this.setState({
-            adminId: adminId,
-            open: true,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                adminId: adminId,
+                open: true,
+            };
         });
     }
 
     hide = () => {
-        this.setState({
-            adminId: 0,
-            open: false,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                adminId: 0,
+                open: false,
+            };
         });
     }
 

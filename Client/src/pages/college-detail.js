@@ -218,16 +218,22 @@ class CollegeDetail extends React.Component {
     }
 
     show = (collegeId) => {
-        this.setState({
-            collegeId: collegeId,
-            open: true,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                collegeId: collegeId,
+                open: true,
+            };
         });
     }
 
     hide = () => {
-        this.setState({
-            collegeId: 0,
-            open: false,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                collegeId: 0,
+                open: false,
+            };
         });
     }
 

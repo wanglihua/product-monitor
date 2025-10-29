@@ -313,16 +313,22 @@ class ProductEvalEntryDetail extends React.Component {
     }
 
     show = (productEvalEntryId) => {
-        this.setState({
-            productEvalEntryId: productEvalEntryId,
-            open: true,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productEvalEntryId: productEvalEntryId,
+                open: true,
+            };
         });
     }
 
     hide = () => {
-        this.setState({
-            productEvalEntryId: 0,
-            open: false,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productEvalEntryId: 0,
+                open: false,
+            };
         });
     }
 

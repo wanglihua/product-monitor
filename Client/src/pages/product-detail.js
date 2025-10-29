@@ -229,16 +229,22 @@ class ProductDetail extends React.Component {
     }
 
     show = (productId) => {
-        this.setState({
-            productId: productId,
-            open: true,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productId: productId,
+                open: true,
+            };
         });
     }
 
     hide = () => {
-        this.setState({
-            productId: 0,
-            open: false,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productId: 0,
+                open: false,
+            };
         });
     }
 

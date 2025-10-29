@@ -288,8 +288,7 @@ const ProductSaleEntryDetailInner = (props) => {
                         <Descriptions.Item label="备注">
                             <Form.Item
                                 name="description"
-                                rules={[
-                                ]}
+                                rules={[]}
                             >
                                 <Input.TextArea
                                     rows={2}
@@ -337,16 +336,22 @@ class ProductSaleEntryDetail extends React.Component {
     }
 
     show = (productSaleEntryId) => {
-        this.setState({
-            productSaleEntryId: productSaleEntryId,
-            open: true,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productSaleEntryId: productSaleEntryId,
+                open: true,
+            };
         });
     }
 
     hide = () => {
-        this.setState({
-            productSaleEntryId: 0,
-            open: false,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productSaleEntryId: 0,
+                open: false,
+            };
         });
     }
 

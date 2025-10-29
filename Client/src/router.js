@@ -11,6 +11,7 @@ import Home from "./pages/home";
 import AdminUser from "./pages/admin-user";
 import ActionLog from "./pages/action-log";
 import Product from "./pages/product";
+import ProductVersion from "./pages/product-version";
 import College from "./pages/college";
 import ProductUrl from "./pages/product-url";
 import ProductSale from "./pages/product-sale";
@@ -33,6 +34,7 @@ const Router = () => {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/test" element={<Test/>}/>
                     <Route path="/product" element={<Product/>}/>
+                    <Route path="/product-version/:productId" element={<ProductVersion/>}/>
                     <Route path="/college" element={<College/>}/>
                     <Route path="/product-url" element={<ProductUrl/>}/>
                     <Route path="/product-sale" element={<ProductSale/>}/>

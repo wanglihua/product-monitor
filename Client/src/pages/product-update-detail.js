@@ -438,16 +438,22 @@ class ProductUpdateDetail extends React.Component {
     }
 
     show = (productUpdateId) => {
-        this.setState({
-            productUpdateId: productUpdateId,
-            open: true,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productUpdateId: productUpdateId,
+                open: true,
+            };
         });
     }
 
     hide = () => {
-        this.setState({
-            productUpdateId: 0,
-            open: false,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productUpdateId: 0,
+                open: false,
+            };
         });
     }
 

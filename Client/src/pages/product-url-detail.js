@@ -261,16 +261,22 @@ class ProductUrlDetail extends React.Component {
     }
 
     show = (productUrlId) => {
-        this.setState({
-            productUrlId: productUrlId,
-            open: true,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productUrlId: productUrlId,
+                open: true,
+            };
         });
     }
 
     hide = () => {
-        this.setState({
-            productUrlId: 0,
-            open: false,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productUrlId: 0,
+                open: false,
+            };
         });
     }
 

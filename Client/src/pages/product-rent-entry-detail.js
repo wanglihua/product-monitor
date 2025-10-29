@@ -313,16 +313,22 @@ class ProductRentEntryDetail extends React.Component {
     }
 
     show = (productRentEntryId) => {
-        this.setState({
-            productRentEntryId: productRentEntryId,
-            open: true,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productRentEntryId: productRentEntryId,
+                open: true,
+            };
         });
     }
 
     hide = () => {
-        this.setState({
-            productRentEntryId: 0,
-            open: false,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productRentEntryId: 0,
+                open: false,
+            };
         });
     }
 

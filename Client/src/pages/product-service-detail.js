@@ -406,16 +406,22 @@ class ProductServiceDetail extends React.Component {
     }
 
     show = (productServiceId) => {
-        this.setState({
-            productServiceId: productServiceId,
-            open: true,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productServiceId: productServiceId,
+                open: true,
+            };
         });
     }
 
     hide = () => {
-        this.setState({
-            productServiceId: 0,
-            open: false,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productServiceId: 0,
+                open: false,
+            };
         });
     }
 

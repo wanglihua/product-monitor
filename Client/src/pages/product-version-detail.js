@@ -212,25 +212,33 @@ class ProductVersionDetail extends React.Component {
     constructor(props) {
         super(props);
 
+        const productId = props.productId;
         this.loadProductVersionList = props.loadProductVersionList;
 
         this.state = {
-            productId: 0,
+            productVersionId: 0,
+            productId: productId,
             open: false,
         };
     }
 
-    show = (productId) => {
-        this.setState({
-            productId: productId,
-            open: true,
+    show = (productVersionId) => {
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productVersionId: productVersionId,
+                open: true,
+            };
         });
     }
 
     hide = () => {
-        this.setState({
-            productId: 0,
-            open: false,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productId: 0,
+                open: false,
+            };
         });
     }
 

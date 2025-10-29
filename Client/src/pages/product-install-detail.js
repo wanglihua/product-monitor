@@ -396,16 +396,22 @@ class ProductInstallDetail extends React.Component {
     }
 
     show = (productInstallId) => {
-        this.setState({
-            productInstallId: productInstallId,
-            open: true,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productInstallId: productInstallId,
+                open: true,
+            };
         });
     }
 
     hide = () => {
-        this.setState({
-            productInstallId: 0,
-            open: false,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                productInstallId: 0,
+                open: false,
+            };
         });
     }
 

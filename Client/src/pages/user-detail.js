@@ -226,16 +226,22 @@ class UserDetail extends React.Component {
     }
 
     show = (userId) => {
-        this.setState({
-            userId: userId,
-            open: true,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                userId: userId,
+                open: true,
+            };
         });
     }
 
     hide = () => {
-        this.setState({
-            userId: 0,
-            open: false,
+        this.setState((pre) => {
+            return {
+                ...pre,
+                userId: 0,
+                open: false,
+            };
         });
     }
 
