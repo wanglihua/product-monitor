@@ -5,7 +5,7 @@ namespace Domain;
 /// <summary>
 /// 网址类型
 /// </summary>
-public class ProductUrlType : CodeTypeBase
+public class ProductUrlType : CodeTypeBase, ICodeType<ProductUrlType>
 {
     /// <summary>
     /// 试用网址

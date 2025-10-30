@@ -2,7 +2,7 @@
 
 namespace Domain;
 
-public class ActionLogType : CodeTypeBase
+public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
 {
     /// <summary>
     /// 用户登录

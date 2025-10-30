@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Core.CodeType;
 
-public abstract class CodeTypeModelBinder<T> : IModelBinder where T : CodeTypeBase
+public abstract class CodeTypeModelBinder<T> : IModelBinder where T : CodeTypeBase, ICodeType<T>
 {
     public Task BindModelAsync(ModelBindingContext bindingContext)
     {
@@ -31,10 +31,9 @@ public abstract class CodeTypeModelBinder<T> : IModelBinder where T : CodeTypeBa
         return Task.CompletedTask;
     }
 
-    // protected abstract T GetByCode(string code);
-
     private T GetByCode(int code)
     {
-        return CodeTypeUtil.GetByCode<T>(code);
+        // return CodeTypeUtil.GetByCode<T>(code);
+        return T.GetByCode(code);
     }
 }

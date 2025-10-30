@@ -131,7 +131,7 @@ public class SqlServer2008QueryTranslationPostprocessorFactory : IQueryTranslati
                 {
                     if (oldOrderings.Count == 0)
                     {
-                        selectExpression.ApplyPredicate(sqlExpressionFactory.LessThanOrEqual(left, sqlExpressionFactory.Add(oldOffset, oldLimit)));
+                        selectExpression.ApplyPredicate(sqlExpressionFactory.LessThanOrEqual(left!, sqlExpressionFactory.Add(oldOffset, oldLimit)));
                     }
                     else
                     {

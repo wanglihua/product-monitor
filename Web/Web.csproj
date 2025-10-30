@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <AssemblyName>ProductMonitor.Web</AssemblyName>
+        <EnablePreviewFeatures>True</EnablePreviewFeatures>
     </PropertyGroup>
 
     <ItemGroup>

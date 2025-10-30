@@ -5,7 +5,7 @@ namespace Domain;
 /// <summary>
 /// 项目类型
 /// </summary>
-public class ProjectType : CodeTypeBase
+public class ProjectType : CodeTypeBase, ICodeType<ProjectType>
 {
     /// <summary>
     /// 销售项目

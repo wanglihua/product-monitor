@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AssemblyName>ProductMonitor.Core</AssemblyName>
+        <EnablePreviewFeatures>True</EnablePreviewFeatures>
     </PropertyGroup>
 
     <ItemGroup>

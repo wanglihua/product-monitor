@@ -5,7 +5,7 @@ namespace Domain;
 /// <summary>
 /// 院校办学层次类型
 /// </summary>
-public class CollegeLevelType : CodeTypeBase
+public class CollegeLevelType : CodeTypeBase, ICodeType<CollegeLevelType>
 {
     /// <summary>
     /// 本科
@@ -32,14 +32,14 @@ public class CollegeLevelType : CodeTypeBase
         JuniorCollege,
         VocationalSchool,
     };
-    
+
     public static IList<CollegeLevelType> GetList()
     {
         return codeTypeList.ToList();
     }
 
     private static readonly IDictionary<int, CollegeLevelType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);
-    
+
     public static CollegeLevelType GetByCode(int code)
     {
         if (codeTypeMap.TryGetValue(code, out var codeType))
