@@ -273,6 +273,14 @@ public class ProductEvalEntryController : Controller
 
         ValidationUtil.Validate<ProductEvalEntryDetailModelValidator, ProductEvalEntryDetailModel>(model);
 
+        var beginDate = DateTime.Parse(model.BeginDate).Date;
+        var endDate = DateTime.Parse(model.EndDate).Date;
+
+        if (beginDate > endDate)
+        {
+            throw new ValidationException("开始时间应该在结束时间之前!");
+        }
+
         long loginUserId = userLoginService.GetLoginUserId();
 
         long productEvalEntryId = model.ProductEvalEntryId;
@@ -312,9 +320,16 @@ public class ProductEvalEntryController : Controller
             }
         }
 
-        productEvalEntry.BeginDate = DateTime.Parse(model.BeginDate).Date;
-        productEvalEntry.EndDate = DateTime.Parse(model.EndDate).Date;
-        productEvalEntry.TotalDays = (int)((productEvalEntry.EndDate - productEvalEntry.BeginDate).TotalDays);
+        productEvalEntry.BeginDate = beginDate;
+        productEvalEntry.EndDate = endDate;
+
+        var totalDays = (int)((endDate - beginDate).TotalDays) + 1;
+        if (totalDays < 0)
+        {
+            throw new ValidationException("累计天数不能小于0!");
+        }
+
+        productEvalEntry.TotalDays = totalDays;
         productEvalEntry.Description = model.Description ?? "";
 
         if (isCreate == true)
