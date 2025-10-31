@@ -273,6 +273,14 @@ public class ProductRentEntryController : Controller
 
         ValidationUtil.Validate<ProductRentEntryDetailModelValidator, ProductRentEntryDetailModel>(model);
 
+        var beginDate = DateTime.Parse(model.BeginDate).Date;
+        var endDate = DateTime.Parse(model.EndDate).Date;
+
+        if (beginDate > endDate)
+        {
+            throw new ValidationException("开始时间应该在结束时间之前!");
+        }
+
         long loginUserId = userLoginService.GetLoginUserId();
 
         long productRentEntryId = model.ProductRentEntryId;
@@ -312,9 +320,16 @@ public class ProductRentEntryController : Controller
             }
         }
 
-        productRentEntry.BeginDate = DateTime.Parse(model.BeginDate).Date;
-        productRentEntry.EndDate = DateTime.Parse(model.EndDate).Date;
-        productRentEntry.TotalDays = (int)((productRentEntry.EndDate - productRentEntry.BeginDate).TotalDays);
+        productRentEntry.BeginDate = beginDate;
+        productRentEntry.EndDate = endDate;
+
+        var totalDays = (int)((endDate - beginDate).TotalDays) + 1;
+        if (totalDays < 0)
+        {
+            throw new ValidationException("累计天数不能小于0!");
+        }
+
+        productRentEntry.TotalDays = totalDays;
         productRentEntry.Description = model.Description ?? "";
 
         if (isCreate == true)

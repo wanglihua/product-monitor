@@ -330,6 +330,7 @@ public class ProductEvalEntryController : Controller
         }
 
         productEvalEntry.TotalDays = totalDays;
+
         productEvalEntry.Description = model.Description ?? "";
 
         if (isCreate == true)
