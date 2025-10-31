@@ -170,6 +170,9 @@ const CollegeDetailInner = (props) => {
                                 ]}
                             >
                                 <Select
+                                    showSearch={true}
+                                    optionFilterProp="label"
+                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
                                     placeholder="请选择省份"
                                     options={state.provinceList}
                                 />

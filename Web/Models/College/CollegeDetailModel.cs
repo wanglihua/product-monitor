@@ -16,10 +16,10 @@ public class CollegeDetailModel
     public string Name { get; set; } = "";
 
     [JsonProperty("province")]
-    public int Province { get; set; }
+    public int? Province { get; set; }
 
     [JsonProperty("level")]
-    public int Level { get; set; }
+    public int? Level { get; set; }
 
     [JsonProperty("provinceList")]
     public IList<Dictionary<string, object>> ProvinceList => ProvinceType.GetList()
@@ -49,7 +49,7 @@ public class CollegeDetailModelValidator : AbstractValidator<CollegeDetailModel>
         RuleFor(e => e.Name).NotEmpty().WithMessage("院校名称不能为空!");
         RuleFor(e => e.Name).MaximumLength(128).WithMessage("院校名称最大长度不能超过128!");
 
-        RuleFor(e => e.Province).Must(p => ProvinceType.GetById(p) != ProvinceType.None).WithMessage("身份不能为空!");
-        RuleFor(e => e.Level).Must(p => CollegeLevelType.GetById(p) != CollegeLevelType.None).WithMessage("办学层次不能为空!");
+        RuleFor(e => e.Province).Must(p => ProvinceType.GetById(p ?? 0) != ProvinceType.None).WithMessage("身份不能为空!");
+        RuleFor(e => e.Level).Must(p => CollegeLevelType.GetById(p ?? 0) != CollegeLevelType.None).WithMessage("办学层次不能为空!");
     }
 }

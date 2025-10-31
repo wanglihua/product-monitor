@@ -120,8 +120,8 @@ public class CollegeController : Controller
             Id = 0,
             Code = "",
             Name = "",
-            Province = ProvinceType.None.Id,
-            Level = CollegeLevelType.None.Id,
+            Province = null,
+            Level = null,
         };
 
         if (collegeId > 0)
@@ -172,8 +172,8 @@ public class CollegeController : Controller
 
         college.Code = model.Code ?? "";
         college.Name = model.Name ?? "";
-        college.Province = ProvinceType.GetById(model.Province);
-        college.Level = CollegeLevelType.GetById(model.Level);
+        college.Province = ProvinceType.GetById(model.Province ?? 0);
+        college.Level = CollegeLevelType.GetById(model.Level ?? 0);
 
         if (isCreate == true)
         {
