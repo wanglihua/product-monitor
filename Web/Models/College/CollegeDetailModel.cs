@@ -20,6 +20,21 @@ public class CollegeDetailModel
 
     [JsonProperty("level")]
     public int Level { get; set; }
+
+    [JsonProperty("provinceList")]
+    public IList<Dictionary<string, object>> ProvinceList => ProvinceType.GetList()
+        .Select(e => new Dictionary<string, object> {
+            ["value"] = e.Id,
+            ["label"] = e.Name,
+        }).ToList();
+
+    [JsonProperty("levelList")]
+    public IList<Dictionary<string, object>> LevelList => CollegeLevelType.GetList()
+        .Select(e => new Dictionary<string, object> {
+            ["value"] = e.Id,
+            ["label"] = e.Name,
+        })
+        .ToList();
 }
 
 public class CollegeDetailModelValidator : AbstractValidator<CollegeDetailModel>

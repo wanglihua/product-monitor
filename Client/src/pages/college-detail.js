@@ -1,7 +1,6 @@
-import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Select, Space, theme} from "antd";
+import {Button, ConfigProvider, Descriptions, Form, Input, Modal, Select, Space, theme} from "antd";
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
-import dayjs from "dayjs";
 
 const CollegeDetailInner = (props) => {
     const collegeId = props.collegeId;
@@ -21,7 +20,10 @@ const CollegeDetailInner = (props) => {
         title.current = "院校目录编辑";
     }
 
-    const [state, setState] = useState({});
+    const [state, setState] = useState({
+        provinceList: [],
+        levelList: [],
+    });
 
     const form = useRef();
 
@@ -64,6 +66,14 @@ const CollegeDetailInner = (props) => {
                             name: data.name,
                             province: data.province,
                             level: data.level,
+                        });
+
+                        setState((pre) => {
+                            return {
+                                ...pre,
+                                provinceList: data.provinceList,
+                                levelList: data.levelList,
+                            };
                         });
                     });
                 }
@@ -155,14 +165,13 @@ const CollegeDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入省份!',
+                                        message: '请选择省份!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={32}
-                                    placeholder="省份"
-                                    allowClear
+                                <Select
+                                    placeholder="请选择省份"
+                                    options={state.provinceList}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -172,14 +181,13 @@ const CollegeDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入办学层次!',
+                                        message: '请选择办学层次!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={32}
-                                    placeholder="办学层次"
-                                    allowClear
+                                <Select
+                                    placeholder="请选择办学层次"
+                                    options={state.levelList}
                                 />
                             </Form.Item>
                         </Descriptions.Item>

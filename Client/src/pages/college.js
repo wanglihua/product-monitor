@@ -66,7 +66,7 @@ const College = () => {
         {
             title: "省份",
             dataIndex: "province",
-            width: "80px",
+            width: "150px",
         },
         {
             title: "办学层次",

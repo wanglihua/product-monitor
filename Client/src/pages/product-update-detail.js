@@ -159,7 +159,7 @@ const ProductUpdateDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请选择学校!',
+                                        message: '请搜索选择学校!',
                                     },
                                 ]}
                             >
@@ -191,7 +191,7 @@ const ProductUpdateDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请选择产品!',
+                                        message: '请搜索选择产品!',
                                     },
                                 ]}
                             >

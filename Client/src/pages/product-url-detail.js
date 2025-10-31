@@ -168,7 +168,7 @@ const ProductUrlDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入类型!',
+                                        message: '请选择类型!',
                                     },
                                 ]}
                             >

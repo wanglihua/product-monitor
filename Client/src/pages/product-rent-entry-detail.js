@@ -170,7 +170,7 @@ const ProductRentEntryDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入学校!',
+                                        message: '请搜索选择学校!',
                                     },
                                 ]}
                             >
@@ -203,7 +203,7 @@ const ProductRentEntryDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入产品!',
+                                        message: '请搜索选择产品!',
                                     },
                                 ]}
                             >
