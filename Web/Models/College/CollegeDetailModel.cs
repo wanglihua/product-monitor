@@ -1,4 +1,4 @@
-
+using Domain;
 using FluentValidation;
 using Newtonsoft.Json;
 
@@ -10,19 +10,17 @@ public class CollegeDetailModel
     public long Id { get; set; }
 
     [JsonProperty("code")]
-    public string Code { get; set; } = ""; 
+    public string Code { get; set; } = "";
 
     [JsonProperty("name")]
-    public string Name { get; set; } = ""; 
+    public string Name { get; set; } = "";
 
     [JsonProperty("province")]
-    public string Province { get; set; } = ""; 
+    public int Province { get; set; }
 
     [JsonProperty("level")]
-    public string Level { get; set; } = ""; 
-
+    public int Level { get; set; }
 }
-
 
 public class CollegeDetailModelValidator : AbstractValidator<CollegeDetailModel>
 {
@@ -36,13 +34,7 @@ public class CollegeDetailModelValidator : AbstractValidator<CollegeDetailModel>
         RuleFor(e => e.Name).NotEmpty().WithMessage("院校名称不能为空!");
         RuleFor(e => e.Name).MaximumLength(128).WithMessage("院校名称最大长度不能超过128!");
 
-        RuleFor(e => e.Province).NotNull().WithMessage("身份不能为空!");
-        RuleFor(e => e.Province).NotEmpty().WithMessage("身份不能为空!");
-        RuleFor(e => e.Province).MaximumLength(32).WithMessage("身份最大长度不能超过32!");
-
-        RuleFor(e => e.Level).NotNull().WithMessage("办学层次不能为空!");
-        RuleFor(e => e.Level).NotEmpty().WithMessage("办学层次不能为空!");
-        RuleFor(e => e.Level).MaximumLength(32).WithMessage("办学层次最大长度不能超过32!");
-
+        RuleFor(e => e.Province).Must(p => ProvinceType.GetById(p) != ProvinceType.None).WithMessage("身份不能为空!");
+        RuleFor(e => e.Level).Must(p => CollegeLevelType.GetById(p) != CollegeLevelType.None).WithMessage("办学层次不能为空!");
     }
 }

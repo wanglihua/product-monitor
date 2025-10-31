@@ -20,20 +20,20 @@ public abstract class CodeTypeModelBinder<T> : IModelBinder where T : CodeTypeBa
 
         bindingContext.ModelState.SetModelValue(modelName, valueProviderResult);
 
-        var codeStr = valueProviderResult.FirstValue;
-        T codeType = GetByCode(0); // 如果字符串为空就取默认的 None 值
-        if (string.IsNullOrWhiteSpace(codeStr) == false && int.TryParse(codeStr.Trim(), out int code) == false)
+        var typeIdStr = valueProviderResult.FirstValue;
+        T codeType = GetById(0); // 如果字符串为空就取默认的 None 值
+        if (string.IsNullOrWhiteSpace(typeIdStr) == false && int.TryParse(typeIdStr.Trim(), out int typeId) == false)
         {
-            codeType = GetByCode(code);
+            codeType = GetById(typeId);
         }
 
         bindingContext.Result = ModelBindingResult.Success(codeType);
         return Task.CompletedTask;
     }
 
-    private T GetByCode(int code)
+    private T GetById(int id)
     {
         // return CodeTypeUtil.GetByCode<T>(code);
-        return T.GetByCode(code);
+        return T.GetById(id);
     }
 }

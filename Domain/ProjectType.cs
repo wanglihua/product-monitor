@@ -27,11 +27,11 @@ public class ProjectType : CodeTypeBase, ICodeType<ProjectType>
         Rent,
     };
 
-    public static readonly IDictionary<int, ProjectType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);
+    public static readonly IDictionary<int, ProjectType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
 
-    public static ProjectType GetByCode(int code)
+    public static ProjectType GetById(int id)
     {
-        if (codeTypeMap.TryGetValue(code, out var codeType))
+        if (codeTypeMap.TryGetValue(id, out var codeType))
         {
             return codeType;
         }
@@ -44,7 +44,7 @@ public class ProjectType : CodeTypeBase, ICodeType<ProjectType>
         return codeTypeList.ToList();
     }
 
-    private ProjectType(int code, string name) : base(code, name)
+    private ProjectType(int id, string name) : base(id, name)
     {
     }
 }

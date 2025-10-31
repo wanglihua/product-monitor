@@ -307,11 +307,11 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
         ProductVersionDelete,
     };
 
-    private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);
+    private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
 
-    public static ActionLogType GetByCode(int code)
+    public static ActionLogType GetById(int id)
     {
-        if (codeTypeMap.TryGetValue(code, out var codeType))
+        if (codeTypeMap.TryGetValue(id, out var codeType))
         {
             return codeType;
         }
@@ -324,7 +324,7 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
         return codeTypeList.ToList();
     }
 
-    private ActionLogType(int code, string name) : base(code, name)
+    private ActionLogType(int id, string name) : base(id, name)
     {
     }
 }

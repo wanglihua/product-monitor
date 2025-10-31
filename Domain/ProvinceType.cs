@@ -224,11 +224,11 @@ public class ProvinceType : CodeTypeBase, ICodeType<ProvinceType>
         return codeTypeList.ToList();
     }
 
-    private static readonly IDictionary<int, ProvinceType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);
+    private static readonly IDictionary<int, ProvinceType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
 
-    public static ProvinceType GetByCode(int code)
+    public static ProvinceType GetById(int id)
     {
-        if (codeTypeMap.TryGetValue(code, out var codeType))
+        if (codeTypeMap.TryGetValue(id, out var codeType))
         {
             return codeType;
         }
@@ -236,7 +236,7 @@ public class ProvinceType : CodeTypeBase, ICodeType<ProvinceType>
         return None;
     }
 
-    private ProvinceType(int code, string name) : base(code, name)
+    private ProvinceType(int id, string name) : base(id, name)
     {
     }
 }

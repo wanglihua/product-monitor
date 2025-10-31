@@ -40,7 +40,7 @@ public class ProductUrlController : Controller
     {
         IQueryable<ProductUrlEntity> query = db.Set<ProductUrlEntity>();
 
-        var typeQuery = ProductUrlType.GetByCode(param.TypeQuery);
+        var typeQuery = ProductUrlType.GetById(param.TypeQuery);
         if (typeQuery != ProductUrlType.None)
         {
             query = query.Where(e => e.Type == typeQuery);
@@ -108,7 +108,7 @@ public class ProductUrlController : Controller
         };
         productUrlTypeList.AddRange(ProductUrlType.GetList()
             .Select(e => new Dictionary<string, object> {
-                ["value"] = e.Code,
+                ["value"] = e.Id,
                 ["label"] = e.Name,
             })
         );
@@ -149,7 +149,7 @@ public class ProductUrlController : Controller
                     Id = productUrl.Id,
                     Name = productUrl.Name,
                     Url = productUrl.Url,
-                    TypeCode = productUrl.Type.Code,
+                    TypeCode = productUrl.Type.Id,
                     LoginUser = productUrl.LoginUser,
                     LoginPassword = productUrl.LoginPassword,
                     Description = productUrl.Description,
@@ -190,7 +190,7 @@ public class ProductUrlController : Controller
 
         productUrl.Name = model.Name ?? "";
         productUrl.Url = model.Url ?? "";
-        productUrl.Type = ProductUrlType.GetByCode(model.TypeCode);
+        productUrl.Type = ProductUrlType.GetById(model.TypeCode);
         productUrl.LoginUser = model.LoginUser ?? "";
         productUrl.LoginPassword = model.LoginPassword ?? "";
         productUrl.Description = model.Description ?? "";

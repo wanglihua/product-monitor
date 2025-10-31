@@ -51,7 +51,7 @@ public class ProductServiceDetailModel
     [JsonProperty("projectTypeList")]
     public IList<Dictionary<string, object>> ProjectTypeList => ProjectType.GetList()
         .Select(e => new Dictionary<string, object> {
-            ["value"] = e.Code,
+            ["value"] = e.Id,
             ["label"] = e.Name,
         })
         .ToList();

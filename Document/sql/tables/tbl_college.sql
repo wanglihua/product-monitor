@@ -4,8 +4,8 @@
 
     code        NVARCHAR(64)  NOT NULL,
     name        NVARCHAR(128) NOT NULL,
-    province    NVARCHAR(32)  NOT NULL,
-    level       NVARCHAR(32)  NOT NULL, -- 暂时使用字符串
+    province    INT           NOT NULL DEFAULT 0,
+    level       INT           NOT NULL DEFAULT 0,
 
     create_time DATETIME      NOT NULL,
     update_time DATETIME      NOT NULL,
@@ -25,3 +25,4 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'办学层次', 'SCHEMA', 'dbo', 
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college', 'COLUMN', 'create_time';
 EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college', 'COLUMN', 'update_time';
+

@@ -33,11 +33,11 @@ public class ProductUrlType : CodeTypeBase, ICodeType<ProductUrlType>
         Site,
     };
 
-    private static readonly IDictionary<int, ProductUrlType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);
+    private static readonly IDictionary<int, ProductUrlType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
 
-    public static ProductUrlType GetByCode(int code)
+    public static ProductUrlType GetById(int id)
     {
-        if (codeTypeMap.TryGetValue(code, out var codeType))
+        if (codeTypeMap.TryGetValue(id, out var codeType))
         {
             return codeType;
         }
@@ -50,7 +50,7 @@ public class ProductUrlType : CodeTypeBase, ICodeType<ProductUrlType>
         return codeTypeList.ToList();
     }
 
-    private ProductUrlType(int code, string name) : base(code, name)
+    private ProductUrlType(int id, string name) : base(id, name)
     {
     }
 }

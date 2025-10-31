@@ -6,7 +6,7 @@ namespace Core.CodeType;
 /// 用法 [JsonConverter(typeof(XXXCodeTypeJsonConverter))]
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public abstract class CodeTypeJsonConverter<T> : JsonConverter<T> where T : CodeTypeBase
+public abstract class CodeTypeJsonConverter<T> : JsonConverter<T> where T : CodeTypeBase, ICodeType<T>
 {
     public override void WriteJson(JsonWriter writer, T? value, JsonSerializer serializer)
     {
@@ -15,20 +15,13 @@ public abstract class CodeTypeJsonConverter<T> : JsonConverter<T> where T : Code
 
     public override T ReadJson(JsonReader reader, Type objectType, T? existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
-        string codeStr = reader.Value?.ToString() ?? string.Empty;
+        string typeIdStr = reader.Value?.ToString() ?? string.Empty;
 
-        if (int.TryParse(codeStr, out int code) == false)
+        if (int.TryParse(typeIdStr, out int typeId) == false)
         {
-            return GetByCode(0);
+            return T.GetById(0);
         }
 
-        return GetByCode(code);
-    }
-
-    // protected abstract T GetByCode(string code);
-
-    private T GetByCode(int code)
-    {
-        return CodeTypeUtil.GetByCode<T>(code);
+        return T.GetById(typeId);
     }
 }

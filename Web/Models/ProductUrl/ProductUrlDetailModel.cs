@@ -31,7 +31,7 @@ public class ProductUrlDetailModel
     [JsonProperty("productUrlTypeList")]
     public IList<Dictionary<string, object>> ProductUrlTypeList => ProductUrlType.GetList()
         .Select(e => new Dictionary<string, object> {
-            ["value"] = e.Code,
+            ["value"] = e.Id,
             ["label"] = e.Name,
         })
         .ToList();
@@ -49,7 +49,7 @@ public class ProductUrlDetailModelValidator : AbstractValidator<ProductUrlDetail
         RuleFor(e => e.Url).NotEmpty().WithMessage("网址不能为空!");
         RuleFor(e => e.Url).MaximumLength(256).WithMessage("网址最大长度不能超过256!");
 
-        RuleFor(e => e.TypeCode).Must(p => ProductUrlType.GetByCode(p) != ProductUrlType.None).WithMessage("类型不能为空!");
+        RuleFor(e => e.TypeCode).Must(p => ProductUrlType.GetById(p) != ProductUrlType.None).WithMessage("类型不能为空!");
 
         RuleFor(e => e.LoginUser).NotNull().WithMessage("账号不能为空!");
         RuleFor(e => e.LoginUser).NotEmpty().WithMessage("账号不能为空!");

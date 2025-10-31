@@ -1,4 +1,3 @@
-
 using Core;
 
 namespace Domain;
@@ -11,21 +10,20 @@ public class CollegeEntity : Entity
     /// <summary>
     /// 院校标识码
     /// </summary>
-    public string Code { get; set; } = ""; 
+    public string Code { get; set; } = "";
 
     /// <summary>
     /// 院校名称
     /// </summary>
-    public string Name { get; set; } = ""; 
+    public string Name { get; set; } = "";
 
     /// <summary>
     /// 身份
     /// </summary>
-    public string Province { get; set; } = ""; 
+    public ProvinceType Province { get; set; } = ProvinceType.None;
 
     /// <summary>
     /// 办学层次
     /// </summary>
-    public string Level { get; set; } = ""; 
-
+    public CollegeLevelType Level { get; set; } = CollegeLevelType.None;
 }

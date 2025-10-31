@@ -18,11 +18,11 @@ public class WebSessionDataType : CodeTypeBase, ICodeType<WebSessionDataType>
         LoginUserId,
     };
 
-    private static readonly IDictionary<int, WebSessionDataType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);
+    private static readonly IDictionary<int, WebSessionDataType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
 
-    public static WebSessionDataType GetByCode(int code)
+    public static WebSessionDataType GetById(int id)
     {
-        if (codeTypeMap.TryGetValue(code, out var codeType))
+        if (codeTypeMap.TryGetValue(id, out var codeType))
         {
             return codeType;
         }
@@ -35,7 +35,7 @@ public class WebSessionDataType : CodeTypeBase, ICodeType<WebSessionDataType>
         return codeTypeList.ToList();
     }
 
-    private WebSessionDataType(int code, string name) : base(code, name)
+    private WebSessionDataType(int id, string name) : base(id, name)
     {
     }
 }

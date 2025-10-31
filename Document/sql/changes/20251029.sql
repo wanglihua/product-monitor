@@ -30,3 +30,30 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'版本更新时间', 'SCHEMA', '
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_version', 'COLUMN', 'create_time';
 EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_version', 'COLUMN', 'update_time';
+
+GO
+
+UPDATE tbl_college
+SET province = '0'
+WHERE id > 0;
+
+ALTER TABLE tbl_college
+    ALTER COLUMN province INT NOT NULL
+
+ALTER TABLE tbl_college
+    ADD DEFAULT 0 FOR province;
+
+GO
+
+UPDATE tbl_college
+SET level = '0'
+WHERE id > 0;
+
+ALTER TABLE tbl_college
+    ALTER COLUMN level INT NOT NULL;
+
+ALTER TABLE tbl_college
+    ADD DEFAULT 0 FOR level;
+
+GO
+

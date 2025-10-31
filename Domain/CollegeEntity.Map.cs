@@ -1,4 +1,3 @@
-
 using Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -25,12 +24,12 @@ public class CollegeEntityMap : IEntityTypeConfiguration<CollegeEntity>
 
         builder.Property(e => e.Province)
             .HasColumnName("province")
-            .HasMaxLength(32)
+            .HasConversion<ProvinceTypeValueConverter>()
             .IsRequired(true);
 
         builder.Property(e => e.Level)
             .HasColumnName("level")
-            .HasMaxLength(32)
+            .HasConversion<CollegeLevelTypeValueConverter>()
             .IsRequired(true);
     }
 }

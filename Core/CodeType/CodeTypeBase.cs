@@ -5,22 +5,22 @@ public abstract class CodeTypeBase
     /// <summary>
     /// 编码
     /// </summary>
-    public int Code { get; protected set; }
+    public int Id { get; protected set; }
 
     /// <summary>
     /// 名称
     /// </summary>
     public string Name { get; protected set; }
 
-    protected CodeTypeBase(int code, string name)
+    protected CodeTypeBase(int id, string name)
     {
-        this.Code = code;
+        this.Id = id;
         this.Name = name;
     }
 
     public override string ToString()
     {
-        return Code.ToString();
+        return Id.ToString();
     }
 
     public new bool Equals(object? x, object? y)
@@ -43,6 +43,6 @@ public abstract class CodeTypeBase
             return false;
         }
 
-        return xCodeType.Code == yCodeType.Code;
+        return xCodeType.Id == yCodeType.Id;
     }
 }

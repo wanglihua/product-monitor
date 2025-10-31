@@ -45,7 +45,7 @@ public class CollegeController : Controller
             string codeQuery = param.CodeQuery.Trim();
             query = query.Where(p => p.Name.Contains(codeQuery));
         }
-        
+
         if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
         {
             string nameQuery = param.NameQuery.Trim();
@@ -92,8 +92,8 @@ public class CollegeController : Controller
                 Id = e.Id,
                 Code = e.Code,
                 Name = e.Name,
-                Province = e.Province,
-                Level = e.Level,
+                Province = e.Province.Name,
+                Level = e.Level.Name,
                 CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
                 UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
@@ -120,8 +120,8 @@ public class CollegeController : Controller
             Id = 0,
             Code = "",
             Name = "",
-            Province = "",
-            Level = "",
+            Province = ProvinceType.None.Id,
+            Level = CollegeLevelType.None.Id,
         };
 
         if (collegeId > 0)
@@ -131,10 +131,10 @@ public class CollegeController : Controller
             {
                 model = new CollegeDetailModel {
                     Id = college.Id,
-                Code = college.Code,
-                Name = college.Name,
-                Province = college.Province,
-                Level = college.Level,
+                    Code = college.Code,
+                    Name = college.Name,
+                    Province = college.Province.Id,
+                    Level = college.Level.Id,
                 };
             }
         }
@@ -172,8 +172,8 @@ public class CollegeController : Controller
 
         college.Code = model.Code ?? "";
         college.Name = model.Name ?? "";
-        college.Province = model.Province ?? "";
-        college.Level = model.Level ?? "";
+        college.Province = ProvinceType.GetById(model.Province);
+        college.Level = CollegeLevelType.GetById(model.Level);
 
         if (isCreate == true)
         {

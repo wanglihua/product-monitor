@@ -202,7 +202,7 @@ public class ProductServiceController : Controller
                 CollegeName = college.Name,
                 ProductId = productService.ProductId,
                 ProductName = product.Name,
-                ProjectTypeCode = productService.ProjectType.Code,
+                ProjectTypeCode = productService.ProjectType.Id,
                 ServiceDate = productService.ServiceDate.ToString("yyyy-MM-dd"),
                 ServiceCount = productService.ServiceCount,
                 ServiceUrl = productService.ServiceUrl,
@@ -249,7 +249,7 @@ public class ProductServiceController : Controller
 
         productService.CollegeId = model.CollegeId;
         productService.ProductId = model.ProductId;
-        productService.ProjectType = ProjectType.GetByCode(model.ProjectTypeCode);
+        productService.ProjectType = ProjectType.GetById(model.ProjectTypeCode);
         productService.ServiceDate = DateTime.Parse(model.ServiceDate).Date;
         productService.ServiceCount = model.ServiceCount;
         productService.ServiceUrl = model.ServiceUrl ?? "";

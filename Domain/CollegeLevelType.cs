@@ -38,11 +38,11 @@ public class CollegeLevelType : CodeTypeBase, ICodeType<CollegeLevelType>
         return codeTypeList.ToList();
     }
 
-    private static readonly IDictionary<int, CollegeLevelType> codeTypeMap = codeTypeList.ToDictionary(e => e.Code);
+    private static readonly IDictionary<int, CollegeLevelType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
 
-    public static CollegeLevelType GetByCode(int code)
+    public static CollegeLevelType GetById(int id)
     {
-        if (codeTypeMap.TryGetValue(code, out var codeType))
+        if (codeTypeMap.TryGetValue(id, out var codeType))
         {
             return codeType;
         }
@@ -50,7 +50,7 @@ public class CollegeLevelType : CodeTypeBase, ICodeType<CollegeLevelType>
         return None;
     }
 
-    private CollegeLevelType(int code, string name) : base(code, name)
+    private CollegeLevelType(int id, string name) : base(id, name)
     {
     }
 }
