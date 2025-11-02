@@ -48,15 +48,3 @@ public class ProjectType : CodeTypeBase, ICodeType<ProjectType>
     {
     }
 }
-
-public class ProjectTypeModelBinder : CodeTypeModelBinder<ProjectType>
-{
-}
-
-public class ProjectTypeCodeJsonConverter : CodeTypeJsonConverter<ProjectType>
-{
-}
-
-public class ProjectTypeValueConverter : CodeTypeValueConverter<ProjectType>
-{
-}

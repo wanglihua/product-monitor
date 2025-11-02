@@ -54,15 +54,3 @@ public class ProductUrlType : CodeTypeBase, ICodeType<ProductUrlType>
     {
     }
 }
-
-public class ProductUrlTypeModelBinder : CodeTypeModelBinder<ProductUrlType>
-{
-}
-
-public class ProductUrlTypeCodeJsonConverter : CodeTypeJsonConverter<ProductUrlType>
-{
-}
-
-public class ProductUrlTypeValueConverter : CodeTypeValueConverter<ProductUrlType>
-{
-}

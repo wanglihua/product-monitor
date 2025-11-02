@@ -328,15 +328,3 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
     {
     }
 }
-
-public class ActionLogTypeModelBinder : CodeTypeModelBinder<ActionLogType>
-{
-}
-
-public class ActionLogTypeCodeJsonConverter : CodeTypeJsonConverter<ActionLogType>
-{
-}
-
-public class ActionLogTypeValueConverter : CodeTypeValueConverter<ActionLogType>
-{
-}

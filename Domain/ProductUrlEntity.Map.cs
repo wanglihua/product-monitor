@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.CodeType;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -24,7 +25,7 @@ public class ProductUrlEntityMap : IEntityTypeConfiguration<ProductUrlEntity>
 
         builder.Property(e => e.Type)
             .HasColumnName("type_code")
-            .HasConversion<ProductUrlTypeValueConverter>()
+            .HasConversion<CodeTypeValueConverter<ProductUrlType>>()
             .IsRequired(true);
 
         builder.Property(e => e.LoginUser)

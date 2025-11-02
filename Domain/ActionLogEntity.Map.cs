@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.CodeType;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,7 +14,7 @@ public class ActionLogEntityMap : IEntityTypeConfiguration<ActionLogEntity>
         EntityNoUpdateMap.Configure(builder);
 
         builder.Property(e => e.Type)
-            .HasConversion<ActionLogTypeValueConverter>()
+            .HasConversion<CodeTypeValueConverter<ActionLogType>>()
             .HasColumnName("type_code")
             .IsRequired(true);
 

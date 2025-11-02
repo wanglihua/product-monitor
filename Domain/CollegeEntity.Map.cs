@@ -1,4 +1,5 @@
 using Core;
+using Core.CodeType;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -24,12 +25,12 @@ public class CollegeEntityMap : IEntityTypeConfiguration<CollegeEntity>
 
         builder.Property(e => e.Province)
             .HasColumnName("province")
-            .HasConversion<ProvinceTypeValueConverter>()
+            .HasConversion<CodeTypeValueConverter<ProvinceType>>()
             .IsRequired(true);
 
         builder.Property(e => e.Level)
             .HasColumnName("level")
-            .HasConversion<CollegeLevelTypeValueConverter>()
+            .HasConversion<CodeTypeValueConverter<CollegeLevelType>>()
             .IsRequired(true);
     }
 }

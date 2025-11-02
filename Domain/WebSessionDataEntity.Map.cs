@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.CodeType;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,7 +23,7 @@ public class WebSessionDataEntityMap : IEntityTypeConfiguration<WebSessionDataEn
             .IsRequired(true);
 
         builder.Property(e => e.Type)
-            .HasConversion<WebSessionDataTypeValueConverter>()
+            .HasConversion<CodeTypeValueConverter<WebSessionDataType>>()
             .HasColumnName("type_code")
             .IsRequired(true);
 

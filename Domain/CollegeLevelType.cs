@@ -54,15 +54,3 @@ public class CollegeLevelType : CodeTypeBase, ICodeType<CollegeLevelType>
     {
     }
 }
-
-public class CollegeLevelTypeModelBinder : CodeTypeModelBinder<CollegeLevelType>
-{
-}
-
-public class CollegeLevelTypeCodeJsonConverter : CodeTypeJsonConverter<CollegeLevelType>
-{
-}
-
-public class CollegeLevelTypeValueConverter : CodeTypeValueConverter<CollegeLevelType>
-{
-}

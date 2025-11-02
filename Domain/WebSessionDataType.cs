@@ -39,15 +39,3 @@ public class WebSessionDataType : CodeTypeBase, ICodeType<WebSessionDataType>
     {
     }
 }
-
-public class WebSessionDataTypeModelBinder : CodeTypeModelBinder<WebSessionDataType>
-{
-}
-
-public class WebSessionDataTypeCodeJsonConverter : CodeTypeJsonConverter<WebSessionDataType>
-{
-}
-
-public class WebSessionDataTypeValueConverter : CodeTypeValueConverter<WebSessionDataType>
-{
-}

@@ -240,15 +240,3 @@ public class ProvinceType : CodeTypeBase, ICodeType<ProvinceType>
     {
     }
 }
-
-public class ProvinceTypeModelBinder : CodeTypeModelBinder<ProvinceType>
-{
-}
-
-public class ProvinceTypeCodeJsonConverter : CodeTypeJsonConverter<ProvinceType>
-{
-}
-
-public class ProvinceTypeValueConverter : CodeTypeValueConverter<ProvinceType>
-{
-}

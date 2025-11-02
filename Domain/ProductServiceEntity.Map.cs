@@ -1,4 +1,5 @@
 using Core;
+using Core.CodeType;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,7 +23,7 @@ public class ProductServiceEntityMap : IEntityTypeConfiguration<ProductServiceEn
 
         builder.Property(e => e.ProjectType)
             .HasColumnName("project_type_code")
-            .HasConversion<ProjectTypeValueConverter>()
+            .HasConversion<CodeTypeValueConverter<ProjectType>>()
             .IsRequired(true);
 
         builder.Property(e => e.ServiceDate)
