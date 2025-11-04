@@ -10,22 +10,22 @@ public class ProductEntity : Entity
     public string Name { get; set; } = "";
 
     /// <summary>
-    /// 版本号
+    /// 产品英文名
     /// </summary>
-    public string Version { get; set; } = "";
+    public string EnglishName { get; set; } = "";
 
     /// <summary>
-    /// 更新基础
+    /// 产品英文名
     /// </summary>
-    public string VersionUpdateBase { get; set; } = "";
+    public int VersionCount { get; set; }
 
     /// <summary>
-    /// 更新内容
+    /// 最新版本号
     /// </summary>
-    public string VersionUpdateDesc { get; set; } = "";
+    public string LatestVersion { get; set; } = "";
 
     /// <summary>
     /// 版本更新时间
     /// </summary>
-    public DateTime VersionUpdateTime { get; set; }
+    public DateTime? VersionUpdateTime { get; set; }
 }

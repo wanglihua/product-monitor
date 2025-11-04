@@ -10,14 +10,14 @@ public class ProductListItem
     [JsonProperty("name")]
     public string Name { get; set; } = "";
 
-    [JsonProperty("version")]
-    public string Version { get; set; } = "";
+    [JsonProperty("englishName")]
+    public string EnglishName { get; set; } = "";
 
-    [JsonProperty("versionUpdateBase")]
-    public string VersionUpdateBase { get; set; } = "";
+    [JsonProperty("versionCount")]
+    public int VersionCount { get; set; }
 
-    [JsonProperty("versionUpdateDesc")]
-    public string VersionUpdateDesc { get; set; } = "";
+    [JsonProperty("latestVersion")]
+    public string LatestVersion { get; set; } = "";
 
     [JsonProperty("versionUpdateTime")]
     public string VersionUpdateTime { get; set; } = "";

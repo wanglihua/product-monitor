@@ -57,3 +57,30 @@ ALTER TABLE tbl_college
 
 GO
 
+ALTER TABLE tbl_product
+    DROP COLUMN version;
+
+ALTER TABLE tbl_product
+    DROP COLUMN version_update_base;
+
+ALTER TABLE tbl_product
+    DROP COLUMN version_update_desc;
+GO
+
+ALTER TABLE tbl_product
+    ADD english_name NVARCHAR(256) NOT NULL DEFAULT '';
+
+ALTER TABLE tbl_product
+    ADD version_count INT NOT NULL DEFAULT 0;
+
+ALTER TABLE tbl_product
+    ADD latest_version NVARCHAR(32) NOT NULL DEFAULT '';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品英文名', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product', 'COLUMN', 'english_name';
+EXEC sp_AddExtendedProperty 'MS_Description', N'版本数量', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product', 'COLUMN', 'version_count';
+EXEC sp_AddExtendedProperty 'MS_Description', N'最新版本号', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product', 'COLUMN', 'latest_version';
+
+ALTER TABLE tbl_product
+    ALTER COLUMN version_update_time DATETIME NULL;
+
+GO 

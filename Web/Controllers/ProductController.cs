@@ -85,10 +85,10 @@ public class ProductController : Controller
             .Select(e => new ProductListItem {
                 Id = e.Id,
                 Name = e.Name,
-                Version = e.Version,
-                VersionUpdateBase = e.VersionUpdateBase,
-                VersionUpdateDesc = e.VersionUpdateDesc,
-                VersionUpdateTime = e.VersionUpdateTime.ToString("yyyy-MM-dd"),
+                EnglishName = e.EnglishName,
+                VersionCount = e.VersionCount,
+                LatestVersion = e.LatestVersion,
+                VersionUpdateTime = e.VersionUpdateTime?.ToString("yyyy-MM-dd") ?? "",
                 CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
                 UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
@@ -114,10 +114,7 @@ public class ProductController : Controller
         var model = new ProductDetailModel {
             Id = 0,
             Name = "",
-            Version = "",
-            VersionUpdateBase = "",
-            VersionUpdateDesc = "",
-            VersionUpdateTime = DateTime.Today.ToString("yyyy-MM-dd"),
+            EnglishName = "",
         };
 
         if (productId > 0)
@@ -128,10 +125,7 @@ public class ProductController : Controller
                 model = new ProductDetailModel {
                     Id = product.Id,
                     Name = product.Name,
-                    Version = product.Version,
-                    VersionUpdateBase = product.VersionUpdateBase,
-                    VersionUpdateDesc = product.VersionUpdateDesc,
-                    VersionUpdateTime = product.VersionUpdateTime.ToString("yyyy-MM-dd"),
+                    EnglishName = product.EnglishName,
                 };
             }
         }
@@ -168,10 +162,10 @@ public class ProductController : Controller
         }
 
         product.Name = model.Name ?? "";
-        product.Version = model.Version ?? "";
-        product.VersionUpdateBase = model.VersionUpdateBase ?? "";
-        product.VersionUpdateDesc = model.VersionUpdateDesc ?? "";
-        product.VersionUpdateTime = DateTime.Parse(model.VersionUpdateTime).Date;
+        product.EnglishName = model.EnglishName ?? "";
+        product.VersionCount = 0;
+        product.LatestVersion = "";
+        product.VersionUpdateTime = null;
 
         if (isCreate == true)
         {

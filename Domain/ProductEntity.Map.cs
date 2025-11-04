@@ -17,19 +17,18 @@ public class ProductEntityMap : IEntityTypeConfiguration<ProductEntity>
             .HasMaxLength(256)
             .IsRequired(true);
 
-        builder.Property(e => e.Version)
-            .HasColumnName("version")
-            .HasMaxLength(32)
+        builder.Property(e => e.EnglishName)
+            .HasColumnName("english_name")
+            .HasMaxLength(256)
             .IsRequired(true);
 
-        builder.Property(e => e.VersionUpdateBase)
-            .HasColumnName("version_update_base")
-            .HasMaxLength(32)
+        builder.Property(e => e.VersionCount)
+            .HasColumnName("version_count")
             .IsRequired(true);
 
-        builder.Property(e => e.VersionUpdateDesc)
-            .HasColumnName("version_update_desc")
-            .HasMaxLength(512)
+        builder.Property(e => e.LatestVersion)
+            .HasColumnName("latest_version")
+            .HasMaxLength(32)
             .IsRequired(true);
 
         builder.Property(e => e.VersionUpdateTime)
