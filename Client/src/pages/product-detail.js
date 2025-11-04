@@ -61,10 +61,7 @@ const ProductDetailInner = (props) => {
 
                         form.current.setFieldsValue({
                             name: data.name,
-                            version: data.version,
-                            versionUpdateBase: data.versionUpdateBase,
-                            versionUpdateDesc: data.versionUpdateDesc,
-                            versionUpdateTime: dayjs(data.versionUpdateTime),
+                            englishName: data.englishName,
                         });
                     });
                 }
@@ -89,10 +86,7 @@ const ProductDetailInner = (props) => {
                         post("/api/product/save", {
                             id: productId,
                             name: values.name,
-                            version: values.version,
-                            versionUpdateBase: values.versionUpdateBase,
-                            versionUpdateDesc: values.versionUpdateDesc,
-                            versionUpdateTime: values.versionUpdateTime,
+                            englishName: values.englishName,
                         }, function (response) {
                             const res = response.data;
                             if (res.success === false) {
@@ -135,65 +129,24 @@ const ProductDetailInner = (props) => {
                             </Form.Item>
                         </Descriptions.Item>
 
-                        <Descriptions.Item label="版本号">
+                        <Descriptions.Item label="产品英文名">
                             <Form.Item
-                                name="version"
+                                name="englishName"
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入版本号!',
+                                        message: '请输入产品英文名!',
                                     },
                                 ]}
                             >
                                 <Input
                                     maxLength={30}
-                                    placeholder="版本号"
+                                    placeholder="产品英文名"
                                     allowClear
                                 />
                             </Form.Item>
                         </Descriptions.Item>
 
-                        <Descriptions.Item label="更新基础">
-                            <Form.Item
-                                name="versionUpdateBase"
-                            >
-                                <Input
-                                    maxLength={30}
-                                    placeholder="更新基础"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-
-                        <Descriptions.Item label="版本更新时间">
-                            <Form.Item
-                                name="versionUpdateTime"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入更新时间!',
-                                    },
-                                ]}
-                            >
-                                <DatePicker
-                                    style={{width: "100%"}}
-                                    placeholder="版本更新时间"
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-
-                        <Descriptions.Item label="更新内容">
-                            <Form.Item
-                                name="versionUpdateDesc"
-                            >
-                                <Input.TextArea
-                                    rows={2}
-                                    maxLength={500}
-                                    placeholder="更新内容"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
                     </Descriptions>
 
                     <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "right"}}>
