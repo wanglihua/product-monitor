@@ -21,16 +21,19 @@ public class ProductVersionController : Controller
 
     private readonly Db db;
     private readonly UserLoginService userLoginService;
+    private readonly ProductService productService;
     private readonly ActionLogService actionLogService;
 
     public ProductVersionController(
         Db db,
         UserLoginService userLoginService,
+        ProductService productService,
         ActionLogService actionLogService
     )
     {
         this.db = db;
         this.userLoginService = userLoginService;
+        this.productService = productService;
         this.actionLogService = actionLogService;
     }
 
@@ -233,6 +236,8 @@ public class ProductVersionController : Controller
 
         db.SaveChanges();
 
+        productService.UpdateLatestVersionData(product.Id);
+
         long loginUserId = userLoginService.GetLoginUserId();
         if (isCreate == true)
         {
@@ -274,6 +279,8 @@ public class ProductVersionController : Controller
 
         db.Remove<ProductVersionEntity>(productVersion);
         db.SaveChanges();
+
+        productService.UpdateLatestVersionData(productId);
 
         long loginUserId = userLoginService.GetLoginUserId();
         string actionDesc = $"产品{product.Name} 版本{productVersion.Version}#{productVersion.Id}";
