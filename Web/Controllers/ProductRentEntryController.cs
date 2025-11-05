@@ -307,6 +307,7 @@ public class ProductRentEntryController : Controller
             {
                 var productRent = db.Set<ProductRentEntity>()
                     .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+                    .OrderBy(e => e.CollegeId)
                     .Take(1)
                     .SingleOrDefault();
                 if (productRent != null)
@@ -389,6 +390,7 @@ public class ProductRentEntryController : Controller
         long productRentId = productRentEntry.ProductRentId;
         var productRentEntryExists = db.Set<ProductRentEntryEntity>()
             .Where(e => e.ProductRentId == productRentId)
+            .OrderBy(e => e.ProductRentId)
             .Take(1)
             .SingleOrDefault();
         if (productRentEntryExists == null)

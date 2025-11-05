@@ -7,4 +7,7 @@ public class ProductListParam : ListParam
 {
     [JsonProperty("nameQuery")]
     public string NameQuery { get; set; } = "";
+
+    [JsonProperty("englishNameQuery")]
+    public string EnglishNameQuery { get; set; } = "";
 }

@@ -123,6 +123,7 @@ public class AdminUserController : Controller
         string loginName = param.LoginName.Trim();
         var user = db.Set<UserEntity>()
             .Where(e => e.LoginName == loginName)
+            .OrderBy(e => e.LoginName)
             .Take(1)
             .SingleOrDefault();
         if (user == null)
@@ -133,6 +134,7 @@ public class AdminUserController : Controller
         long userId = user.Id;
         var admin = db.Set<AdminUserEntity>()
             .Where(e => e.UserId == userId)
+            .OrderBy(e => e.UserId)
             .Take(1)
             .SingleOrDefault();
         if (admin != null)
@@ -182,6 +184,7 @@ public class AdminUserController : Controller
 
         var adminOther = db.Set<AdminUserEntity>()
             .Where(e => e.Id != adminId)
+            .OrderBy(e => e.Id)
             .Take(1)
             .SingleOrDefault();
         if (adminOther == null)

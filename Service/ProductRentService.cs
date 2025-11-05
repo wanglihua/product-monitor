@@ -27,6 +27,7 @@ public class ProductRentService
     {
         var productRent = db.Set<ProductRentEntity>()
             .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .OrderBy(e => e.CollegeId)
             .Take(1)
             .SingleOrDefault();
         if (productRent != null)

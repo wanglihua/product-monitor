@@ -69,6 +69,7 @@ public class UserLoginService
 
         var userLoginSessionData = db.Set<WebSessionDataEntity>()
             .Where(e => e.SessionId == sessionId && e.Type == WebSessionDataType.LoginUserId)
+            .OrderBy(e => e.SessionId)
             .Take(1)
             .FirstOrDefault();
         if (userLoginSessionData == null)
@@ -109,6 +110,7 @@ public class UserLoginService
 
         var admin = db.Set<AdminUserEntity>()
             .Where(e => e.UserId == userId)
+            .OrderBy(e => e.UserId)
             .Take(1)
             .SingleOrDefault();
 
@@ -130,6 +132,7 @@ public class UserLoginService
     {
         var user = db.Set<UserEntity>()
             .Where(e => loginName == e.LoginName)
+            .OrderBy(e => e.LoginName)
             .Take(1)
             .SingleOrDefault();
 
@@ -156,6 +159,7 @@ public class UserLoginService
         string sessionId = webSessionService.SessionId;
         var webSession = db.Set<WebSessionEntity>()
             .Where(e => e.SessionId == sessionId)
+            .OrderBy(e => e.SessionId)
             .Take(1)
             .SingleOrDefault();
         if (webSession == null)
@@ -166,6 +170,7 @@ public class UserLoginService
         long webSessionId = webSession.Id;
         var userLoginSessionData = db.Set<WebSessionDataEntity>()
             .Where(e => e.WebSessionId == webSessionId && e.Type == WebSessionDataType.LoginUserId)
+            .OrderBy(e => e.WebSessionId)
             .Take(1)
             .FirstOrDefault();
 

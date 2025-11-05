@@ -308,6 +308,7 @@ public class ProductSaleEntryController : Controller
             {
                 var productSale = db.Set<ProductSaleEntity>()
                     .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+                    .OrderBy(e => e.CollegeId)
                     .Take(1)
                     .SingleOrDefault();
                 if (productSale != null)
@@ -383,6 +384,7 @@ public class ProductSaleEntryController : Controller
         long productSaleId = productSaleEntry.ProductSaleId;
         var productSaleEntryExists = db.Set<ProductSaleEntryEntity>()
             .Where(e => e.ProductSaleId == productSaleId)
+            .OrderBy(e => e.ProductSaleId)
             .Take(1)
             .SingleOrDefault();
         if (productSaleEntryExists == null)

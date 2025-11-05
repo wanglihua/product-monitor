@@ -46,6 +46,12 @@ public class ProductController : Controller
             query = query.Where(p => p.Name.Contains(nameQuery));
         }
 
+        if (string.IsNullOrWhiteSpace(param.EnglishNameQuery) == false)
+        {
+            string englishNameQuery = param.EnglishNameQuery.Trim();
+            query = query.Where(p => p.EnglishName.Contains(englishNameQuery));
+        }
+
         int productCount = query.Count();
 
         // 排序字段

@@ -207,6 +207,7 @@ public class UserController : Controller
 
             var otherUser = db.Set<UserEntity>()
                 .Where(e => e.LoginName == loginName)
+                .OrderBy(e => e.LoginName)
                 .Take(1)
                 .FirstOrDefault();
 
@@ -225,6 +226,7 @@ public class UserController : Controller
 
             var otherUser = db.Set<UserEntity>()
                 .Where(e => e.LoginName == loginName && e.Id != userId)
+                .OrderBy(e => e.LoginName)
                 .Take(1)
                 .FirstOrDefault();
 
@@ -288,6 +290,7 @@ public class UserController : Controller
 
         var admin = db.Set<AdminUserEntity>()
             .Where(e => e.UserId == userId)
+            .OrderBy(e => e.UserId)
             .Take(1)
             .SingleOrDefault();
         if (admin != null)

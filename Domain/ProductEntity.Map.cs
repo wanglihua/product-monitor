@@ -33,6 +33,6 @@ public class ProductEntityMap : IEntityTypeConfiguration<ProductEntity>
 
         builder.Property(e => e.VersionUpdateTime)
             .HasColumnName("version_update_time")
-            .IsRequired(true);
+            .IsRequired(false);
     }
 }

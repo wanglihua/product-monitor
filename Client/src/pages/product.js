@@ -15,6 +15,7 @@ const Product = () => {
 
     const [listParam, setListParam] = useState({
         nameQuery: "",
+        englishNameQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -126,6 +127,7 @@ const Product = () => {
     }, [JSON.stringify(listParam)]);
 
     const nameQueryRef = useRef();
+    const englishNameQueryRef = useRef();
 
     return (
         <div>
@@ -135,16 +137,19 @@ const Product = () => {
             <div>
                 <Space>
                     <Input ref={nameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 320}}/>
+                    <Input ref={englishNameQueryRef} addonBefore="产品英文名" placeholder="产品英文名查询" style={{width: 320}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
                             const nameQuery = nameQueryRef.current.input.value;
+                            const englishNameQuery = englishNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
                                     nameQuery: nameQuery,
+                                    englishNameQuery: englishNameQuery,
                                 };
                             });
                         }}

@@ -27,6 +27,7 @@ public class ProductSaleService
     {
         var productSale = db.Set<ProductSaleEntity>()
             .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .OrderBy(e => e.CollegeId)
             .Take(1)
             .SingleOrDefault();
         if (productSale != null)

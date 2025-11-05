@@ -27,6 +27,7 @@ public class ProductEvalService
     {
         var productEval = db.Set<ProductEvalEntity>()
             .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .OrderBy(e => e.CollegeId)
             .Take(1)
             .SingleOrDefault();
         if (productEval != null)
