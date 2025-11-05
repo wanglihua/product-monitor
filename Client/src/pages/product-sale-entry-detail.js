@@ -107,6 +107,9 @@ const ProductSaleEntryDetailInner = (props) => {
                             version: data.version,
                             saleDate: dayjs(data.saleDate),
                             serviceExpireDate: dayjs(data.serviceExpireDate),
+                            salesManager: data.salesManager,
+                            contactTeacher: data.contactTeacher,
+                            contactMobile: data.contactMobile,
                             description: data.description,
                         });
                     });
@@ -137,6 +140,9 @@ const ProductSaleEntryDetailInner = (props) => {
                             version: values.version,
                             saleDate: values.saleDate,
                             serviceExpireDate: values.serviceExpireDate,
+                            salesManager: values.salesManager,
+                            contactTeacher: values.contactTeacher,
+                            contactMobile: values.contactMobile,
                             description: values.description,
                         }, function (response) {
                             const res = response.data;
@@ -281,8 +287,55 @@ const ProductSaleEntryDetailInner = (props) => {
                                 />
                             </Form.Item>
                         </Descriptions.Item>
-                        <Descriptions.Item label="">
-                            <Form.Item>
+                        <Descriptions.Item label="客户经理">
+                            <Form.Item
+                                name="salesManager"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请输入客户经理!',
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    maxLength={32}
+                                    placeholder="客户经理"
+                                    allowClear
+                                />
+                            </Form.Item>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="联系老师">
+                            <Form.Item
+                                name="contactTeacher"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请输入联系老师!',
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    maxLength={32}
+                                    placeholder="联系老师"
+                                    allowClear
+                                />
+                            </Form.Item>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="联系电话">
+                            <Form.Item
+                                name="contactMobile"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请输入联系电话!',
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    maxLength={32}
+                                    placeholder="联系电话"
+                                    allowClear
+                                />
                             </Form.Item>
                         </Descriptions.Item>
                         <Descriptions.Item label="备注">
