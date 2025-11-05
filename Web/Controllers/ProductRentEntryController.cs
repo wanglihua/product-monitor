@@ -36,6 +36,13 @@ public class ProductRentEntryController : Controller
         this.productRentService = productRentService;
     }
 
+    private class ProductRentEntryJoinItem
+    {
+        public ProductRentEntryEntity ProductRentEntry { get; set; } = new();
+
+        public UserEntity User { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/product-rent-entry/list")]
     [Transactional(false)]
@@ -43,7 +50,14 @@ public class ProductRentEntryController : Controller
     {
         ValidationUtil.Validate<ProductRentEntryListParamValidator, ProductRentEntryListParam>(param);
 
-        IQueryable<ProductRentEntryEntity> query = db.Set<ProductRentEntryEntity>();
+        IQueryable<ProductRentEntryJoinItem> query = db.Set<ProductRentEntryEntity>()
+            .Join(db.Set<UserEntity>(),
+                pse => pse.UserId,
+                u => u.Id,
+                (pse, u) => new ProductRentEntryJoinItem {
+                    ProductRentEntry = pse,
+                    User = u,
+                });
 
         long productRentId = param.ProductRentId;
         var productRent = db.Set<ProductRentEntity>().Find(productRentId);
@@ -70,24 +84,24 @@ public class ProductRentEntryController : Controller
 
         string productName = product.Name;
 
-        query = query.Where(p => p.ProductRentId == productRentId);
+        query = query.Where(p => p.ProductRentEntry.ProductRentId == productRentId);
 
         int productRentEntryCount = query.Count();
 
         // 排序字段
-        Expression<Func<ProductRentEntryEntity, object>> sortField = e => e.Id;
+        Expression<Func<ProductRentEntryJoinItem, object>> sortField = e => e.ProductRentEntry.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
             if (sortFieldParam == nameof(ProductRentEntryListItem.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.ProductRentEntry.CreateTime;
             }
 
             if (sortFieldParam == nameof(ProductRentEntryListItem.UpdateTime).ToUpper())
             {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.ProductRentEntry.UpdateTime;
             }
         }
 
@@ -109,14 +123,15 @@ public class ProductRentEntryController : Controller
 
         var productRentEntryItemList = productRentEntryList
             .Select(e => new ProductRentEntryListItem {
-                Id = e.Id,
-                ProductRentId = e.ProductRentId,
-                TotalDays = e.TotalDays,
-                BeginDate = e.BeginDate.ToString("yyyy-MM-dd"),
-                EndDate = e.EndDate.ToString("yyyy-MM-dd"),
-                Description = e.Description,
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.ProductRentEntry.Id,
+                ProductRentId = e.ProductRentEntry.ProductRentId,
+                TotalDays = e.ProductRentEntry.TotalDays,
+                BeginDate = e.ProductRentEntry.BeginDate.ToString("yyyy-MM-dd"),
+                EndDate = e.ProductRentEntry.EndDate.ToString("yyyy-MM-dd"),
+                Description = e.ProductRentEntry.Description,
+                UserName = e.User.UserName,
+                CreateTime = e.ProductRentEntry.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ProductRentEntry.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

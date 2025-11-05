@@ -22,6 +22,9 @@ public class ProductEvalEntryListItem
     [JsonProperty("description")]
     public string Description { get; set; } = "";
 
+    [JsonProperty("userName")]
+    public string UserName { get; set; } = "";
+
     [JsonProperty("createTime")]
     public string CreateTime { get; set; } = "";
 

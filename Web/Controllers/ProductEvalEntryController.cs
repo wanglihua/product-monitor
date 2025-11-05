@@ -35,6 +35,13 @@ public class ProductEvalEntryController : Controller
         this.actionLogService = actionLogService;
         this.productEvalService = productEvalService;
     }
+    
+    private class ProductEvalEntryJoinItem
+    {
+        public ProductEvalEntryEntity ProductEvalEntry { get; set; } = new();
+
+        public UserEntity User { get; set; } = new();
+    }
 
     [HttpPost]
     [Route("/api/product-eval-entry/list")]
@@ -43,7 +50,14 @@ public class ProductEvalEntryController : Controller
     {
         ValidationUtil.Validate<ProductEvalEntryListParamValidator, ProductEvalEntryListParam>(param);
 
-        IQueryable<ProductEvalEntryEntity> query = db.Set<ProductEvalEntryEntity>();
+        IQueryable<ProductEvalEntryJoinItem> query = db.Set<ProductEvalEntryEntity>()
+            .Join(db.Set<UserEntity>(),
+                pse => pse.UserId,
+                u => u.Id,
+                (pse, u) => new ProductEvalEntryJoinItem {
+                    ProductEvalEntry = pse,
+                    User = u,
+                });
 
         long productEvalId = param.ProductEvalId;
         var productEval = db.Set<ProductEvalEntity>().Find(productEvalId);
@@ -70,24 +84,24 @@ public class ProductEvalEntryController : Controller
 
         string productName = product.Name;
 
-        query = query.Where(p => p.ProductEvalId == productEvalId);
+        query = query.Where(p => p.ProductEvalEntry.ProductEvalId == productEvalId);
 
         int productEvalEntryCount = query.Count();
 
         // 排序字段
-        Expression<Func<ProductEvalEntryEntity, object>> sortField = e => e.Id;
+        Expression<Func<ProductEvalEntryJoinItem, object>> sortField = e => e.ProductEvalEntry.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
             if (sortFieldParam == nameof(ProductEvalEntryListItem.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.ProductEvalEntry.CreateTime;
             }
 
             if (sortFieldParam == nameof(ProductEvalEntryListItem.UpdateTime).ToUpper())
             {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.ProductEvalEntry.UpdateTime;
             }
         }
 
@@ -109,14 +123,15 @@ public class ProductEvalEntryController : Controller
 
         var productEvalEntryItemList = productEvalEntryList
             .Select(e => new ProductEvalEntryListItem {
-                Id = e.Id,
-                ProductEvalId = e.ProductEvalId,
-                TotalDays = e.TotalDays,
-                BeginDate = e.BeginDate.ToString("yyyy-MM-dd"),
-                EndDate = e.EndDate.ToString("yyyy-MM-dd"),
-                Description = e.Description,
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.ProductEvalEntry.Id,
+                ProductEvalId = e.ProductEvalEntry.ProductEvalId,
+                TotalDays = e.ProductEvalEntry.TotalDays,
+                BeginDate = e.ProductEvalEntry.BeginDate.ToString("yyyy-MM-dd"),
+                EndDate = e.ProductEvalEntry.EndDate.ToString("yyyy-MM-dd"),
+                Description = e.ProductEvalEntry.Description,
+                UserName = e.User.UserName,
+                CreateTime = e.ProductEvalEntry.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ProductEvalEntry.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

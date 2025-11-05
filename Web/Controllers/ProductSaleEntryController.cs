@@ -36,6 +36,13 @@ public class ProductSaleEntryController : Controller
         this.productSaleService = productSaleService;
     }
 
+    private class ProductSaleEntryJoinItem
+    {
+        public ProductSaleEntryEntity ProductSaleEntry { get; set; } = new();
+
+        public UserEntity User { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/product-sale-entry/list")]
     [Transactional(false)]
@@ -43,7 +50,14 @@ public class ProductSaleEntryController : Controller
     {
         ValidationUtil.Validate<ProductSaleEntryListParamValidator, ProductSaleEntryListParam>(param);
 
-        IQueryable<ProductSaleEntryEntity> query = db.Set<ProductSaleEntryEntity>();
+        IQueryable<ProductSaleEntryJoinItem> query = db.Set<ProductSaleEntryEntity>()
+            .Join(db.Set<UserEntity>(),
+                pse => pse.UserId,
+                u => u.Id,
+                (pse, u) => new ProductSaleEntryJoinItem {
+                    ProductSaleEntry = pse,
+                    User = u,
+                });
 
         long productSaleId = param.ProductSaleId;
         var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
@@ -70,31 +84,31 @@ public class ProductSaleEntryController : Controller
 
         string productName = product.Name;
 
-        query = query.Where(p => p.ProductSaleId == productSaleId);
+        query = query.Where(p => p.ProductSaleEntry.ProductSaleId == productSaleId);
 
 
         if (string.IsNullOrWhiteSpace(param.VersionQuery) == false)
         {
             string versionQuery = param.VersionQuery.Trim();
-            query = query.Where(p => p.Version.Contains(versionQuery));
+            query = query.Where(p => p.ProductSaleEntry.Version.Contains(versionQuery));
         }
 
         int productSaleEntryCount = query.Count();
 
         // 排序字段
-        Expression<Func<ProductSaleEntryEntity, object>> sortField = e => e.Id;
+        Expression<Func<ProductSaleEntryJoinItem, object>> sortField = e => e.ProductSaleEntry.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
             if (sortFieldParam == nameof(ProductSaleEntryListItem.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.ProductSaleEntry.CreateTime;
             }
 
             if (sortFieldParam == nameof(ProductSaleEntryListItem.UpdateTime).ToUpper())
             {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.ProductSaleEntry.UpdateTime;
             }
         }
 
@@ -116,14 +130,15 @@ public class ProductSaleEntryController : Controller
 
         var productSaleEntryItemList = productSaleEntryList
             .Select(e => new ProductSaleEntryListItem {
-                Id = e.Id,
-                ProductSaleId = e.ProductSaleId,
-                Version = e.Version,
-                SaleDate = e.SaleDate.ToString("yyyy-MM-dd"),
-                ServiceExpireDate = e.ServiceExpireDate.ToString("yyyy-MM-dd"),
-                Description = e.Description,
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.ProductSaleEntry.Id,
+                ProductSaleId = e.ProductSaleEntry.ProductSaleId,
+                Version = e.ProductSaleEntry.Version,
+                SaleDate = e.ProductSaleEntry.SaleDate.ToString("yyyy-MM-dd"),
+                ServiceExpireDate = e.ProductSaleEntry.ServiceExpireDate.ToString("yyyy-MM-dd"),
+                Description = e.ProductSaleEntry.Description,
+                UserName = e.User.UserName,
+                CreateTime = e.ProductSaleEntry.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ProductSaleEntry.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
