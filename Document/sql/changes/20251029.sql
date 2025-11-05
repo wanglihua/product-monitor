@@ -104,3 +104,22 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'记录人', 'SCHEMA', 'dbo', 'TA
 
 GO
 
+ALTER TABLE tbl_product_rent_entry
+    ADD sales_manager NVARCHAR(32) NOT NULL DEFAULT '';
+
+ALTER TABLE tbl_product_rent_entry
+    ADD contact_teacher NVARCHAR(32) NOT NULL DEFAULT '';
+
+ALTER TABLE tbl_product_rent_entry
+    ADD contact_mobile NVARCHAR(32) NOT NULL DEFAULT '';
+
+ALTER TABLE tbl_product_rent_entry
+    ADD user_id BIGINT NOT NULL DEFAULT 1;
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'客户经理', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry', 'COLUMN', 'sales_manager';
+EXEC sp_AddExtendedProperty 'MS_Description', N'联系老师', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry', 'COLUMN', 'contact_teacher';
+EXEC sp_AddExtendedProperty 'MS_Description', N'联系电话', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry', 'COLUMN', 'contact_mobile';
+EXEC sp_AddExtendedProperty 'MS_Description', N'记录人', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_rent_entry', 'COLUMN', 'user_id';
+
+GO
+
