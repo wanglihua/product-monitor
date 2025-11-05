@@ -20,16 +20,19 @@ public class ProductController : Controller
 
     private readonly Db db;
     private readonly UserLoginService userLoginService;
+    private readonly ProductService productService;
     private readonly ActionLogService actionLogService;
 
     public ProductController(
         Db db,
         UserLoginService userLoginService,
+        ProductService productService,
         ActionLogService actionLogService
     )
     {
         this.db = db;
         this.userLoginService = userLoginService;
+        this.productService = productService;
         this.actionLogService = actionLogService;
     }
 
@@ -184,6 +187,8 @@ public class ProductController : Controller
 
         db.SaveChanges();
 
+        productId = product.Id;
+
         long loginUserId = userLoginService.GetLoginUserId();
         if (isCreate == true)
         {
@@ -195,6 +200,8 @@ public class ProductController : Controller
             string actionDesc = $"{product.Name}#{product.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductUpdate, actionDesc);
         }
+
+        productService.UpdateLatestVersionData(productId);
 
         return Json(new JsonResultData {
             Success = true,

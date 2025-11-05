@@ -235,7 +235,7 @@ public class ProductVersionController : Controller
 
         db.SaveChanges();
 
-        productService.UpdateLatestVersionData(product.Id);
+        productService.UpdateLatestVersionData(productId);
 
         long loginUserId = userLoginService.GetLoginUserId();
         if (isCreate == true)
