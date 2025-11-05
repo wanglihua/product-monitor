@@ -25,12 +25,12 @@ public class CollegeEntityMap : IEntityTypeConfiguration<CollegeEntity>
 
         builder.Property(e => e.Province)
             .HasColumnName("province")
-            .HasConversion<CodeTypeValueConverter<ProvinceType>>()
+            .HasConversion<CodeTypeConvertions<ProvinceType>>()
             .IsRequired(true);
 
         builder.Property(e => e.Level)
             .HasColumnName("level")
-            .HasConversion<CodeTypeValueConverter<CollegeLevelType>>()
+            .HasConversion<CodeTypeConvertions<CollegeLevelType>>()
             .IsRequired(true);
     }
 }

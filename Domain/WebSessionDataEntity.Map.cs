@@ -23,7 +23,7 @@ public class WebSessionDataEntityMap : IEntityTypeConfiguration<WebSessionDataEn
             .IsRequired(true);
 
         builder.Property(e => e.Type)
-            .HasConversion<CodeTypeValueConverter<WebSessionDataType>>()
+            .HasConversion<CodeTypeConvertions<WebSessionDataType>>()
             .HasColumnName("type_code")
             .IsRequired(true);
 

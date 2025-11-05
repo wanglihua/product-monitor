@@ -23,7 +23,7 @@ public class ProductServiceEntityMap : IEntityTypeConfiguration<ProductServiceEn
 
         builder.Property(e => e.ProjectType)
             .HasColumnName("project_type_code")
-            .HasConversion<CodeTypeValueConverter<ProjectType>>()
+            .HasConversion<CodeTypeConvertions<ProjectType>>()
             .IsRequired(true);
 
         builder.Property(e => e.ServiceDate)
