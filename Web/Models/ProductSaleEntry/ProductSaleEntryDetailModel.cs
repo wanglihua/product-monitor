@@ -34,6 +34,15 @@ public class ProductSaleEntryDetailModel
     [JsonProperty("serviceExpireDate")]
     public string ServiceExpireDate { get; set; } = "";
 
+    [JsonProperty("salesManager")]
+    public string SalesManager { get; set; } = "";
+
+    [JsonProperty("contactTeacher")]
+    public string ContactTeacher { get; set; } = "";
+
+    [JsonProperty("contactMobile")]
+    public string ContactMobile { get; set; } = "";
+
     [JsonProperty("description")]
     public string Description { get; set; } = "";
 }
@@ -63,8 +72,18 @@ public class ProductSaleEntryDetailModelValidator : AbstractValidator<ProductSal
             .Must(p => DateTime.TryParse(p, out var serviceExpireDate))
             .WithMessage("服务到期时间格式不正确!");
 
-        // RuleFor(e => e.Description).NotNull().WithMessage("备注不能为空!");
-        // RuleFor(e => e.Description).NotEmpty().WithMessage("备注不能为空!");
+        RuleFor(e => e.SalesManager).NotNull().WithMessage("业务经理不能为空!");
+        RuleFor(e => e.SalesManager).NotEmpty().WithMessage("业务经理不能为空!");
+        RuleFor(e => e.SalesManager).MaximumLength(32).WithMessage("业务经理最大长度不能超过32!");
+
+        RuleFor(e => e.ContactTeacher).NotNull().WithMessage("联系老师不能为空!");
+        RuleFor(e => e.ContactTeacher).NotEmpty().WithMessage("联系老师不能为空!");
+        RuleFor(e => e.ContactTeacher).MaximumLength(32).WithMessage("联系老师最大长度不能超过32!");
+
+        RuleFor(e => e.ContactMobile).NotNull().WithMessage("联系电话不能为空!");
+        RuleFor(e => e.ContactMobile).NotEmpty().WithMessage("联系电话不能为空!");
+        RuleFor(e => e.ContactMobile).MaximumLength(32).WithMessage("联系电话最大长度不能超过32!");
+
         RuleFor(e => e.Description).MaximumLength(512).WithMessage("备注最大长度不能超过512!");
     }
 }

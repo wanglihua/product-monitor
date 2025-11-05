@@ -29,9 +29,28 @@ public class ProductSaleEntryEntityMap : IEntityTypeConfiguration<ProductSaleEnt
             .HasColumnName("service_expire_date")
             .IsRequired(true);
 
+        builder.Property(e => e.SalesManager)
+            .HasColumnName("sales_manager")
+            .HasMaxLength(32)
+            .IsRequired(true);
+
+        builder.Property(e => e.ContactTeacher)
+            .HasColumnName("contact_teacher")
+            .HasMaxLength(32)
+            .IsRequired(true);
+
+        builder.Property(e => e.ContactMobile)
+            .HasColumnName("contact_mobile")
+            .HasMaxLength(32)
+            .IsRequired(true);
+
         builder.Property(e => e.Description)
             .HasColumnName("description")
             .HasMaxLength(512)
+            .IsRequired(true);
+
+        builder.Property(e => e.UserId)
+            .HasColumnName("user_id")
             .IsRequired(true);
     }
 }
