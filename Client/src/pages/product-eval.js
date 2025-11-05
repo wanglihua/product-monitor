@@ -68,21 +68,25 @@ const ProductEval = () => {
         },
         {
             title: "试用次数",
+            align: "center",
             dataIndex: "evalTimes",
             width: "90px",
         },
         {
             title: "售后次数",
-            dataIndex: "saleTimes",
+            align: "center",
+            dataIndex: "serviceTimes",
             width: "90px",
         },
         {
             title: "累计天数",
+            align: "center",
             dataIndex: "totalDays",
             width: "90px",
         },
         {
             title: "剩余天数",
+            align: "center",
             dataIndex: "remainDays",
             width: "90px",
         },
