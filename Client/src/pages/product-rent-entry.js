@@ -163,7 +163,7 @@ const ProductRentEntry = () => {
                        pagination={{
                            current: listParam.currentPage,
                            pageSize: listParam.pageSize,
-                           total: state.userCount,
+                           total: state.productRentEntryCount,
                            showQuickJumper: true,
                            showSizeChanger: true,
                            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
