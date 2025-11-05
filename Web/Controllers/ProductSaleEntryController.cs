@@ -200,6 +200,9 @@ public class ProductSaleEntryController : Controller
             Version = "",
             SaleDate = DateTime.Today.ToString("yyyy-MM-dd"),
             ServiceExpireDate = DateTime.Today.ToString("yyyy-MM-dd"),
+            SalesManager = "",
+            ContactTeacher = "",
+            ContactMobile = "",
             Description = "",
         };
 
@@ -221,6 +224,9 @@ public class ProductSaleEntryController : Controller
                 Version = productSaleEntry.Version,
                 SaleDate = productSaleEntry.SaleDate.ToString("yyyy-MM-dd"),
                 ServiceExpireDate = productSaleEntry.ServiceExpireDate.ToString("yyyy-MM-dd"),
+                SalesManager = productSaleEntry.SalesManager,
+                ContactTeacher = productSaleEntry.ContactTeacher,
+                ContactMobile = productSaleEntry.ContactMobile,
                 Description = productSaleEntry.Description,
             };
         }
@@ -325,7 +331,11 @@ public class ProductSaleEntryController : Controller
         productSaleEntry.Version = model.Version ?? "";
         productSaleEntry.SaleDate = DateTime.Parse(model.SaleDate).Date;
         productSaleEntry.ServiceExpireDate = DateTime.Parse(model.ServiceExpireDate).Date;
+        productSaleEntry.SalesManager = model.SalesManager ?? "";
+        productSaleEntry.ContactTeacher = model.ContactTeacher ?? "";
+        productSaleEntry.ContactMobile = model.ContactMobile ?? "";
         productSaleEntry.Description = model.Description ?? "";
+        productSaleEntry.UserId = loginUserId;
 
         if (isCreate == true)
         {

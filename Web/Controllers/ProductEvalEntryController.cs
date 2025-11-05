@@ -192,6 +192,9 @@ public class ProductEvalEntryController : Controller
             ProductName = productName,
             BeginDate = DateTime.Today.ToString("yyyy-MM-dd"),
             EndDate = DateTime.Today.ToString("yyyy-MM-dd"),
+            SalesManager = "",
+            ContactTeacher = "",
+            ContactMobile = "",
             Description = "",
         };
 
@@ -212,6 +215,9 @@ public class ProductEvalEntryController : Controller
                 ProductName = productName,
                 BeginDate = productEvalEntry.BeginDate.ToString("yyyy-MM-dd"),
                 EndDate = productEvalEntry.EndDate.ToString("yyyy-MM-dd"),
+                SalesManager = productEvalEntry.SalesManager,
+                ContactTeacher = productEvalEntry.ContactTeacher,
+                ContactMobile = productEvalEntry.ContactMobile,
                 Description = productEvalEntry.Description,
             };
         }
@@ -331,8 +337,11 @@ public class ProductEvalEntryController : Controller
         }
 
         productEvalEntry.TotalDays = totalDays;
-
+        productEvalEntry.SalesManager = model.SalesManager ?? "";
+        productEvalEntry.ContactTeacher = model.ContactTeacher ?? "";
+        productEvalEntry.ContactMobile = model.ContactMobile ?? "";
         productEvalEntry.Description = model.Description ?? "";
+        productEvalEntry.UserId = loginUserId;
 
         if (isCreate == true)
         {

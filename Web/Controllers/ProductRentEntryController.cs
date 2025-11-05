@@ -192,6 +192,9 @@ public class ProductRentEntryController : Controller
             ProductName = productName,
             BeginDate = DateTime.Today.ToString("yyyy-MM-dd"),
             EndDate = DateTime.Today.ToString("yyyy-MM-dd"),
+            SalesManager = "",
+            ContactTeacher = "",
+            ContactMobile = "",
             Description = "",
         };
 
@@ -212,6 +215,9 @@ public class ProductRentEntryController : Controller
                 ProductName = productName,
                 BeginDate = productRentEntry.BeginDate.ToString("yyyy-MM-dd"),
                 EndDate = productRentEntry.EndDate.ToString("yyyy-MM-dd"),
+                SalesManager = productRentEntry.SalesManager,
+                ContactTeacher = productRentEntry.ContactTeacher,
+                ContactMobile = productRentEntry.ContactMobile,
                 Description = productRentEntry.Description,
             };
         }
@@ -331,7 +337,12 @@ public class ProductRentEntryController : Controller
         }
 
         productRentEntry.TotalDays = totalDays;
+
+        productRentEntry.SalesManager = model.SalesManager ?? "";
+        productRentEntry.ContactTeacher = model.ContactTeacher ?? "";
+        productRentEntry.ContactMobile = model.ContactMobile ?? "";
         productRentEntry.Description = model.Description ?? "";
+        productRentEntry.UserId = loginUserId;
 
         if (isCreate == true)
         {
