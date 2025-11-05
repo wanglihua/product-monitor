@@ -139,8 +139,6 @@ const ProductRentEntry = () => {
         loadProductRentEntryList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
-
     return (
         <div>
             <Title title={`租赁目录明细 学校:${state.collegeName} 产品:${state.productName}`} menuKey="product-rent-entry" breadcrumb={[
