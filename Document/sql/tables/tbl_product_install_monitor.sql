@@ -17,4 +17,6 @@
     update_time     DATETIME      NOT NULL,
 
     CONSTRAINT pk_product_install_monitor PRIMARY KEY (id),
+    CONSTRAINT fk_product_install_monitor_college_id FOREIGN KEY (college_id) REFERENCES tbl_college (id),
+    CONSTRAINT fk_product_install_monitor_product_id FOREIGN KEY (product_id) REFERENCES tbl_product (id),
 );
