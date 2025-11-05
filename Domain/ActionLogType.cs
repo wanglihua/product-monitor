@@ -249,7 +249,7 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
     /// 产品版本删除
     /// </summary>
     public static readonly ActionLogType ProductVersionDelete = new(0098_0000, "产品版本删除");
-    
+
     /// <summary>
     /// 安装监测创建
     /// </summary>
@@ -264,6 +264,66 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
     /// 安装监测删除
     /// </summary>
     public static readonly ActionLogType ProductInstallMonitorDelete = new(0104_0000, "安装监测删除");
+
+    /// <summary>
+    /// 院校使用详情创建
+    /// </summary>
+    public static readonly ActionLogType ProductInstallMonitorEntryCreate = new(0106_0000, "院校使用详情创建");
+
+    /// <summary>
+    /// 院校使用详情更新
+    /// </summary>
+    public static readonly ActionLogType ProductInstallMonitorEntryUpdate = new(0108_0000, "院校使用详情更新");
+
+    /// <summary>
+    /// 院校使用详情删除
+    /// </summary>
+    public static readonly ActionLogType ProductInstallMonitorEntryDelete = new(0110_0000, "院校使用详情删除");
+
+    /// <summary>
+    /// 网站监测创建
+    /// </summary>
+    public static readonly ActionLogType ProductUrlMonitorCreate = new(0112_0000, "网站监测创建");
+
+    /// <summary>
+    /// 网站监测更新
+    /// </summary>
+    public static readonly ActionLogType ProductUrlMonitorUpdate = new(0114_0000, "网站监测更新");
+
+    /// <summary>
+    /// 网站监测删除
+    /// </summary>
+    public static readonly ActionLogType ProductUrlMonitorDelete = new(0116_0000, "网站监测删除");
+
+    /// <summary>
+    /// 网站监测详情创建
+    /// </summary>
+    public static readonly ActionLogType ProductUrlMonitorEntryCreate = new(0118_0000, "网站监测详情创建");
+
+    /// <summary>
+    /// 网站监测详情更新
+    /// </summary>
+    public static readonly ActionLogType ProductUrlMonitorEntryUpdate = new(0120_0000, "网站监测详情更新");
+
+    /// <summary>
+    /// 网站监测详情删除
+    /// </summary>
+    public static readonly ActionLogType ProductUrlMonitorEntryDelete = new(0122_0000, "网站监测详情删除");
+
+    /// <summary>
+    /// 异常检测创建
+    /// </summary>
+    public static readonly ActionLogType ExceptionMonitorCreate = new(0124_0000, "异常检测创建");
+
+    /// <summary>
+    /// 异常检测更新
+    /// </summary>
+    public static readonly ActionLogType ExceptionMonitorUpdate = new(0126_0000, "异常检测更新");
+
+    /// <summary>
+    /// 异常检测删除
+    /// </summary>
+    public static readonly ActionLogType ExceptionMonitorDelete = new(0128_0000, "异常检测删除");
 
     /// <summary>
     /// None
@@ -323,7 +383,18 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
         ProductInstallMonitorCreate,
         ProductInstallMonitorUpdate,
         ProductInstallMonitorDelete,
-
+        ProductInstallMonitorEntryCreate,
+        ProductInstallMonitorEntryUpdate,
+        ProductInstallMonitorEntryDelete,
+        ProductUrlMonitorCreate,
+        ProductUrlMonitorUpdate,
+        ProductUrlMonitorDelete,
+        ProductUrlMonitorEntryCreate,
+        ProductUrlMonitorEntryUpdate,
+        ProductUrlMonitorEntryDelete,
+        ExceptionMonitorCreate,
+        ExceptionMonitorUpdate,
+        ExceptionMonitorDelete,
     };
 
     private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
