@@ -10,9 +10,9 @@ public partial class PassRes
         private const long CateId = PassResCate.DataMonitorId;
 
         public static IList<PassResEntity> AllData => new List<PassResEntity>() {
-            new() { Id = InstallMonitor, Name = "安装监测", CateId = CateId },
-            new() { Id = SiteMonitor, Name = "网站监测", CateId = CateId },
-            new() { Id = AbnormalityMonitor, Name = "异常监测", CateId = CateId },
+            new() { Id = ProductInstallMonitor, Name = "安装监测", CateId = CateId },
+            new() { Id = ProductUrlMonitor, Name = "网站监测", CateId = CateId },
+            new() { Id = ExceptionMonitor, Name = "异常监测", CateId = CateId },
         };
 
         public static IList<long> All = AllData.Select(e => e.Id).ToList();
@@ -20,16 +20,16 @@ public partial class PassRes
         /// <summary>
         /// 安装监测
         /// </summary>
-        public const long InstallMonitor = CateId + 0200;
+        public const long ProductInstallMonitor = CateId + 0200;
 
         /// <summary>
         /// 网站监测
         /// </summary>
-        public const long SiteMonitor = CateId + 0400;
+        public const long ProductUrlMonitor = CateId + 0400;
 
         /// <summary>
         /// 异常监测
         /// </summary>
-        public const long AbnormalityMonitor = CateId + 0600;
+        public const long ExceptionMonitor = CateId + 0600;
     }
 }

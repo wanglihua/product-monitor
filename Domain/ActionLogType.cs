@@ -249,6 +249,21 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
     /// 产品版本删除
     /// </summary>
     public static readonly ActionLogType ProductVersionDelete = new(0098_0000, "产品版本删除");
+    
+    /// <summary>
+    /// 安装监测创建
+    /// </summary>
+    public static readonly ActionLogType ProductInstallMonitorCreate = new(0100_0000, "安装监测创建");
+
+    /// <summary>
+    /// 安装监测更新
+    /// </summary>
+    public static readonly ActionLogType ProductInstallMonitorUpdate = new(0102_0000, "安装监测更新");
+
+    /// <summary>
+    /// 安装监测删除
+    /// </summary>
+    public static readonly ActionLogType ProductInstallMonitorDelete = new(0104_0000, "安装监测删除");
 
     /// <summary>
     /// None
@@ -305,6 +320,10 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
         ProductVersionCreate,
         ProductVersionUpdate,
         ProductVersionDelete,
+        ProductInstallMonitorCreate,
+        ProductInstallMonitorUpdate,
+        ProductInstallMonitorDelete,
+
     };
 
     private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
