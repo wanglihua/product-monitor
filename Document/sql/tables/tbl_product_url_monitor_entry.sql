@@ -15,3 +15,17 @@
     CONSTRAINT pk_product_url_monitor_entry PRIMARY KEY (id),
     CONSTRAINT fk_product_url_monitor_entry_pumi FOREIGN KEY (product_url_monitor_id) REFERENCES tbl_product_url_monitor (id),
 );
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'网站监测详情', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'网站监测', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'product_url_monitor_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'账号', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'login_user';
+EXEC sp_AddExtendedProperty 'MS_Description', N'密码', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'login_password';
+EXEC sp_AddExtendedProperty 'MS_Description', N'使用地址', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'ip_address';
+EXEC sp_AddExtendedProperty 'MS_Description', N'省份', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'province_type';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'create_time';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'update_time';
+
