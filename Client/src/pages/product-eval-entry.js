@@ -78,9 +78,9 @@ const ProductEvalEntry = () => {
             width: "110px",
         },
         {
-            title: "备注",
-            dataIndex: "description",
-            width: "300px",
+            title: "记录人",
+            dataIndex: "userName",
+            width: "150px",
         },
         {
             title: "创建时间",
