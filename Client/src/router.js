@@ -27,6 +27,7 @@ import ProductSpecialService from "./pages/product-special-service";
 import ProductInstallMonitor from "./pages/product-install-monitor";
 import ProductInstallMonitorEntry from "./pages/product-install-monitor-entry";
 import ProductUrlMonitor from "./pages/product-url-monitor";
+import ProductUrlMonitorEntry from "./pages/product-url-monitor-entry";
 import ExceptionMonitor from "./pages/exception-monitor";
 
 const Router = () => {
@@ -54,6 +55,7 @@ const Router = () => {
                     <Route path="/product-install-monitor" element={<ProductInstallMonitor/>}/>
                     <Route path="/product-install-monitor-entry/:productInstallMonitorId" element={<ProductInstallMonitorEntry/>}/>
                     <Route path="/product-url-monitor" element={<ProductUrlMonitor/>}/>
+                    <Route path="/product-url-monitor-entry/:productUrlMonitorId" element={<ProductUrlMonitorEntry/>}/>
                     <Route path="/exception-monitor" element={<ExceptionMonitor/>}/>
                     <Route path="/user" element={<User/>}/>
                     <Route path="/admin/user" element={<AdminUser/>}/>
