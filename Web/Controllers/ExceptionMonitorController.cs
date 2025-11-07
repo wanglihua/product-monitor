@@ -33,6 +33,13 @@ public class ExceptionMonitorController : Controller
         this.actionLogService = actionLogService;
     }
 
+    private class ExceptionMonitorJoinItem
+    {
+        public ProductEntity Product { get; set; } = new();
+
+        public ExceptionMonitorEntity ExceptionMonitor { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/exception-monitor/list")]
     [Transactional(false)]
@@ -137,64 +144,6 @@ public class ExceptionMonitorController : Controller
             Success = true,
             Message = "success",
             Data = model,
-        });
-    }
-
-    [HttpPost]
-    [Route("/api/exception-monitor/save")]
-    [Transactional(true)]
-    public IActionResult Save([FromBody] ExceptionMonitorDetailModel model)
-    {
-        ValidationUtil.Validate<ExceptionMonitorDetailModelValidator, ExceptionMonitorDetailModel>(model);
-
-        long exceptionMonitorId = model.Id;
-        bool isCreate = exceptionMonitorId == 0;
-
-        ExceptionMonitorEntity? exceptionMonitor;
-        if (isCreate == true)
-        {
-            exceptionMonitor = new ExceptionMonitorEntity();
-        }
-        else
-        {
-            exceptionMonitor = db.Set<ExceptionMonitorEntity>().Find(exceptionMonitorId);
-            if (exceptionMonitor == null)
-            {
-                throw new ValidationException($"指定的异常检测#{exceptionMonitorId}不存在!");
-            }
-        }
-
-        exceptionMonitor.ProductId = model.ProductId;
-        exceptionMonitor.IpAddress = model.IpAddress ?? "";
-        exceptionMonitor.ProvinceType = ProvinceType.GetById(model.ProvinceType);
-        exceptionMonitor.Port = model.Port;
-
-        if (isCreate == true)
-        {
-            db.Add<ExceptionMonitorEntity>(exceptionMonitor);
-        }
-        else
-        {
-            db.Update<ExceptionMonitorEntity>(exceptionMonitor);
-        }
-
-        db.SaveChanges();
-
-        long loginUserId = userLoginService.GetLoginUserId();
-        if (isCreate == true)
-        {
-            string actionDesc = $"#{exceptionMonitor.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.ExceptionMonitorCreate, actionDesc);
-        }
-        else
-        {
-            string actionDesc = $"#{exceptionMonitor.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.ExceptionMonitorUpdate, actionDesc);
-        }
-
-        return Json(new JsonResultData {
-            Success = true,
-            Message = "保存成功！",
         });
     }
 

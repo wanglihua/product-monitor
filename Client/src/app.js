@@ -18,9 +18,10 @@ const App = () => {
     const [maskHeight, setMaskHeight] = useState("100%");
 
     const showMask = () => {
-        setMask(true);
-        setMaskWidth(document.body.scrollWidth + "px");
-        setMaskHeight(document.body.scrollHeight + "px");
+        // 不显示这个转圈圈也行
+        // setMask(true);
+        // setMaskWidth(document.body.scrollWidth + "px");
+        // setMaskHeight(document.body.scrollHeight + "px");
     };
 
     const hideMask = () => {
