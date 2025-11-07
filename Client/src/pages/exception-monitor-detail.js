@@ -85,27 +85,6 @@ const ExceptionMonitorDetailInner = (props) => {
                     size='middle'
                     requiredMark={false}
                     onFinish={(values) => {
-                        post("/api/exception-monitor/save", {
-                            id: exceptionMonitorId,
-                            productId: values.productId,
-                            ipAddress: values.ipAddress,
-                            provinceType: values.provinceType,
-                            port: values.port,
-                        }, function (response) {
-                            const res = response.data;
-                            if (res.success === false) {
-                                showError(res.message);
-                                return;
-                            }
-
-                            showSuccess(res.message);
-
-                            if (loadExceptionMonitorList) {
-                                loadExceptionMonitorList();
-                            }
-
-                            self.hide();
-                        });
                     }}
                 >
                     <Descriptions
@@ -187,14 +166,10 @@ const ExceptionMonitorDetailInner = (props) => {
 
                     <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "right"}}>
                         <Space>
-                            <Button type="primary" size="large" htmlType="submit">
-                                保存
-                            </Button>
-
                             <Button type="default" size="large" onClick={() => {
                                 self.hide();
                             }}>
-                                取消
+                                关闭
                             </Button>
                         </Space>
                     </Form.Item>
@@ -219,11 +194,11 @@ class ExceptionMonitorDetail extends React.Component {
 
     show = (exceptionMonitorId) => {
         this.setState((pre) => {
-           return {
+            return {
                 ...pre,
                 exceptionMonitorId: exceptionMonitorId,
                 open: true,
-           };
+            };
         });
     }
 

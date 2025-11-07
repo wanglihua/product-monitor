@@ -152,6 +152,37 @@ const LayoutAdmin = () => {
                             selectedKeys={[menuActiveKey]}
                             items={[
                                 {
+                                    key: "data-monitor",
+                                    icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                    label: "数据监测",
+                                    children: [
+                                        {
+                                            key: "product-install-monitor",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "安装监测",
+                                            onClick: () => {
+                                                navigate("/product-install-monitor");
+                                            }
+                                        },
+                                        {
+                                            key: "product-url-monitor",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "网站监测",
+                                            onClick: () => {
+                                                navigate("/product-url-monitor");
+                                            }
+                                        },
+                                        {
+                                            key: "exception-monitor",
+                                            icon: <UserOutlined style={{color: "#1677ff"}}/>,
+                                            label: "异常监测",
+                                            onClick: () => {
+                                                navigate("/exception-monitor");
+                                            }
+                                        },
+                                    ],
+                                },
+                                {
                                     key: "product-service",
                                     icon: <UserOutlined style={{color: "#1677ff"}}/>,
                                     label: "产品服务",

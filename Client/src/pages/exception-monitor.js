@@ -53,69 +53,32 @@ const ExceptionMonitor = () => {
             },
         },
         {
+            title: "使用时间",
+            dataIndex: "createTime",
+            width: "150px",
+        },
+        {
             title: "产品",
-            dataIndex: "productId",
-            width: "200px",
+            dataIndex: "productName",
+            width: "250px",
         },
         {
             title: "使用IP",
             dataIndex: "ipAddress",
-            width: "200px",
+            width: "120px",
         },
         {
             title: "使用省份",
-            dataIndex: "provinceType",
-            width: "200px",
+            dataIndex: "province",
+            width: "150px",
         },
         {
             title: "使用端口",
             dataIndex: "port",
-            width: "200px",
+            width: "120px",
         },
         {
-            title: "创建时间",
-            dataIndex: "createTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
-            dataIndex: "updateTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "操作",
-            render: (text, record, index) => {
-                return (
-                    <Space>
-                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            const exceptionMonitorId = record.id;
-                            exceptionMonitorDetail.current.show(exceptionMonitorId);
-                        }}>
-                            <EditOutlined/>编辑
-                        </Button>
-                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/exception-monitor/delete", {
-                                    id: record.id,
-                                }, function (response) {
-                                    const res = response.data;
-                                    if (res.success !== true) {
-                                        showError(res.message);
-                                        return;
-                                    }
-
-                                    showSuccess(res.message);
-                                    loadExceptionMonitorList();
-                                });
-                            });
-                        }}>
-                            <DeleteOutlined/>删除
-                        </Button>
-                    </Space>
-                );
-            },
+            title: "",
         },
     ];
 
