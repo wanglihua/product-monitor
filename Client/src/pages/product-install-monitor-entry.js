@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined} from '@ant-design/icons';
+import {Table} from 'antd';
 import {useNavigate} from "react-router";
 import ProductInstallMonitorEntryDetail from "./product-install-monitor-entry-detail";
 
@@ -9,7 +8,7 @@ import Title from "../site/title";
 
 const ProductInstallMonitorEntry = () => {
 
-    const {post, showConfirm, showError, showSuccess} = useSiteContext();
+    const {post, showError} = useSiteContext();
 
     const navigate = useNavigate();
 
@@ -57,9 +56,9 @@ const ProductInstallMonitorEntry = () => {
             },
         },
         {
-            title: "安装监测",
-            dataIndex: "productMonitorId",
-            width: "200px",
+            title: "使用时间",
+            dataIndex: "createTime",
+            width: "150px",
         },
         {
             title: "使用账号",
@@ -69,62 +68,21 @@ const ProductInstallMonitorEntry = () => {
         {
             title: "账号分类",
             dataIndex: "accountType",
-            width: "200px",
+            width: "100px",
         },
         {
             title: "使用IP",
             dataIndex: "ipAddress",
-            width: "200px",
+            width: "150px",
         },
         {
             title: "使用省份",
             dataIndex: "provinceType",
-            width: "200px",
-        },
-        {
-            title: "创建时间",
-            dataIndex: "createTime",
             width: "150px",
-            sorter: true,
         },
         {
-            title: "更新时间",
-            dataIndex: "updateTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "操作",
-            render: (text, record, index) => {
-                return (
-                    <Space>
-                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            const productInstallMonitorEntryId = record.id;
-                            productInstallMonitorEntryDetail.current.show(productInstallMonitorEntryId);
-                        }}>
-                            <EditOutlined/>编辑
-                        </Button>
-                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/product-install-monitor-entry/delete", {
-                                    id: record.id,
-                                }, function (response) {
-                                    const res = response.data;
-                                    if (res.success !== true) {
-                                        showError(res.message);
-                                        return;
-                                    }
-
-                                    showSuccess(res.message);
-                                    loadProductInstallMonitorEntryList();
-                                });
-                            });
-                        }}>
-                            <DeleteOutlined/>删除
-                        </Button>
-                    </Space>
-                );
-            },
+            title: "",
+            dataIndex: "",
         },
     ];
 
