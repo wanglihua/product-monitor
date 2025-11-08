@@ -5,6 +5,6 @@ namespace Web.Models.ProductInstallMonitorEntry;
 
 public class ProductInstallMonitorEntryListParam : ListParam
 {
-    [JsonProperty("nameQuery")]
-    public string NameQuery { get; set; } = "";
+    [JsonProperty("productInstallMonitorId")]
+    public long ProductInstallMonitorId { get; set; }
 }

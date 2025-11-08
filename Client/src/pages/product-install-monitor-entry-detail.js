@@ -60,7 +60,7 @@ const ProductInstallMonitorEntryDetailInner = (props) => {
                         const data = res.data;
 
                         form.current.setFieldsValue({
-                            productMonitorId: data.productMonitorId,
+                            productInstallMonitorId: data.productInstallMonitorId,
                             loginUser: data.loginUser,
                             accountType: data.accountType,
                             ipAddress: data.ipAddress,
@@ -88,7 +88,7 @@ const ProductInstallMonitorEntryDetailInner = (props) => {
                     onFinish={(values) => {
                         post("/api/product-install-monitor-entry/save", {
                             id: productInstallMonitorEntryId,
-                            productMonitorId: values.productMonitorId,
+                            productInstallMonitorId: values.productInstallMonitorId,
                             loginUser: values.loginUser,
                             accountType: values.accountType,
                             ipAddress: values.ipAddress,
@@ -119,7 +119,7 @@ const ProductInstallMonitorEntryDetailInner = (props) => {
                     >
                         <Descriptions.Item label="安装监测">
                             <Form.Item
-                                name="productMonitorId"
+                                name="productInstallMonitorId"
                                 rules={[
                                     {
                                         required: true,

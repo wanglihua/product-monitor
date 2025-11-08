@@ -7,20 +7,20 @@ public class ProductInstallMonitorEntryListItem
     [JsonProperty("id")]
     public long Id { get; set; }
 
-    [JsonProperty("productMonitorId")]
-    public string ProductMonitorId { get; set; } = ""; 
+    [JsonProperty("productInstallMonitorId")]
+    public string ProductInstallMonitorId { get; set; } = "";
 
     [JsonProperty("loginUser")]
-    public string LoginUser { get; set; } = ""; 
+    public string LoginUser { get; set; } = "";
 
     [JsonProperty("accountType")]
-    public string AccountType { get; set; } = ""; 
+    public string AccountType { get; set; } = "";
 
     [JsonProperty("ipAddress")]
-    public string IpAddress { get; set; } = ""; 
+    public string IpAddress { get; set; } = "";
 
     [JsonProperty("provinceType")]
-    public string ProvinceType { get; set; } = ""; 
+    public string ProvinceType { get; set; } = "";
 
     [JsonProperty("createTime")]
     public string CreateTime { get; set; } = "";

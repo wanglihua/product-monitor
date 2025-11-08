@@ -40,11 +40,8 @@ public class ProductInstallMonitorEntryController : Controller
     {
         IQueryable<ProductInstallMonitorEntryEntity> query = db.Set<ProductInstallMonitorEntryEntity>();
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(p => p.Name.Contains(nameQuery));
-        // }
+        long productInstallMonitorId = param.ProductInstallMonitorId;
+        query = query.Where(p => p.ProductMonitorId == productInstallMonitorId);
 
         int productInstallMonitorEntryCount = query.Count();
 
@@ -84,7 +81,7 @@ public class ProductInstallMonitorEntryController : Controller
         var productInstallMonitorEntryItemList = productInstallMonitorEntryList
             .Select(e => new ProductInstallMonitorEntryListItem {
                 Id = e.Id,
-                ProductMonitorId = e.ProductMonitorId.ToString(),
+                ProductInstallMonitorId = e.ProductMonitorId.ToString(),
                 LoginUser = e.LoginUser,
                 AccountType = e.AccountType.Name,
                 IpAddress = e.IpAddress,
@@ -113,7 +110,7 @@ public class ProductInstallMonitorEntryController : Controller
 
         var model = new ProductInstallMonitorEntryDetailModel {
             Id = 0,
-            ProductMonitorId = 0,
+            ProductInstallMonitorId = 0,
             LoginUser = "",
             AccountType = 0,
             IpAddress = "",
@@ -127,7 +124,7 @@ public class ProductInstallMonitorEntryController : Controller
             {
                 model = new ProductInstallMonitorEntryDetailModel {
                     Id = productInstallMonitorEntry.Id,
-                    ProductMonitorId = productInstallMonitorEntry.ProductMonitorId,
+                    ProductInstallMonitorId = productInstallMonitorEntry.ProductMonitorId,
                     LoginUser = productInstallMonitorEntry.LoginUser,
                     AccountType = productInstallMonitorEntry.AccountType.Id,
                     IpAddress = productInstallMonitorEntry.IpAddress,
@@ -167,7 +164,7 @@ public class ProductInstallMonitorEntryController : Controller
             }
         }
 
-        productInstallMonitorEntry.ProductMonitorId = model.ProductMonitorId;
+        productInstallMonitorEntry.ProductMonitorId = model.ProductInstallMonitorId;
         productInstallMonitorEntry.LoginUser = model.LoginUser ?? "";
         productInstallMonitorEntry.AccountType = AccountType.GetById(model.AccountType);
         productInstallMonitorEntry.IpAddress = model.IpAddress ?? "";

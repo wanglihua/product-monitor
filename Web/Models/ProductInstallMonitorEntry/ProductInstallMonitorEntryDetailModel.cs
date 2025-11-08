@@ -9,8 +9,8 @@ public class ProductInstallMonitorEntryDetailModel
     [JsonProperty("id")]
     public long Id { get; set; }
 
-    [JsonProperty("productMonitorId")]
-    public long ProductMonitorId { get; set; }
+    [JsonProperty("productInstallMonitorId")]
+    public long ProductInstallMonitorId { get; set; }
 
     [JsonProperty("loginUser")]
     public string LoginUser { get; set; } = "";
@@ -29,8 +29,8 @@ public class ProductInstallMonitorEntryDetailModelValidator : AbstractValidator<
 {
     public ProductInstallMonitorEntryDetailModelValidator()
     {
-        RuleFor(e => e.ProductMonitorId).NotNull().WithMessage("安装监测不能为空!");
-        RuleFor(e => e.ProductMonitorId).NotEmpty().WithMessage("安装监测不能为空!");
+        RuleFor(e => e.ProductInstallMonitorId).NotNull().WithMessage("安装监测不能为空!");
+        RuleFor(e => e.ProductInstallMonitorId).NotEmpty().WithMessage("安装监测不能为空!");
 
         RuleFor(e => e.LoginUser).NotNull().WithMessage("使用账号不能为空!");
         RuleFor(e => e.LoginUser).NotEmpty().WithMessage("使用账号不能为空!");

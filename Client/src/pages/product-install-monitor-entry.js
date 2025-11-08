@@ -1,19 +1,22 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Table} from 'antd';
-import {useNavigate} from "react-router";
-import ProductInstallMonitorEntryDetail from "./product-install-monitor-entry-detail";
-
+import {Button, Space, Table} from 'antd';
+import {ReloadOutlined} from "@ant-design/icons";
+import {useParams, useNavigate} from "react-router";
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
+import ProductInstallMonitorEntryDetail from "./product-install-monitor-entry-detail";
 
 const ProductInstallMonitorEntry = () => {
+
+    const params = useParams();
+    const productInstallMonitorId = params.productInstallMonitorId;
 
     const {post, showError} = useSiteContext();
 
     const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        productInstallMonitorId: productInstallMonitorId,
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -101,6 +104,24 @@ const ProductInstallMonitorEntry = () => {
                 },
                 {title: "院校使用详情"},
             ]}/>
+            <div>
+                <Space>
+                    <Button
+                        color="default"
+                        icon={<ReloadOutlined/>}
+                        onClick={(e) => {
+                            setListParam((pre) => {
+                                return {
+                                    ...pre,
+                                    current_millis: Date.now(),
+                                };
+                            });
+                        }}
+                    >
+                        刷新
+                    </Button>
+                </Space>
+            </div>
             <div style={{padding: "10px 0"}}>
                 <Table columns={productInstallMonitorEntryListColumns} rowKey="id"
                        dataSource={state.productInstallMonitorEntryList}
