@@ -25,8 +25,8 @@ const Title = (props) => {
     }, [title]);
 
     useEffect(() => {
-        setMenuActiveKey(menuKey);
         setMenuOpenKeys(parentMenuKeys);
+        setMenuActiveKey(menuKey);
     }, [menuKey]);
 
     return (
