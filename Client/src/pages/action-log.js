@@ -14,6 +14,7 @@ const ActionLog = () => {
         pageSize: 15,
         sortField: "id",
         sortOrder: "descend",
+        current_millis: Date.now(),
     });
 
     const [state, setState] = useState({
@@ -100,6 +101,7 @@ const ActionLog = () => {
                                 return {
                                     ...pre,
                                     loginNameQuery: loginNameQuery,
+                                    current_millis: Date.now(),
                                 };
                             });
                         }}

@@ -20,6 +20,7 @@ const ProductSale = () => {
         pageSize: 15,
         sortField: "id",
         sortOrder: "descend",
+        current_millis: Date.now(),
     });
 
     const [state, setState] = useState({
@@ -138,6 +139,7 @@ const ProductSale = () => {
                                     ...pre,
                                     collegeNameQuery: collegeNameQuery,
                                     productNameQuery: productNameQuery,
+                                    current_millis: Date.now(),
                                 };
                             });
                         }}

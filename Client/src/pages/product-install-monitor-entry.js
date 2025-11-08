@@ -16,6 +16,7 @@ const ProductInstallMonitorEntry = () => {
         pageSize: 15,
         sortField: "id",
         sortOrder: "descend",
+        current_millis: Date.now(),
     });
 
     const [state, setState] = useState({
@@ -148,6 +149,7 @@ const ProductInstallMonitorEntry = () => {
                                 return {
                                     ...pre,
                                     nameQuery: nameQuery,
+                                    current_millis: Date.now(),
                                 };
                             });
                         }}

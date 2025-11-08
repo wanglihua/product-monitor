@@ -16,6 +16,7 @@ const AdminUser = () => {
         pageSize: 15,
         sortField: "admin.id",
         sortOrder: "descend",
+        current_millis: Date.now(),
     });
 
     const [state, setState] = useState({
@@ -125,6 +126,7 @@ const AdminUser = () => {
                                     ...pre,
                                     loginNameQuery: loginNameQuery,
                                     userNameQuery: userNameQuery,
+                                    current_millis: Date.now(),
                                 };
                             });
                         }}

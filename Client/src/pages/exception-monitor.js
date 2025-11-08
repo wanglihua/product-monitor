@@ -17,6 +17,7 @@ const ExceptionMonitor = () => {
         pageSize: 15,
         sortField: "id",
         sortOrder: "descend",
+        current_millis: Date.now(),
     });
 
     const [state, setState] = useState({
@@ -124,6 +125,7 @@ const ExceptionMonitor = () => {
                                     ...pre,
                                     provinceTypeQuery: provinceTypeQuery,
                                     productNameQuery: productNameQuery,
+                                    current_millis: Date.now(),
                                 };
                             });
                         }}

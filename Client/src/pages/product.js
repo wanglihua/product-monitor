@@ -20,6 +20,7 @@ const Product = () => {
         pageSize: 15,
         sortField: "id",
         sortOrder: "descend",
+        current_millis: Date.now(),
     });
 
     const [state, setState] = useState({
@@ -150,6 +151,7 @@ const Product = () => {
                                     ...pre,
                                     nameQuery: nameQuery,
                                     englishNameQuery: englishNameQuery,
+                                    current_millis: Date.now(),
                                 };
                             });
                         }}
