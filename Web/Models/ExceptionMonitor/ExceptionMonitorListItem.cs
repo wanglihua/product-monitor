@@ -13,8 +13,8 @@ public class ExceptionMonitorListItem
     [JsonProperty("ipAddress")]
     public string IpAddress { get; set; } = "";
 
-    [JsonProperty("provinceType")]
-    public string ProvinceType { get; set; } = "";
+    [JsonProperty("province")]
+    public string Province { get; set; } = "";
 
     [JsonProperty("port")]
     public string Port { get; set; } = "";

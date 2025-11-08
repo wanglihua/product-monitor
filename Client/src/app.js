@@ -18,10 +18,9 @@ const App = () => {
     const [maskHeight, setMaskHeight] = useState("100%");
 
     const showMask = () => {
-        // 不显示这个转圈圈也行
-        // setMask(true);
-        // setMaskWidth(document.body.scrollWidth + "px");
-        // setMaskHeight(document.body.scrollHeight + "px");
+        setMask(true);
+        setMaskWidth(document.body.scrollWidth + "px");
+        setMaskHeight(document.body.scrollHeight + "px");
     };
 
     const hideMask = () => {
@@ -246,22 +245,14 @@ const App = () => {
                         cursor: "wait",
                         // display: (mask === true ? "block" : "none"),
                     }}>
-                        <div style={{
-                            backgroundColor: "rgba(245, 245, 245, 0.7)",
-                            width: "400px",
-                            height: "72px",
-                            margin: "130px auto",
-                            borderRadius: "8px",
+                        <div id="site-mask" style={{
+                            width: "32px",
+                            height: "32px",
+                            margin: "0 auto",
+                            paddingTop: "10px",
+                            opacity: 1,
                         }}>
-                            <div id="site-mask" style={{
-                                width: "32px",
-                                height: "32px",
-                                margin: "0 auto",
-                                paddingTop: "20px",
-                                opacity: 1,
-                            }}>
-                                <Spin size="large"/>
-                            </div>
+                            <Spin size="small"/>
                         </div>
                     </div>
                 )}

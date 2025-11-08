@@ -35,8 +35,6 @@ const LayoutAdmin = () => {
 
     const navigate = useNavigate();
 
-    const menuItemStyle = {paddingLeft: "18px"};
-
     useEffect(() => {
         axios.request({
             url: "/api/login/check",

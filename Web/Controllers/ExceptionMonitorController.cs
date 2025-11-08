@@ -107,7 +107,7 @@ public class ExceptionMonitorController : Controller
                 Id = e.ExceptionMonitor.Id,
                 ProductName = e.Product.Name,
                 IpAddress = e.ExceptionMonitor.IpAddress,
-                ProvinceType = e.ExceptionMonitor.ProvinceType.Name,
+                Province = e.ExceptionMonitor.ProvinceType.Name,
                 Port = e.ExceptionMonitor.Port.ToString(),
                 CreateTime = e.ExceptionMonitor.CreateTime.ToString("yyyy-MM-dd HH:mm"),
                 UpdateTime = e.ExceptionMonitor.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
