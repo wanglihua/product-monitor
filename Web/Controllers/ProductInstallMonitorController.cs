@@ -33,35 +33,65 @@ public class ProductInstallMonitorController : Controller
         this.actionLogService = actionLogService;
     }
 
+    private class ProductInstallMonitorJoinItem
+    {
+        public ProductInstallMonitorEntity ProductInstallMonitor { get; set; } = new();
+
+        public CollegeEntity College { get; set; } = new();
+
+        public ProductEntity Product { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/product-install-monitor/list")]
     [Transactional(false)]
     public IActionResult List([FromBody] ProductInstallMonitorListParam param)
     {
-        IQueryable<ProductInstallMonitorEntity> query = db.Set<ProductInstallMonitorEntity>();
+        IQueryable<ProductInstallMonitorJoinItem> query = db.Set<ProductInstallMonitorEntity>()
+            .Join(db.Set<CollegeEntity>(),
+                pim => pim.CollegeId,
+                c => c.Id,
+                (pim, c) => new ProductInstallMonitorJoinItem {
+                    ProductInstallMonitor = pim,
+                    College = c,
+                })
+            .Join(db.Set<ProductEntity>(),
+                pim => pim.ProductInstallMonitor.ProductId,
+                p => p.Id,
+                (pim, p) => new ProductInstallMonitorJoinItem {
+                    ProductInstallMonitor = pim.ProductInstallMonitor,
+                    College = pim.College,
+                    Product = p,
+                });
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(p => p.Name.Contains(nameQuery));
-        // }
+        if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
+        {
+            string collegeNameQuery = param.CollegeNameQuery.Trim();
+            query = query.Where(e => e.College.Name.Contains(collegeNameQuery));
+        }
+
+        if (string.IsNullOrWhiteSpace(param.ProductNameQuery) == false)
+        {
+            string productNameQuery = param.ProductNameQuery.Trim();
+            query = query.Where(e => e.Product.Name.Contains(productNameQuery));
+        }
 
         int productInstallMonitorCount = query.Count();
 
         // 排序字段
-        Expression<Func<ProductInstallMonitorEntity, object>> sortField = e => e.Id;
+        Expression<Func<ProductInstallMonitorJoinItem, object>> sortField = e => e.ProductInstallMonitor.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
-            if (sortFieldParam == nameof(ProductInstallMonitorListItem.CreateTime).ToUpper())
+            if (sortFieldParam == nameof(ProductInstallMonitorJoinItem.ProductInstallMonitor.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.ProductInstallMonitor.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductInstallMonitorListItem.UpdateTime).ToUpper())
+            if (sortFieldParam == nameof(ProductInstallMonitorJoinItem.ProductInstallMonitor.UpdateTime).ToUpper())
             {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.ProductInstallMonitor.UpdateTime;
             }
         }
 
@@ -83,16 +113,16 @@ public class ProductInstallMonitorController : Controller
 
         var productInstallMonitorItemList = productInstallMonitorList
             .Select(e => new ProductInstallMonitorListItem {
-                Id = e.Id,
-                CollegeId = e.CollegeId.ToString(),
-                ProductId = e.ProductId.ToString(),
-                ProvinceType = e.ProvinceType.Name,
-                CpuSerialNo = e.CpuSerialNo,
-                NetMacAddress = e.NetMacAddress,
-                TaskCount = e.TaskCount.ToString(),
-                TeacherCount = e.TeacherCount.ToString(),
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.ProductInstallMonitor.Id,
+                CollegeName = e.College.Name,
+                ProductName = e.Product.Name,
+                Province = e.ProductInstallMonitor.ProvinceType.Name,
+                CpuSerialNo = e.ProductInstallMonitor.CpuSerialNo,
+                NetMacAddress = e.ProductInstallMonitor.NetMacAddress,
+                TaskCount = e.ProductInstallMonitor.TaskCount,
+                TeacherCount = e.ProductInstallMonitor.TeacherCount,
+                CreateTime = e.ProductInstallMonitor.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ProductInstallMonitor.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
@@ -146,67 +176,6 @@ public class ProductInstallMonitorController : Controller
             Success = true,
             Message = "success",
             Data = model,
-        });
-    }
-
-    [HttpPost]
-    [Route("/api/product-install-monitor/save")]
-    [Transactional(true)]
-    public IActionResult Save([FromBody] ProductInstallMonitorDetailModel model)
-    {
-        ValidationUtil.Validate<ProductInstallMonitorDetailModelValidator, ProductInstallMonitorDetailModel>(model);
-
-        long productInstallMonitorId = model.Id;
-        bool isCreate = productInstallMonitorId == 0;
-
-        ProductInstallMonitorEntity? productInstallMonitor;
-        if (isCreate == true)
-        {
-            productInstallMonitor = new ProductInstallMonitorEntity();
-        }
-        else
-        {
-            productInstallMonitor = db.Set<ProductInstallMonitorEntity>().Find(productInstallMonitorId);
-            if (productInstallMonitor == null)
-            {
-                throw new ValidationException($"指定的安装监测#{productInstallMonitorId}不存在!");
-            }
-        }
-
-        productInstallMonitor.CollegeId = model.CollegeId;
-        productInstallMonitor.ProductId = model.ProductId;
-        productInstallMonitor.ProvinceType = ProvinceType.GetById(model.ProvinceType);
-        productInstallMonitor.CpuSerialNo = model.CpuSerialNo ?? "";
-        productInstallMonitor.NetMacAddress = model.NetMacAddress ?? "";
-        productInstallMonitor.TaskCount = model.TaskCount ?? 0;
-        productInstallMonitor.TeacherCount = model.TeacherCount ?? 0;
-
-        if (isCreate == true)
-        {
-            db.Add<ProductInstallMonitorEntity>(productInstallMonitor);
-        }
-        else
-        {
-            db.Update<ProductInstallMonitorEntity>(productInstallMonitor);
-        }
-
-        db.SaveChanges();
-
-        long loginUserId = userLoginService.GetLoginUserId();
-        if (isCreate == true)
-        {
-            string actionDesc = $"#{productInstallMonitor.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.ProductInstallMonitorCreate, actionDesc);
-        }
-        else
-        {
-            string actionDesc = $"#{productInstallMonitor.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.ProductInstallMonitorUpdate, actionDesc);
-        }
-
-        return Json(new JsonResultData {
-            Success = true,
-            Message = "保存成功！",
         });
     }
 

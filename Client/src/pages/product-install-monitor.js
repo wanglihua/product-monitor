@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {useNavigate} from "react-router";
 import ProductInstallMonitorDetail from "./product-install-monitor-detail";
 
 import useSiteContext from "../site/site-context";
@@ -9,6 +10,8 @@ import Title from "../site/title";
 const ProductInstallMonitor = () => {
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         nameQuery: "",
@@ -54,51 +57,47 @@ const ProductInstallMonitor = () => {
             },
         },
         {
-            title: "学校",
-            dataIndex: "collegeId",
-            width: "200px",
-        },
-        {
-            title: "产品",
-            dataIndex: "productId",
-            width: "200px",
-        },
-        {
-            title: "省份",
-            dataIndex: "provinceType",
-            width: "200px",
-        },
-        {
-            title: "CPU序列号",
-            dataIndex: "cpuSerialNo",
-            width: "200px",
-        },
-        {
-            title: "网卡硬件地址",
-            dataIndex: "netMacAddress",
-            width: "200px",
-        },
-        {
-            title: "任务数量",
-            dataIndex: "taskCount",
-            width: "200px",
-        },
-        {
-            title: "教师数量",
-            dataIndex: "teacherCount",
-            width: "200px",
-        },
-        {
-            title: "创建时间",
+            title: "使用时间",
             dataIndex: "createTime",
             width: "150px",
             sorter: true,
         },
         {
-            title: "更新时间",
-            dataIndex: "updateTime",
-            width: "150px",
-            sorter: true,
+            title: "学校",
+            dataIndex: "collegeName",
+            width: "200px",
+        },
+        {
+            title: "产品",
+            dataIndex: "productName",
+            width: "280px",
+        },
+        {
+            title: "省份",
+            dataIndex: "province",
+            width: "120px",
+        },
+        {
+            title: "CPU序列号",
+            dataIndex: "cpuSerialNo",
+            width: "120px",
+        },
+        {
+            title: "网卡硬件地址",
+            dataIndex: "netMacAddress",
+            width: "130px",
+        },
+        {
+            title: "任务数量",
+            align: "center",
+            dataIndex: "taskCount",
+            width: "90px",
+        },
+        {
+            title: "教师数量",
+            align: "center",
+            dataIndex: "teacherCount",
+            width: "90px",
         },
         {
             title: "操作",
@@ -107,27 +106,9 @@ const ProductInstallMonitor = () => {
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const productInstallMonitorId = record.id;
-                            productInstallMonitorDetail.current.show(productInstallMonitorId);
+                            navigate(`/product-install-monitor-entry/${productInstallMonitorId}`);
                         }}>
-                            <EditOutlined/>编辑
-                        </Button>
-                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/product-install-monitor/delete", {
-                                    id: record.id,
-                                }, function (response) {
-                                    const res = response.data;
-                                    if (res.success !== true) {
-                                        showError(res.message);
-                                        return;
-                                    }
-
-                                    showSuccess(res.message);
-                                    loadProductInstallMonitorList();
-                                });
-                            });
-                        }}>
-                            <DeleteOutlined/>删除
+                            查看详情
                         </Button>
                     </Space>
                 );
@@ -139,7 +120,8 @@ const ProductInstallMonitor = () => {
         loadProductInstallMonitorList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const collegeNameQueryRef = useRef();
+    const productNameQueryRef = useRef();
 
     return (
         <div>
@@ -148,32 +130,26 @@ const ProductInstallMonitor = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={collegeNameQueryRef} addonBefore="学校名称" placeholder="学校名称查询" style={{width: 280}}/>
+                    <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const collegeNameQuery = collegeNameQueryRef.current.input.value;
+                            const productNameQuery = productNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    collegeNameQuery: collegeNameQuery,
+                                    productNameQuery: productNameQuery,
                                     current_millis: Date.now(),
                                 };
                             });
                         }}
                     >
                         查询
-                    </Button>
-                    <Button
-                        color="default"
-                        icon={<PlusCircleOutlined style={{color: "green"}}/>}
-                        onClick={(e) => {
-                            productInstallMonitorDetail.current.show(0);
-                        }}
-                    >
-                        添加
                     </Button>
                 </Space>
             </div>

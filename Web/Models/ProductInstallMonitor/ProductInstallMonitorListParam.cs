@@ -5,6 +5,9 @@ namespace Web.Models.ProductInstallMonitor;
 
 public class ProductInstallMonitorListParam : ListParam
 {
-    [JsonProperty("nameQuery")]
-    public string NameQuery { get; set; } = "";
+    [JsonProperty("collegeNameQuery")]
+    public string CollegeNameQuery { get; set; } = "";
+    
+    [JsonProperty("productNameQuery")]
+    public string ProductNameQuery { get; set; } = "";
 }

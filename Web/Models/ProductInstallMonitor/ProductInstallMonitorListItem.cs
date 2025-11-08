@@ -7,26 +7,26 @@ public class ProductInstallMonitorListItem
     [JsonProperty("id")]
     public long Id { get; set; }
 
-    [JsonProperty("collegeId")]
-    public string CollegeId { get; set; } = ""; 
+    [JsonProperty("collegeName")]
+    public string CollegeName { get; set; } = "";
 
-    [JsonProperty("productId")]
-    public string ProductId { get; set; } = ""; 
+    [JsonProperty("productName")]
+    public string ProductName { get; set; } = "";
 
-    [JsonProperty("provinceType")]
-    public string ProvinceType { get; set; } = ""; 
+    [JsonProperty("province")]
+    public string Province { get; set; } = "";
 
     [JsonProperty("cpuSerialNo")]
-    public string CpuSerialNo { get; set; } = ""; 
+    public string CpuSerialNo { get; set; } = "";
 
     [JsonProperty("netMacAddress")]
-    public string NetMacAddress { get; set; } = ""; 
+    public string NetMacAddress { get; set; } = "";
 
     [JsonProperty("taskCount")]
-    public string TaskCount { get; set; } = ""; 
+    public int TaskCount { get; set; }
 
     [JsonProperty("teacherCount")]
-    public string TeacherCount { get; set; } = ""; 
+    public int TeacherCount { get; set; }
 
     [JsonProperty("createTime")]
     public string CreateTime { get; set; } = "";
