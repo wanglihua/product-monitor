@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="IGeekFan.AspNetCore.Knife4jUI" Version="0.0.16" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="7.3.2"/>
     </ItemGroup>
 

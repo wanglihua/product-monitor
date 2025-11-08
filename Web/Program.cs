@@ -1,18 +1,20 @@
 using Core;
 using Core.Config;
 using Domain;
-using Microsoft.EntityFrameworkCore;
+using IGeekFan.AspNetCore.Knife4jUI;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NLog;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using NLog.Web.LayoutRenderers;
 using Service;
+using StackExchange.Profiling;
+using StackExchange.Profiling.SqlFormatters;
 using StackExchange.Profiling.Storage;
 using Web.Filters;
 using Web.Middlewares;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Web;
 
@@ -40,7 +42,7 @@ public static class Program
         builder.Logging.AddNLogWeb();
 
 #if DEBUG
-        var logLevel = Microsoft.Extensions.Logging.LogLevel.Information;
+        var logLevel = LogLevel.Information;
 #else
         var logLevel = Microsoft.Extensions.Logging.LogLevel.Error;
 #endif
@@ -92,9 +94,9 @@ public static class Program
                     storage.CacheDuration = TimeSpan.FromMinutes(60);
                 }
 
-                options.SqlFormatter = new StackExchange.Profiling.SqlFormatters.SqlServerFormatter();
+                options.SqlFormatter = new SqlServerFormatter();
                 options.TrackConnectionOpenClose = true;
-                options.ColorScheme = StackExchange.Profiling.ColorScheme.Light;
+                options.ColorScheme = ColorScheme.Light;
                 options.EnableMvcFilterProfiling = true;
                 options.EnableMvcViewProfiling = true;
             })
@@ -153,7 +155,8 @@ public static class Program
 
 #if DEBUG
         app.UseSwagger();
-        app.UseSwaggerUI();
+        // app.UseSwaggerUI();
+        app.UseKnife4UI();
 #endif
 
 #if DEBUG
