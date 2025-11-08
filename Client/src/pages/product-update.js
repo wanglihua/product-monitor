@@ -134,6 +134,7 @@ const ProductUpdate = () => {
     return (
         <div>
             <Title title="产品更新" menuKey="product-update" breadcrumb={[
+                {title: "产品服务"},
                 {title: "产品更新"},
             ]}/>
             <div>
