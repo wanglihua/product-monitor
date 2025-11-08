@@ -35,9 +35,9 @@ public class ExceptionMonitorController : Controller
 
     private class ExceptionMonitorJoinItem
     {
-        public ProductEntity Product { get; set; } = new();
-
         public ExceptionMonitorEntity ExceptionMonitor { get; set; } = new();
+
+        public ProductEntity Product { get; set; } = new();
     }
 
     [HttpPost]
@@ -45,30 +45,44 @@ public class ExceptionMonitorController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ExceptionMonitorListParam param)
     {
-        IQueryable<ExceptionMonitorEntity> query = db.Set<ExceptionMonitorEntity>();
+        IQueryable<ExceptionMonitorJoinItem> query = db.Set<ExceptionMonitorEntity>()
+            .Join(db.Set<ProductEntity>(),
+                em => em.ProductId,
+                p => p.Id,
+                (em, p) => new ExceptionMonitorJoinItem {
+                    ExceptionMonitor = em,
+                    Product = p,
+                }
+            );
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(p => p.Name.Contains(nameQuery));
-        // }
+        if (string.IsNullOrWhiteSpace(param.ProductNameQuery) == false)
+        {
+            string productNameQuery = param.ProductNameQuery.Trim();
+            query = query.Where(e => e.Product.Name.Contains(productNameQuery));
+        }
+
+        if (param.ProvinceTypeQuery != ProvinceType.None)
+        {
+            var provinceTypeQuery = param.ProvinceTypeQuery;
+            query = query.Where(e => e.ExceptionMonitor.ProvinceType == provinceTypeQuery);
+        }
 
         int exceptionMonitorCount = query.Count();
 
         // 排序字段
-        Expression<Func<ExceptionMonitorEntity, object>> sortField = e => e.Id;
+        Expression<Func<ExceptionMonitorJoinItem, object>> sortField = e => e.ExceptionMonitor.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
             if (sortFieldParam == nameof(ExceptionMonitorListItem.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.ExceptionMonitor.CreateTime;
             }
 
             if (sortFieldParam == nameof(ExceptionMonitorListItem.UpdateTime).ToUpper())
             {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.ExceptionMonitor.UpdateTime;
             }
         }
 
@@ -90,13 +104,13 @@ public class ExceptionMonitorController : Controller
 
         var exceptionMonitorItemList = exceptionMonitorList
             .Select(e => new ExceptionMonitorListItem {
-                Id = e.Id,
-                ProductId = e.ProductId,
-                IpAddress = e.IpAddress,
-                ProvinceType = e.ProvinceType.Name,
-                Port = e.Port.ToString(),
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.ExceptionMonitor.Id,
+                ProductName = e.Product.Name,
+                IpAddress = e.ExceptionMonitor.IpAddress,
+                ProvinceType = e.ExceptionMonitor.ProvinceType.Name,
+                Port = e.ExceptionMonitor.Port.ToString(),
+                CreateTime = e.ExceptionMonitor.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ExceptionMonitor.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

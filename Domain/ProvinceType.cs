@@ -240,3 +240,7 @@ public class ProvinceType : CodeTypeBase, ICodeType<ProvinceType>
     {
     }
 }
+
+public class ProvinceTypeJsonConverter : CodeTypeJsonConverter<ProvinceType>
+{
+}
