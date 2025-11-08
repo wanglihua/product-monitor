@@ -95,7 +95,8 @@ const ExceptionMonitor = () => {
 
     return (
         <div>
-            <Title title="异常检测" menuKey="exception-monitor" breadcrumb={[
+            <Title title="异常检测" parentMenuKeys={["data-monitor"]} menuKey="exception-monitor" breadcrumb={[
+                {title: "数据监测"},
                 {title: "异常检测"},
             ]}/>
             <div>

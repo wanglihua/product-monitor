@@ -133,7 +133,8 @@ const ProductUrlMonitor = () => {
 
     return (
         <div>
-            <Title title="网站监测" menuKey="product-url-monitor" breadcrumb={[
+            <Title title="网站监测" parentMenuKeys={["data-monitor"]} menuKey="product-url-monitor" breadcrumb={[
+                {title: "数据监测"},
                 {title: "网站监测"},
             ]}/>
             <div>

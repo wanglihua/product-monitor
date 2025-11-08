@@ -125,7 +125,7 @@ const ProductInstallMonitor = () => {
 
     return (
         <div>
-            <Title title="安装监测" menuKey="product-install-monitor" breadcrumb={[
+            <Title title="安装监测" parentMenuKeys={["data-monitor"]} menuKey="product-install-monitor" breadcrumb={[
                 {title: "数据监测"},
                 {title: "安装监测"},
             ]}/>

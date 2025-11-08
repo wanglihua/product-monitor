@@ -133,7 +133,7 @@ const ProductInstallMonitorEntry = () => {
 
     return (
         <div>
-            <Title title="院校使用详情" menuKey="product-install-monitor-entry" breadcrumb={[
+            <Title title="院校使用详情" parentMenuKeys={["data-monitor"]} menuKey="product-install-monitor" breadcrumb={[
                 {title: "数据监测"},
                 {title: "安装监测"},
                 {title: "院校使用详情"},
