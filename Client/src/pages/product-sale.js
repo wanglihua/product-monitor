@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import {useNavigate} from "react-router";
 import ProductSaleEntryDetail from "./product-sale-entry-detail";
 
@@ -103,7 +103,7 @@ const ProductSale = () => {
                             const productSaleId = record.id;
                             navigate(`/product-sale-entry/${productSaleId}`);
                         }}>
-                            销售记录
+                            <UnorderedListOutlined/>销售记录
                         </Button>
                     </Space>
                 );
@@ -121,6 +121,7 @@ const ProductSale = () => {
     return (
         <div>
             <Title title="销售目录" parentMenuKeys={["project-manage"]} menuKey="product-sale" breadcrumb={[
+                {title: "项目管理"},
                 {title: "销售目录"},
             ]}/>
             <div>

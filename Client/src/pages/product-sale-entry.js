@@ -145,7 +145,9 @@ const ProductSaleEntry = () => {
 
     return (
         <div>
-            <Title title={`销售目录明细 学校:${state.collegeName} 产品:${state.productName}`} menuKey="product-sale-entry" breadcrumb={[
+            <Title title={`销售目录明细 学校:${state.collegeName} 产品:${state.productName}`} parentMenuKeys={["project-manage"]} menuKey="product-sale" breadcrumb={[
+                {title: "项目管理"},
+                {title: "销售目录"},
                 {title: "销售目录明细"},
             ]}/>
             <div>

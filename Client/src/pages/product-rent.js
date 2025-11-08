@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import {useNavigate} from "react-router";
 import ProductRentEntryDetail from "./product-rent-entry-detail";
 
@@ -106,7 +106,7 @@ const ProductRent = () => {
                             const productRentId = record.id;
                             navigate(`/product-rent-entry/${productRentId}`);
                         }}>
-                            租赁记录
+                            <UnorderedListOutlined/>租赁记录
                         </Button>
                     </Space>
                 );
@@ -123,7 +123,8 @@ const ProductRent = () => {
 
     return (
         <div>
-            <Title title="租赁目录" menuKey="product-rent" breadcrumb={[
+            <Title title="租赁目录" parentMenuKeys={["project-manage"]} menuKey="product-rent" breadcrumb={[
+                {title: "项目管理"},
                 {title: "租赁目录"},
             ]}/>
             <div>

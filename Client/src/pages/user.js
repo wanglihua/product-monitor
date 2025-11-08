@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, Input, Space, Table, Tag } from 'antd';
-import { DeleteOutlined, EditOutlined, SearchOutlined, UserAddOutlined } from '@ant-design/icons';
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, Input, Space, Table, Tag} from 'antd';
+import {DeleteOutlined, EditOutlined, SearchOutlined, UserAddOutlined} from '@ant-design/icons';
 import UserDetail from "./user-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
 const User = () => {
-    const { post, showConfirm, showError, showSuccess } = useSiteContext();
+    const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
         loginNameQuery: "",
@@ -80,13 +80,13 @@ const User = () => {
             render: (text, record, index) => {
                 return (
                     <Space>
-                        <Button color="primary" variant="text" size="small" style={{ fontSize: "12px" }} onClick={(e) => {
+                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const userId = record.id;
                             userDetail.current.show(userId);
                         }}>
-                            <EditOutlined />编辑
+                            <EditOutlined/>编辑
                         </Button>
-                        <Button color="danger" variant="text" size="small" style={{ fontSize: "12px" }} onClick={(e) => {
+                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             showConfirm("确认要删除吗！", "确认", () => {
                                 post("/api/user/delete", {
                                     id: record.id,
@@ -102,7 +102,7 @@ const User = () => {
                                 });
                             });
                         }}>
-                            <DeleteOutlined />删除
+                            <DeleteOutlined/>删除
                         </Button>
                     </Space>
                 );
@@ -120,8 +120,9 @@ const User = () => {
     return (
         <div>
             <Title title="用户" parentMenuKeys={["system-manage", "user"]} menuKey="user" breadcrumb={[
-                { title: "用户" },
-            ]} />
+                {title: "系统管理"},
+                {title: "用户"},
+            ]}/>
 
             <div>
                 <Space>
@@ -180,7 +181,7 @@ const User = () => {
                            });
                        }}/>
             </div>
-            <UserDetail ref={userDetail} loadUserList={loadUserList} />
+            <UserDetail ref={userDetail} loadUserList={loadUserList}/>
         </div>
     );
 }

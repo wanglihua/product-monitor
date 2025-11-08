@@ -127,7 +127,8 @@ const ProductEval = () => {
 
     return (
         <div>
-            <Title title="试用目录" menuKey="product-eval" breadcrumb={[
+            <Title title="试用目录" parentMenuKeys={["project-manage"]} menuKey="product-eval" breadcrumb={[
+                {title: "项目管理"},
                 {title: "试用目录"},
             ]}/>
             <div>

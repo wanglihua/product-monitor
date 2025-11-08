@@ -86,6 +86,7 @@ const ActionLog = () => {
     return (
         <div>
             <Title title="操作日志" parentMenuKeys={["system-manage"]} menuKey="action-log" breadcrumb={[
+                {title: "系统管理"},
                 {title: "操作日志"},
             ]}/>
             <div>

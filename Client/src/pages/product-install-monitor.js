@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import {useNavigate} from "react-router";
 import ProductInstallMonitorDetail from "./product-install-monitor-detail";
 
@@ -108,7 +108,7 @@ const ProductInstallMonitor = () => {
                             const productInstallMonitorId = record.id;
                             navigate(`/product-install-monitor-entry/${productInstallMonitorId}`);
                         }}>
-                            查看详情
+                            <UnorderedListOutlined/>查看详情
                         </Button>
                     </Space>
                 );
@@ -126,6 +126,7 @@ const ProductInstallMonitor = () => {
     return (
         <div>
             <Title title="安装监测" menuKey="product-install-monitor" breadcrumb={[
+                {title: "数据监测"},
                 {title: "安装监测"},
             ]}/>
             <div>

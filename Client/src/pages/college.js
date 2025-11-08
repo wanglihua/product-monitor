@@ -131,6 +131,7 @@ const College = () => {
     return (
         <div>
             <Title title="院校目录" parentMenuKeys={["basic-setting"]} menuKey="college" breadcrumb={[
+                {title: "基础设置"},
                 {title: "院校目录"},
             ]}/>
             <div>

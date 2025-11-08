@@ -133,6 +133,7 @@ const Product = () => {
     return (
         <div>
             <Title title="产品目录" parentMenuKeys={["basic-setting"]} menuKey="product" breadcrumb={[
+                {title: "基础设置"},
                 {title: "产品目录"},
             ]}/>
             <div>

@@ -108,6 +108,7 @@ const AdminUser = () => {
     return (
         <div>
             <Title title="管理员" parentMenuKeys={["system-manage"]} menuKey="admin-user" breadcrumb={[
+                {title: "系统管理"},
                 {title: "管理员"},
             ]}/>
             <div>

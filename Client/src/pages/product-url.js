@@ -138,6 +138,7 @@ const ProductUrl = () => {
     return (
         <div>
             <Title title="网址管理" menuKey="product-url" breadcrumb={[
+                {title: "基础设置"},
                 {title: "网址管理"},
             ]}/>
             <div>

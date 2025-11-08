@@ -128,7 +128,7 @@ const ProductInstall = () => {
 
     return (
         <div>
-            <Title title="产品安装" menuKey="product-install" breadcrumb={[
+            <Title title="产品安装" parentMenuKeys={["project-manage"]} menuKey="product-install" breadcrumb={[
                 {title: "产品安装"},
             ]}/>
             <div>

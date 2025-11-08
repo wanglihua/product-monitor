@@ -134,39 +134,10 @@ const ProductInstallMonitorEntry = () => {
     return (
         <div>
             <Title title="院校使用详情" menuKey="product-install-monitor-entry" breadcrumb={[
+                {title: "数据监测"},
+                {title: "安装监测"},
                 {title: "院校使用详情"},
             ]}/>
-            <div>
-                <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
-                    <Button
-                        color="default"
-                        icon={<SearchOutlined/>}
-                        onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
-
-                            setListParam((pre) => {
-                                return {
-                                    ...pre,
-                                    nameQuery: nameQuery,
-                                    current_millis: Date.now(),
-                                };
-                            });
-                        }}
-                    >
-                        查询
-                    </Button>
-                    <Button
-                        color="default"
-                        icon={<PlusCircleOutlined style={{color: "green"}}/>}
-                        onClick={(e) => {
-                            productInstallMonitorEntryDetail.current.show(0);
-                        }}
-                    >
-                        添加
-                    </Button>
-                </Space>
-            </div>
             <div style={{padding: "10px 0"}}>
                 <Table columns={productInstallMonitorEntryListColumns} rowKey="id"
                        dataSource={state.productInstallMonitorEntryList}
