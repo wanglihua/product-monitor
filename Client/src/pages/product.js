@@ -60,7 +60,7 @@ const Product = () => {
         {
             title: "产品名称",
             dataIndex: "name",
-            width: "200px",
+            width: "360px",
         },
         {
             title: "产品英文名",
