@@ -147,7 +147,11 @@ const ProductSaleEntry = () => {
         <div>
             <Title title={`销售目录明细 学校:${state.collegeName} 产品:${state.productName}`} parentMenuKeys={["project-manage"]} menuKey="product-sale" breadcrumb={[
                 {title: "项目管理"},
-                {title: "销售目录"},
+                {
+                    title: <span style={{cursor: "pointer"}} onClick={() => {
+                        navigate("/product-sale");
+                    }}>销售目录</span>
+                },
                 {title: "销售目录明细"},
             ]}/>
             <div>
