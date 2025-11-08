@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {Button, Space, Table} from 'antd';
+import {EditOutlined, DeleteOutlined} from '@ant-design/icons';
+import {useNavigate} from "react-router";
 import ProductInstallMonitorEntryDetail from "./product-install-monitor-entry-detail";
 
 import useSiteContext from "../site/site-context";
@@ -9,6 +10,8 @@ import Title from "../site/title";
 const ProductInstallMonitorEntry = () => {
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         nameQuery: "",
@@ -129,13 +132,15 @@ const ProductInstallMonitorEntry = () => {
         loadProductInstallMonitorEntryList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
-
     return (
         <div>
             <Title title="院校使用详情" parentMenuKeys={["data-monitor"]} menuKey="product-install-monitor" breadcrumb={[
                 {title: "数据监测"},
-                {title: "安装监测"},
+                {
+                    title: <span style={{cursor: "pointer"}} onClick={() => {
+                        navigate("/product-install-monitor");
+                    }}>安装监测</span>
+                },
                 {title: "院校使用详情"},
             ]}/>
             <div style={{padding: "10px 0"}}>

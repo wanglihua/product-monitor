@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {Button, Space, Table} from 'antd';
+import {EditOutlined, DeleteOutlined, PlusCircleOutlined} from '@ant-design/icons';
 import {useParams, useNavigate} from "react-router";
 import ProductRentEntryDetail from "./product-rent-entry-detail";
 
