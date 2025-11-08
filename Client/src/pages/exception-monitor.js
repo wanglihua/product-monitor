@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
+import {Button, Input, Select, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import ExceptionMonitorDetail from "./exception-monitor-detail";
 
@@ -11,7 +11,8 @@ const ExceptionMonitor = () => {
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        productNameQuery: "",
+        provinceTypeQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -21,6 +22,7 @@ const ExceptionMonitor = () => {
     const [state, setState] = useState({
         exceptionMonitorList: [],
         exceptionMonitorCount: 0,
+        provinceTypeList: "",
     });
 
     const loadExceptionMonitorList = () => {
@@ -36,6 +38,7 @@ const ExceptionMonitor = () => {
                     ...pre,
                     exceptionMonitorList: res.data.exceptionMonitorList,
                     exceptionMonitorCount: res.data.exceptionMonitorCount,
+                    provinceTypeList: res.data.provinceTypeList,
                 };
             });
         });
@@ -86,7 +89,8 @@ const ExceptionMonitor = () => {
         loadExceptionMonitorList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const productNameQueryRef = useRef();
+    const provinceTypeQueryRef = useRef();
 
     return (
         <div>
@@ -95,31 +99,36 @@ const ExceptionMonitor = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 320}}/>
+                    <Select
+                        showSearch={true}
+                        optionFilterProp="label"
+                        notFoundContent={"暂无数据, 请输入正确的搜索条件"}
+                        options={state.provinceTypeList}
+                        addonbefore="省份"
+                        placeholder="省份查询"
+                        style={{width: 180}}
+                        onSelect={(val) => {
+                            provinceTypeQueryRef.current = val;
+                        }}
+                    />
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const provinceTypeQuery = provinceTypeQueryRef.current;
+                            const productNameQuery = productNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    provinceTypeQuery: provinceTypeQuery,
+                                    productNameQuery: productNameQuery,
                                 };
                             });
                         }}
                     >
                         查询
-                    </Button>
-                    <Button
-                        color="default"
-                        icon={<PlusCircleOutlined style={{color: "green"}}/>}
-                        onClick={(e) => {
-                            exceptionMonitorDetail.current.show(0);
-                        }}
-                    >
-                        添加
                     </Button>
                 </Space>
             </div>

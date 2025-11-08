@@ -149,12 +149,13 @@ const ProductUrl = () => {
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
+                            const typeQuery = typeQueryRef.current;
                             const nameQuery = nameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    typeQuery: typeQueryRef.current,
+                                    typeQuery: typeQuery,
                                     nameQuery: nameQuery,
                                 };
                             });

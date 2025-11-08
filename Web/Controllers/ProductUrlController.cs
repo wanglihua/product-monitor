@@ -106,6 +106,7 @@ public class ProductUrlController : Controller
                 ["label"] = "类型查询",
             }
         };
+
         productUrlTypeList.AddRange(ProductUrlType.GetList()
             .Select(e => new Dictionary<string, object> {
                 ["value"] = e.Id,
