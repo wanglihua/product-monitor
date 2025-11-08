@@ -13,6 +13,7 @@ public class ErrorController : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
+    [HttpGet]
     [Route("/error")]
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [Transactional(false)]

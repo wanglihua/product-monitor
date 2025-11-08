@@ -2,11 +2,13 @@ using Core;
 using Core.Config;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NLog;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using NLog.Web.LayoutRenderers;
 using Service;
 using StackExchange.Profiling.Storage;
 using Web.Filters;
@@ -104,6 +106,14 @@ public static class Program
         services.AddScoped<TransactionActionFilter>();
         services.AddScoped<ExceptionFilter>();
 
+#if DEBUG
+        // /swagger /swagger/index.html
+        services.AddSwaggerGen(c => {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProductMonitor", Version = "v1" });
+            c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Web.xml"), true);
+        });
+#endif
+
         var mvcBuilder = services.AddControllersWithViews()
             .AddMvcOptions(options => {
                 options.Filters.AddService<WebSessionTimeoutResetActionFilter>();
@@ -140,6 +150,11 @@ public static class Program
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
         app.MapFallbackToFile("index.html");
+
+#if DEBUG
+        app.UseSwagger();
+        app.UseSwaggerUI();
+#endif
 
 #if DEBUG
         Console.WriteLine("started");
