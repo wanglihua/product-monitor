@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import {useNavigate} from "react-router";
 import ProductEvalEntryDetail from "./product-eval-entry-detail";
 
@@ -110,7 +110,7 @@ const ProductEval = () => {
                             const productEvalId = record.id;
                             navigate(`/product-eval-entry/${productEvalId}`);
                         }}>
-                            试用记录
+                            <UnorderedListOutlined/>试用记录
                         </Button>
                     </Space>
                 );

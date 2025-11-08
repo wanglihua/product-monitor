@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {Button, Space, Table} from 'antd';
+import {EditOutlined, DeleteOutlined, PlusCircleOutlined} from '@ant-design/icons';
 import {useParams, useNavigate} from "react-router";
 import ProductEvalEntryDetail from "./product-eval-entry-detail";
 
@@ -144,7 +144,13 @@ const ProductEvalEntry = () => {
 
     return (
         <div>
-            <Title title="试用目录明细" menuKey="product-eval-entry" breadcrumb={[
+            <Title title="试用目录明细" parentMenuKeys={["project-manage"]} menuKey="product-eval" breadcrumb={[
+                {title: "项目管理"},
+                {
+                    title: <span style={{cursor: "pointer"}} onClick={() => {
+                        navigate("/product-eval");
+                    }}>试用目录</span>
+                },
                 {title: "试用目录明细"},
             ]}/>
             <div>
