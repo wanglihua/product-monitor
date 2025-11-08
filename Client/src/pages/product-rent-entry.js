@@ -144,7 +144,11 @@ const ProductRentEntry = () => {
         <div>
             <Title title={`租赁目录明细 学校:${state.collegeName} 产品:${state.productName}`} parentMenuKeys={["project-manage"]} menuKey="product-rent" breadcrumb={[
                 {title: "项目管理"},
-                {title: "租赁目录"},
+                {
+                    title: <span style={{cursor: "pointer"}} onClick={() => {
+                        navigate("/product-rent");
+                    }}>租赁目录</span>
+                },
                 {title: "租赁目录明细"},
             ]}/>
             <div>
