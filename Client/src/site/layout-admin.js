@@ -147,6 +147,7 @@ const LayoutAdmin = () => {
                             theme="light"
                             mode="inline"
                             defaultOpenKeys={menuOpenKeys}
+                            defaultSelectedKeys={menuActiveKey}
                             selectedKeys={[menuActiveKey]}
                             items={[
                                 {
