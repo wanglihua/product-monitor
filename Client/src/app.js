@@ -249,10 +249,10 @@ const App = () => {
                             width: "32px",
                             height: "32px",
                             margin: "0 auto",
-                            paddingTop: "10px",
+                            paddingTop: "15px",
                             opacity: 1,
                         }}>
-                            <Spin size="small"/>
+                            <Spin/>
                         </div>
                     </div>
                 )}
