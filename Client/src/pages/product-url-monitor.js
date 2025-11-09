@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
+import {Button, Input, Select, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import ProductUrlMonitorDetail from "./product-url-monitor-detail";
 
@@ -13,6 +13,7 @@ const ProductUrlMonitor = () => {
     const [listParam, setListParam] = useState({
         collegeNameQuery: "",
         productNameQuery: "",
+        productUrlTypeQuery: 0,
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -23,6 +24,7 @@ const ProductUrlMonitor = () => {
     const [state, setState] = useState({
         productUrlMonitorList: [],
         productUrlMonitorCount: 0,
+        productUrlTypeList: [],
     });
 
     const loadProductUrlMonitorList = () => {
@@ -38,6 +40,7 @@ const ProductUrlMonitor = () => {
                     ...pre,
                     productUrlMonitorList: res.data.productUrlMonitorList,
                     productUrlMonitorCount: res.data.productUrlMonitorCount,
+                    productUrlTypeList: res.data.productUrlTypeList,
                 };
             });
         });
@@ -76,11 +79,13 @@ const ProductUrlMonitor = () => {
         },
         {
             title: "教师账号数量",
+            align: "center",
             dataIndex: "teacherCount",
             width: "120px",
         },
         {
             title: "任务数量",
+            align: "center",
             dataIndex: "taskCount",
             width: "100px",
         },
@@ -125,6 +130,7 @@ const ProductUrlMonitor = () => {
 
     const collegeNameQueryRef = useRef();
     const productNameQueryRef = useRef();
+    const productUrlQueryRef = useRef();
 
     return (
         <div>
@@ -136,18 +142,23 @@ const ProductUrlMonitor = () => {
                 <Space>
                     <Input ref={collegeNameQueryRef} addonBefore="学校名称" placeholder="学校名称查询" style={{width: 280}}/>
                     <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>
+                    <Select options={state.productUrlTypeList} placeholder="分类查询" style={{width: 120}} onSelect={(val) => {
+                        productUrlQueryRef.current = val;
+                    }}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
                             const collegeNameQuery = collegeNameQueryRef.current.input.value;
                             const productNameQuery = productNameQueryRef.current.input.value;
+                            const productUrlTypeQuery = productUrlQueryRef.current;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
                                     collegeNameQuery: collegeNameQuery,
                                     productNameQuery: productNameQuery,
+                                    productUrlTypeQuery: productUrlTypeQuery,
                                     current_millis: Date.now(),
                                 };
                             });

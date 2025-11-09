@@ -107,7 +107,6 @@ const ExceptionMonitor = () => {
                         optionFilterProp="label"
                         notFoundContent={"暂无数据, 请输入正确的搜索条件"}
                         options={state.provinceTypeList}
-                        addonbefore="省份"
                         placeholder="省份查询"
                         style={{width: 180}}
                         onSelect={(val) => {

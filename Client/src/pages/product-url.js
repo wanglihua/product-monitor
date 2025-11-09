@@ -143,7 +143,7 @@ const ProductUrl = () => {
             ]}/>
             <div>
                 <Space>
-                    <Select options={state.productUrlTypeList} addonbefore="类型" placeholder="类型查询" style={{width: 120}} onSelect={(val) => {
+                    <Select options={state.productUrlTypeList} placeholder="类型查询" style={{width: 120}} onSelect={(val) => {
                         typeQueryRef.current = val;
                     }}/>
                     <Input ref={nameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>

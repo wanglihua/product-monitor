@@ -40,9 +40,9 @@ public class ProductUrlController : Controller
     {
         IQueryable<ProductUrlEntity> query = db.Set<ProductUrlEntity>();
 
-        var typeQuery = ProductUrlType.GetById(param.TypeQuery);
-        if (typeQuery != ProductUrlType.None)
+        if (param.TypeQuery != ProductUrlType.None)
         {
+            var typeQuery = param.TypeQuery;
             query = query.Where(e => e.Type == typeQuery);
         }
 

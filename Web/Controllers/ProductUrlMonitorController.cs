@@ -76,6 +76,12 @@ public class ProductUrlMonitorController : Controller
             query = query.Where(e => e.Product.Name.Contains(productNameQuery));
         }
 
+        if (param.ProductUrlTypeQuery != ProductUrlType.None)
+        {
+            var productUrlTypeQuery = param.ProductUrlTypeQuery;
+            query = query.Where(e => e.ProductUrlMonitor.ProductUrlType == productUrlTypeQuery);
+        }
+
         int productUrlMonitorCount = query.Count();
 
         // 排序字段
@@ -124,12 +130,27 @@ public class ProductUrlMonitorController : Controller
             })
             .ToList();
 
+        var productUrlTypeList = new List<Dictionary<string, object>> {
+            new Dictionary<string, object> {
+                ["value"] = "",
+                ["label"] = "分类查询",
+            }
+        };
+
+        productUrlTypeList.AddRange(ProductUrlType.GetList()
+            .Select(e => new Dictionary<string, object> {
+                ["value"] = e.Id,
+                ["label"] = e.Name,
+            })
+        );
+
         return Json(new JsonResultData {
             Success = true,
             Message = "success",
             Data = new Dictionary<string, object> {
                 ["productUrlMonitorList"] = productUrlMonitorItemList,
                 ["productUrlMonitorCount"] = productUrlMonitorCount,
+                ["productUrlTypeList"] = productUrlTypeList,
             },
         });
     }
