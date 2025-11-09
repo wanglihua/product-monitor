@@ -2,6 +2,7 @@ import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Se
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
+import {CloseCircleOutlined} from "@ant-design/icons";
 
 const ExceptionMonitorDetailInner = (props) => {
     const exceptionMonitorId = props.exceptionMonitorId;
@@ -169,7 +170,7 @@ const ExceptionMonitorDetailInner = (props) => {
                             <Button type="default" size="large" onClick={() => {
                                 self.hide();
                             }}>
-                                关闭
+                                <CloseCircleOutlined/>关闭
                             </Button>
                         </Space>
                     </Form.Item>

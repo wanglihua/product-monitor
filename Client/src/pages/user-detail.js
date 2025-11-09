@@ -1,6 +1,7 @@
 import {Button, ConfigProvider, Descriptions, Form, Input, Modal, Select, Space, theme} from "antd";
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
+import {CloseCircleOutlined, SaveOutlined} from "@ant-design/icons";
 
 const UserDetailInner = (props) => {
     const userId = props.userId;
@@ -195,13 +196,13 @@ const UserDetailInner = (props) => {
                     <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "right"}}>
                         <Space>
                             <Button type="primary" size="large" htmlType="submit">
-                                保存
+                                <SaveOutlined/>保存
                             </Button>
 
                             <Button type="default" size="large" onClick={() => {
                                 self.hide();
                             }}>
-                                取消
+                                <CloseCircleOutlined/>取消
                             </Button>
                         </Space>
                     </Form.Item>

@@ -141,65 +141,6 @@ public class ProductInstallMonitorEntryController : Controller
     }
 
     [HttpPost]
-    [Route("/api/product-install-monitor-entry/save")]
-    [Transactional(true)]
-    public IActionResult Save([FromBody] ProductInstallMonitorEntryDetailModel model)
-    {
-        ValidationUtil.Validate<ProductInstallMonitorEntryDetailModelValidator, ProductInstallMonitorEntryDetailModel>(model);
-
-        long productInstallMonitorEntryId = model.Id;
-        bool isCreate = productInstallMonitorEntryId == 0;
-
-        ProductInstallMonitorEntryEntity? productInstallMonitorEntry;
-        if (isCreate == true)
-        {
-            productInstallMonitorEntry = new ProductInstallMonitorEntryEntity();
-        }
-        else
-        {
-            productInstallMonitorEntry = db.Set<ProductInstallMonitorEntryEntity>().Find(productInstallMonitorEntryId);
-            if (productInstallMonitorEntry == null)
-            {
-                throw new ValidationException($"指定的院校使用详情#{productInstallMonitorEntryId}不存在!");
-            }
-        }
-
-        productInstallMonitorEntry.ProductMonitorId = model.ProductInstallMonitorId;
-        productInstallMonitorEntry.LoginUser = model.LoginUser ?? "";
-        productInstallMonitorEntry.AccountType = AccountType.GetById(model.AccountType);
-        productInstallMonitorEntry.IpAddress = model.IpAddress ?? "";
-        productInstallMonitorEntry.ProvinceType = ProvinceType.GetById(model.ProvinceType);
-
-        if (isCreate == true)
-        {
-            db.Add<ProductInstallMonitorEntryEntity>(productInstallMonitorEntry);
-        }
-        else
-        {
-            db.Update<ProductInstallMonitorEntryEntity>(productInstallMonitorEntry);
-        }
-
-        db.SaveChanges();
-
-        long loginUserId = userLoginService.GetLoginUserId();
-        if (isCreate == true)
-        {
-            string actionDesc = $"#{productInstallMonitorEntry.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.ProductInstallMonitorEntryCreate, actionDesc);
-        }
-        else
-        {
-            string actionDesc = $"#{productInstallMonitorEntry.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.ProductInstallMonitorEntryUpdate, actionDesc);
-        }
-
-        return Json(new JsonResultData {
-            Success = true,
-            Message = "保存成功！",
-        });
-    }
-
-    [HttpPost]
     [Route("/api/product-install-monitor-entry/delete")]
     [Transactional(true)]
     public IActionResult Delete([FromBody] IdParam param)

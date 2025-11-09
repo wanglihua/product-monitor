@@ -2,6 +2,7 @@ import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Se
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
+import {CloseCircleOutlined} from "@ant-design/icons";
 
 const ProductInstallMonitorEntryDetailInner = (props) => {
     const productInstallMonitorEntryId = props.productInstallMonitorEntryId;
@@ -85,30 +86,6 @@ const ProductInstallMonitorEntryDetailInner = (props) => {
                     layout="horizontal"
                     size='middle'
                     requiredMark={false}
-                    onFinish={(values) => {
-                        post("/api/product-install-monitor-entry/save", {
-                            id: productInstallMonitorEntryId,
-                            productInstallMonitorId: values.productInstallMonitorId,
-                            loginUser: values.loginUser,
-                            accountType: values.accountType,
-                            ipAddress: values.ipAddress,
-                            provinceType: values.provinceType,
-                        }, function (response) {
-                            const res = response.data;
-                            if (res.success === false) {
-                                showError(res.message);
-                                return;
-                            }
-
-                            showSuccess(res.message);
-
-                            if (loadProductInstallMonitorEntryList) {
-                                loadProductInstallMonitorEntryList();
-                            }
-
-                            self.hide();
-                        });
-                    }}
                 >
                     <Descriptions
                         bordered={true}
@@ -206,14 +183,10 @@ const ProductInstallMonitorEntryDetailInner = (props) => {
 
                     <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "right"}}>
                         <Space>
-                            <Button type="primary" size="large" htmlType="submit">
-                                保存
-                            </Button>
-
                             <Button type="default" size="large" onClick={() => {
                                 self.hide();
                             }}>
-                                取消
+                                <CloseCircleOutlined/>关闭
                             </Button>
                         </Space>
                     </Form.Item>
@@ -238,11 +211,11 @@ class ProductInstallMonitorEntryDetail extends React.Component {
 
     show = (productInstallMonitorEntryId) => {
         this.setState((pre) => {
-           return {
+            return {
                 ...pre,
                 productInstallMonitorEntryId: productInstallMonitorEntryId,
                 open: true,
-           };
+            };
         });
     }
 

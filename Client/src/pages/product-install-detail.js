@@ -2,6 +2,7 @@ import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Se
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
+import {CloseCircleOutlined, SaveOutlined} from "@ant-design/icons";
 
 const ProductInstallDetailInner = (props) => {
     const productInstallId = props.productInstallId;
@@ -366,13 +367,13 @@ const ProductInstallDetailInner = (props) => {
                     <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "right"}}>
                         <Space>
                             <Button type="primary" size="large" htmlType="submit">
-                                保存
+                                <SaveOutlined/>保存
                             </Button>
 
                             <Button type="default" size="large" onClick={() => {
                                 self.hide();
                             }}>
-                                取消
+                                <CloseCircleOutlined/>取消
                             </Button>
                         </Space>
                     </Form.Item>
