@@ -61,6 +61,7 @@ const Product = () => {
             title: "产品名称",
             dataIndex: "name",
             width: "360px",
+            sorter: true,
         },
         {
             title: "产品英文名",
