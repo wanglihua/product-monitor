@@ -8,11 +8,7 @@ import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     PoweroffOutlined,
-    QuestionCircleOutlined,
-    SolutionOutlined,
-    TeamOutlined,
     UserOutlined,
-    WechatOutlined,
 } from '@ant-design/icons';
 
 import useSiteContext from "./site-context";
@@ -298,7 +294,7 @@ const LayoutAdmin = () => {
                                         },
                                         {
                                             key: "admin-user",
-                                            icon: <TeamOutlined style={{color: "#1677ff"}}/>,
+                                            icon: <i className="iconfont icon-admin-user" style={{ color: "#1677ff" }} />,
                                             label: "管理员",
 
                                             onClick: () => {
@@ -307,7 +303,7 @@ const LayoutAdmin = () => {
                                         },
                                         {
                                             key: "action-log",
-                                            icon: <SolutionOutlined style={{color: "#1677ff"}}/>,
+                                            icon: <i className="iconfont icon-action-log" style={{ color: "#1677ff" }} />,
                                             label: "操作日志",
                                             onClick: () => {
                                                 navigate("/action/log");

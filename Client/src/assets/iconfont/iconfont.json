@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "15628550",
+      "name": "action-log",
+      "font_class": "action-log",
+      "unicode": "e6a8",
+      "unicode_decimal": 59048
+    },
+    {
+      "icon_id": "1788675",
+      "name": "admin-user",
+      "font_class": "admin-user",
+      "unicode": "e696",
+      "unicode_decimal": 59030
+    },
+    {
       "icon_id": "18426750",
       "name": "pass-res-result",
       "font_class": "pass-res-result",
