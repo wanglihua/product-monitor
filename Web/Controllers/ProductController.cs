@@ -223,6 +223,17 @@ public class ProductController : Controller
             throw new ValidationException($"指定的产品目录#{productId}不存在!");
         }
 
+        // 判断产品版本是否存在
+        var productVersionExist = db.Set<ProductVersionEntity>()
+            .Where(e => e.ProductId == productId)
+            .OrderBy(e => e.ProductId)
+            .Take(1)
+            .SingleOrDefault();
+        if (productVersionExist != null)
+        {
+            throw new ValidationException("请先删除产品版本, 再删除产品!");
+        }
+
         db.Remove<ProductEntity>(product);
         db.SaveChanges();
 
