@@ -119,7 +119,7 @@ const User = () => {
 
     return (
         <div>
-            <Title title="用户" parentMenuKeys={["system-manage", "user"]} menuKey="user" breadcrumb={[
+            <Title title="用户" parentMenuKeys={["system-manage"]} menuKey="user" breadcrumb={[
                 {title: "系统管理"},
                 {title: "用户"},
             ]}/>

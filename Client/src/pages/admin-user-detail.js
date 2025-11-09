@@ -59,7 +59,7 @@ const AdminUserDetailInner = (props) => {
                     size='middle'
                     requiredMark={false}
                     onFinish={(values) => {
-                        post("/api/admin/user/add/save", {
+                        post("/api/admin-user/add/save", {
                             loginName: values.loginName
                         }, function (response) {
                             const res = response.data;

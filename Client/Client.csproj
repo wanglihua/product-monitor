@@ -7,4 +7,16 @@
         <EnablePreviewFeatures>True</EnablePreviewFeatures>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Remove="public\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="public\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="node_modules\**" />
+    </ItemGroup>
+
 </Project>

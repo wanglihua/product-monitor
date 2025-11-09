@@ -40,7 +40,7 @@ public class AdminUserController : Controller
     }
 
     [HttpPost]
-    [Route("/api/admin/user/list")]
+    [Route("/api/admin-user/list")]
     [Transactional(false)]
     public IActionResult List([FromBody] AdminUserListParam param)
     {
@@ -112,7 +112,7 @@ public class AdminUserController : Controller
     }
 
     [HttpPost]
-    [Route("/api/admin/user/add/save")]
+    [Route("/api/admin-user/add/save")]
     [Transactional(true)]
     public IActionResult AddSave([FromBody] AdminUserAddSaveParam param)
     {
@@ -159,7 +159,7 @@ public class AdminUserController : Controller
     }
 
     [HttpPost]
-    [Route("/api/admin/user/remove")]
+    [Route("/api/admin-user/remove")]
     [Transactional(true)]
     public IActionResult Remove([FromBody] IdParam param)
     {

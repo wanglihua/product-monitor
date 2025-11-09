@@ -29,6 +29,7 @@ import ProductInstallMonitorEntry from "./pages/product-install-monitor-entry";
 import ProductUrlMonitor from "./pages/product-url-monitor";
 import ProductUrlMonitorEntry from "./pages/product-url-monitor-entry";
 import ExceptionMonitor from "./pages/exception-monitor";
+import PassRes from "./pages/pass-res";
 
 const Router = () => {
     return (
@@ -58,7 +59,8 @@ const Router = () => {
                     <Route path="/product-url-monitor-entry/:productUrlMonitorId" element={<ProductUrlMonitorEntry/>}/>
                     <Route path="/exception-monitor" element={<ExceptionMonitor/>}/>
                     <Route path="/user" element={<User/>}/>
-                    <Route path="/admin/user" element={<AdminUser/>}/>
+                    <Route path="/admin-user" element={<AdminUser/>}/>
+                    <Route path="/pass-res" element={<PassRes/>}/>
                     <Route path="/action/log" element={<ActionLog/>}/>
                 </Route>
 

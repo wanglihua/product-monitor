@@ -25,7 +25,7 @@ const AdminUser = () => {
     });
 
     const loadAdminList = () => {
-        post("/api/admin/user/list", listParam, function (response) {
+        post("/api/admin-user/list", listParam, function (response) {
             const res = response.data;
             if (res.success !== true) {
                 showError(res.message);
@@ -76,7 +76,7 @@ const AdminUser = () => {
                     <Space>
                         <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             showConfirm("确认要移除吗！", "确认", () => {
-                                post("/api/admin/user/remove", {
+                                post("/api/admin-user/remove", {
                                     id: record.id,
                                 }, function (response) {
                                     const res = response.data;

@@ -38,7 +38,7 @@ public class PassResController : Controller
     }
 
     [HttpPost]
-    [Route("/api/pass-res/init-data")]
+    [Route("/api/pass-res/init/data")]
     [Transactional(true)]
     public IActionResult InitData()
     {
@@ -90,6 +90,7 @@ public class PassResController : Controller
 
         int passResCount = query.Count();
 
+        /*
         // 排序字段
         Expression<Func<PassResJoinItem, object>> sortField = e => e.PassRes.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
@@ -117,6 +118,9 @@ public class PassResController : Controller
         {
             query = query.OrderByDescending(sortField);
         }
+        */
+
+        query = query.OrderBy(e => e.PassResCate.Id).ThenBy(e => e.PassRes.Id);
 
         var passResList = query
             .Skip(param.PageIndex * param.PageSize)
