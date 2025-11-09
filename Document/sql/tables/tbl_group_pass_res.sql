@@ -22,4 +22,3 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'群组', 'SCHEMA', 'dbo', 'TABLE
 EXEC sp_AddExtendedProperty 'MS_Description', N'资源', 'SCHEMA', 'dbo', 'TABLE', 'tbl_group_pass_res', 'COLUMN', 'pass_res_id';
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_group_pass_res', 'COLUMN', 'create_time';
-EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_group_pass_res', 'COLUMN', 'update_time';

@@ -21,4 +21,3 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'院校', 'SCHEMA', 'dbo', 'TABLE
 EXEC sp_AddExtendedProperty 'MS_Description', N'更新描述', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college_change_log', 'COLUMN', 'change_desc';
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college_change_log', 'COLUMN', 'create_time';
-EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college_change_log', 'COLUMN', 'update_time';
