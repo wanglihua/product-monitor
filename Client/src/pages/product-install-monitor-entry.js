@@ -27,6 +27,8 @@ const ProductInstallMonitorEntry = () => {
     const [state, setState] = useState({
         productInstallMonitorEntryList: [],
         productInstallMonitorEntryCount: 0,
+        collegeName: "",
+        productName: "",
     });
 
     const loadProductInstallMonitorEntryList = () => {
@@ -42,6 +44,8 @@ const ProductInstallMonitorEntry = () => {
                     ...pre,
                     productInstallMonitorEntryList: res.data.productInstallMonitorEntryList,
                     productInstallMonitorEntryCount: res.data.productInstallMonitorEntryCount,
+                    collegeName: res.data.collegeName,
+                    productName: res.data.productName,
                 };
             });
         });
@@ -95,7 +99,7 @@ const ProductInstallMonitorEntry = () => {
 
     return (
         <div>
-            <Title title="院校使用详情" parentMenuKeys={["data-monitor"]} menuKey="product-install-monitor" breadcrumb={[
+            <Title title={`院校使用详情 学校:${state.collegeName} 产品:${state.productName}`} parentMenuKeys={["data-monitor"]} menuKey="product-install-monitor" breadcrumb={[
                 {title: "数据监测"},
                 {
                     title: <span style={{cursor: "pointer"}} onClick={() => {

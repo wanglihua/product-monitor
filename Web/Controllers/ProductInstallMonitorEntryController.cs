@@ -38,9 +38,35 @@ public class ProductInstallMonitorEntryController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ProductInstallMonitorEntryListParam param)
     {
-        IQueryable<ProductInstallMonitorEntryEntity> query = db.Set<ProductInstallMonitorEntryEntity>();
+        ValidationUtil.Validate<ProductInstallMonitorEntryListParamValidator, ProductInstallMonitorEntryListParam>(param);
 
         long productInstallMonitorId = param.ProductInstallMonitorId;
+        var productInstallMonitor = db.Set<ProductInstallMonitorEntity>().Find(productInstallMonitorId);
+        if (productInstallMonitor == null)
+        {
+            throw new ValidationException($"指定的安装检测#{productInstallMonitorId}不存在!");
+        }
+
+        long collegeId = productInstallMonitor.CollegeId;
+        var college = db.Set<CollegeEntity>().Find(collegeId);
+        if (college == null)
+        {
+            throw new ValidationException($"指定学校#{collegeId}不存在!");
+        }
+
+        string collegeName = college.Name;
+
+        long productId = productInstallMonitor.ProductId;
+        var product = db.Set<ProductEntity>().Find(productId);
+        if (product == null)
+        {
+            throw new ValidationException($"指定产品#{productId}不存在!");
+        }
+
+        string productName = product.Name;
+
+        IQueryable<ProductInstallMonitorEntryEntity> query = db.Set<ProductInstallMonitorEntryEntity>();
+
         query = query.Where(p => p.ProductMonitorId == productInstallMonitorId);
 
         int productInstallMonitorEntryCount = query.Count();
@@ -97,6 +123,8 @@ public class ProductInstallMonitorEntryController : Controller
             Data = new Dictionary<string, object> {
                 ["productInstallMonitorEntryList"] = productInstallMonitorEntryItemList,
                 ["productInstallMonitorEntryCount"] = productInstallMonitorEntryCount,
+                ["collegeName"] = collegeName,
+                ["productName"] = productName,
             },
         });
     }
