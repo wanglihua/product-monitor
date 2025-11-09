@@ -326,6 +326,21 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
     public static readonly ActionLogType ExceptionMonitorDelete = new(0128_0000, "异常检测删除");
 
     /// <summary>
+    /// 群组创建
+    /// </summary>
+    public static readonly ActionLogType GroupCreate = new(0130_0000, "群组创建");
+
+    /// <summary>
+    /// 群组更新
+    /// </summary>
+    public static readonly ActionLogType GroupUpdate = new(0132_0000, "群组更新");
+
+    /// <summary>
+    /// 群组删除
+    /// </summary>
+    public static readonly ActionLogType GroupDelete = new(0134_0000, "群组删除");
+
+    /// <summary>
     /// None
     /// </summary>
     public static readonly ActionLogType None = new(0, "");
@@ -395,6 +410,9 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
         ExceptionMonitorCreate,
         ExceptionMonitorUpdate,
         ExceptionMonitorDelete,
+        GroupCreate,
+        GroupUpdate,
+        GroupDelete,
     };
 
     private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
