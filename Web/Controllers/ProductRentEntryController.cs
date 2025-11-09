@@ -50,15 +50,6 @@ public class ProductRentEntryController : Controller
     {
         ValidationUtil.Validate<ProductRentEntryListParamValidator, ProductRentEntryListParam>(param);
 
-        IQueryable<ProductRentEntryJoinItem> query = db.Set<ProductRentEntryEntity>()
-            .Join(db.Set<UserEntity>(),
-                pse => pse.UserId,
-                u => u.Id,
-                (pse, u) => new ProductRentEntryJoinItem {
-                    ProductRentEntry = pse,
-                    User = u,
-                });
-
         long productRentId = param.ProductRentId;
         var productRent = db.Set<ProductRentEntity>().Find(productRentId);
         if (productRent == null)
@@ -83,6 +74,15 @@ public class ProductRentEntryController : Controller
         }
 
         string productName = product.Name;
+
+        IQueryable<ProductRentEntryJoinItem> query = db.Set<ProductRentEntryEntity>()
+            .Join(db.Set<UserEntity>(),
+                pse => pse.UserId,
+                u => u.Id,
+                (pse, u) => new ProductRentEntryJoinItem {
+                    ProductRentEntry = pse,
+                    User = u,
+                });
 
         query = query.Where(p => p.ProductRentEntry.ProductRentId == productRentId);
 

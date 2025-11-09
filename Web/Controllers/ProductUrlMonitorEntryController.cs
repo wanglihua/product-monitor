@@ -38,13 +38,35 @@ public class ProductUrlMonitorEntryController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ProductUrlMonitorEntryListParam param)
     {
+        ValidationUtil.Validate<ProductUrlMonitorEntryListParamValidator, ProductUrlMonitorEntryListParam>(param);
+
+        long productUrlMonitorId = param.ProductUrlMonitorId;
+        var productUrlMonitor = db.Set<ProductUrlMonitorEntity>().Find(productUrlMonitorId);
+        if (productUrlMonitor == null)
+        {
+            throw new ValidationException($"指定的网站监测#{productUrlMonitorId}不存在!");
+        }
+
+        long collegeId = productUrlMonitor.CollegeId;
+        var college = db.Set<CollegeEntity>().Find(collegeId);
+        if (college == null)
+        {
+            throw new ValidationException($"指定学校#{collegeId}不存在!");
+        }
+
+        string collegeName = college.Name;
+
+        long productId = productUrlMonitor.ProductId;
+        var product = db.Set<ProductEntity>().Find(productId);
+        if (product == null)
+        {
+            throw new ValidationException($"指定产品#{productId}不存在!");
+        }
+
+        string productName = product.Name;
+
         IQueryable<ProductUrlMonitorEntryEntity> query = db.Set<ProductUrlMonitorEntryEntity>();
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(p => p.Name.Contains(nameQuery));
-        // }
 
         int productUrlMonitorEntryCount = query.Count();
 
@@ -100,6 +122,8 @@ public class ProductUrlMonitorEntryController : Controller
             Data = new Dictionary<string, object> {
                 ["productUrlMonitorEntryList"] = productUrlMonitorEntryItemList,
                 ["productUrlMonitorEntryCount"] = productUrlMonitorEntryCount,
+                ["collegeName"] = collegeName,
+                ["productName"] = productName,
             },
         });
     }

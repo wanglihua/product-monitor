@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Space, Table} from 'antd';
 import {ReloadOutlined} from '@ant-design/icons';
-import {useNavigate} from "react-router";
+import {useParams, useNavigate} from "react-router";
 import ProductUrlMonitorEntryDetail from "./product-url-monitor-entry-detail";
 
 import useSiteContext from "../site/site-context";
@@ -9,12 +9,15 @@ import Title from "../site/title";
 
 const ProductUrlMonitorEntry = () => {
 
+    const params = useParams();
+    const productUrlMonitorId = params.productUrlMonitorId;
+    
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        productUrlMonitorId: productUrlMonitorId,
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -25,6 +28,8 @@ const ProductUrlMonitorEntry = () => {
     const [state, setState] = useState({
         productUrlMonitorEntryList: [],
         productUrlMonitorEntryCount: 0,
+        collegeName: "",
+        productName: "",
     });
 
     const loadProductUrlMonitorEntryList = () => {
@@ -40,6 +45,8 @@ const ProductUrlMonitorEntry = () => {
                     ...pre,
                     productUrlMonitorEntryList: res.data.productUrlMonitorEntryList,
                     productUrlMonitorEntryCount: res.data.productUrlMonitorEntryCount,
+                    collegeName: res.data.collegeName,
+                    productName: res.data.productName,
                 };
             });
         });
@@ -90,11 +97,9 @@ const ProductUrlMonitorEntry = () => {
         loadProductUrlMonitorEntryList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
-
     return (
         <div>
-            <Title title="网站监测详情" parentMenuKeys={["data-monitor"]} menuKey="product-url-monitor" breadcrumb={[
+            <Title title={`网站监测详情 学校:${state.collegeName} 产品:${state.productName}`} parentMenuKeys={["data-monitor"]} menuKey="product-url-monitor" breadcrumb={[
                 {title: "数据监测"},
                 {
                     title: <span style={{cursor: "pointer"}} onClick={() => {
