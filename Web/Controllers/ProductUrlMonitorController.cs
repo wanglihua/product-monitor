@@ -33,35 +33,65 @@ public class ProductUrlMonitorController : Controller
         this.actionLogService = actionLogService;
     }
 
+    private class ProductUrlMonitorJoinItem
+    {
+        public ProductUrlMonitorEntity ProductUrlMonitor { get; set; } = new();
+
+        public CollegeEntity College { get; set; } = new();
+
+        public ProductEntity Product { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/product-url-monitor/list")]
     [Transactional(false)]
     public IActionResult List([FromBody] ProductUrlMonitorListParam param)
     {
-        IQueryable<ProductUrlMonitorEntity> query = db.Set<ProductUrlMonitorEntity>();
+        IQueryable<ProductUrlMonitorJoinItem> query = db.Set<ProductUrlMonitorEntity>()
+            .Join(db.Set<CollegeEntity>(),
+                pum => pum.CollegeId,
+                c => c.Id,
+                (pum, c) => new ProductUrlMonitorJoinItem {
+                    ProductUrlMonitor = pum,
+                    College = c,
+                })
+            .Join(db.Set<ProductEntity>(),
+                pum => pum.ProductUrlMonitor.ProductId,
+                p => p.Id,
+                (pum, p) => new ProductUrlMonitorJoinItem {
+                    ProductUrlMonitor = pum.ProductUrlMonitor,
+                    College = pum.College,
+                    Product = p,
+                });
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(p => p.Name.Contains(nameQuery));
-        // }
+        if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
+        {
+            string collegeNameQuery = param.CollegeNameQuery.Trim();
+            query = query.Where(e => e.College.Name.Contains(collegeNameQuery));
+        }
+
+        if (string.IsNullOrWhiteSpace(param.ProductNameQuery) == false)
+        {
+            string productNameQuery = param.ProductNameQuery.Trim();
+            query = query.Where(e => e.Product.Name.Contains(productNameQuery));
+        }
 
         int productUrlMonitorCount = query.Count();
 
         // 排序字段
-        Expression<Func<ProductUrlMonitorEntity, object>> sortField = e => e.Id;
+        Expression<Func<ProductUrlMonitorJoinItem, object>> sortField = e => e.ProductUrlMonitor.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
             if (sortFieldParam == nameof(ProductUrlMonitorListItem.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.ProductUrlMonitor.CreateTime;
             }
 
             if (sortFieldParam == nameof(ProductUrlMonitorListItem.UpdateTime).ToUpper())
             {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.ProductUrlMonitor.UpdateTime;
             }
         }
 
@@ -83,14 +113,14 @@ public class ProductUrlMonitorController : Controller
 
         var productUrlMonitorItemList = productUrlMonitorList
             .Select(e => new ProductUrlMonitorListItem {
-                Id = e.Id,
-                CollegeId = e.CollegeId,
-                ProductId = e.ProductId,
-                ProductUrlType = e.ProductUrlType.Name,
-                TaskCount = e.TaskCount,
-                TeacherCount = e.TeacherCount,
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.ProductUrlMonitor.Id,
+                CollegeName = e.College.Name,
+                ProductName = e.Product.Name,
+                ProductUrlType = e.ProductUrlMonitor.ProductUrlType.Name,
+                TaskCount = e.ProductUrlMonitor.TaskCount,
+                TeacherCount = e.ProductUrlMonitor.TeacherCount,
+                CreateTime = e.ProductUrlMonitor.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ProductUrlMonitor.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
@@ -140,65 +170,6 @@ public class ProductUrlMonitorController : Controller
             Success = true,
             Message = "success",
             Data = model,
-        });
-    }
-
-    [HttpPost]
-    [Route("/api/product-url-monitor/save")]
-    [Transactional(true)]
-    public IActionResult Save([FromBody] ProductUrlMonitorDetailModel model)
-    {
-        ValidationUtil.Validate<ProductUrlMonitorDetailModelValidator, ProductUrlMonitorDetailModel>(model);
-
-        long productUrlMonitorId = model.Id;
-        bool isCreate = productUrlMonitorId == 0;
-
-        ProductUrlMonitorEntity? productUrlMonitor;
-        if (isCreate == true)
-        {
-            productUrlMonitor = new ProductUrlMonitorEntity();
-        }
-        else
-        {
-            productUrlMonitor = db.Set<ProductUrlMonitorEntity>().Find(productUrlMonitorId);
-            if (productUrlMonitor == null)
-            {
-                throw new ValidationException($"指定的网站监测#{productUrlMonitorId}不存在!");
-            }
-        }
-
-        productUrlMonitor.CollegeId = model.CollegeId;
-        productUrlMonitor.ProductId = model.ProductId;
-        productUrlMonitor.ProductUrlType = ProductUrlType.GetById(model.ProductUrlType);
-        productUrlMonitor.TaskCount = model.TaskCount;
-        productUrlMonitor.TeacherCount = model.TeacherCount;
-
-        if (isCreate == true)
-        {
-            db.Add<ProductUrlMonitorEntity>(productUrlMonitor);
-        }
-        else
-        {
-            db.Update<ProductUrlMonitorEntity>(productUrlMonitor);
-        }
-
-        db.SaveChanges();
-
-        long loginUserId = userLoginService.GetLoginUserId();
-        if (isCreate == true)
-        {
-            string actionDesc = $"#{productUrlMonitor.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.ProductUrlMonitorCreate, actionDesc);
-        }
-        else
-        {
-            string actionDesc = $"#{productUrlMonitor.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.ProductUrlMonitorUpdate, actionDesc);
-        }
-
-        return Json(new JsonResultData {
-            Success = true,
-            Message = "保存成功！",
         });
     }
 
