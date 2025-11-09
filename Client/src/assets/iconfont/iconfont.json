@@ -1,240 +1,177 @@
 {
-  "id": "4783790",
-  "name": "jcjy_chat",
+  "id": "5061026",
+  "name": "jcjy_product_monitor",
   "font_family": "iconfont",
   "css_prefix_text": "icon-",
   "description": "",
   "glyphs": [
     {
-      "icon_id": "24138656",
-      "name": "knowledge1",
-      "font_class": "knowledge1",
-      "unicode": "e91f",
-      "unicode_decimal": 59679
+      "icon_id": "18426750",
+      "name": "pass-res-result",
+      "font_class": "pass-res-result",
+      "unicode": "e6d5",
+      "unicode_decimal": 59093
     },
     {
-      "icon_id": "40127298",
-      "name": "knowledge2",
-      "font_class": "knowledge2",
-      "unicode": "e90e",
-      "unicode_decimal": 59662
+      "icon_id": "30896630",
+      "name": "pass-res",
+      "font_class": "pass-res",
+      "unicode": "e6ab",
+      "unicode_decimal": 59051
     },
     {
-      "icon_id": "40964088",
-      "name": "knowledge3",
-      "font_class": "knowledge3",
-      "unicode": "e7a7",
-      "unicode_decimal": 59303
+      "icon_id": "5270862",
+      "name": "group",
+      "font_class": "group",
+      "unicode": "e616",
+      "unicode_decimal": 58902
     },
     {
-      "icon_id": "288770",
-      "name": "refresh3",
-      "font_class": "refresh3",
-      "unicode": "e646",
-      "unicode_decimal": 58950
+      "icon_id": "7533283",
+      "name": "user",
+      "font_class": "user",
+      "unicode": "e603",
+      "unicode_decimal": 58883
     },
     {
-      "icon_id": "9793502",
-      "name": "refresh2",
-      "font_class": "refresh2",
-      "unicode": "e702",
-      "unicode_decimal": 59138
-    },
-    {
-      "icon_id": "39763782",
-      "name": "refresh1",
-      "font_class": "refresh1",
-      "unicode": "e735",
-      "unicode_decimal": 59189
-    },
-    {
-      "icon_id": "230482",
-      "name": "translate1",
-      "font_class": "translate1",
-      "unicode": "e75a",
-      "unicode_decimal": 59226
-    },
-    {
-      "icon_id": "3303916",
-      "name": "translate2",
-      "font_class": "translate2",
-      "unicode": "e611",
-      "unicode_decimal": 58897
-    },
-    {
-      "icon_id": "22779597",
-      "name": "translate3",
-      "font_class": "translate3",
-      "unicode": "e65b",
-      "unicode_decimal": 58971
-    },
-    {
-      "icon_id": "7239744",
-      "name": "edit3",
-      "font_class": "edit3",
-      "unicode": "e72e",
-      "unicode_decimal": 59182
-    },
-    {
-      "icon_id": "19100231",
-      "name": "edit2",
-      "font_class": "edit2",
-      "unicode": "e645",
-      "unicode_decimal": 58949
-    },
-    {
-      "icon_id": "36737868",
-      "name": "edit1",
-      "font_class": "edit1",
-      "unicode": "e61d",
-      "unicode_decimal": 58909
-    },
-    {
-      "icon_id": "5004907",
-      "name": "plane1",
-      "font_class": "plane1",
-      "unicode": "e60c",
-      "unicode_decimal": 58892
-    },
-    {
-      "icon_id": "14754010",
-      "name": "plane2",
-      "font_class": "plane2",
+      "icon_id": "42728049",
+      "name": "product-install-monitor",
+      "font_class": "product-install-monitor",
       "unicode": "e600",
       "unicode_decimal": 58880
     },
     {
-      "icon_id": "42135928",
-      "name": "plane3",
-      "font_class": "plane3",
-      "unicode": "e6f6",
-      "unicode_decimal": 59126
+      "icon_id": "3217914",
+      "name": "product-url",
+      "font_class": "product-url",
+      "unicode": "e629",
+      "unicode_decimal": 58921
     },
     {
-      "icon_id": "24696933",
-      "name": "image-add1",
-      "font_class": "image-add1",
-      "unicode": "e8b3",
-      "unicode_decimal": 59571
+      "icon_id": "6704741",
+      "name": "college",
+      "font_class": "college",
+      "unicode": "e691",
+      "unicode_decimal": 59025
     },
     {
-      "icon_id": "39249454",
-      "name": "image-add2",
-      "font_class": "image-add2",
-      "unicode": "eb89",
-      "unicode_decimal": 60297
+      "icon_id": "15643716",
+      "name": "product",
+      "font_class": "product",
+      "unicode": "e6aa",
+      "unicode_decimal": 59050
     },
     {
-      "icon_id": "39249455",
-      "name": "image-add3",
-      "font_class": "image-add3",
-      "unicode": "eb8a",
-      "unicode_decimal": 60298
+      "icon_id": "23529222",
+      "name": "product-sale",
+      "font_class": "product-sale",
+      "unicode": "e601",
+      "unicode_decimal": 58881
     },
     {
-      "icon_id": "7239470",
-      "name": "file-add1",
-      "font_class": "file-add1",
-      "unicode": "e6f1",
-      "unicode_decimal": 59121
+      "icon_id": "24978630",
+      "name": "product-rent",
+      "font_class": "product-rent",
+      "unicode": "e683",
+      "unicode_decimal": 59011
     },
     {
-      "icon_id": "12267743",
-      "name": "file-add2",
-      "font_class": "file-add2",
-      "unicode": "e804",
-      "unicode_decimal": 59396
+      "icon_id": "43067553",
+      "name": "product-eval",
+      "font_class": "product-eval",
+      "unicode": "e64a",
+      "unicode_decimal": 58954
     },
     {
-      "icon_id": "20089566",
-      "name": "file-add3",
-      "font_class": "file-add3",
-      "unicode": "e711",
-      "unicode_decimal": 59153
+      "icon_id": "2173690",
+      "name": "service-analytics",
+      "font_class": "service-analytics",
+      "unicode": "e91a",
+      "unicode_decimal": 59674
     },
     {
-      "icon_id": "6151293",
-      "name": "plus1",
-      "font_class": "plus1",
-      "unicode": "e829",
-      "unicode_decimal": 59433
+      "icon_id": "2297461",
+      "name": "project-analytics",
+      "font_class": "project-analytics",
+      "unicode": "e635",
+      "unicode_decimal": 58933
     },
     {
-      "icon_id": "7834345",
-      "name": "plus2",
-      "font_class": "plus2",
-      "unicode": "e8fe",
-      "unicode_decimal": 59646
-    },
-    {
-      "icon_id": "14441174",
-      "name": "plus3",
-      "font_class": "plus3",
-      "unicode": "e694",
-      "unicode_decimal": 59028
-    },
-    {
-      "icon_id": "840629",
-      "name": "search1",
-      "font_class": "search1",
-      "unicode": "e61c",
-      "unicode_decimal": 58908
-    },
-    {
-      "icon_id": "9207946",
-      "name": "search2",
-      "font_class": "search2",
-      "unicode": "e651",
-      "unicode_decimal": 58961
-    },
-    {
-      "icon_id": "10909319",
-      "name": "search3",
-      "font_class": "search3",
+      "icon_id": "2072627",
+      "name": "product-update",
+      "font_class": "product-update",
       "unicode": "e613",
       "unicode_decimal": 58899
     },
     {
-      "icon_id": "7417430",
-      "name": "tool1",
-      "font_class": "tool1",
-      "unicode": "e609",
-      "unicode_decimal": 58889
+      "icon_id": "3191472",
+      "name": "product-sale-service",
+      "font_class": "product-sale-service",
+      "unicode": "e677",
+      "unicode_decimal": 58999
     },
     {
-      "icon_id": "22875561",
-      "name": "tool2",
-      "font_class": "tool2",
-      "unicode": "e647",
-      "unicode_decimal": 58951
+      "icon_id": "19633437",
+      "name": "product-special-service",
+      "font_class": "product-special-service",
+      "unicode": "e623",
+      "unicode_decimal": 58915
     },
     {
-      "icon_id": "34453293",
-      "name": "tool3",
-      "font_class": "tool3",
-      "unicode": "e86f",
-      "unicode_decimal": 59503
+      "icon_id": "1624267",
+      "name": "product-url-monitor",
+      "font_class": "product-url-monitor",
+      "unicode": "e68e",
+      "unicode_decimal": 59022
     },
     {
-      "icon_id": "6807703",
-      "name": "chat1",
-      "font_class": "chat1",
-      "unicode": "ecb2",
-      "unicode_decimal": 60594
+      "icon_id": "34803252",
+      "name": "exception-monitor",
+      "font_class": "exception-monitor",
+      "unicode": "e74f",
+      "unicode_decimal": 59215
     },
     {
-      "icon_id": "6807707",
-      "name": "chat2",
-      "font_class": "chat2",
-      "unicode": "ecb4",
-      "unicode_decimal": 60596
+      "icon_id": "40624909",
+      "name": "product-install",
+      "font_class": "product-install",
+      "unicode": "e7b6",
+      "unicode_decimal": 59318
     },
     {
-      "icon_id": "22049959",
-      "name": "chat3",
-      "font_class": "chat3",
-      "unicode": "e991",
-      "unicode_decimal": 59793
+      "icon_id": "17755610",
+      "name": "system-manage",
+      "font_class": "system-manage",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "10359987",
+      "name": "basic-setting",
+      "font_class": "basic-setting",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "28410704",
+      "name": "project-manage",
+      "font_class": "project-manage",
+      "unicode": "e681",
+      "unicode_decimal": 59009
+    },
+    {
+      "icon_id": "3436675",
+      "name": "product-service",
+      "font_class": "product-service",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "29668789",
+      "name": "data-monitor",
+      "font_class": "data-monitor",
+      "unicode": "e7da",
+      "unicode_decimal": 59354
     }
   ]
 }
