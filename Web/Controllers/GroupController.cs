@@ -200,6 +200,16 @@ public class GroupController : Controller
             throw new ValidationException($"指定的群组#{groupId}不存在!");
         }
 
+        var groupUserExist = db.Set<GroupUserEntity>()
+            .Where(e => e.GroupId == groupId)
+            .OrderBy(e => e.GroupId)
+            .Take(1)
+            .SingleOrDefault();
+        if (groupUserExist != null)
+        {
+            throw new ValidationException("请先删除群组成员, 再删除群组!");
+        }
+
         db.Remove<GroupEntity>(group);
         db.SaveChanges();
 

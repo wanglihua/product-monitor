@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {useNavigate} from "react-router";
+import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import GroupDetail from "./group-detail";
 
 import useSiteContext from "../site/site-context";
@@ -9,6 +10,8 @@ import Title from "../site/title";
 const Group = () => {
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         nameQuery: "",
@@ -77,6 +80,12 @@ const Group = () => {
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const groupId = record.id;
+                            navigate(`/group-user/${groupId}`);
+                        }}>
+                            <UnorderedListOutlined/>群组成员
+                        </Button>
+                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                            const groupId = record.id;
                             groupDetail.current.show(groupId);
                         }}>
                             <EditOutlined/>编辑
@@ -114,11 +123,12 @@ const Group = () => {
     return (
         <div>
             <Title title="群组" menuKey="group" breadcrumb={[
+                {title: "系统管理"},
                 {title: "群组"},
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={nameQueryRef} addonBefore="群组名称" placeholder="群组名称查询" style={{width: 320}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}

@@ -2,7 +2,6 @@ import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Se
 import {CloseCircleOutlined, SaveOutlined} from "@ant-design/icons";
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
-import dayjs from "dayjs";
 
 const GroupDetailInner = (props) => {
     const groupId = props.groupId;
@@ -29,7 +28,7 @@ const GroupDetailInner = (props) => {
     return (
         <Modal
             title={title.current}
-            width="680px"
+            width="580px"
             destroyOnClose={true}
             footer={null}
             open={open}
