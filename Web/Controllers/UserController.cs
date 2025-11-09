@@ -21,18 +21,21 @@ public class UserController : Controller
     private readonly Db db;
     private readonly UserLoginService userLoginService;
     private readonly PasswordService passwordService;
+    private readonly AdminUserService adminUserService;
     private readonly ActionLogService actionLogService;
 
     public UserController(
         Db db,
         UserLoginService userLoginService,
         PasswordService passwordService,
+        AdminUserService adminUserService,
         ActionLogService actionLogService
     )
     {
         this.db = db;
         this.userLoginService = userLoginService;
         this.passwordService = passwordService;
+        this.adminUserService = adminUserService;
         this.actionLogService = actionLogService;
     }
 
@@ -198,6 +201,7 @@ public class UserController : Controller
         }
 
         long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
 
         UserEntity? user = null;
         string loginName = model.LoginName.Trim();
@@ -240,6 +244,13 @@ public class UserController : Controller
         user.UserName = model.UserName;
         if (string.IsNullOrWhiteSpace(model.Password) == false)
         {
+            // 判断是不是管理员, 管理员的密码, 只有管理员才能重置
+            bool isAdminUser = adminUserService.IsAdminUser(user.Id); // 如果是新创建用户, 肯定会返回 false
+            if (isAdminUser == true && isAdminLogin == false)
+            {
+                throw new ValidationException("只有管理员才能重新设置管理员密码!");
+            }
+
             string salt = passwordService.GenerateSalt();
 
             user.Salt = salt;
