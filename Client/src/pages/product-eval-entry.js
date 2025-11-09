@@ -120,7 +120,7 @@ const ProductEvalEntry = () => {
                                     showSuccess(res.message);
 
                                     if (res.data && res.data.productEvalDeleted === true) {
-                                        navigate("/product-rent");
+                                        navigate("/product-eval");
                                         return;
                                     }
 

@@ -418,3 +418,7 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
     {
     }
 }
+
+public class ActionLogTypeJsonConverter : CodeTypeJsonConverter<ActionLogType>
+{
+}

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table, Tag} from 'antd';
+import {Button, Input, Select, Space, Table, Tag} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 
 import useSiteContext from "../site/site-context";
@@ -20,6 +20,7 @@ const ActionLog = () => {
     const [state, setState] = useState({
         actionLogList: [],
         actionLogCount: 0,
+        actionLogTypeList: [],
     });
 
     const loadLoginLogList = () => {
@@ -35,6 +36,7 @@ const ActionLog = () => {
                     ...pre,
                     actionLogList: res.data.actionLogList,
                     actionLogCount: res.data.actionLogCount,
+                    actionLogTypeList: res.data.actionLogTypeList,
                 };
             });
         });
@@ -82,6 +84,7 @@ const ActionLog = () => {
     }, [JSON.stringify(listParam)]);
 
     const loginNameQueryRef = useRef();
+    const actionLogTypeQueryRef = useRef();
 
     return (
         <div>
@@ -92,16 +95,28 @@ const ActionLog = () => {
             <div>
                 <Space>
                     <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名或用户名查询" style={{width: 380}}/>
+                    <Select
+                        showSearch={true}
+                        optionFilterProp="label"
+                        notFoundContent={"暂无数据, 请输入正确的搜索条件"}
+                        options={state.actionLogTypeList}
+                        placeholder="操作类型查询"
+                        style={{width: 150}}
+                        onSelect={(val) => {
+                            actionLogTypeQueryRef.current = val;
+                        }}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
                             const loginNameQuery = loginNameQueryRef.current.input.value;
+                            const actionLogTypeQuery = actionLogTypeQueryRef.current;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
                                     loginNameQuery: loginNameQuery,
+                                    actionLogTypeQuery: actionLogTypeQuery,
                                     current_millis: Date.now(),
                                 };
                             });

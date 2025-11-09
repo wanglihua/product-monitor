@@ -40,6 +40,12 @@ public class ActionLogController : Controller
                 (actionLog, user) => new ActionLogJoinItem { ActionLog = actionLog, User = user }
             );
 
+        if (param.ActionLogTypeQuery != null && param.ActionLogTypeQuery != ActionLogType.None)
+        {
+            var actionLogTypeQuery = param.ActionLogTypeQuery;
+            query = query.Where(e => e.ActionLog.Type == actionLogTypeQuery);
+        }
+
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
             string loginNameQuery = param.LoginNameQuery.Trim();
@@ -75,12 +81,27 @@ public class ActionLogController : Controller
                 CreateTime = e.ActionLog.CreateTime.ToString("yyyy-MM-dd HH:mm"),
             }).ToList();
 
+        var actionLogTypeList = new List<Dictionary<string, object>> {
+            new Dictionary<string, object> {
+                ["value"] = "",
+                ["label"] = "类型查询",
+            }
+        };
+
+        actionLogTypeList.AddRange(ActionLogType.GetList()
+            .Select(e => new Dictionary<string, object> {
+                ["value"] = e.Id,
+                ["label"] = e.Name,
+            })
+        );
+
         return Json(new JsonResultData {
             Success = true,
             Message = "success",
             Data = new Dictionary<string, object> {
                 { "actionLogList", actionLogItemList },
                 { "actionLogCount", actionLogCount },
+                { "actionLogTypeList", actionLogTypeList },
             }
         });
     }

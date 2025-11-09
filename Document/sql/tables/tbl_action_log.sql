@@ -9,7 +9,8 @@ CREATE TABLE tbl_action_log
     create_time DATETIME      NOT NULL,
 
     CONSTRAINT pk_action_log PRIMARY KEY (id),
-    CONSTRAINT fk_action_log_user_id FOREIGN KEY (user_id) REFERENCES tbl_user (id)
+    CONSTRAINT fk_action_log_user_id FOREIGN KEY (user_id) REFERENCES tbl_user (id),
+    INDEX ix_action_log_type_code (type_code),
 );
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'操作日志', 'SCHEMA', 'dbo', 'TABLE', 'tbl_action_log';
