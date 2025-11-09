@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
+import {Button, Input, Select, Space, Table} from 'antd';
 import {PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 
 import useSiteContext from "../site/site-context";
@@ -7,7 +7,7 @@ import Title from "../site/title";
 
 const PassRes = () => {
 
-    const {post, showError, showSuccess} = useSiteContext();
+    const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
         nameQuery: "",
@@ -21,6 +21,7 @@ const PassRes = () => {
     const [state, setState] = useState({
         passResList: [],
         passResCount: 0,
+        passResCateList: [],
     });
 
     const loadPassResList = () => {
@@ -36,6 +37,7 @@ const PassRes = () => {
                     ...pre,
                     passResList: res.data.passResList,
                     passResCount: res.data.passResCount,
+                    passResCateList: res.data.passResCateList,
                 };
             });
         });
@@ -84,26 +86,32 @@ const PassRes = () => {
     }, [JSON.stringify(listParam)]);
 
     const nameQueryRef = useRef();
+    const cateIdQueryRef = useRef();
 
     return (
         <div>
-            <Title title="授权码资源" parentMenuKeys={["system-manage"]} menuKey="pass-res" breadcrumb={[
+            <Title title="授权资源" parentMenuKeys={["system-manage"]} menuKey="pass-res" breadcrumb={[
                 {title: "系统管理"},
                 {title: "授权码资源"},
             ]}/>
             <div>
                 <Space>
                     <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Select options={state.passResCateList} placeholder="类别查询" style={{width: 130}} onSelect={(val) => {
+                        cateIdQueryRef.current = val;
+                    }}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
                             const nameQuery = nameQueryRef.current.input.value;
+                            const cateIdQuery = cateIdQueryRef.current;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
                                     nameQuery: nameQuery,
+                                    cateIdQuery: cateIdQuery,
                                     current_millis: Date.now(),
                                 };
                             });
@@ -115,16 +123,18 @@ const PassRes = () => {
                         color="default"
                         icon={<PlusCircleOutlined style={{color: "green"}}/>}
                         onClick={(e) => {
-                            post("/api/pass-res/init/data", {}, function (response) {
-                                const res = response.data;
-                                if (res.success === false) {
-                                    showError(res.message);
-                                    return;
-                                }
+                            showConfirm("确认要初始化最新授权资源数据吗！", "确认", () => {
+                                post("/api/pass-res/init/data", {}, function (response) {
+                                    const res = response.data;
+                                    if (res.success === false) {
+                                        showError(res.message);
+                                        return;
+                                    }
 
-                                showSuccess(res.message);
+                                    showSuccess(res.message);
 
-                                loadPassResList();
+                                    loadPassResList();
+                                });
                             });
                         }}
                     >

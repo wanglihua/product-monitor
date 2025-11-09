@@ -12,7 +12,7 @@ CREATE TABLE tbl_pass_res
     CONSTRAINT fk_pass_res_cate_id FOREIGN KEY (cate_id) REFERENCES tbl_pass_res_cate (id)
 );
 
-EXEC sp_AddExtendedProperty 'MS_Description', N'授权码资源', 'SCHEMA', 'dbo', 'TABLE', 'tbl_pass_res';
+EXEC sp_AddExtendedProperty 'MS_Description', N'授权资源', 'SCHEMA', 'dbo', 'TABLE', 'tbl_pass_res';
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_pass_res', 'COLUMN', 'id';
 

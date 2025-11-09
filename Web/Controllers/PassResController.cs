@@ -78,7 +78,7 @@ public class PassResController : Controller
 
         if (param.CateIdQuery > 0)
         {
-            var cateIdQuery = param.CateIdQuery;
+            var cateIdQuery = param.CateIdQuery.Value;
             query = query.Where(e => e.PassRes.CateId == cateIdQuery);
         }
 

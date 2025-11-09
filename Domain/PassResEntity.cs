@@ -3,7 +3,7 @@
 namespace Domain;
 
 /// <summary>
-/// 授权码资源
+/// 授权资源
 /// </summary>
 public class PassResEntity : EntityAssignedId
 {
