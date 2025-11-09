@@ -5,6 +5,7 @@ import axios from "axios";
 import React, {useState} from "react";
 import {BrowserRouter} from "react-router";
 import "./app.css";
+import "./assets/iconfont/iconfont.css";
 import Router from "./router";
 import {SiteContext} from "./site/site-context";
 
