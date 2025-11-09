@@ -89,7 +89,6 @@ const ProductInstallMonitorEntry = () => {
         },
         {
             title: "",
-            dataIndex: "",
         },
     ];
 

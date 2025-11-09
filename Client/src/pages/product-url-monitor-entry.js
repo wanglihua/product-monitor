@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {Button, Space, Table} from 'antd';
+import {ReloadOutlined} from '@ant-design/icons';
+import {useNavigate} from "react-router";
 import ProductUrlMonitorEntryDetail from "./product-url-monitor-entry-detail";
 
 import useSiteContext from "../site/site-context";
@@ -9,6 +10,8 @@ import Title from "../site/title";
 const ProductUrlMonitorEntry = () => {
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         nameQuery: "",
@@ -54,74 +57,32 @@ const ProductUrlMonitorEntry = () => {
             },
         },
         {
-            title: "网站监测",
-            dataIndex: "productUrlMonitorId",
-            width: "200px",
+            title: "使用时间",
+            dataIndex: "createTime",
+            width: "150px",
         },
         {
             title: "账号",
             dataIndex: "loginUser",
-            width: "200px",
+            width: "150px",
         },
         {
             title: "密码",
             dataIndex: "loginPassword",
-            width: "200px",
+            width: "150px",
         },
         {
-            title: "使用地址",
+            title: "使用IP",
             dataIndex: "ipAddress",
             width: "200px",
         },
         {
-            title: "省份",
+            title: "使用省份",
             dataIndex: "provinceType",
             width: "200px",
         },
         {
-            title: "创建时间",
-            dataIndex: "createTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
-            dataIndex: "updateTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "操作",
-            render: (text, record, index) => {
-                return (
-                    <Space>
-                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            const productUrlMonitorEntryId = record.id;
-                            productUrlMonitorEntryDetail.current.show(productUrlMonitorEntryId);
-                        }}>
-                            <EditOutlined/>编辑
-                        </Button>
-                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/product-url-monitor-entry/delete", {
-                                    id: record.id,
-                                }, function (response) {
-                                    const res = response.data;
-                                    if (res.success !== true) {
-                                        showError(res.message);
-                                        return;
-                                    }
-
-                                    showSuccess(res.message);
-                                    loadProductUrlMonitorEntryList();
-                                });
-                            });
-                        }}>
-                            <DeleteOutlined/>删除
-                        </Button>
-                    </Space>
-                );
-            },
+            title: ""
         },
     ];
 
@@ -133,37 +94,30 @@ const ProductUrlMonitorEntry = () => {
 
     return (
         <div>
-            <Title title="网站监测详情" menuKey="product-url-monitor-entry" breadcrumb={[
+            <Title title="网站监测详情" parentMenuKeys={["data-monitor"]} menuKey="product-url-monitor" breadcrumb={[
+                {title: "数据监测"},
+                {
+                    title: <span style={{cursor: "pointer"}} onClick={() => {
+                        navigate("/product-url-monitor");
+                    }}>网站监测</span>
+                },
                 {title: "网站监测详情"},
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
                     <Button
                         color="default"
-                        icon={<SearchOutlined/>}
+                        icon={<ReloadOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
-
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
                                     current_millis: Date.now(),
                                 };
                             });
                         }}
                     >
-                        查询
-                    </Button>
-                    <Button
-                        color="default"
-                        icon={<PlusCircleOutlined style={{color: "green"}}/>}
-                        onClick={(e) => {
-                            productUrlMonitorEntryDetail.current.show(0);
-                        }}
-                    >
-                        添加
+                        刷新
                     </Button>
                 </Space>
             </div>

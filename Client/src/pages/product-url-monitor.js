@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Select, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
+import {useNavigate} from "react-router";
 import ProductUrlMonitorDetail from "./product-url-monitor-detail";
 
 import useSiteContext from "../site/site-context";
@@ -9,6 +10,8 @@ import Title from "../site/title";
 const ProductUrlMonitor = () => {
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         collegeNameQuery: "",
@@ -96,27 +99,9 @@ const ProductUrlMonitor = () => {
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const productUrlMonitorId = record.id;
-                            productUrlMonitorDetail.current.show(productUrlMonitorId);
+                            navigate(`/product-url-monitor-entry/${productUrlMonitorId}`);
                         }}>
-                            <EditOutlined/>编辑
-                        </Button>
-                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/product-url-monitor/delete", {
-                                    id: record.id,
-                                }, function (response) {
-                                    const res = response.data;
-                                    if (res.success !== true) {
-                                        showError(res.message);
-                                        return;
-                                    }
-
-                                    showSuccess(res.message);
-                                    loadProductUrlMonitorList();
-                                });
-                            });
-                        }}>
-                            <DeleteOutlined/>删除
+                            <UnorderedListOutlined/>查看详情
                         </Button>
                     </Space>
                 );
