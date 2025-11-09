@@ -14,7 +14,8 @@ const ProductInstallMonitor = () => {
     const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        collegeNameQuery: "",
+        productNameQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",

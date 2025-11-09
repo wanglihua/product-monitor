@@ -11,7 +11,8 @@ const ProductUrlMonitor = () => {
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        collegeNameQuery: "",
+        productNameQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -54,41 +55,34 @@ const ProductUrlMonitor = () => {
             },
         },
         {
-            title: "学校",
-            dataIndex: "collegeId",
-            width: "200px",
-        },
-        {
-            title: "产品",
-            dataIndex: "productId",
-            width: "200px",
+            title: "使用时间",
+            dataIndex: "createTime",
+            width: "150px",
         },
         {
             title: "分类",
             dataIndex: "productUrlType",
+            width: "90px",
+        },
+        {
+            title: "学校",
+            dataIndex: "collegeName",
             width: "200px",
+        },
+        {
+            title: "产品",
+            dataIndex: "productName",
+            width: "280px",
+        },
+        {
+            title: "教师账号数量",
+            dataIndex: "teacherCount",
+            width: "120px",
         },
         {
             title: "任务数量",
             dataIndex: "taskCount",
-            width: "200px",
-        },
-        {
-            title: "教师数量",
-            dataIndex: "teacherCount",
-            width: "200px",
-        },
-        {
-            title: "创建时间",
-            dataIndex: "createTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
-            dataIndex: "updateTime",
-            width: "150px",
-            sorter: true,
+            width: "100px",
         },
         {
             title: "操作",
@@ -129,7 +123,8 @@ const ProductUrlMonitor = () => {
         loadProductUrlMonitorList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const collegeNameQueryRef = useRef();
+    const productNameQueryRef = useRef();
 
     return (
         <div>
@@ -139,32 +134,26 @@ const ProductUrlMonitor = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={collegeNameQueryRef} addonBefore="学校名称" placeholder="学校名称查询" style={{width: 280}}/>
+                    <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const collegeNameQuery = collegeNameQueryRef.current.input.value;
+                            const productNameQuery = productNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    collegeNameQuery: collegeNameQuery,
+                                    productNameQuery: productNameQuery,
                                     current_millis: Date.now(),
                                 };
                             });
                         }}
                     >
                         查询
-                    </Button>
-                    <Button
-                        color="default"
-                        icon={<PlusCircleOutlined style={{color: "green"}}/>}
-                        onClick={(e) => {
-                            productUrlMonitorDetail.current.show(0);
-                        }}
-                    >
-                        添加
                     </Button>
                 </Space>
             </div>
