@@ -5,7 +5,7 @@ import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
 
 const GroupUserDetailInner = (props) => {
-    const groupUserId = props.groupUserId;
+    const groupId = props.groupId;
     const open = props.open;
     const self = props.self;
     const loadGroupUserList = props.loadGroupUserList;
@@ -13,23 +13,14 @@ const GroupUserDetailInner = (props) => {
     const {token} = theme.useToken();
     const {post, showSuccess, showError} = useSiteContext();
 
-    const title = useRef("");
-    if (groupUserId === 0) {
-        title.current = "群组成员新增";
-    }
-
-    if (groupUserId > 0) {
-        title.current = "群组成员编辑";
-    }
-
     const [state, setState] = useState({});
 
     const form = useRef();
 
     return (
         <Modal
-            title={title.current}
-            width="680px"
+            title="群组成员添加"
+            width="560px"
             destroyOnClose={true}
             footer={null}
             open={open}
@@ -50,7 +41,7 @@ const GroupUserDetailInner = (props) => {
             afterOpenChange={(open) => {
                 if (open === true) {
                     post("/api/group-user/detail", {
-                        "id": groupUserId
+                        "groupId": groupId
                     }, function (response) {
                         const res = response.data;
                         if (res.success !== true) {
@@ -61,8 +52,7 @@ const GroupUserDetailInner = (props) => {
                         const data = res.data;
 
                         form.current.setFieldsValue({
-                            groupId: data.groupId,
-                            userId: data.userId,
+                            // userId: data.userId,
                         });
                     });
                 }
@@ -112,23 +102,6 @@ const GroupUserDetailInner = (props) => {
                         column={1}
                         labelStyle={{width: "120px"}}
                     >
-                        <Descriptions.Item label="群组">
-                            <Form.Item
-                                name="groupId"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入群组!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="群组"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
                         <Descriptions.Item label="用户">
                             <Form.Item
                                 name="userId"
@@ -172,21 +145,20 @@ class GroupUserDetail extends React.Component {
     constructor(props) {
         super(props);
 
+        this.groupId = props.groupId;
         this.loadGroupUserList = props.loadGroupUserList;
 
         this.state = {
-            groupUserId: 0,
             open: false,
         };
     }
 
-    show = (groupUserId) => {
+    show = (groupId) => {
         this.setState((pre) => {
-           return {
+            return {
                 ...pre,
-                groupUserId: groupUserId,
                 open: true,
-           };
+            };
         });
     }
 
@@ -194,20 +166,19 @@ class GroupUserDetail extends React.Component {
         this.setState((pre) => {
             return {
                 ...pre,
-                groupUserId: 0,
                 open: false,
             };
         });
     }
 
     render() {
-        const groupUserId = this.state.groupUserId;
         const open = this.state.open;
+        const groupId = this.groupId;
         const loadGroupUserList = this.loadGroupUserList;
 
         return (
             <GroupUserDetailInner
-                groupUserId={groupUserId}
+                groupId={groupId}
                 open={open}
                 self={this}
                 loadGroupUserList={loadGroupUserList}

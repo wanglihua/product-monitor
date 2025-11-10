@@ -96,10 +96,10 @@ const PassRes = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
                     <Select options={state.passResCateList} placeholder="类别查询" style={{width: 130}} onSelect={(val) => {
                         cateIdQueryRef.current = val;
                     }}/>
+                    <Input ref={nameQueryRef} addonBefore="资源名称" placeholder="资源名称查询" style={{width: 320}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}

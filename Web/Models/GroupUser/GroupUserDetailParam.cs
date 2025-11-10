@@ -13,6 +13,6 @@ public class GroupUserDetailParamValidator : AbstractValidator<GroupUserDetailPa
 {
     public GroupUserDetailParamValidator()
     {
-        RuleFor(e => e.GroupId).GreaterThan(0).WithMessage("群组Id必须大于0!");
+        RuleFor(e => e.GroupId).GreaterThan(0).WithMessage("群组Id不能为空!");
     }
 }

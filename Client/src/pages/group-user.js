@@ -184,7 +184,7 @@ const GroupUser = () => {
                        }}
                 />
             </div>
-            <GroupUserDetail ref={groupUserDetail} loadGroupUserList={loadGroupUserList}/>
+            <GroupUserDetail ref={groupUserDetail} groupId={groupId} loadGroupUserList={loadGroupUserList}/>
         </div>
     );
 };
