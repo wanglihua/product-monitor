@@ -341,6 +341,36 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
     public static readonly ActionLogType GroupDelete = new(0134_0000, "群组删除");
 
     /// <summary>
+    /// 群组成员添加
+    /// </summary>
+    public static readonly ActionLogType GroupUserAdd = new(0136_0000, "群组成员添加");
+
+    /// <summary>
+    /// 群组成员移除
+    /// </summary>
+    public static readonly ActionLogType GroupUserRemove = new(0140_0000, "群组成员移除");
+
+    /// <summary>
+    /// 群组授权
+    /// </summary>
+    public static readonly ActionLogType GroupPassResGrant = new(0142_0000, "群组授权");
+
+    /// <summary>
+    /// 群组收权
+    /// </summary>
+    public static readonly ActionLogType GroupPassResRevoke = new(0146_0000, "群组收权");
+
+    /// <summary>
+    /// 用户授权
+    /// </summary>
+    public static readonly ActionLogType UserPassResGrant = new(0148_0000, "用户授权");
+
+    /// <summary>
+    /// 用户收权
+    /// </summary>
+    public static readonly ActionLogType UserPassResRevoke = new(0152_0000, "用户收权");
+
+    /// <summary>
     /// None
     /// </summary>
     public static readonly ActionLogType None = new(0, "");
@@ -413,6 +443,12 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
         GroupCreate,
         GroupUpdate,
         GroupDelete,
+        GroupUserAdd,
+        GroupUserRemove,
+        GroupPassResGrant,
+        GroupPassResRevoke,
+        UserPassResGrant,
+        UserPassResRevoke,
     };
 
     private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
