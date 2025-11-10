@@ -66,7 +66,7 @@ const GroupUser = () => {
         {
             title: "登录名",
             dataIndex: "loginName",
-            width: "200px",
+            width: "120px",
         },
         {
             title: "用户名",
