@@ -8,6 +8,12 @@ public class GroupUserListParam : ListParam
 {
     [JsonProperty("groupId")]
     public long GroupId { get; set; }
+
+    [JsonProperty("loginNameQuery")]
+    public string LoginNameQuery { get; set; } = "";
+
+    [JsonProperty("userNameQuery")]
+    public string UserNameQuery { get; set; } = "";
 }
 
 public class GroupUserListParamValidator : AbstractValidator<GroupUserListParam>

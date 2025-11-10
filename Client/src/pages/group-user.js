@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import {useNavigate} from "react-router";
+import {useParams, useNavigate} from "react-router";
 import GroupUserDetail from "./group-user-detail";
 
 import useSiteContext from "../site/site-context";
@@ -9,12 +9,17 @@ import Title from "../site/title";
 
 const GroupUser = () => {
 
+    const params = useParams();
+    const groupId = params.groupId;
+
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        groupId: groupId,
+        loginNameQuery: "",
+        userNameQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -107,7 +112,8 @@ const GroupUser = () => {
         loadGroupUserList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const loginNameQueryRef = useRef();
+    const userNameQueryRef = useRef();
 
     return (
         <div>
@@ -122,17 +128,20 @@ const GroupUser = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名查询" style={{width: 280}}/>
+                    <Input ref={userNameQueryRef} addonBefore="用户名" placeholder="用户名查询" style={{width: 280}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const loginNameQuery = loginNameQueryRef.current.input.value;
+                            const userNameQuery = userNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    loginNameQuery: loginNameQuery,
+                                    userNameQuery: userNameQuery,
                                     current_millis: Date.now(),
                                 };
                             });

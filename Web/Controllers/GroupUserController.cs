@@ -67,6 +67,18 @@ public class GroupUserController : Controller
 
         query = query.Where(e => e.GroupUser.GroupId == groupId);
 
+        if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
+        {
+            string loginNameQuery = param.LoginNameQuery;
+            query = query.Where(e => e.User.LoginName.Contains(loginNameQuery));
+        }
+
+        if (string.IsNullOrWhiteSpace(param.UserNameQuery) == false)
+        {
+            string userNameQuery = param.UserNameQuery;
+            query = query.Where(e => e.User.UserName.Contains(userNameQuery));
+        }
+
         int groupUserCount = query.Count();
 
         // 排序字段
