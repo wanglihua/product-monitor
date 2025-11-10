@@ -177,7 +177,7 @@ const ProductRentEntryDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请搜索选择学校!',
+                                        message: '请输入搜索条件, 并选择学校!',
                                     },
                                 ]}
                             >
@@ -186,7 +186,7 @@ const ProductRentEntryDetailInner = (props) => {
                                     showSearch={true}
                                     filterOption={false}
                                     notFoundContent={"暂无数据, 请输入正确的搜索条件"}
-                                    placeholder="请搜索选择学校"
+                                    placeholder="请输入搜索条件, 并选择学校"
                                     options={collegeSelectOptions}
                                     onSearch={(search) => {
                                         post("/api/college/select/data", {
@@ -210,7 +210,7 @@ const ProductRentEntryDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请搜索选择产品!',
+                                        message: '请输入搜索条件, 并选择产品!',
                                     },
                                 ]}
                             >
@@ -219,7 +219,7 @@ const ProductRentEntryDetailInner = (props) => {
                                     showSearch={true}
                                     filterOption={false}
                                     notFoundContent={"暂无数据, 请输入正确的搜索条件"}
-                                    placeholder="请搜索选择产品"
+                                    placeholder="请输入搜索条件, 并选择产品"
                                     options={productSelectOptions}
                                     onSearch={(search) => {
                                         post("/api/product/select/data", {

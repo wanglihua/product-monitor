@@ -1,8 +1,7 @@
-import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Select, Space, theme} from "antd";
+import {Button, ConfigProvider, Descriptions, Form, Modal, Select, Space, theme} from "antd";
 import {CloseCircleOutlined, SaveOutlined} from "@ant-design/icons";
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
-import dayjs from "dayjs";
 
 const GroupUserDetailInner = (props) => {
     const groupId = props.groupId;
@@ -14,6 +13,8 @@ const GroupUserDetailInner = (props) => {
     const {post, showSuccess, showError} = useSiteContext();
 
     const [state, setState] = useState({});
+
+    const [userSelectOptions, setUserSelectOptions] = useState([]);
 
     const form = useRef();
 
@@ -75,8 +76,7 @@ const GroupUserDetailInner = (props) => {
                     requiredMark={false}
                     onFinish={(values) => {
                         post("/api/group-user/save", {
-                            id: groupUserId,
-                            groupId: values.groupId,
+                            groupId: groupId,
                             userId: values.userId,
                         }, function (response) {
                             const res = response.data;
@@ -108,14 +108,29 @@ const GroupUserDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入用户!',
+                                        message: '请选择用户!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="用户"
-                                    allowClear
+                                <Select
+                                    showSearch={true}
+                                    filterOption={false}
+                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
+                                    placeholder="请输入搜索条件, 并选择用户"
+                                    options={userSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/user/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setUserSelectOptions(res.userList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
