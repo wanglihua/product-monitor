@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.CodeType;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -34,6 +35,11 @@ public class UserEntityMap : IEntityTypeConfiguration<UserEntity>
 
         builder.Property(e => e.LastLoginTime)
             .HasColumnName("last_login_time")
+            .IsRequired(false);
+
+        builder.Property(e => e.Status)
+            .HasConversion<CodeTypeConversion<UserStatus>>()
+            .HasColumnName("status_id")
             .IsRequired(false);
     }
 }

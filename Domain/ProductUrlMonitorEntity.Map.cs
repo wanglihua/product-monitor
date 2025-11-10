@@ -22,7 +22,7 @@ public class ProductUrlMonitorEntityMap : IEntityTypeConfiguration<ProductUrlMon
             .IsRequired(true);
 
         builder.Property(e => e.ProductUrlType)
-            .HasConversion<CodeTypeConvertions<ProductUrlType>>()
+            .HasConversion<CodeTypeConversion<ProductUrlType>>()
             .HasColumnName("product_url_type")
             .IsRequired(true);
 

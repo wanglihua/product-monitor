@@ -27,6 +27,8 @@ const UserDetailInner = (props) => {
 
     const [state, setState] = useState({});
 
+    const [userStatusOptions, setUserStatusOptions] = useState([]);
+
     const form = useRef();
 
     return (
@@ -66,7 +68,10 @@ const UserDetailInner = (props) => {
                         form.current.setFieldsValue({
                             loginName: data.loginName,
                             userName: data.userName,
+                            statusId: data.statusId,
                         });
+                        
+                        setUserStatusOptions(data.userStatusList);
                     });
                 }
             }}
@@ -93,6 +98,7 @@ const UserDetailInner = (props) => {
                             userName: values.userName,
                             password: values.password,
                             passwordAgain: values.passwordAgain,
+                            statusId: values.statusId,
                         }, function (response) {
                             const res = response.data;
                             if (res.success === false) {
@@ -104,7 +110,6 @@ const UserDetailInner = (props) => {
 
                             if (loadUserList) {
                                 loadUserList();
-                                ;
                             }
 
                             self.hide();
@@ -188,6 +193,23 @@ const UserDetailInner = (props) => {
                                     maxLength={20}
                                     placeholder="密码重输"
                                     allowClear
+                                />
+                            </Form.Item>
+                        </Descriptions.Item>
+
+                        <Descriptions.Item label="状态">
+                            <Form.Item
+                                name="statusId"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请选择用户状态!',
+                                    },
+                                ]}
+                            >
+                                <Select
+                                    placeholder="请选择用户状态"
+                                    options={userStatusOptions}
                                 />
                             </Form.Item>
                         </Descriptions.Item>

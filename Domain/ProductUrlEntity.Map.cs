@@ -25,7 +25,7 @@ public class ProductUrlEntityMap : IEntityTypeConfiguration<ProductUrlEntity>
 
         builder.Property(e => e.Type)
             .HasColumnName("type_code")
-            .HasConversion<CodeTypeConvertions<ProductUrlType>>()
+            .HasConversion<CodeTypeConversion<ProductUrlType>>()
             .IsRequired(true);
 
         builder.Property(e => e.LoginUser)

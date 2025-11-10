@@ -14,7 +14,7 @@ public class ActionLogEntityMap : IEntityTypeConfiguration<ActionLogEntity>
         EntityNoUpdateMap.Configure(builder);
 
         builder.Property(e => e.Type)
-            .HasConversion<CodeTypeConvertions<ActionLogType>>()
+            .HasConversion<CodeTypeConversion<ActionLogType>>()
             .HasColumnName("type_code")
             .IsRequired(true);
 

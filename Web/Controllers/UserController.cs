@@ -101,6 +101,8 @@ public class UserController : Controller
                 LoginName = e.LoginName,
                 UserName = e.UserName,
                 LastLoginTime = e.LastLoginTime?.ToString("yyyy-MM-dd HH:mm") ?? "",
+                Status = e.Status.Name,
+                Enabled = e.Status == UserStatus.Enabled,
                 CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
@@ -130,6 +132,7 @@ public class UserController : Controller
             UserName = "",
             Password = "",
             PasswordAgain = "",
+            StatusId = null,
         };
 
         if (userId > 0)
@@ -140,6 +143,7 @@ public class UserController : Controller
                 model.Id = user.Id;
                 model.LoginName = user.LoginName;
                 model.UserName = user.UserName;
+                model.StatusId = user.Status.Id;
             }
         }
 
@@ -247,6 +251,19 @@ public class UserController : Controller
 
         user.LoginName = loginName;
         user.UserName = model.UserName;
+
+        var userStatus = UserStatus.GetById(model.StatusId ?? 0);
+        if (isCreate == false && userStatus == UserStatus.Disabled)
+        {
+            bool isAdminUser = adminUserService.IsAdminUser(user.Id);
+            if (isAdminUser == true)
+            {
+                throw new ValidationException("管理员用户不能被禁用!");
+            }
+        }
+
+        user.Status = userStatus;
+
         if (string.IsNullOrWhiteSpace(model.Password) == false)
         {
             // 判断是不是管理员, 管理员的密码, 只有管理员才能重置

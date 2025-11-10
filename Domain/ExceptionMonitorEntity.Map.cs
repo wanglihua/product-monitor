@@ -23,7 +23,7 @@ public class ExceptionMonitorEntityMap : IEntityTypeConfiguration<ExceptionMonit
             .IsRequired(true);
 
         builder.Property(e => e.ProvinceType)
-            .HasConversion<CodeTypeConvertions<ProvinceType>>()
+            .HasConversion<CodeTypeConversion<ProvinceType>>()
             .HasColumnName("province_type")
             .IsRequired(true);
 

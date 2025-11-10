@@ -141,6 +141,11 @@ public class UserLoginService
             return 0;
         }
 
+        if (user.Status != UserStatus.Enabled)
+        {
+            return 0;
+        }
+
         if (user.Password != passwordService.Encrypt(password, user.Salt))
         {
             return 0;

@@ -16,6 +16,12 @@ public class UserListItem
     [JsonProperty("lastLoginTime")]
     public string LastLoginTime { get; set; } = "";
 
+    [JsonProperty("status")]
+    public string Status { get; set; } = "";
+
+    [JsonProperty("enabled")]
+    public bool Enabled { get; set; } = true;
+
     [JsonProperty("createTime")]
     public string CreateTime { get; set; } = "";
 }

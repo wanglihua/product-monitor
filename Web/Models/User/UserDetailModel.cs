@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Domain;
+using FluentValidation;
 using Newtonsoft.Json;
 
 namespace Web.Models.User;
@@ -19,6 +20,17 @@ public class UserDetailModel
 
     [JsonProperty("passwordAgain", NullValueHandling = NullValueHandling.Ignore)]
     public string PasswordAgain { get; set; } = "";
+
+    [JsonProperty("statusId")]
+    public int? StatusId { get; set; }
+
+    [JsonProperty("userStatusList")]
+    public IList<Dictionary<string, object>> UserStatusList => UserStatus.GetList()
+        .Select(e => new Dictionary<string, object> {
+            ["value"] = e.Id,
+            ["label"] = e.Name,
+        })
+        .ToList();
 }
 
 public class UserDetailModelCreateValidator : AbstractValidator<UserDetailModel>
@@ -53,6 +65,8 @@ public class UserDetailModelCreateValidator : AbstractValidator<UserDetailModel>
                 return e.PasswordAgain == e.Password;
             })
             .WithMessage("密码和密码重输不相等！");
+
+        RuleFor(e => e.StatusId).Must(p => p > 0 && UserStatus.GetById(p.Value) != UserStatus.None).WithMessage("状态不能为空！");
     }
 }
 
@@ -125,5 +139,7 @@ public class UserDetailModelEditValidator : AbstractValidator<UserDetailModel>
                 return true;
             })
             .WithMessage("密码和密码重输不相等！");
+
+        RuleFor(e => e.StatusId).Must(p => p > 0 && UserStatus.GetById(p.Value) != UserStatus.None).WithMessage("状态不能为空！");
     }
 }

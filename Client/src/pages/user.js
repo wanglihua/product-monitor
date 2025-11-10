@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table, Tag} from 'antd';
+import {Badge, Button, Input, Space, Table, Tag} from 'antd';
 import {DeleteOutlined, EditOutlined, SearchOutlined, UserAddOutlined} from '@ant-design/icons';
 import UserDetail from "./user-detail";
 
@@ -68,6 +68,21 @@ const User = () => {
             dataIndex: "lastLoginTime",
             width: "150px",
             sorter: true,
+        },
+        {
+            title: "状态",
+            dataIndex: "status",
+            width: "90px",
+            align: "center",
+            render: (text, record, index) => {
+                let badgeStatus = "success";
+                if (record.enabled !== true) {
+                    badgeStatus = "error";
+                }
+                return <span>
+                    <Badge status={badgeStatus}/>&nbsp;{text}
+                </span>;
+            },
         },
         {
             title: "创建时间",
