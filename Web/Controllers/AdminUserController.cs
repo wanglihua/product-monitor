@@ -71,8 +71,8 @@ public class AdminUserController : Controller
         Expression<Func<AdminUserJoinItem, object>> sortField = e => e.Admin.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
-            if (sortFieldParam == nameof(AdminUserListItem.CreateTime).ToUpper())
+            string sortFieldParam = param.SortField;
+            if (string.Compare(sortFieldParam, nameof(AdminUserListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.Admin.CreateTime;
             }

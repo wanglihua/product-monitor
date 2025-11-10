@@ -75,14 +75,14 @@ public class ProductVersionController : Controller
         Expression<Func<ProductVersionJoinItem, object>> sortField = e => e.ProductVersion.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductVersionListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductVersionListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductVersion.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductVersionListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductVersionListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductVersion.UpdateTime;
             }

@@ -92,14 +92,14 @@ public class ProductRentEntryController : Controller
         Expression<Func<ProductRentEntryJoinItem, object>> sortField = e => e.ProductRentEntry.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductRentEntryListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductRentEntryListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductRentEntry.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductRentEntryListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductRentEntryListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductRentEntry.UpdateTime;
             }

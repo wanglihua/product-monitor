@@ -84,14 +84,14 @@ public class ProductInstallMonitorController : Controller
         Expression<Func<ProductInstallMonitorJoinItem, object>> sortField = e => e.ProductInstallMonitor.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductInstallMonitorJoinItem.ProductInstallMonitor.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductInstallMonitorListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductInstallMonitor.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductInstallMonitorJoinItem.ProductInstallMonitor.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductInstallMonitorListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductInstallMonitor.UpdateTime;
             }

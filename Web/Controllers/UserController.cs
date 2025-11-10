@@ -66,13 +66,14 @@ public class UserController : Controller
         Expression<Func<UserEntity, object>> sortField = e => e.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
-            if (sortFieldParam == nameof(UserListItem.LastLoginTime).ToUpper())
+            string sortFieldParam = param.SortField;
+
+            if (string.Compare(sortFieldParam, nameof(UserListItem.LastLoginTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.LastLoginTime!;
             }
 
-            if (sortFieldParam == nameof(UserListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(UserListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.CreateTime;
             }

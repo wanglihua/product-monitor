@@ -54,14 +54,14 @@ public class GroupController : Controller
         Expression<Func<GroupEntity, object>> sortField = e => e.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(GroupListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(GroupListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.CreateTime;
             }
 
-            if (sortFieldParam == nameof(GroupListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(GroupListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.UpdateTime;
             }

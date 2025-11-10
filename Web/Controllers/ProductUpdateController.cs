@@ -95,14 +95,14 @@ public class ProductUpdateController : Controller
         Expression<Func<ProductUpdateJoinItem, object>> sortField = e => e.ProductUpdate.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductUpdateListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductUpdate.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductUpdateListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductUpdate.UpdateTime;
             }

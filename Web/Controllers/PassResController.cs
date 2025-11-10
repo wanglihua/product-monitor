@@ -93,36 +93,6 @@ public class PassResController : Controller
 
         int passResCount = query.Count();
 
-        /*
-        // 排序字段
-        Expression<Func<PassResJoinItem, object>> sortField = e => e.PassRes.Id;
-        if (string.IsNullOrWhiteSpace(param.SortField) == false)
-        {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
-
-            if (sortFieldParam == nameof(PassResListItem.CreateTime).ToUpper())
-            {
-                sortField = e => e.PassRes.CreateTime;
-            }
-
-            if (sortFieldParam == nameof(PassResListItem.UpdateTime).ToUpper())
-            {
-                sortField = e => e.PassRes.UpdateTime;
-            }
-        }
-
-        // 排序顺序
-        string sortOrder = param.SortOrder;
-        if (sortOrder == SortOrder.Ascend)
-        {
-            query = query.OrderBy(sortField);
-        }
-        else
-        {
-            query = query.OrderByDescending(sortField);
-        }
-        */
-
         query = query.OrderBy(e => e.PassResCate.Id).ThenBy(e => e.PassRes.Id);
 
         var passResList = query

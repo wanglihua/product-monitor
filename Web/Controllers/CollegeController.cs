@@ -60,14 +60,14 @@ public class CollegeController : Controller
         Expression<Func<CollegeEntity, object>> sortField = e => e.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(CollegeListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(CollegeListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.CreateTime;
             }
 
-            if (sortFieldParam == nameof(CollegeListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(CollegeListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.UpdateTime;
             }

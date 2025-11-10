@@ -76,14 +76,14 @@ public class ProductEvalController : Controller
         Expression<Func<ProductEvalJoinItem, object>> sortField = e => e.ProductEval.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductEvalListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductEvalListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductEval.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductEvalListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductEvalListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductEval.UpdateTime;
             }

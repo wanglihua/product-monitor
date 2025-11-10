@@ -72,9 +72,9 @@ public class UserPassResController : Controller
         Expression<Func<UserPassResJoinItem, object>> sortField = e => e.UserPassRes.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(UserPassResListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(UserPassResListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.UserPassRes.CreateTime;
             }

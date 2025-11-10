@@ -99,14 +99,14 @@ public class ProductSaleEntryController : Controller
         Expression<Func<ProductSaleEntryJoinItem, object>> sortField = e => e.ProductSaleEntry.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductSaleEntryListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductSaleEntryListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductSaleEntry.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductSaleEntryListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductSaleEntryListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductSaleEntry.UpdateTime;
             }

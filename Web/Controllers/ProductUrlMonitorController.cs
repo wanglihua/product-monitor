@@ -90,14 +90,14 @@ public class ProductUrlMonitorController : Controller
         Expression<Func<ProductUrlMonitorJoinItem, object>> sortField = e => e.ProductUrlMonitor.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductUrlMonitorListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductUrlMonitorListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductUrlMonitor.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductUrlMonitorListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductUrlMonitorListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductUrlMonitor.UpdateTime;
             }

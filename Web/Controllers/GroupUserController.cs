@@ -85,9 +85,9 @@ public class GroupUserController : Controller
         Expression<Func<GroupJointItem, object>> sortField = e => e.GroupUser.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(GroupUserListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(GroupUserListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.GroupUser.CreateTime;
             }

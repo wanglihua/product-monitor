@@ -95,14 +95,14 @@ public class ProductInstallController : Controller
         Expression<Func<ProductInstallJoinItem, object>> sortField = e => e.ProductInstall.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductInstallListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductInstallListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductInstall.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductInstallListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductInstallListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductInstall.UpdateTime;
             }

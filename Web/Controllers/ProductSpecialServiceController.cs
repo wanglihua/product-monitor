@@ -95,14 +95,14 @@ public class ProductSpecialServiceController : Controller
         Expression<Func<ProductSpecialServiceJoinItem, object>> sortField = e => e.ProductSpecialService.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductSpecialServiceListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductSpecialServiceListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductSpecialService.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductSpecialServiceListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductSpecialServiceListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductSpecialService.UpdateTime;
             }

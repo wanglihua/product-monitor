@@ -74,14 +74,14 @@ public class ProductUrlMonitorEntryController : Controller
         Expression<Func<ProductUrlMonitorEntryEntity, object>> sortField = e => e.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductUrlMonitorEntryListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductUrlMonitorEntryListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductUrlMonitorEntryListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductUrlMonitorEntryListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.UpdateTime;
             }

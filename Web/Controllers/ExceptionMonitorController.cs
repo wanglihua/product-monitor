@@ -75,14 +75,14 @@ public class ExceptionMonitorController : Controller
         Expression<Func<ExceptionMonitorJoinItem, object>> sortField = e => e.ExceptionMonitor.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ExceptionMonitorListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ExceptionMonitorListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ExceptionMonitor.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ExceptionMonitorListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ExceptionMonitorListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ExceptionMonitor.UpdateTime;
             }

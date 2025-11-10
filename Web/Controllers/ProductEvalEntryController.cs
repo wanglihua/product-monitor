@@ -35,7 +35,7 @@ public class ProductEvalEntryController : Controller
         this.actionLogService = actionLogService;
         this.productEvalService = productEvalService;
     }
-    
+
     private class ProductEvalEntryJoinItem
     {
         public ProductEvalEntryEntity ProductEvalEntry { get; set; } = new();
@@ -92,14 +92,14 @@ public class ProductEvalEntryController : Controller
         Expression<Func<ProductEvalEntryJoinItem, object>> sortField = e => e.ProductEvalEntry.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
-            string sortFieldParam = param.SortField.Trim().ToUpper();
+            string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductEvalEntryListItem.CreateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductEvalEntryListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductEvalEntry.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductEvalEntryListItem.UpdateTime).ToUpper())
+            if (string.Compare(sortFieldParam, nameof(ProductEvalEntryListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductEvalEntry.UpdateTime;
             }
