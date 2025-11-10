@@ -109,63 +109,32 @@ public class UserPassResController : Controller
     }
 
     [HttpPost]
-    [Route("/api/user-pass-res/detail")]
-    [Transactional(false)]
-    public IActionResult Detail([FromBody] IdParam param)
+    [Route("/api/user-pass-res/grant")]
+    [Transactional(true)]
+    public IActionResult Grant([FromBody] UserPassResGrantParam param)
     {
-        ValidationUtil.Validate<IdParamEmptyValidator, IdParam>(param);
+        ValidationUtil.Validate<UserPassResGrantParamValidator, UserPassResGrantParam>(param);
 
-        long userPassResId = param.Id;
+        long userId = param.UserId;
+        long passResId = param.PassResId;
 
-        var model = new UserPassResDetailModel {
-            Id = 0,
-            UserId = 0,
-            PassResId = 0,
+        var userPassRes = db.Set<UserPassResEntity>()
+            .Where(e => e.UserId == userId && e.PassResId == passResId)
+            .OrderBy(e => e.UserId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (userPassRes != null)
+        {
+            throw new ValidationException($"指定的用户授权已经存在! userId:{userId},passResId:{passResId}");
+        }
+
+        userPassRes = new UserPassResEntity {
+            UserId = userId,
+            PassResId = passResId,
         };
 
-        return Json(new JsonResultData {
-            Success = true,
-            Message = "success",
-            Data = model,
-        });
-    }
-
-    [HttpPost]
-    [Route("/api/user-pass-res/save")]
-    [Transactional(true)]
-    public IActionResult Save([FromBody] UserPassResDetailModel model)
-    {
-        ValidationUtil.Validate<UserPassResDetailModelValidator, UserPassResDetailModel>(model);
-
-        long userPassResId = model.Id;
-        bool isCreate = userPassResId == 0;
-
-        UserPassResEntity? userPassRes;
-        if (isCreate == true)
-        {
-            userPassRes = new UserPassResEntity();
-        }
-        else
-        {
-            userPassRes = db.Set<UserPassResEntity>().Find(userPassResId);
-            if (userPassRes == null)
-            {
-                throw new ValidationException($"指定的用户授权#{userPassResId}不存在!");
-            }
-        }
-
-        userPassRes.UserId = model.UserId;
-        userPassRes.PassResId = model.PassResId;
-
-        if (isCreate == true)
-        {
-            db.Add<UserPassResEntity>(userPassRes);
-        }
-        else
-        {
-            db.Update<UserPassResEntity>(userPassRes);
-        }
-
+        db.Add<UserPassResEntity>(userPassRes);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
@@ -175,22 +144,29 @@ public class UserPassResController : Controller
 
         return Json(new JsonResultData {
             Success = true,
-            Message = "保存成功！",
+            Message = "授权成功！",
         });
     }
 
     [HttpPost]
-    [Route("/api/user-pass-res/delete")]
+    [Route("/api/user-pass-res/revoke")]
     [Transactional(true)]
-    public IActionResult Delete([FromBody] IdParam param)
+    public IActionResult Delete([FromBody] UserPassResRevokeParam param)
     {
-        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+        ValidationUtil.Validate<UserPassResRevokeParamValidator, UserPassResRevokeParam>(param);
 
-        long userPassResId = param.Id;
-        var userPassRes = db.Set<UserPassResEntity>().Find(userPassResId);
+        long userId = param.UserId;
+        long passResId = param.PassResId;
+
+        var userPassRes = db.Set<UserPassResEntity>()
+            .Where(e => e.UserId == userId && e.PassResId == passResId)
+            .OrderBy(e => e.UserId)
+            .Take(1)
+            .SingleOrDefault();
+
         if (userPassRes == null)
         {
-            throw new ValidationException($"指定的用户授权#{userPassResId}不存在!");
+            throw new ValidationException($"指定的用户授权不存在! userId:{userId},passResId:{passResId}");
         }
 
         db.Remove<UserPassResEntity>(userPassRes);
@@ -202,7 +178,7 @@ public class UserPassResController : Controller
 
         return Json(new JsonResultData {
             Success = true,
-            Message = "删除成功！",
+            Message = "收权成功！",
         });
     }
 }

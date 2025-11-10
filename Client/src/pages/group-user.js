@@ -158,6 +158,15 @@ const GroupUser = () => {
                     >
                         添加
                     </Button>
+                    <Button
+                        color="default"
+                        icon={<DeleteOutlined style={{color: "#ff6b69"}}/>}
+                        onClick={(e) => {
+                            groupUserDetail.current.show(0);
+                        }}
+                    >
+                        清空
+                    </Button>
                 </Space>
             </div>
             <div style={{padding: "10px 0"}}>
