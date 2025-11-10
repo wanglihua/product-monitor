@@ -2,7 +2,7 @@
 
 namespace Domain;
 
-public class WebSessionDataType : CodeTypeBase, ICodeType<WebSessionDataType>
+public record WebSessionDataType : CodeTypeBase, ICodeType<WebSessionDataType>
 {
     /// <summary>
     /// 登录用户Id

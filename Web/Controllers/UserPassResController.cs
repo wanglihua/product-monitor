@@ -33,6 +33,13 @@ public class UserPassResController : Controller
         this.actionLogService = actionLogService;
     }
 
+    private class UserPassResJoinItem
+    {
+        public UserPassResEntity UserPassRes { get; set; } = new();
+
+        public UserEntity User { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/user-pass-res/list")]
     [Transactional(false)]
@@ -40,7 +47,18 @@ public class UserPassResController : Controller
     {
         ValidationUtil.Validate<UserPassResListParamValidator, UserPassResListParam>(param);
 
-        IQueryable<UserPassResEntity> query = db.Set<UserPassResEntity>();
+        IQueryable<UserPassResJoinItem> query = db.Set<UserPassResEntity>()
+            .Join(db.Set<UserEntity>(),
+                upr => upr.UserId,
+                u => u.Id,
+                (upr, u) => new UserPassResJoinItem {
+                    UserPassRes = upr,
+                    User = u,
+                });
+
+        long passResId = param.PassResId;
+        query = query.Where(e => e.UserPassRes.PassResId == passResId);
+
 
         // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
         // {
@@ -51,14 +69,14 @@ public class UserPassResController : Controller
         int userPassResCount = query.Count();
 
         // 排序字段
-        Expression<Func<UserPassResEntity, object>> sortField = e => e.Id;
+        Expression<Func<UserPassResJoinItem, object>> sortField = e => e.UserPassRes.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
             if (sortFieldParam == nameof(UserPassResListItem.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.UserPassRes.CreateTime;
             }
         }
 
@@ -80,10 +98,10 @@ public class UserPassResController : Controller
 
         var userPassResItemList = userPassResList
             .Select(e => new UserPassResListItem {
-                Id = e.Id,
-                UserId = e.UserId,
-                PassResId = e.PassResId,
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.UserPassRes.Id,
+                UserId = e.UserPassRes.UserId,
+                PassResId = e.UserPassRes.PassResId,
+                CreateTime = e.UserPassRes.CreateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

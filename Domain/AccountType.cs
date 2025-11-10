@@ -2,7 +2,7 @@
 
 namespace Domain;
 
-public class AccountType : CodeTypeBase, ICodeType<AccountType>
+public record AccountType : CodeTypeBase, ICodeType<AccountType>
 {
     /// <summary>
     /// 管理员

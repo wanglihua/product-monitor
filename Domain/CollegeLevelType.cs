@@ -5,7 +5,7 @@ namespace Domain;
 /// <summary>
 /// 院校办学层次类型
 /// </summary>
-public class CollegeLevelType : CodeTypeBase, ICodeType<CollegeLevelType>
+public record CollegeLevelType : CodeTypeBase, ICodeType<CollegeLevelType>
 {
     /// <summary>
     /// 本科
