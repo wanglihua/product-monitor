@@ -117,6 +117,8 @@ public class UserController : Controller
     [Transactional(false)]
     public IActionResult Detail([FromBody] IdParam param)
     {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
         long userId = param.Id;
 
         var model = new UserDetailModel {

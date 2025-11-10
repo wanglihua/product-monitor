@@ -118,6 +118,8 @@ public class ProductController : Controller
     [Transactional(false)]
     public IActionResult Detail([FromBody] IdParam param)
     {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
         long productId = param.Id;
 
         var model = new ProductDetailModel {

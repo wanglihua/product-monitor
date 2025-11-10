@@ -134,6 +134,8 @@ public class ProductInstallMonitorEntryController : Controller
     [Transactional(false)]
     public IActionResult Detail([FromBody] IdParam param)
     {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
         long productInstallMonitorEntryId = param.Id;
 
         var model = new ProductInstallMonitorEntryDetailModel {

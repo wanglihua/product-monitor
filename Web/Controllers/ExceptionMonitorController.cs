@@ -45,6 +45,8 @@ public class ExceptionMonitorController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ExceptionMonitorListParam param)
     {
+        ValidationUtil.Validate<ExceptionMonitorListParamValidator, ExceptionMonitorListParam>(param);
+
         IQueryable<ExceptionMonitorJoinItem> query = db.Set<ExceptionMonitorEntity>()
             .Join(db.Set<ProductEntity>(),
                 em => em.ProductId,
@@ -144,6 +146,8 @@ public class ExceptionMonitorController : Controller
     [Transactional(false)]
     public IActionResult Detail([FromBody] IdParam param)
     {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
         long exceptionMonitorId = param.Id;
 
         var model = new ExceptionMonitorDetailModel {

@@ -130,6 +130,8 @@ public class ProductUrlController : Controller
     [Transactional(false)]
     public IActionResult Detail([FromBody] IdParam param)
     {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
         long productUrlId = param.Id;
 
         var model = new ProductUrlDetailModel {

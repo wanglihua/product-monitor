@@ -157,6 +157,8 @@ public class ProductInstallController : Controller
     [Transactional(false)]
     public IActionResult Detail([FromBody] IdParam param)
     {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
         long productInstallId = param.Id;
 
         var model = new ProductInstallDetailModel {

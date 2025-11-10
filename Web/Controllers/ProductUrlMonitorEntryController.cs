@@ -133,6 +133,8 @@ public class ProductUrlMonitorEntryController : Controller
     [Transactional(false)]
     public IActionResult Detail([FromBody] IdParam param)
     {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
         long productUrlMonitorEntryId = param.Id;
 
         var model = new ProductUrlMonitorEntryDetailModel {
