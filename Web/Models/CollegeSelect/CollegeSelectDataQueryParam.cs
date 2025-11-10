@@ -13,6 +13,5 @@ public class CollegeSelectDataQueryParamValidator : AbstractValidator<CollegeSel
 {
     public CollegeSelectDataQueryParamValidator()
     {
-
     }
 }

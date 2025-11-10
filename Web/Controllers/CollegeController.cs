@@ -38,6 +38,8 @@ public class CollegeController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] CollegeListParam param)
     {
+        ValidationUtil.Validate<CollegeListParamValidator, CollegeListParam>(param);
+
         IQueryable<CollegeEntity> query = db.Set<CollegeEntity>();
 
         if (string.IsNullOrWhiteSpace(param.CodeQuery) == false)

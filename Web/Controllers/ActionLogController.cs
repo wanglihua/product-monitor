@@ -1,5 +1,6 @@
 ﻿using Core.Auth;
 using Core.Database;
+using Core.Util;
 using Core.Web;
 using Domain;
 using Domain.PassRes;
@@ -33,6 +34,8 @@ public class ActionLogController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ActionLogListParam param)
     {
+        ValidationUtil.Validate<ActionLogListParamValidator, ActionLogListParam>(param);
+
         IQueryable<ActionLogJoinItem> query = db.Set<ActionLogEntity>()
             .Join(db.Set<UserEntity>(),
                 actionLog => actionLog.UserId,

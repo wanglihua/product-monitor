@@ -44,6 +44,8 @@ public class AdminUserController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] AdminUserListParam param)
     {
+        ValidationUtil.Validate<AdminUserListParamValidator, AdminUserListParam>(param);
+
         IQueryable<AdminUserJoinItem> query = db.Set<AdminUserEntity>()
             .Join(db.Set<UserEntity>(),
                 admin => admin.UserId,
