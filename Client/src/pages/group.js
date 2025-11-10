@@ -122,7 +122,7 @@ const Group = () => {
 
     return (
         <div>
-            <Title title="群组" menuKey="group" breadcrumb={[
+            <Title title="群组" parentMenuKeys={["system-manage"]} menuKey="group" breadcrumb={[
                 {title: "系统管理"},
                 {title: "群组"},
             ]}/>

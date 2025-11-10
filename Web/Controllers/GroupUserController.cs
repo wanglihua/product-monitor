@@ -33,27 +33,51 @@ public class GroupUserController : Controller
         this.actionLogService = actionLogService;
     }
 
+    private class GroupJointItem
+    {
+        public GroupUserEntity GroupUser { get; set; } = new();
+
+        public UserEntity User { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/group-user/list")]
     [Transactional(false)]
     public IActionResult List([FromBody] GroupUserListParam param)
     {
-        IQueryable<GroupUserEntity> query = db.Set<GroupUserEntity>();
+        ValidationUtil.Validate<GroupUserListParamValidator, GroupUserListParam>(param);
 
         long groupId = param.GroupId;
-        query = query.Where(e => e.GroupId == groupId);
+
+        var group = db.Set<GroupEntity>().Find(groupId);
+        if (group == null)
+        {
+            throw new ValidationException($"指定的群组#{groupId}不存在!");
+        }
+
+        IQueryable<GroupJointItem> query = db.Set<GroupUserEntity>()
+            .Join(db.Set<UserEntity>(),
+                gu => gu.UserId,
+                u => u.Id,
+                (gu, u) => new GroupJointItem {
+                    GroupUser = gu,
+                    User = u
+                }
+            );
+
+        query = query.Where(e => e.GroupUser.GroupId == groupId);
 
         int groupUserCount = query.Count();
 
         // 排序字段
-        Expression<Func<GroupUserEntity, object>> sortField = e => e.Id;
+        Expression<Func<GroupJointItem, object>> sortField = e => e.GroupUser.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField.Trim().ToUpper();
 
             if (sortFieldParam == nameof(GroupUserListItem.CreateTime).ToUpper())
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.GroupUser.CreateTime;
             }
         }
 
@@ -75,12 +99,14 @@ public class GroupUserController : Controller
 
         var groupUserItemList = groupUserList
             .Select(e => new GroupUserListItem {
-                Id = e.Id,
-                GroupName = e.GroupId.ToString(),
-                UserName = e.UserId.ToString(),
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.GroupUser.Id,
+                LoginName = e.User.LoginName,
+                UserName = e.User.UserName,
+                CreateTime = e.GroupUser.CreateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
+
+        string groupName = group.Name;
 
         return Json(new JsonResultData {
             Success = true,
@@ -88,6 +114,7 @@ public class GroupUserController : Controller
             Data = new Dictionary<string, object> {
                 ["groupUserList"] = groupUserItemList,
                 ["groupUserCount"] = groupUserCount,
+                ["groupName"] = groupName,
             },
         });
     }
@@ -95,26 +122,16 @@ public class GroupUserController : Controller
     [HttpPost]
     [Route("/api/group-user/detail")]
     [Transactional(false)]
-    public IActionResult Detail([FromBody] IdParam param)
+    public IActionResult Detail([FromBody] GroupUserDetailParam param)
     {
-        long groupUserId = param.Id;
+        ValidationUtil.Validate<GroupUserDetailParamValidator, GroupUserDetailParam>(param);
+
+        long groupId = param.GroupId;
 
         var model = new GroupUserDetailModel {
-            GroupId = 0,
+            GroupId = groupId,
             UserId = 0,
         };
-
-        if (groupUserId > 0)
-        {
-            var groupUser = db.Set<GroupUserEntity>().Find(groupUserId);
-            if (groupUser != null)
-            {
-                model = new GroupUserDetailModel {
-                    GroupId = groupUser.GroupId,
-                    UserId = groupUser.UserId,
-                };
-            }
-        }
 
         return Json(new JsonResultData {
             Success = true,
@@ -184,7 +201,7 @@ public class GroupUserController : Controller
 
         return Json(new JsonResultData {
             Success = true,
-            Message = "删除成功！",
+            Message = "移除成功！",
         });
     }
 }

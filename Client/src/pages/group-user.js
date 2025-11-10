@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {useNavigate} from "react-router";
 import GroupUserDetail from "./group-user-detail";
 
 import useSiteContext from "../site/site-context";
@@ -9,6 +10,8 @@ import Title from "../site/title";
 const GroupUser = () => {
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         nameQuery: "",
@@ -22,6 +25,7 @@ const GroupUser = () => {
     const [state, setState] = useState({
         groupUserList: [],
         groupUserCount: 0,
+        groupName: "",
     });
 
     const loadGroupUserList = () => {
@@ -37,6 +41,7 @@ const GroupUser = () => {
                     ...pre,
                     groupUserList: res.data.groupUserList,
                     groupUserCount: res.data.groupUserCount,
+                    groupName: res.data.groupName,
                 };
             });
         });
@@ -54,24 +59,18 @@ const GroupUser = () => {
             },
         },
         {
-            title: "群组",
-            dataIndex: "groupId",
+            title: "登录名",
+            dataIndex: "loginName",
             width: "200px",
         },
         {
-            title: "用户",
-            dataIndex: "userId",
+            title: "用户名",
+            dataIndex: "userName",
             width: "200px",
         },
         {
-            title: "创建时间",
+            title: "添加时间",
             dataIndex: "createTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
-            dataIndex: "updateTime",
             width: "150px",
             sorter: true,
         },
@@ -80,14 +79,8 @@ const GroupUser = () => {
             render: (text, record, index) => {
                 return (
                     <Space>
-                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            const groupUserId = record.id;
-                            groupUserDetail.current.show(groupUserId);
-                        }}>
-                            <EditOutlined/>编辑
-                        </Button>
                         <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
+                            showConfirm("确认要移除吗！", "确认", () => {
                                 post("/api/group-user/delete", {
                                     id: record.id,
                                 }, function (response) {
@@ -102,7 +95,7 @@ const GroupUser = () => {
                                 });
                             });
                         }}>
-                            <DeleteOutlined/>删除
+                            <DeleteOutlined/>移除
                         </Button>
                     </Space>
                 );
@@ -118,7 +111,13 @@ const GroupUser = () => {
 
     return (
         <div>
-            <Title title="群组成员" menuKey="group-user" breadcrumb={[
+            <Title title="群组成员" parentMenuKeys={["system-manage"]} menuKey="group" breadcrumb={[
+                {title: "系统管理"},
+                {
+                    title: <span style={{cursor: "pointer"}} onClick={() => {
+                        navigate("/group");
+                    }}>群组</span>
+                },
                 {title: "群组成员"},
             ]}/>
             <div>

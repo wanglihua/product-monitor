@@ -31,6 +31,7 @@ import ProductUrlMonitorEntry from "./pages/product-url-monitor-entry";
 import ExceptionMonitor from "./pages/exception-monitor";
 import PassRes from "./pages/pass-res";
 import Group from "./pages/group";
+import GroupUser from "./pages/group-user";
 
 const Router = () => {
     return (
@@ -62,6 +63,7 @@ const Router = () => {
                     <Route path="/user" element={<User/>}/>
                     <Route path="/admin-user" element={<AdminUser/>}/>
                     <Route path="/group" element={<Group/>}/>
+                    <Route path="/group-user/:groupId" element={<GroupUser/>}/>
                     <Route path="/pass-res" element={<PassRes/>}/>
                     <Route path="/action/log" element={<ActionLog/>}/>
                 </Route>

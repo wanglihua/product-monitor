@@ -7,8 +7,8 @@ public class GroupUserListItem
     [JsonProperty("id")]
     public long Id { get; set; }
 
-    [JsonProperty("groupName")]
-    public string GroupName { get; set; } = "";
+    [JsonProperty("loginName")]
+    public string LoginName { get; set; } = "";
 
     [JsonProperty("userName")]
     public string UserName { get; set; } = "";
