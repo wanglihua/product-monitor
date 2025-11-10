@@ -1,4 +1,5 @@
 ﻿using Core.Auth;
+using Core.Config;
 using Core.Database;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,7 @@ public class CollegeSelectController : Controller
             query = query.Where(e => e.Code.Contains(search) || e.Name.Contains(search));
         }
 
-        var collegeList = query.OrderBy(e => e.Id).Take(10).ToList();
+        var collegeList = query.OrderBy(e => e.Id).Take(SelectConfig.DropdownItemMaxCount).ToList();
 
         var collegeItemList = collegeList
             .Select(e => new Dictionary<string, object> {

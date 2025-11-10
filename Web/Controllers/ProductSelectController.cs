@@ -1,4 +1,5 @@
 ﻿using Core.Auth;
+using Core.Config;
 using Core.Database;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ public class ProductSelectController : Controller
             query = query.Where(e => e.Name.Contains(search));
         }
 
-        var productList = query.OrderBy(e => e.Id).Take(10).ToList();
+        var productList = query.OrderBy(e => e.Id).Take(SelectConfig.DropdownItemMaxCount).ToList();
 
         var productItemList = productList
             .Select(e => new Dictionary<string, object>() {
