@@ -98,113 +98,78 @@ public class GroupPassResController : Controller
     }
 
     [HttpPost]
-    [Route("/api/group-pass-res/detail")]
-    [Transactional(false)]
-    public IActionResult Detail([FromBody] IdParam param)
+    [Route("/api/group-pass-res/grant")]
+    [Transactional(true)]
+    public IActionResult Grant([FromBody] GroupPassResGrantParam param)
     {
-        ValidationUtil.Validate<IdParamEmptyValidator, IdParam>(param);
+        ValidationUtil.Validate<GroupPassResGrantParamValidator, GroupPassResGrantParam>(param);
 
-        long groupPassResId = param.Id;
+        long groupId = param.GroupId;
+        long passResId = param.PassResId;
 
-        var model = new GroupPassResDetailModel {
-            Id = 0,
-            GroupId = 0,
-            PassResId = 0,
+        var groupPassRes = db.Set<GroupPassResEntity>()
+            .Where(e => e.GroupId == groupId && e.PassResId == passResId)
+            .OrderBy(e => e.GroupId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (groupPassRes != null)
+        {
+            throw new ValidationException($"指定的群组授权已经存在! groupId:{groupId},passResId:{passResId}");
+        }
+
+        groupPassRes = new GroupPassResEntity {
+            GroupId = groupId,
+            PassResId = passResId,
         };
 
-        if (groupPassResId > 0)
-        {
-            var groupPassRes = db.Set<GroupPassResEntity>().Find(groupPassResId);
-            if (groupPassRes != null)
-            {
-                model = new GroupPassResDetailModel {
-                    Id = groupPassRes.Id,
-                    GroupId = groupPassRes.GroupId,
-                    PassResId = groupPassRes.PassResId,
-                };
-            }
-        }
+        groupPassRes.GroupId = param.GroupId;
+        groupPassRes.PassResId = param.PassResId;
 
-        return Json(new JsonResultData {
-            Success = true,
-            Message = "success",
-            Data = model,
-        });
-    }
-
-    [HttpPost]
-    [Route("/api/group-pass-res/save")]
-    [Transactional(true)]
-    public IActionResult Save([FromBody] GroupPassResDetailModel model)
-    {
-        ValidationUtil.Validate<GroupPassResDetailModelValidator, GroupPassResDetailModel>(model);
-
-        long groupPassResId = model.Id;
-        bool isCreate = groupPassResId == 0;
-
-        GroupPassResEntity? groupPassRes;
-        if (isCreate == true)
-        {
-            groupPassRes = new GroupPassResEntity();
-        }
-        else
-        {
-            groupPassRes = db.Set<GroupPassResEntity>().Find(groupPassResId);
-            if (groupPassRes == null)
-            {
-                throw new ValidationException($"指定的群组授权#{groupPassResId}不存在!");
-            }
-        }
-
-        groupPassRes.GroupId = model.GroupId;
-        groupPassRes.PassResId = model.PassResId;
-
-        if (isCreate == true)
-        {
-            db.Add<GroupPassResEntity>(groupPassRes);
-        }
-        else
-        {
-            db.Update<GroupPassResEntity>(groupPassRes);
-        }
-
+        db.Add<GroupPassResEntity>(groupPassRes);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
-        string actionDesc = $"#{groupPassRes.Id}";
+        string actionDesc = $"群组#{groupId},授权资源#{passResId}";
         actionLogService.Add(loginUserId, ActionLogType.GroupPassResGrant, actionDesc);
-
 
         return Json(new JsonResultData {
             Success = true,
-            Message = "保存成功！",
+            Message = "授权成功！",
         });
     }
 
     [HttpPost]
-    [Route("/api/group-pass-res/delete")]
+    [Route("/api/group-pass-res/revoke")]
     [Transactional(true)]
-    public IActionResult Delete([FromBody] IdParam param)
+    public IActionResult Revoke([FromBody] GroupPassResRevokeParam param)
     {
-        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+        ValidationUtil.Validate<GroupPassResRevokeParamValidator, GroupPassResRevokeParam>(param);
 
-        long groupPassResId = param.Id;
-        var groupPassRes = db.Set<GroupPassResEntity>().Find(groupPassResId);
+        long groupId = param.GroupId;
+        long passResId = param.PassResId;
+
+        var groupPassRes = db.Set<GroupPassResEntity>()
+            .Where(e => e.GroupId == groupId && e.PassResId == passResId)
+            .OrderBy(e => e.GroupId)
+            .Take(1)
+            .SingleOrDefault();
+
         if (groupPassRes == null)
         {
-            throw new ValidationException($"指定的群组授权#{groupPassResId}不存在!");
+            throw new ValidationException($"指定的群组授权不存在! groupId:{groupId},passResId:{passResId}");
         }
 
         db.Remove<GroupPassResEntity>(groupPassRes);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
-        string actionDesc = $"#{groupPassRes.Id}";
+        string actionDesc = $"群组#{groupId},授权资源#{passResId}";
         actionLogService.Add(loginUserId, ActionLogType.GroupPassResRevoke, actionDesc);
 
         return Json(new JsonResultData {
             Success = true,
-            Message = "删除成功！",
+            Message = "收权成功！",
         });
     }
 }

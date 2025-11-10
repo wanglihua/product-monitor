@@ -293,14 +293,6 @@ const LayoutAdmin = () => {
                                             }
                                         },
                                         {
-                                            key: "admin-user",
-                                            icon: <i className="iconfont icon-admin-user" style={{color: "#1677ff"}}/>,
-                                            label: "管理员",
-                                            onClick: () => {
-                                                navigate("/admin-user");
-                                            }
-                                        },
-                                        {
                                             key: "group",
                                             icon: <i className="iconfont icon-group" style={{color: "#1677ff"}}/>,
                                             label: "群组",
@@ -314,6 +306,14 @@ const LayoutAdmin = () => {
                                             label: "授权资源",
                                             onClick: () => {
                                                 navigate("/pass-res");
+                                            }
+                                        },
+                                        {
+                                            key: "admin-user",
+                                            icon: <i className="iconfont icon-admin-user" style={{color: "#1677ff"}}/>,
+                                            label: "管理员",
+                                            onClick: () => {
+                                                navigate("/admin-user");
                                             }
                                         },
                                         {

@@ -139,7 +139,7 @@ public class UserPassResController : Controller
 
         long loginUserId = userLoginService.GetLoginUserId();
 
-        string actionDesc = $"#{userPassRes.Id}";
+        string actionDesc = $"用户#{userId},授权资源#{passResId}";
         actionLogService.Add(loginUserId, ActionLogType.UserPassResGrant, actionDesc);
 
         return Json(new JsonResultData {
@@ -151,7 +151,7 @@ public class UserPassResController : Controller
     [HttpPost]
     [Route("/api/user-pass-res/revoke")]
     [Transactional(true)]
-    public IActionResult Delete([FromBody] UserPassResRevokeParam param)
+    public IActionResult Revoke([FromBody] UserPassResRevokeParam param)
     {
         ValidationUtil.Validate<UserPassResRevokeParamValidator, UserPassResRevokeParam>(param);
 
@@ -173,7 +173,7 @@ public class UserPassResController : Controller
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
-        string actionDesc = $"#{userPassRes.Id}";
+        string actionDesc = $"用户#{userId},授权资源#{passResId}";
         actionLogService.Add(loginUserId, ActionLogType.UserPassResRevoke, actionDesc);
 
         return Json(new JsonResultData {
