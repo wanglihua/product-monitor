@@ -59,13 +59,6 @@ public class UserPassResController : Controller
         long passResId = param.PassResId;
         query = query.Where(e => e.UserPassRes.PassResId == passResId);
 
-
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(e => e.Name.Contains(nameQuery));
-        // }
-
         int userPassResCount = query.Count();
 
         // 排序字段
