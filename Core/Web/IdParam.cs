@@ -16,3 +16,10 @@ public class IdParamValidator : AbstractValidator<IdParam>
         RuleFor(e => e.Id).GreaterThan(0).WithMessage("id不能为空！");
     }
 }
+
+public class IdParamEmptyValidator : AbstractValidator<IdParam>
+{
+    public IdParamEmptyValidator()
+    {
+    }
+}

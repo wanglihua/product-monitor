@@ -107,7 +107,7 @@ public class GroupController : Controller
     [Transactional(false)]
     public IActionResult Detail([FromBody] IdParam param)
     {
-        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+        ValidationUtil.Validate<IdParamEmptyValidator, IdParam>(param);
 
         long groupId = param.Id;
 
