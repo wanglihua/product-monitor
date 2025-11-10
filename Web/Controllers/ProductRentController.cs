@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Core.Auth;
 using Core.Database;
+using Core.Util;
 using Core.Web;
 using Domain;
 using Domain.PassRes;
@@ -38,6 +39,8 @@ public class ProductRentController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ProductRentListParam param)
     {
+        ValidationUtil.Validate<ProductRentListParamValidator, ProductRentListParam>(param);
+
         IQueryable<ProductRentJoinItem> query = db.Set<ProductRentEntity>()
             .Join(db.Set<CollegeEntity>(),
                 pr => pr.CollegeId,

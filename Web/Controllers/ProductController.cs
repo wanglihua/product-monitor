@@ -41,6 +41,8 @@ public class ProductController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ProductListParam param)
     {
+        ValidationUtil.Validate<ProductListParamValidator, ProductListParam>(param);
+
         IQueryable<ProductEntity> query = db.Set<ProductEntity>();
 
         if (string.IsNullOrWhiteSpace(param.NameQuery) == false)

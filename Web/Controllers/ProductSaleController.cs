@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Core.Auth;
 using Core.Database;
+using Core.Util;
 using Core.Web;
 using Domain;
 using Domain.PassRes;
@@ -38,6 +39,8 @@ public class ProductSaleController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ProductSaleListParam param)
     {
+        ValidationUtil.Validate<ProductSaleListParamValidator, ProductSaleListParam>(param);
+
         IQueryable<ProductSaleJoinItem> query = db.Set<ProductSaleEntity>()
             .Join(db.Set<CollegeEntity>(),
                 ps => ps.CollegeId,

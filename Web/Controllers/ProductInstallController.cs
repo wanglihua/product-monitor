@@ -49,6 +49,8 @@ public class ProductInstallController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ProductInstallListParam param)
     {
+        ValidationUtil.Validate<ProductInstallListParamValidator, ProductInstallListParam>(param);
+
         IQueryable<ProductInstallJoinItem> query = db.Set<ProductInstallEntity>()
             .Join(db.Set<CollegeEntity>(),
                 pi => pi.CollegeId,

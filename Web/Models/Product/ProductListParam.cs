@@ -1,4 +1,5 @@
 ﻿using Core.Web;
+using FluentValidation;
 using Newtonsoft.Json;
 
 namespace Web.Models.Product;
@@ -10,4 +11,11 @@ public class ProductListParam : ListParam
 
     [JsonProperty("englishNameQuery")]
     public string EnglishNameQuery { get; set; } = "";
+}
+
+public class ProductListParamValidator : AbstractValidator<ProductListParam>
+{
+    public ProductListParamValidator()
+    {
+    }
 }

@@ -47,6 +47,8 @@ public class ProductUrlMonitorController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ProductUrlMonitorListParam param)
     {
+        ValidationUtil.Validate<ProductUrlMonitorListParamValidator, ProductUrlMonitorListParam>(param);
+
         IQueryable<ProductUrlMonitorJoinItem> query = db.Set<ProductUrlMonitorEntity>()
             .Join(db.Set<CollegeEntity>(),
                 pum => pum.CollegeId,

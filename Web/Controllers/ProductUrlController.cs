@@ -38,6 +38,8 @@ public class ProductUrlController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ProductUrlListParam param)
     {
+        ValidationUtil.Validate<ProductUrlListParamValidator, ProductUrlListParam>(param);
+
         IQueryable<ProductUrlEntity> query = db.Set<ProductUrlEntity>();
 
         if (param.TypeQuery != ProductUrlType.None)

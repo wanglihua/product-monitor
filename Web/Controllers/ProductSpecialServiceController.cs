@@ -49,6 +49,8 @@ public class ProductSpecialServiceController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ProductSpecialServiceListParam param)
     {
+        ValidationUtil.Validate<ProductSpecialServiceListParamValidator, ProductSpecialServiceListParam>(param);
+
         IQueryable<ProductSpecialServiceJoinItem> query = db.Set<ProductSpecialServiceEntity>()
             .Join(db.Set<CollegeEntity>(),
                 pss => pss.CollegeId,

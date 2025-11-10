@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Core.Auth;
 using Core.Database;
+using Core.Util;
 using Core.Web;
 using Domain;
 using Domain.PassRes;
@@ -67,6 +68,8 @@ public class PassResController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] PassResListParam param)
     {
+        ValidationUtil.Validate<PassResListParamValidator, PassResListParam>(param);
+
         IQueryable<PassResJoinItem> query = db.Set<PassResEntity>()
             .Join(db.Set<PassResCateEntity>(),
                 pr => pr.CateId,

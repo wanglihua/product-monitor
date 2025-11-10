@@ -38,6 +38,8 @@ public class GroupController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] GroupListParam param)
     {
+        ValidationUtil.Validate<GroupListParamValidator, GroupListParam>(param);
+
         IQueryable<GroupEntity> query = db.Set<GroupEntity>();
 
         if (string.IsNullOrWhiteSpace(param.NameQuery) == false)

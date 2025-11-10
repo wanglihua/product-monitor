@@ -44,6 +44,8 @@ public class UserController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] UserListParam param)
     {
+        ValidationUtil.Validate<UserListParamValidator, UserListParam>(param);
+
         IQueryable<UserEntity> query = db.Set<UserEntity>();
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)

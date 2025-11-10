@@ -49,6 +49,8 @@ public class ProductUpdateController : Controller
     [Transactional(false)]
     public IActionResult List([FromBody] ProductUpdateListParam param)
     {
+        ValidationUtil.Validate<ProductUpdateListParamValidator, ProductUpdateListParam>(param);
+
         IQueryable<ProductUpdateJoinItem> query = db.Set<ProductUpdateEntity>()
             .Join(db.Set<CollegeEntity>(),
                 pu => pu.CollegeId,
