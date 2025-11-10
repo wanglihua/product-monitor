@@ -1,6 +1,7 @@
 ﻿using Core.Auth;
 using Core.Config;
 using Core.Database;
+using Core.Util;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
@@ -25,6 +26,8 @@ public class CollegeSelectController : Controller
     [Transactional(false)]
     public IActionResult Data([FromBody] CollegeSelectDataQueryParam param)
     {
+        ValidationUtil.Validate<CollegeSelectDataQueryParamValidator, CollegeSelectDataQueryParam>(param);
+
         IQueryable<CollegeEntity> query = db.Set<CollegeEntity>();
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)

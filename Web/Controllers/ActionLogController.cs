@@ -37,8 +37,10 @@ public class ActionLogController : Controller
             .Join(db.Set<UserEntity>(),
                 actionLog => actionLog.UserId,
                 user => user.Id,
-                (actionLog, user) => new ActionLogJoinItem { ActionLog = actionLog, User = user }
-            );
+                (actionLog, user) => new ActionLogJoinItem {
+                    ActionLog = actionLog,
+                    User = user,
+                });
 
         if (param.ActionLogTypeQuery != null && param.ActionLogTypeQuery != ActionLogType.None)
         {

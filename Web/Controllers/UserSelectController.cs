@@ -1,6 +1,7 @@
 using Core.Auth;
 using Core.Config;
 using Core.Database;
+using Core.Util;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
@@ -25,6 +26,8 @@ public class UserSelectController : Controller
     [Transactional(false)]
     public IActionResult Data([FromBody] UserSelectDataQueryParam param)
     {
+        ValidationUtil.Validate<UserSelectDataQueryParamValidator, UserSelectDataQueryParam>(param);
+
         IQueryable<UserEntity> query = db.Set<UserEntity>();
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
