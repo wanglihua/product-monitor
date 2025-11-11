@@ -7,7 +7,6 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 using NLog;
 using Service;
 using Web.Models.UserPassRes;
@@ -53,7 +52,8 @@ public class UserPassResController : Controller
             .GroupJoin(db.Set<UserPassResEntity>(),
                 u => u.Id,
                 upr => upr.UserId,
-                (u, upr) => new { u, upr })
+                (u, upr) => new { u, upr }
+            )
             .SelectMany(
                 g => g.upr.DefaultIfEmpty(),
                 (g, upr) => new PassResUserJoinItem {
@@ -101,6 +101,11 @@ public class UserPassResController : Controller
             {
                 sortField = e => e.User.UserName;
             }
+
+            if (string.Compare(sortFieldParam, nameof(PassResUserListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.UserPassRes!.CreateTime;
+            }
         }
 
         // 排序顺序
@@ -142,9 +147,9 @@ public class UserPassResController : Controller
 
     private class UserPassResJoinItem
     {
-        public UserPassResEntity UserPassRes { get; set; } = new();
-
         public PassResEntity PassRes { get; set; } = new();
+
+        public UserPassResEntity? UserPassRes { get; set; }
     }
 
     [HttpPost]
@@ -154,14 +159,19 @@ public class UserPassResController : Controller
     {
         ValidationUtil.Validate<UserPassResListParamValidator, UserPassResListParam>(param);
 
-        IQueryable<UserPassResJoinItem> query = db.Set<UserPassResEntity>()
-            .Join(db.Set<PassResEntity>(),
-                upr => upr.UserId,
+        IQueryable<UserPassResJoinItem> query = db.Set<PassResEntity>()
+            .GroupJoin(db.Set<UserPassResEntity>(),
                 pr => pr.Id,
-                (upr, pr) => new UserPassResJoinItem {
-                    UserPassRes = upr,
-                    PassRes = pr,
-                });
+                upr => upr.PassResId,
+                (pr, upr) => new { pr, upr }
+            )
+            .SelectMany(
+                g => g.upr.DefaultIfEmpty(),
+                (g, upr) => new UserPassResJoinItem {
+                    PassRes = g.pr,
+                    UserPassRes = upr
+                }
+            );
 
         long userId = param.UserId;
         var user = db.Set<UserEntity>().Find(userId);
@@ -170,7 +180,7 @@ public class UserPassResController : Controller
             throw new ValidationException($"指定的用户#{userId}不存在!");
         }
 
-        query = query.Where(e => e.UserPassRes.UserId == userId);
+        query = query.Where(e => e.UserPassRes == null || e.UserPassRes.UserId == userId);
 
         if (string.IsNullOrWhiteSpace(param.PassResNameQuery) == false)
         {
@@ -181,20 +191,25 @@ public class UserPassResController : Controller
         int userPassResCount = query.Count();
 
         // 排序字段
-        Expression<Func<UserPassResJoinItem, object>> sortField = e => e.UserPassRes.Id;
+        Expression<Func<UserPassResJoinItem, object>> sortField = e => e.PassRes.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
 
+            if (string.Compare(sortFieldParam, nameof(UserPassResListItem.PassResName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.PassRes.Name;
+            }
+
             if (string.Compare(sortFieldParam, nameof(UserPassResListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
-                sortField = e => e.UserPassRes.CreateTime;
+                sortField = e => e.UserPassRes!.CreateTime;
             }
         }
 
         // 排序顺序
         string sortOrder = param.SortOrder;
-        if (sortOrder == SortOrder.Ascend)
+        if (sortOrder == SortOrder.Descend) // 这里默认顺序排
         {
             query = query.OrderBy(sortField);
         }
@@ -210,10 +225,10 @@ public class UserPassResController : Controller
 
         var userPassResItemList = userPassResList
             .Select(e => new UserPassResListItem {
-                Id = e.UserPassRes.Id,
-                PassResId = e.UserPassRes.PassResId,
+                Id = e.PassRes.Id,
+                PassResId = e.PassRes.Id,
                 PassResName = e.PassRes.Name,
-                CreateTime = e.UserPassRes.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                CreateTime = e.UserPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
             })
             .ToList();
 
