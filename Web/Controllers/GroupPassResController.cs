@@ -47,6 +47,13 @@ public class GroupPassResController : Controller
             throw new ValidationException($"指定的权限资源#{passResId}不存在!");
         }
 
+        long passResCateId = passRes.CateId;
+        var passResCate = db.Set<PassResCateEntity>().Find(passResCateId);
+        if (passResCate is null)
+        {
+            throw new ValidationException($"指定的权限资源类别#{passResCateId}不存在!");
+        }
+
         IQueryable<GroupEntity> query = db.Set<GroupEntity>();
 
         if (string.IsNullOrWhiteSpace(param.GroupNameQuery) == false)
@@ -118,7 +125,7 @@ public class GroupPassResController : Controller
             Data = new Dictionary<string, object> {
                 ["passResGroupList"] = passResGroupItemList,
                 ["passResGroupCount"] = passResGroupCount,
-                ["passResName"] = passRes.Name,
+                ["passResName"] = $"{passResCate.Name} {passRes.Name}",
             },
         });
     }
