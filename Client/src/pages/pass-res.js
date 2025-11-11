@@ -99,7 +99,7 @@ const PassRes = () => {
         <div>
             <Title title="授权资源" parentMenuKeys={["system-manage"]} menuKey="pass-res" breadcrumb={[
                 {title: "系统管理"},
-                {title: "授权码资源"},
+                {title: "授权资源"},
             ]}/>
             <div>
                 <Space>
