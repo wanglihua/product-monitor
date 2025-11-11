@@ -33,13 +33,6 @@ public class GroupPassResController : Controller
         this.actionLogService = actionLogService;
     }
 
-    private class PassResGroupListJoinItem
-    {
-        public GroupEntity Group { get; set; } = new();
-
-        public GroupPassResEntity? GroupPassRes { get; set; }
-    }
-
     [HttpPost]
     [Route("/api/group-pass-res/group/list")]
     [Transactional(false)]
@@ -54,46 +47,25 @@ public class GroupPassResController : Controller
             throw new ValidationException($"指定的权限资源#{passResId}不存在!");
         }
 
-        // 实际效果是左外联接, 也可以通过一个SQL视图来简化
-        // 或用这里的方法做个通用方法简化, https://medium.com/@zabavnov/implementation-of-left-outer-join-for-entity-framework-b47469633e2f
-        IQueryable<PassResGroupListJoinItem> query = db.Set<GroupEntity>()
-            .GroupJoin(db.Set<GroupPassResEntity>(),
-                g => g.Id,
-                gpr => gpr.GroupId,
-                (g, gpr) => new { g, gpr }
-            )
-            .SelectMany(
-                g => g.gpr.DefaultIfEmpty(),
-                (g, gpr) => new PassResGroupListJoinItem {
-                    Group = g.g,
-                    GroupPassRes = gpr,
-                }
-            );
-
-        query = query.Where(e => e.GroupPassRes == null || e.GroupPassRes.PassResId == passResId);
+        IQueryable<GroupEntity> query = db.Set<GroupEntity>();
 
         if (string.IsNullOrWhiteSpace(param.GroupNameQuery) == false)
         {
             string groupNameQuery = param.GroupNameQuery.Trim();
-            query = query.Where(e => e.Group.Name.Contains(groupNameQuery));
+            query = query.Where(e => e.Name.Contains(groupNameQuery));
         }
 
         int passResGroupCount = query.Count();
 
         // 排序字段
-        Expression<Func<PassResGroupListJoinItem, object>> sortField = e => e.Group.Id;
+        Expression<Func<GroupEntity, object>> sortField = e => e.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
 
             if (string.Compare(sortFieldParam, nameof(PassResGroupListItem.GroupName), StringComparison.OrdinalIgnoreCase) == 0)
             {
-                sortField = e => e.Group.Name;
-            }
-
-            if (string.Compare(sortFieldParam, nameof(PassResGroupListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                sortField = e => e.GroupPassRes!.CreateTime;
+                sortField = e => e.Name;
             }
         }
 
@@ -108,20 +80,37 @@ public class GroupPassResController : Controller
             query = query.OrderByDescending(sortField);
         }
 
-        var passResGroupList = query
+        var groupList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
             .ToList();
 
-        var passResGroupItemList = passResGroupList
-            .Select(e => new PassResGroupListItem {
-                Id = e.Group.Id,
-                GroupId = e.Group.Id,
-                GroupName = e.Group.Name,
-                Grant = e.GroupPassRes != null,
-                CreateTime = e.GroupPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
-            })
+        var groupIdList = groupList.Select(e => e.Id).ToList();
+
+        var groupPassResList = db.Set<GroupPassResEntity>()
+            .Where(e => e.PassResId == passResId && groupIdList.Contains(e.GroupId))
             .ToList();
+
+
+        var passResGroupItemList = new List<PassResGroupListItem>();
+        foreach (var group in groupList)
+        {
+            long groupId = group.Id;
+            var groupPassRes = groupPassResList
+                .Where(e => e.GroupId == groupId)
+                .Take(1)
+                .SingleOrDefault();
+
+            passResGroupItemList.Add(
+                new PassResGroupListItem {
+                    Id = group.Id,
+                    GroupId = group.Id,
+                    GroupName = group.Name,
+                    Grant = groupPassRes != null,
+                    CreateTime = groupPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
+                }
+            );
+        }
 
         return Json(new JsonResultData {
             Success = true,

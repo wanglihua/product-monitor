@@ -33,13 +33,6 @@ public class UserPassResController : Controller
         this.actionLogService = actionLogService;
     }
 
-    private class PassResUserJoinItem
-    {
-        public UserEntity User { get; set; } = new();
-
-        public UserPassResEntity? UserPassRes { get; set; }
-    }
-
     [HttpPost]
     [Route("/api/user-pass-res/user/list")]
     [Transactional(false)]
@@ -55,57 +48,36 @@ public class UserPassResController : Controller
             throw new ValidationException($"指定的权限资源#{passResId}不存在!");
         }
 
-        // 实际效果是左外联接, 也可以通过一个SQL视图来简化
-        // 或用这里的方法做个通用方法简化, https://medium.com/@zabavnov/implementation-of-left-outer-join-for-entity-framework-b47469633e2f
-        IQueryable<PassResUserJoinItem> query = db.Set<UserEntity>()
-            .GroupJoin(db.Set<UserPassResEntity>(),
-                u => u.Id,
-                upr => upr.UserId,
-                (u, upr) => new { u, upr }
-            )
-            .SelectMany(
-                g => g.upr.DefaultIfEmpty(),
-                (g, upr) => new PassResUserJoinItem {
-                    User = g.u,
-                    UserPassRes = upr
-                }
-            );
-
-        query = query.Where(e => e.UserPassRes == null || e.UserPassRes.PassResId == passResId);
+        IQueryable<UserEntity> query = db.Set<UserEntity>();
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
             string loginNameQuery = param.LoginNameQuery.Trim();
-            query = query.Where(e => e.User.LoginName.Contains(loginNameQuery));
+            query = query.Where(e => e.LoginName.Contains(loginNameQuery));
         }
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
             string loginNameQuery = param.LoginNameQuery.Trim();
-            query = query.Where(e => e.User.LoginName.Contains(loginNameQuery));
+            query = query.Where(e => e.LoginName.Contains(loginNameQuery));
         }
 
         int passResUserCount = query.Count();
 
         // 排序字段
-        Expression<Func<PassResUserJoinItem, object>> sortField = e => e.User.Id;
+        Expression<Func<UserEntity, object>> sortField = e => e.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
 
             if (string.Compare(sortFieldParam, nameof(PassResUserListItem.LoginName), StringComparison.OrdinalIgnoreCase) == 0)
             {
-                sortField = e => e.User.LoginName;
+                sortField = e => e.LoginName;
             }
 
             if (string.Compare(sortFieldParam, nameof(PassResUserListItem.UserName), StringComparison.OrdinalIgnoreCase) == 0)
             {
-                sortField = e => e.User.UserName;
-            }
-
-            if (string.Compare(sortFieldParam, nameof(PassResUserListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                sortField = e => e.UserPassRes!.CreateTime;
+                sortField = e => e.UserName;
             }
         }
 
@@ -120,21 +92,35 @@ public class UserPassResController : Controller
             query = query.OrderByDescending(sortField);
         }
 
-        var userPassResList = query
+        var userList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
             .ToList();
+        
+        var userIdList = userList.Select(e => e.Id).ToList();
 
-        var passResUserItemList = userPassResList
-            .Select(e => new PassResUserListItem {
-                Id = e.User.Id,
-                UserId = e.User.Id,
-                LoginName = e.User.LoginName,
-                UserName = e.User.UserName,
-                Grant = e.UserPassRes != null,
-                CreateTime = e.UserPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
-            })
+        var userPassResList = db.Set<UserPassResEntity>()
+            .Where(e => e.PassResId == passResId && userIdList.Contains(e.UserId))
             .ToList();
+
+        var passResUserItemList = new List<PassResUserListItem>();
+        foreach (var user in userList)
+        {
+            long userId = user.Id;
+            var userPassRes = userPassResList
+                .Where(e => e.UserId == userId)
+                .Take(1)
+                .SingleOrDefault();
+            
+            passResUserItemList.Add(new PassResUserListItem {
+                Id = user.Id,
+                UserId = user.Id,
+                LoginName = user.LoginName,
+                UserName = user.UserName,
+                Grant = userPassRes != null,
+                CreateTime = userPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
+            });
+        }
 
         return Json(new JsonResultData {
             Success = true,
