@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Badge, Button, Input, Space, Table} from 'antd';
 import {DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import {useParams} from "react-router";
+import {useParams, useNavigate} from "react-router";
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
@@ -11,6 +11,8 @@ const PassResUser = () => {
     const passResId = params.passResId;
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         passResId: passResId,
@@ -142,7 +144,13 @@ const PassResUser = () => {
 
     return (
         <div>
-            <Title title="用户授权" menuKey="user-pass-res" breadcrumb={[
+            <Title title={`${state.passResName} 用户授权`} parentMenuKeys={["system-manage"]} menuKey="pass-res" breadcrumb={[
+                {title: "系统管理"},
+                {
+                    title: <span style={{cursor: "pointer"}} onClick={() => {
+                        navigate("/pass-res");
+                    }}>授权资源</span>
+                },
                 {title: "用户授权"},
             ]}/>
             <div>

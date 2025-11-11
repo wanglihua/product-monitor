@@ -48,6 +48,13 @@ public class UserPassResController : Controller
             throw new ValidationException($"指定的权限资源#{passResId}不存在!");
         }
 
+        long passResCateId = passRes.CateId;
+        var passResCate = db.Set<PassResCateEntity>().Find(passResCateId);
+        if (passResCate is null)
+        {
+            throw new ValidationException($"指定的权限资源类别#{passResCateId}不存在!");
+        }
+
         IQueryable<UserEntity> query = db.Set<UserEntity>();
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
@@ -128,7 +135,7 @@ public class UserPassResController : Controller
             Data = new Dictionary<string, object> {
                 ["passResUserList"] = passResUserItemList,
                 ["passResUserCount"] = passResUserCount,
-                ["passResName"] = passRes.Name,
+                ["passResName"] = $"{passResCate.Name} {passRes.Name}",
             },
         });
     }
