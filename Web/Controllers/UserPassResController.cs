@@ -96,7 +96,7 @@ public class UserPassResController : Controller
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
             .ToList();
-        
+
         var userIdList = userList.Select(e => e.Id).ToList();
 
         var userPassResList = db.Set<UserPassResEntity>()
@@ -111,7 +111,7 @@ public class UserPassResController : Controller
                 .Where(e => e.UserId == userId)
                 .Take(1)
                 .SingleOrDefault();
-            
+
             passResUserItemList.Add(new PassResUserListItem {
                 Id = user.Id,
                 UserId = user.Id,
@@ -138,8 +138,6 @@ public class UserPassResController : Controller
         public PassResCateEntity PassResCate { get; set; } = new();
 
         public PassResEntity PassRes { get; set; } = new();
-
-        public UserPassResEntity? UserPassRes { get; set; }
     }
 
     [HttpPost]
@@ -156,29 +154,15 @@ public class UserPassResController : Controller
             throw new ValidationException($"指定的用户#{userId}不存在!");
         }
 
-        // 实际效果是左外联接, 也可以通过一个SQL视图来简化
-        // 或用这里的方法做个通用方法简化, https://medium.com/@zabavnov/implementation-of-left-outer-join-for-entity-framework-b47469633e2f
         IQueryable<UserPassResJoinItem> query = db.Set<PassResEntity>()
             .Join(db.Set<PassResCateEntity>(),
                 pr => pr.CateId,
                 prc => prc.Id,
-                (pr, prc) => new { pr, prc }
-            )
-            .GroupJoin(db.Set<UserPassResEntity>(),
-                pr => pr.pr.Id,
-                upr => upr.PassResId,
-                (pr, upr) => new { pr, upr }
-            )
-            .SelectMany(
-                g => g.upr.DefaultIfEmpty(),
-                (g, upr) => new UserPassResJoinItem {
-                    PassResCate = g.pr.prc,
-                    PassRes = g.pr.pr,
-                    UserPassRes = upr
+                (pr, prc) => new UserPassResJoinItem {
+                    PassRes = pr,
+                    PassResCate = prc
                 }
             );
-
-        query = query.Where(e => e.UserPassRes == null || e.UserPassRes.UserId == userId);
 
         if (string.IsNullOrWhiteSpace(param.PassResNameQuery) == false)
         {
@@ -198,11 +182,6 @@ public class UserPassResController : Controller
             {
                 sortField = e => e.PassRes.Name;
             }
-
-            if (string.Compare(sortFieldParam, nameof(UserPassResListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                sortField = e => e.UserPassRes!.CreateTime;
-            }
         }
 
         // 排序顺序
@@ -216,21 +195,34 @@ public class UserPassResController : Controller
             query = query.OrderByDescending(sortField);
         }
 
-        var userPassResList = query
+        var passResList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
             .ToList();
 
-        var userPassResItemList = userPassResList
-            .Select(e => new UserPassResListItem {
-                Id = e.PassRes.Id,
-                PassResId = e.PassRes.Id,
-                PassResCateName = e.PassResCate.Name,
-                PassResName = e.PassRes.Name,
-                Grant = e.UserPassRes != null,
-                CreateTime = e.UserPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
-            })
+        var passResIdList = passResList.Select(e => e.PassRes.Id).ToList();
+        var userPassResList = db.Set<UserPassResEntity>()
+            .Where(e => e.UserId == userId && passResIdList.Contains(e.PassResId))
             .ToList();
+
+        var userPassResItemList = new List<UserPassResListItem>();
+        foreach (var passRes in passResList)
+        {
+            long passResId = passRes.PassRes.Id;
+            var userPassRes = userPassResList
+                .Where(e => e.PassResId == passResId)
+                .Take(1)
+                .SingleOrDefault();
+
+            userPassResItemList.Add(new UserPassResListItem {
+                Id = passRes.PassRes.Id,
+                PassResId = passRes.PassRes.Id,
+                PassResCateName = passRes.PassResCate.Name,
+                PassResName = passRes.PassRes.Name,
+                Grant = userPassRes != null,
+                CreateTime = userPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
+            });
+        }
 
         return Json(new JsonResultData {
             Success = true,

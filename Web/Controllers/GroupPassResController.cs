@@ -128,8 +128,6 @@ public class GroupPassResController : Controller
         public PassResCateEntity PassResCate { get; set; } = new();
 
         public PassResEntity PassRes { get; set; } = new();
-
-        public GroupPassResEntity? GroupPassRes { get; set; }
     }
 
     [HttpPost]
@@ -146,29 +144,15 @@ public class GroupPassResController : Controller
             throw new ValidationException($"指定的群组#{groupId}不存在!");
         }
 
-        // 实际效果是左外联接, 也可以通过一个SQL视图来简化
-        // 或用这里的方法做个通用方法简化, https://medium.com/@zabavnov/implementation-of-left-outer-join-for-entity-framework-b47469633e2f
         IQueryable<GroupPassResJoinItem> query = db.Set<PassResEntity>()
             .Join(db.Set<PassResCateEntity>(),
                 pr => pr.CateId,
                 prc => prc.Id,
-                (pr, prc) => new { pr, prc }
-            )
-            .GroupJoin(db.Set<GroupPassResEntity>(),
-                pr => pr.pr.Id,
-                gpr => gpr.PassResId,
-                (pr, gpr) => new { pr, gpr }
-            )
-            .SelectMany(
-                g => g.gpr.DefaultIfEmpty(),
-                (g, gpr) => new GroupPassResJoinItem {
-                    PassResCate = g.pr.prc,
-                    PassRes = g.pr.pr,
-                    GroupPassRes = gpr,
+                (pr, prc) => new GroupPassResJoinItem {
+                    PassRes = pr,
+                    PassResCate = prc
                 }
             );
-
-        query = query.Where(e => e.GroupPassRes == null || e.GroupPassRes.GroupId == groupId);
 
         if (string.IsNullOrWhiteSpace(param.PassResNameQuery) == false)
         {
@@ -188,11 +172,6 @@ public class GroupPassResController : Controller
             {
                 sortField = e => e.PassRes.Name;
             }
-
-            if (string.Compare(sortFieldParam, nameof(GroupPassResListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                sortField = e => e.GroupPassRes!.CreateTime;
-            }
         }
 
         // 排序顺序
@@ -206,21 +185,34 @@ public class GroupPassResController : Controller
             query = query.OrderByDescending(sortField);
         }
 
-        var groupPassResList = query
+        var passResList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
             .ToList();
 
-        var groupPassResItemList = groupPassResList
-            .Select(e => new GroupPassResListItem {
-                Id = e.PassRes.Id,
-                PassResId = e.PassRes.Id,
-                PassResCateName = e.PassResCate.Name,
-                PassResName = e.PassRes.Name,
-                Grant = e.GroupPassRes != null,
-                CreateTime = e.GroupPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
-            })
+        var passResIdList = passResList.Select(e => e.PassRes.Id).ToList();
+        var groupPassResList = db.Set<GroupPassResEntity>()
+            .Where(e => e.GroupId == groupId && passResIdList.Contains(e.PassResId))
             .ToList();
+
+        var groupPassResItemList = new List<GroupPassResListItem>();
+        foreach (var passRes in passResList)
+        {
+            long passResId = passRes.PassRes.Id;
+            var groupPassRes = groupPassResList
+                .Where(e => e.PassResId == passResId)
+                .Take(1)
+                .SingleOrDefault();
+
+            groupPassResItemList.Add(new GroupPassResListItem {
+                Id = passRes.PassRes.Id,
+                PassResId = passRes.PassRes.Id,
+                PassResCateName = passRes.PassResCate.Name,
+                PassResName = passRes.PassRes.Name,
+                Grant = groupPassRes != null,
+                CreateTime = groupPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
+            });
+        }
 
         return Json(new JsonResultData {
             Success = true,
