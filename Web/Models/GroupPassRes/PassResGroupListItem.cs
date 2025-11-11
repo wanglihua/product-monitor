@@ -13,6 +13,9 @@ public class PassResGroupListItem
     [JsonProperty("groupName")]
     public string GroupName { get; set; } = "";
 
+    [JsonProperty("grant")]
+    public bool Grant { get; set; }
+
     [JsonProperty("createTime")]
     public string CreateTime { get; set; } = "";
 }

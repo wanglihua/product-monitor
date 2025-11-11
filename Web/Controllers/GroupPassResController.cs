@@ -118,6 +118,7 @@ public class GroupPassResController : Controller
                 Id = e.Group.Id,
                 GroupId = e.Group.Id,
                 GroupName = e.Group.Name,
+                Grant = e.GroupPassRes != null,
                 CreateTime = e.GroupPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
             })
             .ToList();
@@ -135,6 +136,8 @@ public class GroupPassResController : Controller
 
     private class GroupPassResJoinItem
     {
+        public PassResCateEntity PassResCate { get; set; } = new();
+
         public PassResEntity PassRes { get; set; } = new();
 
         public GroupPassResEntity? GroupPassRes { get; set; }
@@ -157,15 +160,21 @@ public class GroupPassResController : Controller
         // 实际效果是左外联接, 也可以通过一个SQL视图来简化
         // 或用这里的方法做个通用方法简化, https://medium.com/@zabavnov/implementation-of-left-outer-join-for-entity-framework-b47469633e2f
         IQueryable<GroupPassResJoinItem> query = db.Set<PassResEntity>()
+            .Join(db.Set<PassResCateEntity>(),
+                pr => pr.CateId,
+                prc => prc.Id,
+                (pr, prc) => new { pr, prc }
+            )
             .GroupJoin(db.Set<GroupPassResEntity>(),
-                pr => pr.Id,
+                pr => pr.pr.Id,
                 gpr => gpr.PassResId,
                 (pr, gpr) => new { pr, gpr }
             )
             .SelectMany(
                 g => g.gpr.DefaultIfEmpty(),
                 (g, gpr) => new GroupPassResJoinItem {
-                    PassRes = g.pr,
+                    PassResCate = g.pr.prc,
+                    PassRes = g.pr.pr,
                     GroupPassRes = gpr,
                 }
             );
@@ -217,7 +226,9 @@ public class GroupPassResController : Controller
             .Select(e => new GroupPassResListItem {
                 Id = e.PassRes.Id,
                 PassResId = e.PassRes.Id,
+                PassResCateName = e.PassResCate.Name,
                 PassResName = e.PassRes.Name,
+                Grant = e.GroupPassRes != null,
                 CreateTime = e.GroupPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
             })
             .ToList();

@@ -15,6 +15,9 @@ public class PassResUserListItem
 
     [JsonProperty("userName")]
     public string UserName { get; set; } = "";
+    
+    [JsonProperty("grant")]
+    public bool Grant { get; set; }
 
     [JsonProperty("createTime")]
     public string CreateTime { get; set; } = "";

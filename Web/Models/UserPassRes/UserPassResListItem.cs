@@ -10,8 +10,14 @@ public class UserPassResListItem
     [JsonProperty("passResId")]
     public long PassResId { get; set; }
 
+    [JsonProperty("passResCateName")]
+    public string PassResCateName { get; set; } = "";
+
     [JsonProperty("passResName")]
     public string PassResName { get; set; } = "";
+
+    [JsonProperty("grant")]
+    public bool Grant { get; set; }
 
     [JsonProperty("createTime")]
     public string CreateTime { get; set; } = "";

@@ -131,6 +131,7 @@ public class UserPassResController : Controller
                 UserId = e.User.Id,
                 LoginName = e.User.LoginName,
                 UserName = e.User.UserName,
+                Grant = e.UserPassRes != null,
                 CreateTime = e.UserPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
             })
             .ToList();
@@ -148,6 +149,8 @@ public class UserPassResController : Controller
 
     private class UserPassResJoinItem
     {
+        public PassResCateEntity PassResCate { get; set; } = new();
+
         public PassResEntity PassRes { get; set; } = new();
 
         public UserPassResEntity? UserPassRes { get; set; }
@@ -170,15 +173,21 @@ public class UserPassResController : Controller
         // 实际效果是左外联接, 也可以通过一个SQL视图来简化
         // 或用这里的方法做个通用方法简化, https://medium.com/@zabavnov/implementation-of-left-outer-join-for-entity-framework-b47469633e2f
         IQueryable<UserPassResJoinItem> query = db.Set<PassResEntity>()
+            .Join(db.Set<PassResCateEntity>(),
+                pr => pr.CateId,
+                prc => prc.Id,
+                (pr, prc) => new { pr, prc }
+            )
             .GroupJoin(db.Set<UserPassResEntity>(),
-                pr => pr.Id,
+                pr => pr.pr.Id,
                 upr => upr.PassResId,
                 (pr, upr) => new { pr, upr }
             )
             .SelectMany(
                 g => g.upr.DefaultIfEmpty(),
                 (g, upr) => new UserPassResJoinItem {
-                    PassRes = g.pr,
+                    PassResCate = g.pr.prc,
+                    PassRes = g.pr.pr,
                     UserPassRes = upr
                 }
             );
@@ -230,7 +239,9 @@ public class UserPassResController : Controller
             .Select(e => new UserPassResListItem {
                 Id = e.PassRes.Id,
                 PassResId = e.PassRes.Id,
+                PassResCateName = e.PassResCate.Name,
                 PassResName = e.PassRes.Name,
+                Grant = e.UserPassRes != null,
                 CreateTime = e.UserPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
             })
             .ToList();

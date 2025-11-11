@@ -61,24 +61,18 @@ const UserPassRes = () => {
             },
         },
         {
-            title: "用户",
-            dataIndex: "userId",
-            width: "200px",
+            title: "资源类别",
+            dataIndex: "passResCateName",
+            width: "150px",
         },
         {
             title: "授权资源",
-            dataIndex: "passResId",
+            dataIndex: "passResName",
             width: "200px",
         },
         {
-            title: "创建时间",
+            title: "授权时间",
             dataIndex: "createTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
-            dataIndex: "updateTime",
             width: "150px",
             sorter: true,
         },
@@ -124,7 +118,7 @@ const UserPassRes = () => {
 
     return (
         <div>
-            <Title title={`用户权限资源 ${state.loginName} ${state.userName}`} menuKey="user-pass-res" breadcrumb={[
+            <Title title={`用户权限资源 ${state.loginName} ${state.userName}`} parentMenuKeys={["system-manage"]} menuKey="user" breadcrumb={[
                 {title: "系统管理"},
                 {
                     title: <span style={{cursor: "pointer"}} onClick={() => {
