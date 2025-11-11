@@ -32,6 +32,10 @@ import ExceptionMonitor from "./pages/exception-monitor";
 import PassRes from "./pages/pass-res";
 import Group from "./pages/group";
 import GroupUser from "./pages/group-user";
+import GroupPassRes from "./pages/group-pass-res";
+import UserPassRes from "./pages/user-pass-res";
+import PassResGroup from "./pages/pass-res-group";
+import PassResUser from "./pages/pass-res-user";
 
 const Router = () => {
     return (
@@ -64,6 +68,10 @@ const Router = () => {
                     <Route path="/admin-user" element={<AdminUser/>}/>
                     <Route path="/group" element={<Group/>}/>
                     <Route path="/group-user/:groupId" element={<GroupUser/>}/>
+                    <Route path="/group-pass-res/:groupId" element={<GroupPassRes/>}/>
+                    <Route path="/pass-res-group/:passResId" element={<PassResGroup/>}/>
+                    <Route path="/user-pass-res/:userId" element={<UserPassRes/>}/>
+                    <Route path="/pass-res-user/:passResId" element={<PassResUser/>}/>
                     <Route path="/pass-res" element={<PassRes/>}/>
                     <Route path="/action/log" element={<ActionLog/>}/>
                 </Route>

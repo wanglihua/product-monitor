@@ -1,12 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import GroupPassResDetail from "./group-pass-res-detail";
-
+import {useParams} from "react-router";
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
 const GroupPassRes = () => {
+
+    const params = useParams();
+    const groupId = params.groupId;
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
@@ -41,8 +43,6 @@ const GroupPassRes = () => {
             });
         });
     };
-
-    const groupPassResDetail = useRef();
 
     const groupPassResListColumns = [
         {
@@ -82,7 +82,6 @@ const GroupPassRes = () => {
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const groupPassResId = record.id;
-                            groupPassResDetail.current.show(groupPassResId);
                         }}>
                             <EditOutlined/>编辑
                         </Button>
@@ -145,7 +144,6 @@ const GroupPassRes = () => {
                         color="default"
                         icon={<PlusCircleOutlined style={{color: "green"}}/>}
                         onClick={(e) => {
-                            groupPassResDetail.current.show(0);
                         }}
                     >
                         添加
@@ -176,7 +174,6 @@ const GroupPassRes = () => {
                        }}
                 />
             </div>
-            <GroupPassResDetail ref={groupPassResDetail} loadGroupPassResList={loadGroupPassResList}/>
         </div>
     );
 };

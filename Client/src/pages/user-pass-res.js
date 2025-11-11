@@ -1,12 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import UserPassResDetail from "./user-pass-res-detail";
-
+import {useParams} from "react-router";
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
 const UserPassRes = () => {
+
+    const params = useParams();
+    const userId = params.userId;
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
@@ -41,8 +43,6 @@ const UserPassRes = () => {
             });
         });
     };
-
-    const userPassResDetail = useRef();
 
     const userPassResListColumns = [
         {
@@ -82,7 +82,6 @@ const UserPassRes = () => {
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const userPassResId = record.id;
-                            userPassResDetail.current.show(userPassResId);
                         }}>
                             <EditOutlined/>编辑
                         </Button>
@@ -145,7 +144,6 @@ const UserPassRes = () => {
                         color="default"
                         icon={<PlusCircleOutlined style={{color: "green"}}/>}
                         onClick={(e) => {
-                            userPassResDetail.current.show(0);
                         }}
                     >
                         添加
@@ -176,7 +174,6 @@ const UserPassRes = () => {
                        }}
                 />
             </div>
-            <UserPassResDetail ref={userPassResDetail} loadUserPassResList={loadUserPassResList}/>
         </div>
     );
 };
