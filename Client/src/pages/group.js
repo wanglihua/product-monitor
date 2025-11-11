@@ -80,6 +80,12 @@ const Group = () => {
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const groupId = record.id;
+                            navigate(`/group-pass-res/${groupId}`);
+                        }}>
+                            <i className="iconfont icon-pass-res"/>授权资源
+                        </Button>
+                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                            const groupId = record.id;
                             navigate(`/group-user/${groupId}`);
                         }}>
                             <UnorderedListOutlined/>群组成员

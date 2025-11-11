@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Select, Space, Table} from 'antd';
+import {useNavigate} from "react-router";
 import {PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 
 import useSiteContext from "../site/site-context";
@@ -8,6 +9,8 @@ import Title from "../site/title";
 const PassRes = () => {
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         nameQuery: "",
@@ -68,10 +71,14 @@ const PassRes = () => {
                 return (
                     <Space>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                            const passResId = record.id;
+                            navigate(`/pass-res-user/${passResId}`);
                         }}>
                             <i className="iconfont icon-user"/>用户授权
                         </Button>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                            const passResId = record.id;
+                            navigate(`/pass-res-group/${passResId}`);
                         }}>
                             <i className="iconfont icon-group"/>群组授权
                         </Button>

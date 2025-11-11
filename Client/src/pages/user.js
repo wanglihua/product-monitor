@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Badge, Button, Input, Space, Table, Tag} from 'antd';
+import {Badge, Button, Input, Space, Table} from 'antd';
+import {useNavigate} from "react-router";
 import {DeleteOutlined, EditOutlined, SearchOutlined, UserAddOutlined} from '@ant-design/icons';
 import UserDetail from "./user-detail";
 
@@ -7,7 +8,10 @@ import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
 const User = () => {
+
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         loginNameQuery: "",
@@ -95,6 +99,12 @@ const User = () => {
             render: (text, record, index) => {
                 return (
                     <Space>
+                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                            const userId = record.id;
+                            navigate(`/user-pass-res/${userId}`);
+                        }}>
+                            <i className="iconfont icon-pass-res"/>授权资源
+                        </Button>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const userId = record.id;
                             userDetail.current.show(userId);
