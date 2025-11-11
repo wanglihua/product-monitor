@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import {useParams} from "react-router";
+import {Badge, Button, Input, Space, Table} from 'antd';
+import {DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {useParams, useNavigate} from "react-router";
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
@@ -12,8 +12,11 @@ const GroupPassRes = () => {
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
+    const navigate = useNavigate();
+
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        groupId: groupId,
+        passResNameQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -24,10 +27,11 @@ const GroupPassRes = () => {
     const [state, setState] = useState({
         groupPassResList: [],
         groupPassResCount: 0,
+        groupName: "",
     });
 
     const loadGroupPassResList = () => {
-        post("/api/group-pass-res/list", listParam, function (response) {
+        post("/api/group-pass-res/pass/res/list", listParam, function (response) {
             const res = response.data;
             if (res.success !== true) {
                 showError(res.message);
@@ -39,6 +43,7 @@ const GroupPassRes = () => {
                     ...pre,
                     groupPassResList: res.data.groupPassResList,
                     groupPassResCount: res.data.groupPassResCount,
+                    groupName: res.data.groupName,
                 };
             });
         });
@@ -54,41 +59,41 @@ const GroupPassRes = () => {
             },
         },
         {
-            title: "群组",
-            dataIndex: "groupId",
+            title: "资源类别",
+            dataIndex: "passResCateName",
+            width: "150px",
+        },
+        {
+            title: "授权资源",
+            dataIndex: "passResName",
             width: "200px",
         },
         {
-            title: "资源",
-            dataIndex: "passResId",
-            width: "200px",
-        },
-        {
-            title: "创建时间",
-            dataIndex: "createTime",
+            title: "是否授权",
+            dataIndex: "grant",
             width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
-            dataIndex: "updateTime",
-            width: "150px",
-            sorter: true,
+            render: (value, record, index) => {
+                if (value === true) {
+                    return <span><Badge status="success"/>&nbsp;已授权</span>;
+                }
+
+                if (value === false) {
+                    return <span><Badge status="error"/>&nbsp;未授权</span>;
+                }
+
+                return <span></span>;
+            }
         },
         {
             title: "操作",
             render: (text, record, index) => {
                 return (
                     <Space>
-                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            const groupPassResId = record.id;
-                        }}>
-                            <EditOutlined/>编辑
-                        </Button>
-                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/group-pass-res/delete", {
-                                    id: record.id,
+                        {record.grant === true && (
+                            <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                                post("/api/group-pass-res/revoke", {
+                                    groupId: groupId,
+                                    passResId: record.passResId,
                                 }, function (response) {
                                     const res = response.data;
                                     if (res.success !== true) {
@@ -99,12 +104,33 @@ const GroupPassRes = () => {
                                     showSuccess(res.message);
                                     loadGroupPassResList();
                                 });
-                            });
-                        }}>
-                            <DeleteOutlined/>删除
-                        </Button>
+                            }}>
+                                <DeleteOutlined/>收权
+                            </Button>
+                        )}
+
+                        {record.grant === false && (
+                            <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                                post("/api/group-pass-res/grant", {
+                                    groupId: groupId,
+                                    passResId: record.passResId,
+                                }, function (response) {
+                                    const res = response.data;
+                                    if (res.success !== true) {
+                                        showError(res.message);
+                                        return;
+                                    }
+
+                                    showSuccess(res.message);
+                                    loadGroupPassResList();
+                                });
+                            }}>
+                                <PlusCircleOutlined/>授权
+                            </Button>
+                        )}
                     </Space>
-                );
+                )
+                    ;
             },
         },
     ];
@@ -113,26 +139,32 @@ const GroupPassRes = () => {
         loadGroupPassResList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const passResNameQueryRef = useRef();
 
     return (
         <div>
-            <Title title="群组授权" menuKey="group-pass-res" breadcrumb={[
-                {title: "群组授权"},
+            <Title title={`群组权限资源 ${state.groupName}`} parentMenuKeys={["system-manage"]} menuKey="group" breadcrumb={[
+                {title: "系统管理"},
+                {
+                    title: <span style={{cursor: "pointer"}} onClick={() => {
+                        navigate("/group");
+                    }}>群组</span>
+                },
+                {title: "群组权限资源"},
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={passResNameQueryRef} addonBefore="资源名称" placeholder="资源名称查询" style={{width: 320}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const passResNameQuery = passResNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    passResNameQuery: passResNameQuery,
                                     current_millis: Date.now(),
                                 };
                             });

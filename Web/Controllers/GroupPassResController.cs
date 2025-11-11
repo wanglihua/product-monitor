@@ -184,7 +184,7 @@ public class GroupPassResController : Controller
         if (string.IsNullOrWhiteSpace(param.PassResNameQuery) == false)
         {
             string passResNameQuery = param.PassResNameQuery.Trim();
-            query = query.Where(e => e.PassRes.Name.Contains(passResNameQuery));
+            query = query.Where(e => e.PassResCate.Name.Contains(passResNameQuery) || e.PassRes.Name.Contains(passResNameQuery));
         }
 
         int groupPassResCount = query.Count();
