@@ -47,7 +47,16 @@ public class UserPassResController : Controller
     {
         ValidationUtil.Validate<PassResUserListParamValidator, PassResUserListParam>(param);
 
+        long passResId = param.PassResId;
+
+        var passRes = db.Set<PassResEntity>().Find(passResId);
+        if (passRes is null)
+        {
+            throw new ValidationException($"指定的权限资源#{passResId}不存在!");
+        }
+
         // 实际效果是左外联接, 也可以通过一个SQL视图来简化
+        // 或用这里的方法做个通用方法简化, https://medium.com/@zabavnov/implementation-of-left-outer-join-for-entity-framework-b47469633e2f
         IQueryable<PassResUserJoinItem> query = db.Set<UserEntity>()
             .GroupJoin(db.Set<UserPassResEntity>(),
                 u => u.Id,
@@ -61,14 +70,6 @@ public class UserPassResController : Controller
                     UserPassRes = upr
                 }
             );
-
-        long passResId = param.PassResId;
-
-        var passRes = db.Set<PassResEntity>().Find(passResId);
-        if (passRes is null)
-        {
-            throw new ValidationException($"指定的权限资源#{passResId}不存在!");
-        }
 
         query = query.Where(e => e.UserPassRes == null || e.UserPassRes.PassResId == passResId);
 
@@ -159,6 +160,15 @@ public class UserPassResController : Controller
     {
         ValidationUtil.Validate<UserPassResListParamValidator, UserPassResListParam>(param);
 
+        long userId = param.UserId;
+        var user = db.Set<UserEntity>().Find(userId);
+        if (user is null)
+        {
+            throw new ValidationException($"指定的用户#{userId}不存在!");
+        }
+
+        // 实际效果是左外联接, 也可以通过一个SQL视图来简化
+        // 或用这里的方法做个通用方法简化, https://medium.com/@zabavnov/implementation-of-left-outer-join-for-entity-framework-b47469633e2f
         IQueryable<UserPassResJoinItem> query = db.Set<PassResEntity>()
             .GroupJoin(db.Set<UserPassResEntity>(),
                 pr => pr.Id,
@@ -172,13 +182,6 @@ public class UserPassResController : Controller
                     UserPassRes = upr
                 }
             );
-
-        long userId = param.UserId;
-        var user = db.Set<UserEntity>().Find(userId);
-        if (user is null)
-        {
-            throw new ValidationException($"指定的用户#{userId}不存在!");
-        }
 
         query = query.Where(e => e.UserPassRes == null || e.UserPassRes.UserId == userId);
 
