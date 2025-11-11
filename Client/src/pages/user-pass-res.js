@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {Badge, Button, Input, Space, Table} from 'antd';
+import {DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import {useParams, useNavigate} from "react-router";
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
@@ -71,25 +71,31 @@ const UserPassRes = () => {
             width: "200px",
         },
         {
-            title: "授权时间",
-            dataIndex: "createTime",
+            title: "是否授权",
+            dataIndex: "grant",
             width: "150px",
-            sorter: true,
+            render: (value, record, index) => {
+                if (value === true) {
+                    return <span><Badge status="success"/>&nbsp;已授权</span>;
+                }
+
+                if (value === false) {
+                    return <span><Badge status="error"/>&nbsp;未授权</span>;
+                }
+
+                return <span></span>;
+            }
         },
         {
             title: "操作",
             render: (text, record, index) => {
                 return (
                     <Space>
-                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            const userPassResId = record.id;
-                        }}>
-                            <EditOutlined/>编辑
-                        </Button>
-                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/user-pass-res/delete", {
-                                    id: record.id,
+                        {record.grant === true && (
+                            <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                                post("/api/user-pass-res/revoke", {
+                                    userId: userId,
+                                    passResId: record.passResId,
                                 }, function (response) {
                                     const res = response.data;
                                     if (res.success !== true) {
@@ -100,10 +106,30 @@ const UserPassRes = () => {
                                     showSuccess(res.message);
                                     loadUserPassResList();
                                 });
-                            });
-                        }}>
-                            <DeleteOutlined/>删除
-                        </Button>
+                            }}>
+                                <DeleteOutlined/>收权
+                            </Button>
+                        )}
+
+                        {record.grant === false && (
+                            <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                                post("/api/user-pass-res/grant", {
+                                    userId: userId,
+                                    passResId: record.passResId,
+                                }, function (response) {
+                                    const res = response.data;
+                                    if (res.success !== true) {
+                                        showError(res.message);
+                                        return;
+                                    }
+
+                                    showSuccess(res.message);
+                                    loadUserPassResList();
+                                });
+                            }}>
+                                <PlusCircleOutlined/>授权
+                            </Button>
+                        )}
                     </Space>
                 );
             },
