@@ -33,7 +33,7 @@ public class UserPassResController : Controller
         this.actionLogService = actionLogService;
     }
 
-    private class UserPassResJoinItem
+    private class PassResUserJoinItem
     {
         public UserPassResEntity UserPassRes { get; set; } = new();
 
@@ -43,31 +43,38 @@ public class UserPassResController : Controller
     [HttpPost]
     [Route("/api/user-pass-res/user/list")]
     [Transactional(false)]
-    public IActionResult UserList([FromBody] UserPassResListParam param)
+    public IActionResult UserList([FromBody] PassResUserListParam param)
     {
-        ValidationUtil.Validate<UserPassResListParamValidator, UserPassResListParam>(param);
+        ValidationUtil.Validate<PassResUserListParamValidator, PassResUserListParam>(param);
 
-        IQueryable<UserPassResJoinItem> query = db.Set<UserPassResEntity>()
+        IQueryable<PassResUserJoinItem> query = db.Set<UserPassResEntity>()
             .Join(db.Set<UserEntity>(),
                 upr => upr.UserId,
                 u => u.Id,
-                (upr, u) => new UserPassResJoinItem {
+                (upr, u) => new PassResUserJoinItem {
                     UserPassRes = upr,
                     User = u,
                 });
 
         long passResId = param.PassResId;
+
+        var passRes = db.Set<PassResEntity>().Find(passResId);
+        if (passRes == null)
+        {
+            throw new ValidationException($"指定的权限资源#{passResId}不存在!");
+        }
+
         query = query.Where(e => e.UserPassRes.PassResId == passResId);
 
-        int userPassResCount = query.Count();
+        int passResUserCount = query.Count();
 
         // 排序字段
-        Expression<Func<UserPassResJoinItem, object>> sortField = e => e.UserPassRes.Id;
+        Expression<Func<PassResUserJoinItem, object>> sortField = e => e.UserPassRes.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
 
-            if (string.Compare(sortFieldParam, nameof(UserPassResListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (string.Compare(sortFieldParam, nameof(PassResUserListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.UserPassRes.CreateTime;
             }
@@ -89,11 +96,12 @@ public class UserPassResController : Controller
             .Take(param.PageSize)
             .ToList();
 
-        var userPassResItemList = userPassResList
-            .Select(e => new UserPassResListItem {
+        var passResUserItemList = userPassResList
+            .Select(e => new PassResUserListItem {
                 Id = e.UserPassRes.Id,
                 UserId = e.UserPassRes.UserId,
-                PassResId = e.UserPassRes.PassResId,
+                LoginName = e.User.LoginName,
+                UserName = e.User.UserName,
                 CreateTime = e.UserPassRes.CreateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
@@ -102,10 +110,18 @@ public class UserPassResController : Controller
             Success = true,
             Message = "success",
             Data = new Dictionary<string, object> {
-                ["userPassResList"] = userPassResItemList,
-                ["userPassResCount"] = userPassResCount,
+                ["passResUserList"] = passResUserItemList,
+                ["passResUserCount"] = passResUserCount,
+                ["passResName"] = passRes.Name,
             },
         });
+    }
+
+    private class UserPassResJoinItem
+    {
+        public UserPassResEntity UserPassRes { get; set; } = new();
+
+        public PassResEntity PassRes { get; set; } = new();
     }
 
     [HttpPost]
@@ -116,16 +132,22 @@ public class UserPassResController : Controller
         ValidationUtil.Validate<UserPassResListParamValidator, UserPassResListParam>(param);
 
         IQueryable<UserPassResJoinItem> query = db.Set<UserPassResEntity>()
-            .Join(db.Set<UserEntity>(),
+            .Join(db.Set<PassResEntity>(),
                 upr => upr.UserId,
-                u => u.Id,
-                (upr, u) => new UserPassResJoinItem {
+                pr => pr.Id,
+                (upr, pr) => new UserPassResJoinItem {
                     UserPassRes = upr,
-                    User = u,
+                    PassRes = pr,
                 });
 
-        long passResId = param.PassResId;
-        query = query.Where(e => e.UserPassRes.PassResId == passResId);
+        long userId = param.UserId;
+        var user = db.Set<UserEntity>().Find(userId);
+        if (user == null)
+        {
+            throw new ValidationException($"指定的用户#{userId}不存在!");
+        }
+
+        query = query.Where(e => e.UserPassRes.UserId == userId);
 
         int userPassResCount = query.Count();
 
@@ -160,8 +182,8 @@ public class UserPassResController : Controller
         var userPassResItemList = userPassResList
             .Select(e => new UserPassResListItem {
                 Id = e.UserPassRes.Id,
-                UserId = e.UserPassRes.UserId,
                 PassResId = e.UserPassRes.PassResId,
+                PassResName = e.PassRes.Name,
                 CreateTime = e.UserPassRes.CreateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
@@ -172,6 +194,8 @@ public class UserPassResController : Controller
             Data = new Dictionary<string, object> {
                 ["userPassResList"] = userPassResItemList,
                 ["userPassResCount"] = userPassResCount,
+                ["loginName"] = user.LoginName,
+                ["userName"] = user.UserName,
             },
         });
     }
