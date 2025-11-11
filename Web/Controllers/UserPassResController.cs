@@ -41,9 +41,77 @@ public class UserPassResController : Controller
     }
 
     [HttpPost]
-    [Route("/api/user-pass-res/list")]
+    [Route("/api/user-pass-res/user/list")]
     [Transactional(false)]
-    public IActionResult List([FromBody] UserPassResListParam param)
+    public IActionResult UserList([FromBody] UserPassResListParam param)
+    {
+        ValidationUtil.Validate<UserPassResListParamValidator, UserPassResListParam>(param);
+
+        IQueryable<UserPassResJoinItem> query = db.Set<UserPassResEntity>()
+            .Join(db.Set<UserEntity>(),
+                upr => upr.UserId,
+                u => u.Id,
+                (upr, u) => new UserPassResJoinItem {
+                    UserPassRes = upr,
+                    User = u,
+                });
+
+        long passResId = param.PassResId;
+        query = query.Where(e => e.UserPassRes.PassResId == passResId);
+
+        int userPassResCount = query.Count();
+
+        // 排序字段
+        Expression<Func<UserPassResJoinItem, object>> sortField = e => e.UserPassRes.Id;
+        if (string.IsNullOrWhiteSpace(param.SortField) == false)
+        {
+            string sortFieldParam = param.SortField;
+
+            if (string.Compare(sortFieldParam, nameof(UserPassResListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.UserPassRes.CreateTime;
+            }
+        }
+
+        // 排序顺序
+        string sortOrder = param.SortOrder;
+        if (sortOrder == SortOrder.Ascend)
+        {
+            query = query.OrderBy(sortField);
+        }
+        else
+        {
+            query = query.OrderByDescending(sortField);
+        }
+
+        var userPassResList = query
+            .Skip(param.PageIndex * param.PageSize)
+            .Take(param.PageSize)
+            .ToList();
+
+        var userPassResItemList = userPassResList
+            .Select(e => new UserPassResListItem {
+                Id = e.UserPassRes.Id,
+                UserId = e.UserPassRes.UserId,
+                PassResId = e.UserPassRes.PassResId,
+                CreateTime = e.UserPassRes.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+            })
+            .ToList();
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "success",
+            Data = new Dictionary<string, object> {
+                ["userPassResList"] = userPassResItemList,
+                ["userPassResCount"] = userPassResCount,
+            },
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/user-pass-res/pass/res/list")]
+    [Transactional(false)]
+    public IActionResult PassResList([FromBody] UserPassResListParam param)
     {
         ValidationUtil.Validate<UserPassResListParamValidator, UserPassResListParam>(param);
 

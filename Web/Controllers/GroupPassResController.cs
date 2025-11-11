@@ -34,9 +34,73 @@ public class GroupPassResController : Controller
     }
 
     [HttpPost]
-    [Route("/api/group-pass-res/list")]
+    [Route("/api/group-pass-res/group/list")]
     [Transactional(false)]
-    public IActionResult List([FromBody] GroupPassResListParam param)
+    public IActionResult GroupList([FromBody] GroupPassResListParam param)
+    {
+        ValidationUtil.Validate<GroupPassResListParamValidator, GroupPassResListParam>(param);
+
+        IQueryable<GroupPassResEntity> query = db.Set<GroupPassResEntity>();
+
+        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
+        // {
+        //     string nameQuery = param.NameQuery.Trim();
+        //     query = query.Where(e => e.Name.Contains(nameQuery));
+        // }
+
+        int groupPassResCount = query.Count();
+
+        // 排序字段
+        Expression<Func<GroupPassResEntity, object>> sortField = e => e.Id;
+        if (string.IsNullOrWhiteSpace(param.SortField) == false)
+        {
+            string sortFieldParam = param.SortField;
+
+            if (string.Compare(sortFieldParam, nameof(GroupPassResListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.CreateTime;
+            }
+        }
+
+        // 排序顺序
+        string sortOrder = param.SortOrder;
+        if (sortOrder == SortOrder.Ascend)
+        {
+            query = query.OrderBy(sortField);
+        }
+        else
+        {
+            query = query.OrderByDescending(sortField);
+        }
+
+        var groupPassResList = query
+            .Skip(param.PageIndex * param.PageSize)
+            .Take(param.PageSize)
+            .ToList();
+
+        var groupPassResItemList = groupPassResList
+            .Select(e => new GroupPassResListItem {
+                Id = e.Id,
+                GroupId = e.GroupId,
+                PassResId = e.PassResId,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+            })
+            .ToList();
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "success",
+            Data = new Dictionary<string, object> {
+                ["groupPassResList"] = groupPassResItemList,
+                ["groupPassResCount"] = groupPassResCount,
+            },
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/group-pass-res/pass/res/list")]
+    [Transactional(false)]
+    public IActionResult PassResList([FromBody] GroupPassResListParam param)
     {
         ValidationUtil.Validate<GroupPassResListParamValidator, GroupPassResListParam>(param);
 
