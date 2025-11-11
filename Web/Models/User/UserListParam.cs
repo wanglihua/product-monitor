@@ -11,6 +11,8 @@ public class UserListParam : ListParam
 
     [JsonProperty("userNameQuery")]
     public string UserNameQuery { get; set; } = "";
+
+    // todo 需要的时候, 可以加上个按状态查询
 }
 
 public class UserListParamValidator : AbstractValidator<UserListParam>
