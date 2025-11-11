@@ -30,19 +30,19 @@ public class ProductRentService
             .OrderBy(e => e.CollegeId)
             .Take(1)
             .SingleOrDefault();
-        if (productRent != null)
+        if (productRent is not null)
         {
             throw new ValidationException($"学校#{collegeId}和产品#{productId}对应的租赁目录已经存在!");
         }
 
         var college = db.Set<CollegeEntity>().Find(collegeId);
-        if (college == null)
+        if (college is null)
         {
             throw new ValidationException($"指定的学校#{collegeId}不存在!");
         }
 
         var product = db.Find<ProductEntity>(productId);
-        if (product == null)
+        if (product is null)
         {
             throw new ValidationException($"指定的产品#{productId}不存在!");
         }
@@ -75,7 +75,7 @@ public class ProductRentService
     public void UpdateProductRentByLatestData(long productRentId)
     {
         var productRent = db.Set<ProductRentEntity>().Find(productRentId);
-        if (productRent == null)
+        if (productRent is null)
         {
             throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
         }
@@ -86,7 +86,7 @@ public class ProductRentService
             .Take(1)
             .SingleOrDefault();
 
-        if (productRentEntryLatest == null)
+        if (productRentEntryLatest is null)
         {
             throw new ValidationException($"指定的租赁目录#{productRentId}, 当前没有明细数据!");
         }

@@ -185,21 +185,21 @@ public class ProductUpdateController : Controller
         if (productUpdateId > 0)
         {
             var productUpdate = db.Set<ProductUpdateEntity>().Find(productUpdateId);
-            if (productUpdate == null)
+            if (productUpdate is null)
             {
                 throw new ValidationException($"指定的产品更新#{productUpdateId}不存在!");
             }
 
             long collegeId = productUpdate.CollegeId;
             var college = db.Find<CollegeEntity>(collegeId);
-            if (college == null)
+            if (college is null)
             {
                 throw new ValidationException($"指定的学校#{collegeId}不存在!");
             }
 
             long productId = productUpdate.ProductId;
             var product = db.Find<ProductEntity>(productId);
-            if (product == null)
+            if (product is null)
             {
                 throw new ValidationException($"指定的产品#{productId}不存在!");
             }
@@ -251,7 +251,7 @@ public class ProductUpdateController : Controller
         else
         {
             productUpdate = db.Set<ProductUpdateEntity>().Find(productUpdateId);
-            if (productUpdate == null)
+            if (productUpdate is null)
             {
                 throw new ValidationException($"指定的产品更新#{productUpdateId}不存在!");
             }
@@ -310,7 +310,7 @@ public class ProductUpdateController : Controller
 
         long productUpdateId = param.Id;
         var productUpdate = db.Set<ProductUpdateEntity>().Find(productUpdateId);
-        if (productUpdate == null)
+        if (productUpdate is null)
         {
             throw new ValidationException($"指定的产品更新#{productUpdateId}不存在!");
         }

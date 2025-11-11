@@ -19,12 +19,12 @@ public class ExceptionFilter : IExceptionFilter
     {
         var exp = context.Exception;
 
-        if (exp == null)
+        if (exp is null)
         {
             return;
         }
 
-        if (exp.InnerException != null)
+        if (exp.InnerException is not null)
         {
             exp = exp.InnerException;
         }

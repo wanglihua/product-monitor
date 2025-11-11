@@ -161,7 +161,7 @@ public class ProductInstallMonitorController : Controller
         if (productInstallMonitorId > 0)
         {
             var productInstallMonitor = db.Set<ProductInstallMonitorEntity>().Find(productInstallMonitorId);
-            if (productInstallMonitor != null)
+            if (productInstallMonitor is not null)
             {
                 model = new ProductInstallMonitorDetailModel {
                     Id = productInstallMonitor.Id,
@@ -192,7 +192,7 @@ public class ProductInstallMonitorController : Controller
 
         long productInstallMonitorId = param.Id;
         var productInstallMonitor = db.Set<ProductInstallMonitorEntity>().Find(productInstallMonitorId);
-        if (productInstallMonitor == null)
+        if (productInstallMonitor is null)
         {
             throw new ValidationException($"指定的安装监测#{productInstallMonitorId}不存在!");
         }

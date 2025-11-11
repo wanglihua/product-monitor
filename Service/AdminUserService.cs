@@ -26,7 +26,7 @@ public class AdminUserService
             .Take(1)
             .SingleOrDefault();
 
-        if (adminUserExist != null)
+        if (adminUserExist is not null)
         {
             return true;
         }

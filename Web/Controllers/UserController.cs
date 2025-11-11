@@ -138,7 +138,7 @@ public class UserController : Controller
         if (userId > 0)
         {
             var user = db.Set<UserEntity>().Find(userId);
-            if (user != null)
+            if (user is not null)
             {
                 model.Id = user.Id;
                 model.LoginName = user.LoginName;
@@ -224,7 +224,7 @@ public class UserController : Controller
                 .Take(1)
                 .FirstOrDefault();
 
-            if (otherUser != null)
+            if (otherUser is not null)
             {
                 throw new ValidationException($"登录名 {loginName} 已存在！");
             }
@@ -232,7 +232,7 @@ public class UserController : Controller
         else
         {
             user = db.Set<UserEntity>().Find(userId);
-            if (user == null)
+            if (user is null)
             {
                 throw new ValidationException($"指定的用户#{userId}不存在！");
             }
@@ -243,7 +243,7 @@ public class UserController : Controller
                 .Take(1)
                 .FirstOrDefault();
 
-            if (otherUser != null)
+            if (otherUser is not null)
             {
                 throw new ValidationException($"登录名 {loginName} 已存在！");
             }
@@ -316,7 +316,7 @@ public class UserController : Controller
 
         long userId = param.Id;
         var user = db.Set<UserEntity>().Find(userId);
-        if (user == null)
+        if (user is null)
         {
             throw new ValidationException($"指定的用户#{userId}不存在！");
         }
@@ -326,7 +326,7 @@ public class UserController : Controller
             .OrderBy(e => e.UserId)
             .Take(1)
             .SingleOrDefault();
-        if (admin != null)
+        if (admin is not null)
         {
             throw new ValidationException("不能删除管理员用户！");
         }

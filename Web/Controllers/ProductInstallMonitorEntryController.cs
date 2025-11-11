@@ -42,14 +42,14 @@ public class ProductInstallMonitorEntryController : Controller
 
         long productInstallMonitorId = param.ProductInstallMonitorId;
         var productInstallMonitor = db.Set<ProductInstallMonitorEntity>().Find(productInstallMonitorId);
-        if (productInstallMonitor == null)
+        if (productInstallMonitor is null)
         {
             throw new ValidationException($"指定的安装检测#{productInstallMonitorId}不存在!");
         }
 
         long collegeId = productInstallMonitor.CollegeId;
         var college = db.Set<CollegeEntity>().Find(collegeId);
-        if (college == null)
+        if (college is null)
         {
             throw new ValidationException($"指定学校#{collegeId}不存在!");
         }
@@ -58,7 +58,7 @@ public class ProductInstallMonitorEntryController : Controller
 
         long productId = productInstallMonitor.ProductId;
         var product = db.Set<ProductEntity>().Find(productId);
-        if (product == null)
+        if (product is null)
         {
             throw new ValidationException($"指定产品#{productId}不存在!");
         }
@@ -150,7 +150,7 @@ public class ProductInstallMonitorEntryController : Controller
         if (productInstallMonitorEntryId > 0)
         {
             var productInstallMonitorEntry = db.Set<ProductInstallMonitorEntryEntity>().Find(productInstallMonitorEntryId);
-            if (productInstallMonitorEntry != null)
+            if (productInstallMonitorEntry is not null)
             {
                 model = new ProductInstallMonitorEntryDetailModel {
                     Id = productInstallMonitorEntry.Id,
@@ -179,7 +179,7 @@ public class ProductInstallMonitorEntryController : Controller
 
         long productInstallMonitorEntryId = param.Id;
         var productInstallMonitorEntry = db.Set<ProductInstallMonitorEntryEntity>().Find(productInstallMonitorEntryId);
-        if (productInstallMonitorEntry == null)
+        if (productInstallMonitorEntry is null)
         {
             throw new ValidationException($"指定的院校使用详情#{productInstallMonitorEntryId}不存在!");
         }

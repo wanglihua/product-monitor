@@ -32,7 +32,7 @@ public class GroupSelectController : Controller
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {
-            string search = param.Search;
+            string search = param.Search.Trim();
             query = query.Where(e => e.Name.Contains(search));
         }
 

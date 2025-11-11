@@ -26,19 +26,19 @@ public static class CodeTypeUtil
 
         string cacheKey = GetCacheKey(typeOfT, code);
 
-        if (memoryCache.TryGetValue(cacheKey, out object? codeType) && codeType != null)
+        if (memoryCache.TryGetValue(cacheKey, out object? codeType) && codeType is not null)
         {
             return (T)codeType;
         }
 
         var method = typeOfT.GetMethod(GET_BY_CODE_METHOD_NAME, BindingFlags.Static | BindingFlags.Public);
-        if (method == null)
+        if (method is null)
         {
             throw new Exception($"{typeof(T).Name} public static {GET_BY_CODE_METHOD_NAME}() 方法 不存在！");
         }
 
         var result = method.Invoke(null, new object[] { code }) as T;
-        if (result == null)
+        if (result is null)
         {
             throw new Exception($"{typeof(T).Name} public static {GET_BY_CODE_METHOD_NAME}() 返回为空或返回类型不匹配！");
         }

@@ -32,7 +32,7 @@ public class CollegeSelectController : Controller
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {
-            string search = param.Search;
+            string search = param.Search.Trim();
             query = query.Where(e => e.Code.Contains(search) || e.Name.Contains(search));
         }
 

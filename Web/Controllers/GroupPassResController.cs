@@ -33,32 +33,55 @@ public class GroupPassResController : Controller
         this.actionLogService = actionLogService;
     }
 
+    private class PassResGroupListJoinItem
+    {
+        public GroupPassResEntity GroupPassRes { get; set; } = new();
+
+        public GroupEntity Group { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/group-pass-res/group/list")]
     [Transactional(false)]
-    public IActionResult GroupList([FromBody] GroupPassResListParam param)
+    public IActionResult GroupList([FromBody] PassResGroupListParam param)
     {
-        ValidationUtil.Validate<GroupPassResListParamValidator, GroupPassResListParam>(param);
+        ValidationUtil.Validate<PassResGroupListParamValidator, PassResGroupListParam>(param);
 
-        IQueryable<GroupPassResEntity> query = db.Set<GroupPassResEntity>();
+        long passResId = param.PassResId;
+        var passRes = db.Set<PassResEntity>().Find(passResId);
+        if (passRes is null)
+        {
+            throw new ValidationException($"指定的权限资源#{passResId}不存在!");
+        }
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(e => e.Name.Contains(nameQuery));
-        // }
+        IQueryable<PassResGroupListJoinItem> query = db.Set<GroupPassResEntity>()
+            .Join(db.Set<GroupEntity>(),
+                gpr => gpr.GroupId,
+                g => g.Id,
+                (gpr, g) => new PassResGroupListJoinItem {
+                    GroupPassRes = gpr,
+                    Group = g,
+                });
 
-        int groupPassResCount = query.Count();
+        query = query.Where(e => e.GroupPassRes.PassResId == passResId);
+
+        if (string.IsNullOrWhiteSpace(param.GroupNameQuery) == false)
+        {
+            string groupNameQuery = param.GroupNameQuery.Trim();
+            query = query.Where(e => e.Group.Name.Contains(groupNameQuery));
+        }
+
+        int passResGroupCount = query.Count();
 
         // 排序字段
-        Expression<Func<GroupPassResEntity, object>> sortField = e => e.Id;
+        Expression<Func<PassResGroupListJoinItem, object>> sortField = e => e.GroupPassRes.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
 
             if (string.Compare(sortFieldParam, nameof(GroupPassResListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.GroupPassRes.CreateTime;
             }
         }
 
@@ -73,17 +96,17 @@ public class GroupPassResController : Controller
             query = query.OrderByDescending(sortField);
         }
 
-        var groupPassResList = query
+        var passResGroupList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
             .ToList();
 
-        var groupPassResItemList = groupPassResList
-            .Select(e => new GroupPassResListItem {
-                Id = e.Id,
-                GroupId = e.GroupId,
-                PassResId = e.PassResId,
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+        var passResGroupItemList = passResGroupList
+            .Select(e => new PassResGroupListItem {
+                Id = e.GroupPassRes.Id,
+                GroupId = e.GroupPassRes.GroupId,
+                GroupName = e.Group.Name,
+                CreateTime = e.GroupPassRes.CreateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
@@ -91,10 +114,18 @@ public class GroupPassResController : Controller
             Success = true,
             Message = "success",
             Data = new Dictionary<string, object> {
-                ["groupPassResList"] = groupPassResItemList,
-                ["groupPassResCount"] = groupPassResCount,
+                ["passResGroupList"] = passResGroupItemList,
+                ["passResGroupCount"] = passResGroupCount,
+                ["passResName"] = passRes.Name,
             },
         });
+    }
+
+    private class GroupPassResJoinItem
+    {
+        public GroupPassResEntity GroupPassRes { get; set; } = new();
+
+        public PassResEntity PassRes { get; set; } = new();
     }
 
     [HttpPost]
@@ -104,25 +135,41 @@ public class GroupPassResController : Controller
     {
         ValidationUtil.Validate<GroupPassResListParamValidator, GroupPassResListParam>(param);
 
-        IQueryable<GroupPassResEntity> query = db.Set<GroupPassResEntity>();
+        long groupId = param.GroupId;
+        var group = db.Set<GroupEntity>().Find(groupId);
+        if (group is null)
+        {
+            throw new ValidationException($"指定的群组#{groupId}不存在!");
+        }
 
-        // if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
-        // {
-        //     string nameQuery = param.NameQuery.Trim();
-        //     query = query.Where(e => e.Name.Contains(nameQuery));
-        // }
+        IQueryable<GroupPassResJoinItem> query = db.Set<GroupPassResEntity>()
+            .Join(db.Set<PassResEntity>(),
+                gpr => gpr.PassResId,
+                pr => pr.Id,
+                (gpr, pr) => new GroupPassResJoinItem {
+                    GroupPassRes = gpr,
+                    PassRes = pr,
+                });
+
+        query = query.Where(e => e.GroupPassRes.GroupId == groupId);
+
+        if (string.IsNullOrWhiteSpace(param.PassResNameQuery) == false)
+        {
+            string passResNameQuery = param.PassResNameQuery.Trim();
+            query = query.Where(e => e.PassRes.Name.Contains(passResNameQuery));
+        }
 
         int groupPassResCount = query.Count();
 
         // 排序字段
-        Expression<Func<GroupPassResEntity, object>> sortField = e => e.Id;
+        Expression<Func<GroupPassResJoinItem, object>> sortField = e => e.GroupPassRes.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
 
             if (string.Compare(sortFieldParam, nameof(GroupPassResListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.GroupPassRes.CreateTime;
             }
         }
 
@@ -144,10 +191,10 @@ public class GroupPassResController : Controller
 
         var groupPassResItemList = groupPassResList
             .Select(e => new GroupPassResListItem {
-                Id = e.Id,
-                GroupId = e.GroupId,
-                PassResId = e.PassResId,
-                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.GroupPassRes.Id,
+                PassResId = e.GroupPassRes.PassResId,
+                PassResName = e.PassRes.Name,
+                CreateTime = e.GroupPassRes.CreateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
@@ -157,6 +204,7 @@ public class GroupPassResController : Controller
             Data = new Dictionary<string, object> {
                 ["groupPassResList"] = groupPassResItemList,
                 ["groupPassResCount"] = groupPassResCount,
+                ["groupName"] = group.Name,
             },
         });
     }
@@ -177,7 +225,7 @@ public class GroupPassResController : Controller
             .Take(1)
             .SingleOrDefault();
 
-        if (groupPassRes != null)
+        if (groupPassRes is not null)
         {
             throw new ValidationException($"指定的群组授权已经存在! groupId:{groupId},passResId:{passResId}");
         }
@@ -219,7 +267,7 @@ public class GroupPassResController : Controller
             .Take(1)
             .SingleOrDefault();
 
-        if (groupPassRes == null)
+        if (groupPassRes is null)
         {
             throw new ValidationException($"指定的群组授权不存在! groupId:{groupId},passResId:{passResId}");
         }

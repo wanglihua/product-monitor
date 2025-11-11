@@ -52,14 +52,14 @@ public class ProductRentEntryController : Controller
 
         long productRentId = param.ProductRentId;
         var productRent = db.Set<ProductRentEntity>().Find(productRentId);
-        if (productRent == null)
+        if (productRent is null)
         {
             throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
         }
 
         long collegeId = productRent.CollegeId;
         var college = db.Set<CollegeEntity>().Find(collegeId);
-        if (college == null)
+        if (college is null)
         {
             throw new ValidationException($"指定学校#{collegeId}不存在!");
         }
@@ -68,7 +68,7 @@ public class ProductRentEntryController : Controller
 
         long productId = productRent.ProductId;
         var product = db.Set<ProductEntity>().Find(productId);
-        if (product == null)
+        if (product is null)
         {
             throw new ValidationException($"指定产品#{productId}不存在!");
         }
@@ -163,7 +163,7 @@ public class ProductRentEntryController : Controller
         if (productRentEntryId > 0)
         {
             var productRentEntry = db.Set<ProductRentEntryEntity>().Find(productRentEntryId);
-            if (productRentEntry == null)
+            if (productRentEntry is null)
             {
                 throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
             }
@@ -174,14 +174,14 @@ public class ProductRentEntryController : Controller
         if (productRentId > 0)
         {
             var productRent = db.Set<ProductRentEntity>().Find(productRentId);
-            if (productRent == null)
+            if (productRent is null)
             {
                 throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
             }
 
             collegeId = productRent.CollegeId;
             var college = db.Set<CollegeEntity>().Find(collegeId);
-            if (college == null)
+            if (college is null)
             {
                 throw new ValidationException($"指定学校#{collegeId}不存在!");
             }
@@ -190,7 +190,7 @@ public class ProductRentEntryController : Controller
 
             productId = productRent.ProductId;
             var product = db.Set<ProductEntity>().Find(productId);
-            if (product == null)
+            if (product is null)
             {
                 throw new ValidationException($"指定产品#{productId}不存在!");
             }
@@ -216,7 +216,7 @@ public class ProductRentEntryController : Controller
         if (productRentEntryId > 0)
         {
             var productRentEntry = db.Set<ProductRentEntryEntity>().Find(productRentEntryId);
-            if (productRentEntry == null)
+            if (productRentEntry is null)
             {
                 throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
             }
@@ -259,7 +259,7 @@ public class ProductRentEntryController : Controller
             {
                 productRentId = model.ProductRentId;
                 var productRent = db.Find<ProductRentEntity>(productRentId);
-                if (productRent == null)
+                if (productRent is null)
                 {
                     throw new ValidationException($"指定的租赁目录#{productRentId}不存在！");
                 }
@@ -273,7 +273,7 @@ public class ProductRentEntryController : Controller
 
                 collegeId = model.CollegeId;
                 var college = db.Set<CollegeEntity>().Find(collegeId);
-                if (college == null)
+                if (college is null)
                 {
                     throw new ValidationException($"指定的学校#{collegeId}不存在!");
                 }
@@ -285,7 +285,7 @@ public class ProductRentEntryController : Controller
 
                 productId = model.ProductId;
                 var product = db.Find<ProductEntity>(productId);
-                if (product == null)
+                if (product is null)
                 {
                     throw new ValidationException($"指定的产品#{productId}不存在!");
                 }
@@ -311,7 +311,7 @@ public class ProductRentEntryController : Controller
         if (isCreate == false)
         {
             productRentEntry = db.Set<ProductRentEntryEntity>().Find(productRentEntryId);
-            if (productRentEntry == null)
+            if (productRentEntry is null)
             {
                 throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
             }
@@ -331,7 +331,7 @@ public class ProductRentEntryController : Controller
                     .OrderBy(e => e.CollegeId)
                     .Take(1)
                     .SingleOrDefault();
-                if (productRent != null)
+                if (productRent is not null)
                 {
                     throw new ValidationException($"学校#{collegeId}和产品#{productId}对应的租赁目录已经存在!");
                 }
@@ -399,7 +399,7 @@ public class ProductRentEntryController : Controller
 
         long productRentEntryId = param.Id;
         var productRentEntry = db.Set<ProductRentEntryEntity>().Find(productRentEntryId);
-        if (productRentEntry == null)
+        if (productRentEntry is null)
         {
             throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
         }
@@ -419,11 +419,11 @@ public class ProductRentEntryController : Controller
             .OrderBy(e => e.ProductRentId)
             .Take(1)
             .SingleOrDefault();
-        if (productRentEntryExists == null)
+        if (productRentEntryExists is null)
         {
             // 如果最后一个明细也不存在了， 就删除主数据
             var productRent = db.Set<ProductRentEntity>().Find(productRentId);
-            if (productRent == null)
+            if (productRent is null)
             {
                 // 一般肯定存在的
                 throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");

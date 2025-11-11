@@ -50,7 +50,7 @@ public class PassResDataInitService
 
             bool shouldSave = false;
             bool isUpdate = true;
-            if (passResInDb == null)
+            if (passResInDb is null)
             {
                 shouldSave = true;
                 isUpdate = false;

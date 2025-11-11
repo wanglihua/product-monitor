@@ -8,6 +8,8 @@ public class UserPassResListParam : ListParam
 {
     [JsonProperty("userId")]
     public long UserId { get; set; }
+    
+    // todo 可以加上个按资源类别查询
 
     [JsonProperty("passResNameQuery")]
     public string PassResNameQuery { get; set; } = "";

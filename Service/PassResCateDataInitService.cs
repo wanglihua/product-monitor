@@ -44,7 +44,7 @@ public class PassResCateDataInitService
 
             bool shouldSave = false;
             bool isUpdate = true;
-            if (cateInDb == null)
+            if (cateInDb is null)
             {
                 shouldSave = true;
                 isUpdate = false;

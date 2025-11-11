@@ -96,7 +96,7 @@ public class LoginController : Controller
         if (loginUserId > 0)
         {
             var user = db.Set<UserEntity>().Find(loginUserId);
-            if (user != null)
+            if (user is not null)
             {
                 logined = true;
                 loginName = user.LoginName;

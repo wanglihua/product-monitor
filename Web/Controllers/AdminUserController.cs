@@ -128,7 +128,7 @@ public class AdminUserController : Controller
             .OrderBy(e => e.LoginName)
             .Take(1)
             .SingleOrDefault();
-        if (user == null)
+        if (user is null)
         {
             throw new ValidationException($"指定的登录名 {loginName} 不存在！");
         }
@@ -139,7 +139,7 @@ public class AdminUserController : Controller
             .OrderBy(e => e.UserId)
             .Take(1)
             .SingleOrDefault();
-        if (admin != null)
+        if (admin is not null)
         {
             throw new ValidationException($"指定的登录名 {loginName} 已经是管理员！");
         }
@@ -172,14 +172,14 @@ public class AdminUserController : Controller
         long adminId = param.Id;
 
         var admin = db.Set<AdminUserEntity>().Find(adminId);
-        if (admin == null)
+        if (admin is null)
         {
             throw new ValidationException($"指定的管理员#{adminId}不存在！");
         }
 
         long userId = admin.UserId;
         var user = db.Set<UserEntity>().Find(userId);
-        if (user == null)
+        if (user is null)
         {
             throw new ValidationException($"指定的用户#{userId}不存在!");
         }
@@ -189,7 +189,7 @@ public class AdminUserController : Controller
             .OrderBy(e => e.Id)
             .Take(1)
             .SingleOrDefault();
-        if (adminOther == null)
+        if (adminOther is null)
         {
             throw new ValidationException("必需至少保留一位管理员！");
         }

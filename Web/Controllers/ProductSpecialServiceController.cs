@@ -182,21 +182,21 @@ public class ProductSpecialServiceController : Controller
         {
             var productSpecialService = db.Set<ProductSpecialServiceEntity>().Find(productSpecialServiceId);
 
-            if (productSpecialService == null)
+            if (productSpecialService is null)
             {
                 throw new ValidationException($"指定的产品安装#{productSpecialServiceId}不存在!");
             }
 
             long collegeId = productSpecialService.CollegeId;
             var college = db.Find<CollegeEntity>(collegeId);
-            if (college == null)
+            if (college is null)
             {
                 throw new ValidationException($"指定的学校#{collegeId}不存在!");
             }
 
             long productId = productSpecialService.ProductId;
             var product = db.Find<ProductEntity>(productId);
-            if (product == null)
+            if (product is null)
             {
                 throw new ValidationException($"指定的产品#{productId}不存在!");
             }
@@ -245,7 +245,7 @@ public class ProductSpecialServiceController : Controller
         else
         {
             productSpecialService = db.Set<ProductSpecialServiceEntity>().Find(productSpecialServiceId);
-            if (productSpecialService == null)
+            if (productSpecialService is null)
             {
                 throw new ValidationException($"指定的特殊售后#{productSpecialServiceId}不存在!");
             }
@@ -300,7 +300,7 @@ public class ProductSpecialServiceController : Controller
 
         long productSpecialServiceId = param.Id;
         var productSpecialService = db.Set<ProductSpecialServiceEntity>().Find(productSpecialServiceId);
-        if (productSpecialService == null)
+        if (productSpecialService is null)
         {
             throw new ValidationException($"指定的特殊售后#{productSpecialServiceId}不存在!");
         }

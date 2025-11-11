@@ -59,12 +59,24 @@ public class UserPassResController : Controller
         long passResId = param.PassResId;
 
         var passRes = db.Set<PassResEntity>().Find(passResId);
-        if (passRes == null)
+        if (passRes is null)
         {
             throw new ValidationException($"指定的权限资源#{passResId}不存在!");
         }
 
         query = query.Where(e => e.UserPassRes.PassResId == passResId);
+
+        if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
+        {
+            string loginNameQuery = param.LoginNameQuery.Trim();
+            query = query.Where(e => e.User.LoginName.Contains(loginNameQuery));
+        }
+        
+        if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
+        {
+            string loginNameQuery = param.LoginNameQuery.Trim();
+            query = query.Where(e => e.User.LoginName.Contains(loginNameQuery));
+        }
 
         int passResUserCount = query.Count();
 
@@ -142,12 +154,18 @@ public class UserPassResController : Controller
 
         long userId = param.UserId;
         var user = db.Set<UserEntity>().Find(userId);
-        if (user == null)
+        if (user is null)
         {
             throw new ValidationException($"指定的用户#{userId}不存在!");
         }
 
         query = query.Where(e => e.UserPassRes.UserId == userId);
+
+        if (string.IsNullOrWhiteSpace(param.PassResNameQuery) == false)
+        {
+            string passResNameQuery = param.PassResNameQuery.Trim();
+            query = query.Where(e => e.PassRes.Name.Contains(passResNameQuery));
+        }
 
         int userPassResCount = query.Count();
 
@@ -216,7 +234,7 @@ public class UserPassResController : Controller
             .Take(1)
             .SingleOrDefault();
 
-        if (userPassRes != null)
+        if (userPassRes is not null)
         {
             throw new ValidationException($"指定的用户授权已经存在! userId:{userId},passResId:{passResId}");
         }
@@ -256,7 +274,7 @@ public class UserPassResController : Controller
             .Take(1)
             .SingleOrDefault();
 
-        if (userPassRes == null)
+        if (userPassRes is null)
         {
             throw new ValidationException($"指定的用户授权不存在! userId:{userId},passResId:{passResId}");
         }

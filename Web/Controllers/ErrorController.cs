@@ -23,7 +23,7 @@ public class ErrorController : Controller
         var exp = feature?.Error;
 
         var model = new ErrorViewModel();
-        if (exp != null)
+        if (exp is not null)
         {
             if ((exp is ValidationException) == false)
             {

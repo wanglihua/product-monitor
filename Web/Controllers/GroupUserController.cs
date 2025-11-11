@@ -51,7 +51,7 @@ public class GroupUserController : Controller
         long groupId = param.GroupId;
 
         var group = db.Set<GroupEntity>().Find(groupId);
-        if (group == null)
+        if (group is null)
         {
             throw new ValidationException($"指定的群组#{groupId}不存在!");
         }
@@ -70,13 +70,13 @@ public class GroupUserController : Controller
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
-            string loginNameQuery = param.LoginNameQuery;
+            string loginNameQuery = param.LoginNameQuery.Trim();
             query = query.Where(e => e.User.LoginName.Contains(loginNameQuery));
         }
 
         if (string.IsNullOrWhiteSpace(param.UserNameQuery) == false)
         {
-            string userNameQuery = param.UserNameQuery;
+            string userNameQuery = param.UserNameQuery.Trim();
             query = query.Where(e => e.User.UserName.Contains(userNameQuery));
         }
 
@@ -168,7 +168,7 @@ public class GroupUserController : Controller
             .OrderBy(e => e.GroupId)
             .Take(1)
             .SingleOrDefault();
-        if (groupUserExist != null)
+        if (groupUserExist is not null)
         {
             throw new ValidationException("指定的用户已经在群组中, 不能重复添加!");
         }
@@ -200,7 +200,7 @@ public class GroupUserController : Controller
 
         long groupUserId = param.Id;
         var groupUser = db.Set<GroupUserEntity>().Find(groupUserId);
-        if (groupUser == null)
+        if (groupUser is null)
         {
             throw new ValidationException($"指定的群组成员#{groupUserId}不存在!");
         }
@@ -227,7 +227,7 @@ public class GroupUserController : Controller
 
         long groupId = param.GroupId;
         var group = db.Set<GroupEntity>().Find(groupId);
-        if (group == null)
+        if (group is null)
         {
             throw new ValidationException($"指定的群组#{groupId}不存在!");
         }

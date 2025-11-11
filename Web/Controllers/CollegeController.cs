@@ -131,7 +131,7 @@ public class CollegeController : Controller
         if (collegeId > 0)
         {
             var college = db.Set<CollegeEntity>().Find(collegeId);
-            if (college != null)
+            if (college is not null)
             {
                 model = new CollegeDetailModel {
                     Id = college.Id,
@@ -168,7 +168,7 @@ public class CollegeController : Controller
         else
         {
             college = db.Set<CollegeEntity>().Find(collegeId);
-            if (college == null)
+            if (college is null)
             {
                 throw new ValidationException($"指定的院校目录#{collegeId}不存在!");
             }
@@ -217,7 +217,7 @@ public class CollegeController : Controller
 
         long collegeId = param.Id;
         var college = db.Set<CollegeEntity>().Find(collegeId);
-        if (college == null)
+        if (college is null)
         {
             throw new ValidationException($"指定的院校目录#{collegeId}不存在!");
         }

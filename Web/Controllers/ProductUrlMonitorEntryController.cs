@@ -42,14 +42,14 @@ public class ProductUrlMonitorEntryController : Controller
 
         long productUrlMonitorId = param.ProductUrlMonitorId;
         var productUrlMonitor = db.Set<ProductUrlMonitorEntity>().Find(productUrlMonitorId);
-        if (productUrlMonitor == null)
+        if (productUrlMonitor is null)
         {
             throw new ValidationException($"指定的网站监测#{productUrlMonitorId}不存在!");
         }
 
         long collegeId = productUrlMonitor.CollegeId;
         var college = db.Set<CollegeEntity>().Find(collegeId);
-        if (college == null)
+        if (college is null)
         {
             throw new ValidationException($"指定学校#{collegeId}不存在!");
         }
@@ -58,7 +58,7 @@ public class ProductUrlMonitorEntryController : Controller
 
         long productId = productUrlMonitor.ProductId;
         var product = db.Set<ProductEntity>().Find(productId);
-        if (product == null)
+        if (product is null)
         {
             throw new ValidationException($"指定产品#{productId}不存在!");
         }
@@ -149,7 +149,7 @@ public class ProductUrlMonitorEntryController : Controller
         if (productUrlMonitorEntryId > 0)
         {
             var productUrlMonitorEntry = db.Set<ProductUrlMonitorEntryEntity>().Find(productUrlMonitorEntryId);
-            if (productUrlMonitorEntry != null)
+            if (productUrlMonitorEntry is not null)
             {
                 model = new ProductUrlMonitorEntryDetailModel {
                     Id = productUrlMonitorEntry.Id,
@@ -187,7 +187,7 @@ public class ProductUrlMonitorEntryController : Controller
         else
         {
             productUrlMonitorEntry = db.Set<ProductUrlMonitorEntryEntity>().Find(productUrlMonitorEntryId);
-            if (productUrlMonitorEntry == null)
+            if (productUrlMonitorEntry is null)
             {
                 throw new ValidationException($"指定的网站监测详情#{productUrlMonitorEntryId}不存在!");
             }
@@ -237,7 +237,7 @@ public class ProductUrlMonitorEntryController : Controller
 
         long productUrlMonitorEntryId = param.Id;
         var productUrlMonitorEntry = db.Set<ProductUrlMonitorEntryEntity>().Find(productUrlMonitorEntryId);
-        if (productUrlMonitorEntry == null)
+        if (productUrlMonitorEntry is null)
         {
             throw new ValidationException($"指定的网站监测详情#{productUrlMonitorEntryId}不存在!");
         }

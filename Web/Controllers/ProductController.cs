@@ -133,7 +133,7 @@ public class ProductController : Controller
         if (productId > 0)
         {
             var product = db.Set<ProductEntity>().Find(productId);
-            if (product != null)
+            if (product is not null)
             {
                 model = new ProductDetailModel {
                     Id = product.Id,
@@ -168,7 +168,7 @@ public class ProductController : Controller
         else
         {
             product = db.Set<ProductEntity>().Find(productId);
-            if (product == null)
+            if (product is null)
             {
                 throw new ValidationException($"指定的产品目录#{productId}不存在!");
             }
@@ -222,7 +222,7 @@ public class ProductController : Controller
 
         long productId = param.Id;
         var product = db.Set<ProductEntity>().Find(productId);
-        if (product == null)
+        if (product is null)
         {
             throw new ValidationException($"指定的产品目录#{productId}不存在!");
         }
@@ -233,7 +233,7 @@ public class ProductController : Controller
             .OrderBy(e => e.ProductId)
             .Take(1)
             .SingleOrDefault();
-        if (productVersionExist != null)
+        if (productVersionExist is not null)
         {
             throw new ValidationException("请先删除产品版本, 再删除产品!");
         }

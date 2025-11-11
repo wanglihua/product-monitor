@@ -7,7 +7,7 @@ public static class ValidationUtil
 {
     public static void Validate<V, E>(E data) where V : AbstractValidator<E>, new()
     {
-        if (data == null)
+        if (data is null)
         {
             throw new ValidationException("未能正确接收客户端数据, 请确认数据格式是否匹配!");
         }

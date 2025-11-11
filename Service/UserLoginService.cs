@@ -72,7 +72,7 @@ public class UserLoginService
             .OrderBy(e => e.SessionId)
             .Take(1)
             .FirstOrDefault();
-        if (userLoginSessionData == null)
+        if (userLoginSessionData is null)
         {
             return 0;
         }
@@ -136,7 +136,7 @@ public class UserLoginService
             .Take(1)
             .SingleOrDefault();
 
-        if (user == null)
+        if (user is null)
         {
             return 0;
         }
@@ -156,7 +156,7 @@ public class UserLoginService
 
     public long Login(UserEntity user, HttpRequest request)
     {
-        if (user == null)
+        if (user is null)
         {
             throw new ValidationException("登录用户不能为空！");
         }
@@ -167,7 +167,7 @@ public class UserLoginService
             .OrderBy(e => e.SessionId)
             .Take(1)
             .SingleOrDefault();
-        if (webSession == null)
+        if (webSession is null)
         {
             return 0;
         }
@@ -179,7 +179,7 @@ public class UserLoginService
             .Take(1)
             .FirstOrDefault();
 
-        if (userLoginSessionData == null)
+        if (userLoginSessionData is null)
         {
             userLoginSessionData = new WebSessionDataEntity {
                 WebSessionId = webSessionId,

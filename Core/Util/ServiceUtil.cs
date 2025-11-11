@@ -11,7 +11,7 @@ public static class ServiceUtil
         foreach (Type type in typeList)
         {
             var serviceAttribute = type.GetCustomAttribute<ServiceAttribute>();
-            if (serviceAttribute != null)
+            if (serviceAttribute is not null)
             {
                 if (serviceAttribute.ServiceType == ServiceType.Singleton)
                 {

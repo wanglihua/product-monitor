@@ -119,7 +119,7 @@ public class GroupController : Controller
         if (groupId > 0)
         {
             var group = db.Set<GroupEntity>().Find(groupId);
-            if (group != null)
+            if (group is not null)
             {
                 model = new GroupDetailModel {
                     Id = group.Id,
@@ -153,7 +153,7 @@ public class GroupController : Controller
         else
         {
             group = db.Set<GroupEntity>().Find(groupId);
-            if (group == null)
+            if (group is null)
             {
                 throw new ValidationException($"指定的群组#{groupId}不存在!");
             }
@@ -199,7 +199,7 @@ public class GroupController : Controller
 
         long groupId = param.Id;
         var group = db.Set<GroupEntity>().Find(groupId);
-        if (group == null)
+        if (group is null)
         {
             throw new ValidationException($"指定的群组#{groupId}不存在!");
         }
@@ -209,9 +209,19 @@ public class GroupController : Controller
             .OrderBy(e => e.GroupId)
             .Take(1)
             .SingleOrDefault();
-        if (groupUserExist != null)
+        if (groupUserExist is not null)
         {
             throw new ValidationException("请先删除群组成员, 再删除群组!");
+        }
+
+        var groupPassResExist = db.Set<GroupPassResEntity>()
+            .Where(e => e.GroupId == groupId)
+            .OrderBy(e => e.GroupId)
+            .Take(1)
+            .SingleOrDefault();
+        if (groupPassResExist is not null)
+        {
+            throw new ValidationException("请先清除群组授权, 再删除群组!");
         }
 
         db.Remove<GroupEntity>(group);

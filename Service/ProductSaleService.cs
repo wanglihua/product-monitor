@@ -30,19 +30,19 @@ public class ProductSaleService
             .OrderBy(e => e.CollegeId)
             .Take(1)
             .SingleOrDefault();
-        if (productSale != null)
+        if (productSale is not null)
         {
             throw new ValidationException($"学校#{collegeId}和产品#{productId}对应的销售目录已经存在!");
         }
 
         var college = db.Set<CollegeEntity>().Find(collegeId);
-        if (college == null)
+        if (college is null)
         {
             throw new ValidationException($"指定的学校#{collegeId}不存在!");
         }
 
         var product = db.Find<ProductEntity>(productId);
-        if (product == null)
+        if (product is null)
         {
             throw new ValidationException($"指定的产品#{productId}不存在!");
         }
@@ -76,7 +76,7 @@ public class ProductSaleService
     public void UpdateProductSaleByLatestData(long productSaleId)
     {
         var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
-        if (productSale == null)
+        if (productSale is null)
         {
             throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
         }
@@ -87,7 +87,7 @@ public class ProductSaleService
             .Take(1)
             .SingleOrDefault();
 
-        if (productSaleEntryLatest == null)
+        if (productSaleEntryLatest is null)
         {
             throw new ValidationException($"指定的销售目录#{productSaleId}, 当前没有明细数据!");
         }

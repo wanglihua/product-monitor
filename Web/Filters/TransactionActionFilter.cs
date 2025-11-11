@@ -27,7 +27,7 @@ public class TransactionActionFilter : IActionFilter
     public void OnActionExecuting(ActionExecutingContext context)
     {
         var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
-        if (actionDescriptor == null)
+        if (actionDescriptor is null)
         {
             return;
         }
@@ -60,7 +60,7 @@ public class TransactionActionFilter : IActionFilter
 
     public void OnActionExecuted(ActionExecutedContext context)
     {
-        if (context.Exception != null)
+        if (context.Exception is not null)
         {
             if (context.Exception is Core.ValidationException == false)
             {
@@ -79,7 +79,7 @@ public class TransactionActionFilter : IActionFilter
 
         try
         {
-            if (context.Exception == null)
+            if (context.Exception is null)
             {
                 db.SaveChanges();
             }

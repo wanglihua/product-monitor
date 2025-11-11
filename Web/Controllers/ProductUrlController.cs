@@ -148,7 +148,7 @@ public class ProductUrlController : Controller
         if (productUrlId > 0)
         {
             var productUrl = db.Set<ProductUrlEntity>().Find(productUrlId);
-            if (productUrl != null)
+            if (productUrl is not null)
             {
                 model = new ProductUrlDetailModel {
                     Id = productUrl.Id,
@@ -187,7 +187,7 @@ public class ProductUrlController : Controller
         else
         {
             productUrl = db.Set<ProductUrlEntity>().Find(productUrlId);
-            if (productUrl == null)
+            if (productUrl is null)
             {
                 throw new ValidationException($"指定的网址管理#{productUrlId}不存在!");
             }
@@ -238,7 +238,7 @@ public class ProductUrlController : Controller
 
         long productUrlId = param.Id;
         var productUrl = db.Set<ProductUrlEntity>().Find(productUrlId);
-        if (productUrl == null)
+        if (productUrl is null)
         {
             throw new ValidationException($"指定的网址管理#{productUrlId}不存在!");
         }

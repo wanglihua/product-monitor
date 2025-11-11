@@ -32,7 +32,7 @@ public class UserSelectController : Controller
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {
-            string search = param.Search;
+            string search = param.Search.Trim();
             query = query.Where(e => e.LoginName.Contains(search) || e.UserName.Contains(search));
         }
 

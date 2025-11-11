@@ -178,7 +178,7 @@ public class ProductUrlMonitorController : Controller
         if (productUrlMonitorId > 0)
         {
             var productUrlMonitor = db.Set<ProductUrlMonitorEntity>().Find(productUrlMonitorId);
-            if (productUrlMonitor != null)
+            if (productUrlMonitor is not null)
             {
                 model = new ProductUrlMonitorDetailModel {
                     Id = productUrlMonitor.Id,
@@ -207,7 +207,7 @@ public class ProductUrlMonitorController : Controller
 
         long productUrlMonitorId = param.Id;
         var productUrlMonitor = db.Set<ProductUrlMonitorEntity>().Find(productUrlMonitorId);
-        if (productUrlMonitor == null)
+        if (productUrlMonitor is null)
         {
             throw new ValidationException($"指定的网站监测#{productUrlMonitorId}不存在!");
         }

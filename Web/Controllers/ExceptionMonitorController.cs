@@ -161,7 +161,7 @@ public class ExceptionMonitorController : Controller
         if (exceptionMonitorId > 0)
         {
             var exceptionMonitor = db.Set<ExceptionMonitorEntity>().Find(exceptionMonitorId);
-            if (exceptionMonitor != null)
+            if (exceptionMonitor is not null)
             {
                 model = new ExceptionMonitorDetailModel {
                     Id = exceptionMonitor.Id,
@@ -189,7 +189,7 @@ public class ExceptionMonitorController : Controller
 
         long exceptionMonitorId = param.Id;
         var exceptionMonitor = db.Set<ExceptionMonitorEntity>().Find(exceptionMonitorId);
-        if (exceptionMonitor == null)
+        if (exceptionMonitor is null)
         {
             throw new ValidationException($"指定的异常检测#{exceptionMonitorId}不存在!");
         }

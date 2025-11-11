@@ -183,21 +183,21 @@ public class ProductInstallController : Controller
         if (productInstallId > 0)
         {
             var productInstall = db.Set<ProductInstallEntity>().Find(productInstallId);
-            if (productInstall == null)
+            if (productInstall is null)
             {
                 throw new ValidationException($"指定的产品安装#{productInstallId}不存在!");
             }
 
             long collegeId = productInstall.CollegeId;
             var college = db.Find<CollegeEntity>(collegeId);
-            if (college == null)
+            if (college is null)
             {
                 throw new ValidationException($"指定的学校#{collegeId}不存在!");
             }
 
             long productId = productInstall.ProductId;
             var product = db.Find<ProductEntity>(productId);
-            if (product == null)
+            if (product is null)
             {
                 throw new ValidationException($"指定的产品#{productId}不存在!");
             }
@@ -247,7 +247,7 @@ public class ProductInstallController : Controller
         else
         {
             productInstall = db.Set<ProductInstallEntity>().Find(productInstallId);
-            if (productInstall == null)
+            if (productInstall is null)
             {
                 throw new ValidationException($"指定的产品安装#{productInstallId}不存在!");
             }
@@ -303,7 +303,7 @@ public class ProductInstallController : Controller
 
         long productInstallId = param.Id;
         var productInstall = db.Set<ProductInstallEntity>().Find(productInstallId);
-        if (productInstall == null)
+        if (productInstall is null)
         {
             throw new ValidationException($"指定的产品安装#{productInstallId}不存在!");
         }

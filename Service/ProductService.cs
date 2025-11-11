@@ -19,7 +19,7 @@ public class ProductService
     public void UpdateLatestVersionData(long productId)
     {
         var product = db.Set<ProductEntity>().Find(productId);
-        if (product == null)
+        if (product is null)
         {
             throw new ValidationException($"指定的产品#{productId}不存在!");
         }
@@ -34,7 +34,7 @@ public class ProductService
             .Take(1)
             .SingleOrDefault();
 
-        if (productLatestVersion != null)
+        if (productLatestVersion is not null)
         {
             product.LatestVersion = productLatestVersion.Version;
             product.VersionUpdateTime = productLatestVersion.VersionUpdateTime;

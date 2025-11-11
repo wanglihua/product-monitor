@@ -45,7 +45,7 @@ public class ActionLogController : Controller
                     User = user,
                 });
 
-        if (param.ActionLogTypeQuery != null && param.ActionLogTypeQuery != ActionLogType.None)
+        if (param.ActionLogTypeQuery is not null && param.ActionLogTypeQuery != ActionLogType.None)
         {
             var actionLogTypeQuery = param.ActionLogTypeQuery;
             query = query.Where(e => e.ActionLog.Type == actionLogTypeQuery);

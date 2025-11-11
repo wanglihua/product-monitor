@@ -90,7 +90,7 @@ public class SqlServer2008QueryTranslationPostprocessorFactory : IQueryTranslati
             private Expression VisitSelect(SelectExpression selectExpression)
             {
                 var oldOffset = selectExpression.Offset;
-                if (oldOffset == null)
+                if (oldOffset is null)
                     return selectExpression;
                 var oldLimit = selectExpression.Limit;
                 var oldOrderings = selectExpression.Orderings;
@@ -127,7 +127,7 @@ public class SqlServer2008QueryTranslationPostprocessorFactory : IQueryTranslati
 #endif
                 selectExpression.ApplyPredicate(sqlExpressionFactory.GreaterThan(left!, oldOffset));
 
-                if (oldLimit != null)
+                if (oldLimit is not null)
                 {
                     if (oldOrderings.Count == 0)
                     {

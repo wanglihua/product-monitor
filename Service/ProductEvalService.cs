@@ -30,19 +30,19 @@ public class ProductEvalService
             .OrderBy(e => e.CollegeId)
             .Take(1)
             .SingleOrDefault();
-        if (productEval != null)
+        if (productEval is not null)
         {
             throw new ValidationException($"学校#{collegeId}和产品#{productId}对应的试用目录已经存在!");
         }
 
         var college = db.Set<CollegeEntity>().Find(collegeId);
-        if (college == null)
+        if (college is null)
         {
             throw new ValidationException($"指定的学校#{collegeId}不存在!");
         }
 
         var product = db.Find<ProductEntity>(productId);
-        if (product == null)
+        if (product is null)
         {
             throw new ValidationException($"指定的产品#{productId}不存在!");
         }
@@ -75,7 +75,7 @@ public class ProductEvalService
     public void UpdateProductEvalByLatestData(long productEvalId)
     {
         var productEval = db.Set<ProductEvalEntity>().Find(productEvalId);
-        if (productEval == null)
+        if (productEval is null)
         {
             throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
         }
@@ -86,7 +86,7 @@ public class ProductEvalService
             .Take(1)
             .SingleOrDefault();
 
-        if (productEvalEntryLatest == null)
+        if (productEvalEntryLatest is null)
         {
             throw new ValidationException($"指定的试用目录#{productEvalId}, 当前没有明细数据!");
         }

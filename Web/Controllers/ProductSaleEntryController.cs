@@ -52,14 +52,14 @@ public class ProductSaleEntryController : Controller
 
         long productSaleId = param.ProductSaleId;
         var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
-        if (productSale == null)
+        if (productSale is null)
         {
             throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
         }
 
         long collegeId = productSale.CollegeId;
         var college = db.Set<CollegeEntity>().Find(collegeId);
-        if (college == null)
+        if (college is null)
         {
             throw new ValidationException($"指定学校#{collegeId}不存在!");
         }
@@ -68,7 +68,7 @@ public class ProductSaleEntryController : Controller
 
         long productId = productSale.ProductId;
         var product = db.Set<ProductEntity>().Find(productId);
-        if (product == null)
+        if (product is null)
         {
             throw new ValidationException($"指定产品#{productId}不存在!");
         }
@@ -170,7 +170,7 @@ public class ProductSaleEntryController : Controller
         if (productSaleEntryId > 0)
         {
             var productSaleEntry = db.Set<ProductSaleEntryEntity>().Find(productSaleEntryId);
-            if (productSaleEntry == null)
+            if (productSaleEntry is null)
             {
                 throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
             }
@@ -181,14 +181,14 @@ public class ProductSaleEntryController : Controller
         if (productSaleId > 0)
         {
             var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
-            if (productSale == null)
+            if (productSale is null)
             {
                 throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
             }
 
             collegeId = productSale.CollegeId;
             var college = db.Set<CollegeEntity>().Find(collegeId);
-            if (college == null)
+            if (college is null)
             {
                 throw new ValidationException($"指定学校#{collegeId}不存在!");
             }
@@ -197,7 +197,7 @@ public class ProductSaleEntryController : Controller
 
             productId = productSale.ProductId;
             var product = db.Set<ProductEntity>().Find(productId);
-            if (product == null)
+            if (product is null)
             {
                 throw new ValidationException($"指定产品#{productId}不存在!");
             }
@@ -224,7 +224,7 @@ public class ProductSaleEntryController : Controller
         if (productSaleEntryId > 0)
         {
             var productSaleEntry = db.Set<ProductSaleEntryEntity>().Find(productSaleEntryId);
-            if (productSaleEntry == null)
+            if (productSaleEntry is null)
             {
                 throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
             }
@@ -268,7 +268,7 @@ public class ProductSaleEntryController : Controller
             {
                 productSaleId = model.ProductSaleId;
                 var productSale = db.Find<ProductSaleEntity>(productSaleId);
-                if (productSale == null)
+                if (productSale is null)
                 {
                     throw new ValidationException($"指定的销售目录#{productSaleId}不存在！");
                 }
@@ -282,7 +282,7 @@ public class ProductSaleEntryController : Controller
 
                 collegeId = model.CollegeId;
                 var college = db.Set<CollegeEntity>().Find(collegeId);
-                if (college == null)
+                if (college is null)
                 {
                     throw new ValidationException($"指定的学校#{collegeId}不存在!");
                 }
@@ -294,7 +294,7 @@ public class ProductSaleEntryController : Controller
 
                 productId = model.ProductId;
                 var product = db.Find<ProductEntity>(productId);
-                if (product == null)
+                if (product is null)
                 {
                     throw new ValidationException($"指定的产品#{productId}不存在!");
                 }
@@ -312,7 +312,7 @@ public class ProductSaleEntryController : Controller
         if (isCreate == false)
         {
             productSaleEntry = db.Set<ProductSaleEntryEntity>().Find(productSaleEntryId);
-            if (productSaleEntry == null)
+            if (productSaleEntry is null)
             {
                 throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
             }
@@ -332,7 +332,7 @@ public class ProductSaleEntryController : Controller
                     .OrderBy(e => e.CollegeId)
                     .Take(1)
                     .SingleOrDefault();
-                if (productSale != null)
+                if (productSale is not null)
                 {
                     throw new ValidationException($"学校#{collegeId}和产品#{productId}对应的销售目录已经存在!");
                 }
@@ -392,7 +392,7 @@ public class ProductSaleEntryController : Controller
 
         long productSaleEntryId = param.Id;
         var productSaleEntry = db.Set<ProductSaleEntryEntity>().Find(productSaleEntryId);
-        if (productSaleEntry == null)
+        if (productSaleEntry is null)
         {
             throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
         }
@@ -412,11 +412,11 @@ public class ProductSaleEntryController : Controller
             .OrderBy(e => e.ProductSaleId)
             .Take(1)
             .SingleOrDefault();
-        if (productSaleEntryExists == null)
+        if (productSaleEntryExists is null)
         {
             // 如果最后一个明细也不存在了， 就删除主数据
             var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
-            if (productSale == null)
+            if (productSale is null)
             {
                 // 一般肯定存在的
                 throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");

@@ -23,7 +23,7 @@ public static class Transactional
         try
         {
             transaction = db.Database.CurrentTransaction;
-            if (transaction == null)
+            if (transaction is null)
             {
                 transaction = db.Database.BeginTransaction();
                 transactionBegin = true;
@@ -81,7 +81,7 @@ public static class Transactional
         try
         {
             transaction = db.Database.CurrentTransaction;
-            if (transaction == null)
+            if (transaction is null)
             {
                 transaction = db.Database.BeginTransaction();
                 transactionBegin = true;
