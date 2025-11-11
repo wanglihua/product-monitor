@@ -148,7 +148,6 @@ const User = () => {
                 {title: "系统管理"},
                 {title: "用户"},
             ]}/>
-
             <div>
                 <Space>
                     <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名查询" style={{width: 220}}/>

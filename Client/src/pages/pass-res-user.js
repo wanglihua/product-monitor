@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {Badge, Button, Input, Space, Table} from 'antd';
+import {DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import {useParams} from "react-router";
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
@@ -14,7 +14,8 @@ const PassResUser = () => {
 
     const [listParam, setListParam] = useState({
         passResId: passResId,
-        nameQuery: "",
+        loginNameQuery: "",
+        userNameQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -57,41 +58,41 @@ const PassResUser = () => {
             },
         },
         {
-            title: "用户",
-            dataIndex: "userId",
+            title: "登录名",
+            dataIndex: "loginName",
             width: "200px",
         },
         {
-            title: "授权资源",
-            dataIndex: "passResId",
+            title: "用户名",
+            dataIndex: "userName",
             width: "200px",
         },
         {
-            title: "创建时间",
-            dataIndex: "createTime",
+            title: "是否授权",
+            dataIndex: "grant",
             width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
-            dataIndex: "updateTime",
-            width: "150px",
-            sorter: true,
+            render: (value, record, index) => {
+                if (value === true) {
+                    return <span><Badge status="success"/>&nbsp;已授权</span>;
+                }
+
+                if (value === false) {
+                    return <span><Badge status="error"/>&nbsp;未授权</span>;
+                }
+
+                return <span></span>;
+            }
         },
         {
             title: "操作",
             render: (text, record, index) => {
                 return (
                     <Space>
-                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            const userPassResId = record.id;
-                        }}>
-                            <EditOutlined/>编辑
-                        </Button>
-                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/user-pass-res/delete", {
-                                    id: record.id,
+                        {record.grant === true && (
+                            <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                                post("/api/user-pass-res/revoke", {
+                                    userId: record.userId,
+                                    passResId: passResId,
                                 }, function (response) {
                                     const res = response.data;
                                     if (res.success !== true) {
@@ -102,10 +103,30 @@ const PassResUser = () => {
                                     showSuccess(res.message);
                                     loadPassResUserList();
                                 });
-                            });
-                        }}>
-                            <DeleteOutlined/>删除
-                        </Button>
+                            }}>
+                                <DeleteOutlined/>收权
+                            </Button>
+                        )}
+
+                        {record.grant === false && (
+                            <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                                post("/api/user-pass-res/grant", {
+                                    userId: record.userId,
+                                    passResId: passResId,
+                                }, function (response) {
+                                    const res = response.data;
+                                    if (res.success !== true) {
+                                        showError(res.message);
+                                        return;
+                                    }
+
+                                    showSuccess(res.message);
+                                    loadPassResUserList();
+                                });
+                            }}>
+                                <PlusCircleOutlined/>授权
+                            </Button>
+                        )}
                     </Space>
                 );
             },
@@ -116,7 +137,8 @@ const PassResUser = () => {
         loadPassResUserList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const loginNameQueryRef = useRef();
+    const userNameQueryRef = useRef();
 
     return (
         <div>
@@ -125,31 +147,26 @@ const PassResUser = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名查询" style={{width: 220}}/>
+                    <Input ref={userNameQueryRef} addonBefore="用户名" placeholder="用户名查询" style={{width: 220}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const loginNameQuery = loginNameQueryRef.current.input.value;
+                            const userNameQuery = userNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    loginNameQuery: loginNameQuery,
+                                    userNameQuery: userNameQuery,
                                     current_millis: Date.now(),
                                 };
                             });
                         }}
                     >
                         查询
-                    </Button>
-                    <Button
-                        color="default"
-                        icon={<PlusCircleOutlined style={{color: "green"}}/>}
-                        onClick={(e) => {
-                        }}
-                    >
-                        添加
                     </Button>
                 </Space>
             </div>

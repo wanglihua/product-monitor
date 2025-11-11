@@ -56,10 +56,10 @@ public class UserPassResController : Controller
             query = query.Where(e => e.LoginName.Contains(loginNameQuery));
         }
 
-        if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
+        if (string.IsNullOrWhiteSpace(param.UserNameQuery) == false)
         {
-            string loginNameQuery = param.LoginNameQuery.Trim();
-            query = query.Where(e => e.LoginName.Contains(loginNameQuery));
+            string userNameQuery = param.UserNameQuery.Trim();
+            query = query.Where(e => e.UserName.Contains(userNameQuery));
         }
 
         int passResUserCount = query.Count();

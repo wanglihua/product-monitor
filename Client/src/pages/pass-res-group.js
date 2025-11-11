@@ -13,6 +13,7 @@ const PassResGroup = () => {
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
+        passResId: passResId,
         nameQuery: "",
         currentPage: 1,
         pageSize: 15,
@@ -27,7 +28,7 @@ const PassResGroup = () => {
     });
 
     const loadGroupPassResList = () => {
-        post("/api/group-pass-res/list", listParam, function (response) {
+        post("/api/group-pass-res/group/list", listParam, function (response) {
             const res = response.data;
             if (res.success !== true) {
                 showError(res.message);
