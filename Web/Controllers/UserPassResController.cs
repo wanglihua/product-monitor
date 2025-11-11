@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using NLog;
 using Service;
 using Web.Models.UserPassRes;
@@ -35,9 +36,9 @@ public class UserPassResController : Controller
 
     private class PassResUserJoinItem
     {
-        public UserPassResEntity UserPassRes { get; set; } = new();
-
         public UserEntity User { get; set; } = new();
+
+        public UserPassResEntity? UserPassRes { get; set; }
     }
 
     [HttpPost]
@@ -47,14 +48,19 @@ public class UserPassResController : Controller
     {
         ValidationUtil.Validate<PassResUserListParamValidator, PassResUserListParam>(param);
 
-        IQueryable<PassResUserJoinItem> query = db.Set<UserPassResEntity>()
-            .Join(db.Set<UserEntity>(),
-                upr => upr.UserId,
+        // 实际效果是左外联接, 也可以通过一个SQL视图来简化
+        IQueryable<PassResUserJoinItem> query = db.Set<UserEntity>()
+            .GroupJoin(db.Set<UserPassResEntity>(),
                 u => u.Id,
-                (upr, u) => new PassResUserJoinItem {
-                    UserPassRes = upr,
-                    User = u,
-                });
+                upr => upr.UserId,
+                (u, upr) => new { u, upr })
+            .SelectMany(
+                g => g.upr.DefaultIfEmpty(),
+                (g, upr) => new PassResUserJoinItem {
+                    User = g.u,
+                    UserPassRes = upr
+                }
+            );
 
         long passResId = param.PassResId;
 
@@ -64,14 +70,14 @@ public class UserPassResController : Controller
             throw new ValidationException($"指定的权限资源#{passResId}不存在!");
         }
 
-        query = query.Where(e => e.UserPassRes.PassResId == passResId);
+        query = query.Where(e => e.UserPassRes == null || e.UserPassRes.PassResId == passResId);
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
             string loginNameQuery = param.LoginNameQuery.Trim();
             query = query.Where(e => e.User.LoginName.Contains(loginNameQuery));
         }
-        
+
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
             string loginNameQuery = param.LoginNameQuery.Trim();
@@ -81,20 +87,25 @@ public class UserPassResController : Controller
         int passResUserCount = query.Count();
 
         // 排序字段
-        Expression<Func<PassResUserJoinItem, object>> sortField = e => e.UserPassRes.Id;
+        Expression<Func<PassResUserJoinItem, object>> sortField = e => e.User.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
 
-            if (string.Compare(sortFieldParam, nameof(PassResUserListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (string.Compare(sortFieldParam, nameof(PassResUserListItem.LoginName), StringComparison.OrdinalIgnoreCase) == 0)
             {
-                sortField = e => e.UserPassRes.CreateTime;
+                sortField = e => e.User.LoginName;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(PassResUserListItem.UserName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.User.UserName;
             }
         }
 
         // 排序顺序
         string sortOrder = param.SortOrder;
-        if (sortOrder == SortOrder.Ascend)
+        if (sortOrder == SortOrder.Descend) // 这里默认顺序排
         {
             query = query.OrderBy(sortField);
         }
@@ -110,11 +121,11 @@ public class UserPassResController : Controller
 
         var passResUserItemList = userPassResList
             .Select(e => new PassResUserListItem {
-                Id = e.UserPassRes.Id,
-                UserId = e.UserPassRes.UserId,
+                Id = e.User.Id,
+                UserId = e.User.Id,
                 LoginName = e.User.LoginName,
                 UserName = e.User.UserName,
-                CreateTime = e.UserPassRes.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                CreateTime = e.UserPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
             })
             .ToList();
 

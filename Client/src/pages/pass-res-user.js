@@ -13,6 +13,7 @@ const PassResUser = () => {
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
+        passResId: passResId,
         nameQuery: "",
         currentPage: 1,
         pageSize: 15,
@@ -22,12 +23,13 @@ const PassResUser = () => {
     });
 
     const [state, setState] = useState({
-        userPassResList: [],
-        userPassResCount: 0,
+        passResUserList: [],
+        passResUserCount: 0,
+        passResName: "",
     });
 
-    const loadUserPassResList = () => {
-        post("/api/user-pass-res/list", listParam, function (response) {
+    const loadPassResUserList = () => {
+        post("/api/user-pass-res/user/list", listParam, function (response) {
             const res = response.data;
             if (res.success !== true) {
                 showError(res.message);
@@ -37,14 +39,15 @@ const PassResUser = () => {
             setState((pre) => {
                 return {
                     ...pre,
-                    userPassResList: res.data.userPassResList,
-                    userPassResCount: res.data.userPassResCount,
+                    passResUserList: res.data.passResUserList,
+                    passResUserCount: res.data.passResUserCount,
+                    passResName: res.data.passResName,
                 };
             });
         });
     };
 
-    const userPassResListColumns = [
+    const passResUserListColumns = [
         {
             title: "序号",
             width: "80px",
@@ -97,7 +100,7 @@ const PassResUser = () => {
                                     }
 
                                     showSuccess(res.message);
-                                    loadUserPassResList();
+                                    loadPassResUserList();
                                 });
                             });
                         }}>
@@ -110,7 +113,7 @@ const PassResUser = () => {
     ];
 
     useEffect(() => {
-        loadUserPassResList();
+        loadPassResUserList();
     }, [JSON.stringify(listParam)]);
 
     const nameQueryRef = useRef();
@@ -151,12 +154,12 @@ const PassResUser = () => {
                 </Space>
             </div>
             <div style={{padding: "10px 0"}}>
-                <Table columns={userPassResListColumns} rowKey="id"
-                       dataSource={state.userPassResList}
+                <Table columns={passResUserListColumns} rowKey="id"
+                       dataSource={state.passResUserList}
                        pagination={{
                            current: listParam.currentPage,
                            pageSize: listParam.pageSize,
-                           total: state.userPassResCount,
+                           total: state.passResUserCount,
                            showQuickJumper: true,
                            showSizeChanger: true,
                            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total}`,
