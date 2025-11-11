@@ -12,13 +12,8 @@ public class UserAuthService
     // 不通过注入, 保持独立性, 到时定时任务中, 也可以设置这里的值
     private static IMemoryCache memoryCache = new MemoryCache(new MemoryCacheOptions());
 
-    private readonly Db db;
-
-
-    public UserAuthService(Db db)
-    {
-        this.db = db;
-    }
+    // 不同过注入, 保持独立, 到时定时任务中, 也可以同样操作
+    private static readonly Db db = new Db();
 
     /// <summary>
     /// 从数据库授权记录, 建立授权缓存
