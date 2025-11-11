@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.GroupUser;
@@ -214,6 +215,30 @@ public class GroupUserController : Controller
         return Json(new JsonResultData {
             Success = true,
             Message = "移除成功！",
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/group-user/empty")]
+    [Transactional(true)]
+    public IActionResult Empty([FromBody] GroupUserEmptyParam param)
+    {
+        ValidationUtil.Validate<GroupUserEmptyParamValidator, GroupUserEmptyParam>(param);
+
+        long groupId = param.GroupId;
+        var group = db.Set<GroupEntity>().Find(groupId);
+        if (group == null)
+        {
+            throw new ValidationException($"指定的群组#{groupId}不存在!");
+        }
+
+        db.Set<GroupUserEntity>()
+            .Where(e => e.GroupId == groupId)
+            .ExecuteDelete();
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "清空成功！",
         });
     }
 }

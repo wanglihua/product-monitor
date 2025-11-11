@@ -23,7 +23,7 @@ public class ProductInstallMonitorEntryEntityMap : IEntityTypeConfiguration<Prod
             .IsRequired(true);
 
         builder.Property(e => e.AccountType)
-            .HasConversion<CodeTypeConvertions<AccountType>>()
+            .HasConversion<CodeTypeConversion<AccountType>>()
             .HasColumnName("account_type")
             .IsRequired(true);
 
@@ -33,7 +33,7 @@ public class ProductInstallMonitorEntryEntityMap : IEntityTypeConfiguration<Prod
             .IsRequired(true);
 
         builder.Property(e => e.ProvinceType)
-            .HasConversion<CodeTypeConvertions<ProvinceType>>()
+            .HasConversion<CodeTypeConversion<ProvinceType>>()
             .HasColumnName("province_type")
             .IsRequired(true);
     }

@@ -162,7 +162,20 @@ const GroupUser = () => {
                         color="default"
                         icon={<DeleteOutlined style={{color: "#ff6b69"}}/>}
                         onClick={(e) => {
-                            groupUserDetail.current.show(0);
+                            showConfirm("确认要清空群组成员吗！", "确认", () => {
+                                post("/api/group-user/empty", {
+                                    groupId: groupId,
+                                }, function (response) {
+                                    const res = response.data;
+                                    if (res.success !== true) {
+                                        showError(res.message);
+                                        return;
+                                    }
+
+                                    showSuccess(res.message);
+                                    loadGroupUserList();
+                                });
+                            });
                         }}
                     >
                         清空
