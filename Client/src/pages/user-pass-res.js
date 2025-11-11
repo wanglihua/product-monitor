@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import {useParams} from "react-router";
+import {useParams, useNavigate} from "react-router";
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
@@ -12,8 +12,11 @@ const UserPassRes = () => {
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
+    const navigate = useNavigate();
+
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        userId: userId,
+        passResNameQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -24,10 +27,12 @@ const UserPassRes = () => {
     const [state, setState] = useState({
         userPassResList: [],
         userPassResCount: 0,
+        loginName: "",
+        userName: "",
     });
 
     const loadUserPassResList = () => {
-        post("/api/user-pass-res/list", listParam, function (response) {
+        post("/api/user-pass-res/pass/res/list", listParam, function (response) {
             const res = response.data;
             if (res.success !== true) {
                 showError(res.message);
@@ -39,6 +44,8 @@ const UserPassRes = () => {
                     ...pre,
                     userPassResList: res.data.userPassResList,
                     userPassResCount: res.data.userPassResCount,
+                    loginName: res.data.loginName,
+                    userName: res.data.userName,
                 };
             });
         });
@@ -113,40 +120,38 @@ const UserPassRes = () => {
         loadUserPassResList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const passResNameQueryRef = useRef();
 
     return (
         <div>
-            <Title title="用户授权" menuKey="user-pass-res" breadcrumb={[
-                {title: "用户授权"},
+            <Title title={`用户权限资源 ${state.loginName} ${state.userName}`} menuKey="user-pass-res" breadcrumb={[
+                {title: "系统管理"},
+                {
+                    title: <span style={{cursor: "pointer"}} onClick={() => {
+                        navigate("/user");
+                    }}>用户</span>
+                },
+                {title: "用户权限资源"},
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={passResNameQueryRef} addonBefore="资源名称" placeholder="资源名称查询" style={{width: 320}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const passResNameQuery = passResNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    passResNameQuery: passResNameQuery,
                                     current_millis: Date.now(),
                                 };
                             });
                         }}
                     >
                         查询
-                    </Button>
-                    <Button
-                        color="default"
-                        icon={<PlusCircleOutlined style={{color: "green"}}/>}
-                        onClick={(e) => {
-                        }}
-                    >
-                        添加
                     </Button>
                 </Space>
             </div>
