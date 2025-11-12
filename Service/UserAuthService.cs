@@ -7,7 +7,7 @@ namespace Service;
 [Service(ServiceType.Scoped)]
 public class UserAuthService
 {
-    private static readonly string cacheKey = "UserAuthResult";
+    // private static readonly string cacheKey = "UserAuthResult";
 
     // 不通过注入, 保持独立性, 到时定时任务中, 也可以设置这里的值
     private static IMemoryCache memoryCache = new MemoryCache(new MemoryCacheOptions());
