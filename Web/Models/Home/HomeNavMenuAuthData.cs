@@ -18,24 +18,6 @@ public class HomeNavMenuAuthData
 
     [JsonProperty("exceptionMonitor")]
     public bool ExceptionMonitor { get; set; }
-
-    /// <summary>
-    /// 是不是这个目录要显示
-    /// </summary>
-    [JsonProperty("projectManage")]
-    public bool ProjectManage { get; set; }
-
-    [JsonProperty("productSale")]
-    public bool ProductSale { get; set; }
-
-    [JsonProperty("productRent")]
-    public bool ProductRent { get; set; }
-
-    [JsonProperty("productEval")]
-    public bool ProductEval { get; set; }
-
-    [JsonProperty("projectAnalyze")]
-    public bool ProjectAnalyze { get; set; }
     
     /// <summary>
     /// 是不是这个目录要显示
@@ -57,6 +39,24 @@ public class HomeNavMenuAuthData
 
     [JsonProperty("productServiceAnalyze")]
     public bool ProductServiceAnalyze { get; set; }
+
+    /// <summary>
+    /// 是不是这个目录要显示
+    /// </summary>
+    [JsonProperty("projectManage")]
+    public bool ProjectManage { get; set; }
+
+    [JsonProperty("productSale")]
+    public bool ProductSale { get; set; }
+
+    [JsonProperty("productRent")]
+    public bool ProductRent { get; set; }
+
+    [JsonProperty("productEval")]
+    public bool ProductEval { get; set; }
+
+    [JsonProperty("projectAnalyze")]
+    public bool ProjectAnalyze { get; set; }
     
     /// <summary>
     /// 是不是这个目录要显示

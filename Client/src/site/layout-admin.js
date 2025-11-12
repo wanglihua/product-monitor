@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Avatar, Breadcrumb, Button, Flex, ConfigProvider, Dropdown, Layout, Menu, Space, theme} from "antd";
 import {Outlet, useNavigate} from "react-router";
 
@@ -74,6 +74,293 @@ const LayoutAdmin = () => {
     if (isNotEmptyArray(breadcrumb)) {
         breadcrumbItems = breadcrumbItems.concat(breadcrumb);
     }
+
+    const [menuItems, setMenuItems] = useState([])
+
+    useEffect(() => {
+        post("/home/nav/menu/auth/data", {}, function (response) {
+            const res = response.data;
+            if (res.success !== true) {
+                showError(res.message);
+                return;
+            }
+
+            const data = res.data;
+
+            let navMenuList = [];
+
+            let dataMonitorChildren = [];
+
+            // 数据监测
+
+            if (data.productInstallMonitor === true) {
+                dataMonitorChildren.push({
+                    key: "product-install-monitor",
+                    icon: <i className="iconfont icon-product-install-monitor" style={{color: "#1677ff"}}/>,
+                    label: "安装监测",
+                    onClick: () => {
+                        navigate("/product-install-monitor");
+                    }
+                });
+            }
+
+            if (data.productUrlMonitor === true) {
+                dataMonitorChildren.push({
+                    key: "product-url-monitor",
+                    icon: <i className="iconfont icon-product-url-monitor" style={{color: "#1677ff"}}/>,
+                    label: "网站监测",
+                    onClick: () => {
+                        navigate("/product-url-monitor");
+                    }
+                });
+            }
+
+            if (data.exceptionMonitor === true) {
+                dataMonitorChildren.push({
+                    key: "exception-monitor",
+                    icon: <i className="iconfont icon-exception-monitor" style={{color: "#1677ff"}}/>,
+                    label: "异常监测",
+                    onClick: () => {
+                        navigate("/exception-monitor");
+                    }
+                })
+            }
+
+            if (data.dataMonitor === true) {
+                navMenuList.push({
+                    key: "data-monitor",
+                    icon: <i className="iconfont icon-data-monitor" style={{color: "#1677ff"}}/>,
+                    label: "数据监测",
+                    children: dataMonitorChildren
+                });
+            }
+
+            // 产品服务
+            let productServiceChildren = [];
+
+            if (data.productInstall === true) {
+                productServiceChildren.push({
+                    key: "product-install",
+                    icon: <i className="iconfont icon-product-install" style={{color: "#1677ff"}}/>,
+                    label: "产品安装",
+                    onClick: () => {
+                        navigate("/product-install");
+                    }
+                });
+            }
+
+            if (data.productUpdate === true) {
+                productServiceChildren.push({
+                    key: "product-update",
+                    icon: <i className="iconfont icon-product-update" style={{color: "#1677ff"}}/>,
+                    label: "产品更新",
+                    onClick: () => {
+                        navigate("/product-update");
+                    }
+                });
+            }
+
+            if (data.productSaleService === true) {
+                productServiceChildren.push({
+                    key: "product-sale-service",
+                    icon: <i className="iconfont icon-product-sale-service" style={{color: "#1677ff"}}/>,
+                    label: "售后维护",
+                    onClick: () => {
+                        navigate("/product-service");
+                    }
+                });
+            }
+
+            if (data.productSpecialService === true) {
+                productServiceChildren.push({
+                    key: "product-special-service",
+                    icon: <i className="iconfont icon-product-special-service" style={{color: "#1677ff"}}/>,
+                    label: "特殊售后",
+                    onClick: () => {
+                        navigate("/product-special-service");
+                    }
+                });
+            }
+
+            if (data.productServiceAnalyze === true) {
+                // 后面补上这个菜单
+            }
+
+            if (data.productService === true) {
+                navMenuList.push({
+                    key: "product-service",
+                    icon: <i className="iconfont icon-product-service" style={{color: "#1677ff"}}/>,
+                    label: "产品服务",
+                    children: productServiceChildren,
+                });
+            }
+
+            // 项目管理
+            let projectManageChildren = [];
+
+            if (data.productSale === true) {
+                projectManageChildren.push({
+                    key: "product-sale",
+                    icon: <i className="iconfont icon-product-sale" style={{color: "#1677ff"}}/>,
+                    label: "销售目录",
+                    onClick: () => {
+                        navigate("/product-sale");
+                    }
+                });
+            }
+
+            if (data.productRent === true) {
+                projectManageChildren.push({
+                    key: "product-rent",
+                    icon: <i className="iconfont icon-product-rent" style={{color: "#1677ff"}}/>,
+                    label: "租赁目录",
+                    onClick: () => {
+                        navigate("/product-rent");
+                    }
+                });
+            }
+
+            if (data.productEval === true) {
+                projectManageChildren.push({
+                    key: "product-eval",
+                    icon: <i className="iconfont icon-product-eval" style={{color: "#1677ff"}}/>,
+                    label: "试用目录",
+                    onClick: () => {
+                        navigate("/product-eval");
+                    }
+                });
+            }
+
+            if (data.projectAnalyze === true) {
+                // 后面补上这个菜单
+            }
+
+            if (data.projectManage === true) {
+                navMenuList.push({
+                    key: "project-manage",
+                    icon: <i className="iconfont icon-project-manage" style={{color: "#1677ff"}}/>,
+                    label: "项目管理",
+                    children: projectManageChildren,
+                });
+            }
+
+            // 基础设置
+
+            let basicSettingChildren = [];
+
+            if (data.product === true) {
+                basicSettingChildren.push({
+                    key: "product",
+                    icon: <i className="iconfont icon-product" style={{color: "#1677ff"}}/>,
+                    label: "产品目录",
+                    onClick: () => {
+                        navigate("/product");
+                    }
+                });
+            }
+
+            if (data.college === true) {
+                basicSettingChildren.push({
+                    key: "college",
+                    icon: <i className="iconfont icon-college" style={{color: "#1677ff"}}/>,
+                    label: "院校目录",
+                    onClick: () => {
+                        navigate("/college");
+                    }
+                });
+            }
+
+            if (data.productUrl === true) {
+                basicSettingChildren.push({
+                    key: "product-url",
+                    icon: <i className="iconfont icon-product-url" style={{color: "#1677ff"}}/>,
+                    label: "网址管理",
+                    onClick: () => {
+                        navigate("/product-url");
+                    }
+                });
+            }
+
+            if (data.basicSetting === true) {
+                navMenuList.push({
+                    key: "basic-setting",
+                    icon: <i className="iconfont icon-basic-setting" style={{color: "#1677ff"}}/>,
+                    label: "基础设置",
+                    children: basicSettingChildren,
+                });
+            }
+
+            // 系统管理
+            let systemManageChildren = [];
+
+            if (data.user === true) {
+                systemManageChildren.push({
+                    key: "user",
+                    icon: <i className="iconfont icon-user" style={{color: "#1677ff"}}/>,
+                    label: "用户",
+                    onClick: () => {
+                        navigate("/user");
+                    }
+                });
+            }
+
+            if (data.group === true) {
+                systemManageChildren.push({
+                    key: "group",
+                    icon: <i className="iconfont icon-group" style={{color: "#1677ff"}}/>,
+                    label: "群组",
+                    onClick: () => {
+                        navigate("/group");
+                    }
+                });
+            }
+
+            if (data.passRes === true) {
+                systemManageChildren.push({
+                    key: "pass-res",
+                    icon: <i className="iconfont icon-pass-res" style={{color: "#1677ff"}}/>,
+                    label: "授权资源",
+                    onClick: () => {
+                        navigate("/pass-res");
+                    }
+                });
+            }
+
+            if (data.passRes === true) {
+                systemManageChildren.push({
+                    key: "auth-result",
+                    icon: <i className="iconfont icon-pass-res-result" style={{color: "#1677ff"}}/>,
+                    label: "授权总览",
+                    onClick: () => {
+                        navigate("/auth-result");
+                    }
+                });
+            }
+
+            if (data.admin === true) {
+                systemManageChildren.push({
+                    key: "admin-user",
+                    icon: <i className="iconfont icon-admin-user" style={{color: "#1677ff"}}/>,
+                    label: "管理员",
+                    onClick: () => {
+                        navigate("/admin-user");
+                    }
+                });
+            }
+
+            if (data.actionLog === true) {
+                systemManageChildren.push({
+                    key: "action-log",
+                    icon: <i className="iconfont icon-action-log" style={{color: "#1677ff"}}/>,
+                    label: "操作日志",
+                    onClick: () => {
+                        navigate("/action/log");
+                    }
+                });
+            }
+
+        });
+    }, [menuOpenKeys, menuActiveKey]);
 
     return (
         <Layout>

@@ -51,34 +51,34 @@ public class HomeController : Controller
 
         var homeNavMenuData = new HomeNavMenuAuthData {
             DataMonitor = authResultList.Any(e => e.UserId == loginUserId && PassRes.DataMonitor.All.Contains(e.PassResId)),
-            
+
             ProductInstallMonitor = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.DataMonitor.ProductInstallMonitor),
             ProductUrlMonitor = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.DataMonitor.ProductUrlMonitor),
             ExceptionMonitor = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.DataMonitor.ExceptionMonitor),
-            
-            ProjectManage = authResultList.Any(e => e.UserId == loginUserId && PassRes.ProjectManage.All.Contains(e.PassResId)),
-            
-            ProductSale = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProjectManage.ProductSale),
-            ProductRent = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProjectManage.ProductRent),
-            ProductEval = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProjectManage.ProductEval),
-            ProjectAnalyze = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProjectManage.ProjectAnalyze),
-            
+
             ProductService = authResultList.Any(e => e.UserId == loginUserId && PassRes.ProductService.All.Contains(e.PassResId)),
-            
+
             ProductInstall = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProductService.ProductInstall),
             ProductUpdate = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProductService.ProductUpdate),
             ProductSaleService = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProductService.ProductSaleService),
             ProductSpecialService = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProductService.ProductSpecialService),
             ProductServiceAnalyze = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProductService.ProductServiceAnalyze),
-            
+
+            ProjectManage = authResultList.Any(e => e.UserId == loginUserId && PassRes.ProjectManage.All.Contains(e.PassResId)),
+
+            ProductSale = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProjectManage.ProductSale),
+            ProductRent = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProjectManage.ProductRent),
+            ProductEval = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProjectManage.ProductEval),
+            ProjectAnalyze = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.ProjectManage.ProjectAnalyze),
+
             BasicSetting = authResultList.Any(e => e.UserId == loginUserId && PassRes.BasicSetting.All.Contains(e.PassResId)),
-            
+
             Product = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.BasicSetting.Product),
             College = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.BasicSetting.College),
             ProductUrl = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.BasicSetting.ProductUrl),
-            
+
             SystemManage = authResultList.Any(e => e.UserId == loginUserId && PassRes.SystemManage.All.Contains(e.PassResId)),
-            
+
             User = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.User),
             Group = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.Group),
             PassRes = authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.PassRes),
