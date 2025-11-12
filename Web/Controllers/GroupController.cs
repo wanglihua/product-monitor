@@ -21,16 +21,19 @@ public class GroupController : Controller
     private readonly Db db;
     private readonly UserLoginService userLoginService;
     private readonly ActionLogService actionLogService;
+    private readonly UserAuthService userAuthService;
 
     public GroupController(
         Db db,
         UserLoginService userLoginService,
-        ActionLogService actionLogService
+        ActionLogService actionLogService,
+        UserAuthService userAuthService
     )
     {
         this.db = db;
         this.userLoginService = userLoginService;
         this.actionLogService = actionLogService;
+        this.userAuthService = userAuthService;
     }
 
     [HttpPost]
@@ -92,12 +95,17 @@ public class GroupController : Controller
             })
             .ToList();
 
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdmin = userLoginService.IsAdmin(loginUserId);
+        bool hasPassRes = userAuthService.UserHasPassRes(loginUserId, PassRes.SystemManage.PassRes, isAdmin);
+
         return Json(new JsonResultData {
             Success = true,
             Message = "success",
             Data = new Dictionary<string, object> {
                 ["groupList"] = groupItemList,
                 ["groupCount"] = groupCount,
+                ["hasPassRes"] = hasPassRes,
             },
         });
     }

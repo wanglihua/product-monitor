@@ -23,13 +23,15 @@ public class UserController : Controller
     private readonly PasswordService passwordService;
     private readonly AdminUserService adminUserService;
     private readonly ActionLogService actionLogService;
+    private readonly UserAuthService userAuthService;
 
     public UserController(
         Db db,
         UserLoginService userLoginService,
         PasswordService passwordService,
         AdminUserService adminUserService,
-        ActionLogService actionLogService
+        ActionLogService actionLogService,
+        UserAuthService userAuthService
     )
     {
         this.db = db;
@@ -37,6 +39,7 @@ public class UserController : Controller
         this.passwordService = passwordService;
         this.adminUserService = adminUserService;
         this.actionLogService = actionLogService;
+        this.userAuthService = userAuthService;
     }
 
     [HttpPost]
@@ -107,12 +110,17 @@ public class UserController : Controller
             })
             .ToList();
 
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdmin = userLoginService.IsAdmin(loginUserId);
+        bool hasPassRes = userAuthService.UserHasPassRes(loginUserId, PassRes.SystemManage.PassRes, isAdmin);
+
         return Json(new JsonResultData {
             Success = true,
             Message = "success",
             Data = new Dictionary<string, object> {
                 ["userList"] = userItemList,
                 ["userCount"] = userCount,
+                ["hasPassRes"] = hasPassRes,
             }
         });
     }
