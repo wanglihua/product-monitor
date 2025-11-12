@@ -7,7 +7,7 @@ namespace Service;
 [Service(ServiceType.Scoped)]
 public class UserAuthService
 {
-    // private static readonly string cacheKey = "UserAuthResult";
+    private static string cacheKey => "UserAuthResult";
 
     // 不通过注入, 保持独立性, 到时定时任务中, 也可以设置这里的值
     private static IMemoryCache memoryCache = new MemoryCache(new MemoryCacheOptions());
@@ -18,8 +18,42 @@ public class UserAuthService
     /// <summary>
     /// 从数据库授权记录, 建立授权缓存
     /// </summary>
-    public void BuildAuthCache()
+    public IList<UserPassRes> BuildAuthCache()
     {
+        var userPassResList = GetUserPassResList();
+        memoryCache.Set(cacheKey, userPassResList);
+        return userPassResList;
+    }
+
+    private IList<UserPassRes> GetUserPassResList()
+    {
+        var userPassResEntityList = db.Set<UserPassResEntity>().ToList();
+
+        var groupPassResList = db.Set<GroupUserEntity>()
+            .Join(db.Set<GroupPassResEntity>(),
+                gu => gu.GroupId,
+                gpr => gpr.GroupId,
+                (gu, gpr) => new { GroupUser = gu, GroupPassRes = gpr })
+            .ToList();
+
+        var userPassResList = new List<UserPassRes>();
+        foreach (var userPassResEntity in userPassResEntityList)
+        {
+            userPassResList.Add(new UserPassRes {
+                UserId = userPassResEntity.UserId,
+                PassResId = userPassResEntity.PassResId,
+            });
+        }
+
+        foreach (var groupPassRes in groupPassResList)
+        {
+            userPassResList.Add(new UserPassRes {
+                UserId = groupPassRes.GroupUser.UserId,
+                PassResId = groupPassRes.GroupPassRes.PassResId,
+            });
+        }
+
+        return userPassResList;
     }
 
     // /// <summary>
@@ -35,6 +69,16 @@ public class UserAuthService
     /// </summary>
     public bool UserHasPassRes(int userId, int passResId)
     {
-        return false;
+        if (memoryCache.TryGetValue(cacheKey, out IList<UserPassRes>? userPassResList) == false)
+        {
+            userPassResList = BuildAuthCache();
+        }
+
+        var userPassRes = userPassResList!
+            .Where(e => e.UserId == userId && e.PassResId == passResId)
+            .Take(1)
+            .SingleOrDefault();
+
+        return userPassRes != null;
     }
 }
