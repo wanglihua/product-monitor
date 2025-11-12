@@ -71,6 +71,21 @@ public class UserAuthService
 
     /// <summary>
     /// 用户是否具有某个资源权限
+    /// 这里考虑了管理员
+    /// </summary>
+    public bool UserHasPassRes(long userId, long passResId, bool isAdmin)
+    {
+        if (isAdmin == true)
+        {
+            return true;
+        }
+
+        return UserHasPassRes(userId, passResId);
+    }
+
+    /// <summary>
+    /// 用户是否具有某个资源权限
+    /// 这里不考虑管理员
     /// </summary>
     public bool UserHasPassRes(long userId, long passResId)
     {
@@ -89,6 +104,21 @@ public class UserAuthService
 
     /// <summary>
     /// 用户是否具有某个资源权限列表中某个权限
+    /// 这里考虑了管理员
+    /// </summary>
+    public bool UserHasOneOfPassRes(long userId, IList<long> passResIdList, bool isAdmin)
+    {
+        if (isAdmin == true)
+        {
+            return true;
+        }
+
+        return UserHasOneOfPassRes(userId, passResIdList);
+    }
+
+    /// <summary>
+    /// 用户是否具有某个资源权限列表中某个权限
+    /// 这里不考虑管理员
     /// </summary>
     public bool UserHasOneOfPassRes(long userId, IList<long> passResIdList)
     {
