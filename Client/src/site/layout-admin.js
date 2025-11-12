@@ -370,7 +370,8 @@ const LayoutAdmin = () => {
 
             setMenuItems(navMenuList);
         });
-    }, [menuOpenKeys, menuActiveKey]);
+        // }, [menuOpenKeys, menuActiveKey]);
+    }, []);
 
     return (
         <Layout>

@@ -19,15 +19,18 @@ public class LoginController : Controller
     private readonly Db db;
     private readonly UserLoginService userLoginService;
     private readonly CaptchaService captchaService;
+    private readonly UserLoginRateLimitService userLoginRateLimitService;
 
     public LoginController(
         Db db,
         UserLoginService userLoginService,
-        CaptchaService captchaService)
+        CaptchaService captchaService,
+        UserLoginRateLimitService userLoginRateLimitService)
     {
         this.db = db;
         this.userLoginService = userLoginService;
         this.captchaService = captchaService;
+        this.userLoginRateLimitService = userLoginRateLimitService;
     }
 
     [HttpPost]
@@ -47,6 +50,8 @@ public class LoginController : Controller
             captchaService.MakeCurrentExpire();
             throw new ValidationException("请输入正确的验证码！");
         }
+
+        userLoginRateLimitService.CheckRateLimit(loginName);
 
         long loginedUserId = userLoginService.Login(loginName, password, Request);
         if (loginedUserId <= 0)
