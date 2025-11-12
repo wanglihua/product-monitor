@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Select, Space, Table} from 'antd';
 import {useNavigate} from "react-router";
-import {PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {PlusCircleOutlined, SearchOutlined, SettingOutlined} from '@ant-design/icons';
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
@@ -146,6 +146,23 @@ const PassRes = () => {
                         }}
                     >
                         初始化最新数据
+                    </Button>
+                    <Button
+                        color="default"
+                        icon={<SettingOutlined/>}
+                        onClick={(e) => {
+                            post("/api/pass-res/refresh/auth/cache", {}, function (response) {
+                                const res = response.data;
+                                if (res.success === false) {
+                                    showError(res.message);
+                                    return;
+                                }
+
+                                showSuccess(res.message);
+                            });
+                        }}
+                    >
+                        更新授权缓存
                     </Button>
                 </Space>
             </div>

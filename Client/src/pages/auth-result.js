@@ -1,13 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
-import {PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {SearchOutlined, SettingOutlined} from '@ant-design/icons';
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
 const AuthResult = () => {
 
-    const {post, showError} = useSiteContext();
+    const {post, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
         nameQuery: "",
@@ -131,6 +131,23 @@ const AuthResult = () => {
                         }}
                     >
                         查询
+                    </Button>
+                    <Button
+                        color="default"
+                        icon={<SettingOutlined/>}
+                        onClick={(e) => {
+                            post("/api/auth-result/refresh/auth/cache", {}, function (response) {
+                                const res = response.data;
+                                if (res.success === false) {
+                                    showError(res.message);
+                                    return;
+                                }
+
+                                showSuccess(res.message);
+                            });
+                        }}
+                    >
+                        更新授权缓存
                     </Button>
                 </Space>
             </div>
