@@ -1,4 +1,4 @@
-﻿using Core.CodeType;
+using Core.CodeType;
 
 namespace Domain;
 
