@@ -26,6 +26,7 @@ const User = () => {
     const [state, setState] = useState({
         userList: [],
         userCount: 0,
+        hasPassRes: true,
     });
 
     const loadUserList = () => {
@@ -41,6 +42,7 @@ const User = () => {
                     ...pre,
                     userList: res.data.userList,
                     userCount: res.data.userCount,
+                    hasPassRes: res.data.hasPassRes,
                 };
             });
         });
@@ -99,12 +101,14 @@ const User = () => {
             render: (text, record, index) => {
                 return (
                     <Space>
-                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            const userId = record.id;
-                            navigate(`/user-pass-res/${userId}`);
-                        }}>
-                            <i className="iconfont icon-pass-res"/>授权资源
-                        </Button>
+                        {state.hasPassRes === true && (
+                            <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                                const userId = record.id;
+                                navigate(`/user-pass-res/${userId}`);
+                            }}>
+                                <i className="iconfont icon-pass-res"/>授权资源
+                            </Button>
+                        )}
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const userId = record.id;
                             userDetail.current.show(userId);
