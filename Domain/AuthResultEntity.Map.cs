@@ -8,9 +8,10 @@ public class AuthResultEntityMap : IEntityTypeConfiguration<AuthResultEntity>
 {
     public void Configure(EntityTypeBuilder<AuthResultEntity> builder)
     {
-        builder.ToTable("tbl_auth_result");
+        // builder.ToTable("view_auth_result");
+        builder.ToView("view_auth_result");
 
-        EntityMap.Configure(builder);
+        EntityNoUpdateMap.Configure(builder);
 
         builder.Property(e => e.PassResCateId)
             .HasColumnName("pass_res_cate_id")

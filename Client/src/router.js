@@ -36,6 +36,7 @@ import GroupPassRes from "./pages/group-pass-res";
 import UserPassRes from "./pages/user-pass-res";
 import PassResGroup from "./pages/pass-res-group";
 import PassResUser from "./pages/pass-res-user";
+import AuthResult from "./pages/auth-result";
 
 const Router = () => {
     return (
@@ -73,6 +74,7 @@ const Router = () => {
                     <Route path="/user-pass-res/:userId" element={<UserPassRes/>}/>
                     <Route path="/pass-res-user/:passResId" element={<PassResUser/>}/>
                     <Route path="/pass-res" element={<PassRes/>}/>
+                    <Route path="/auth-result" element={<AuthResult/>}/>
                     <Route path="/action/log" element={<ActionLog/>}/>
                 </Route>
 

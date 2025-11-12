@@ -22,13 +22,13 @@ public class UserAuthService
     {
     }
 
-    /// <summary>
-    /// 获取授权缓存列表
-    /// </summary>
-    public IList<AuthResult> GetAuthResultList()
-    {
-        return new List<AuthResult>();
-    }
+    // /// <summary>
+    // /// 获取授权缓存列表
+    // /// </summary>
+    // public IList<AuthResult> GetAuthResultList()
+    // {
+    //     return new List<AuthResult>();
+    // }
 
     /// <summary>
     /// 用户是否具有某个资源权限

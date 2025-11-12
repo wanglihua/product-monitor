@@ -1,14 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
-import AuthResultDetail from "./auth-result-detail";
+import {PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
 const AuthResult = () => {
 
-    const {post, showConfirm, showError, showSuccess} = useSiteContext();
+    const {post, showError} = useSiteContext();
 
     const [listParam, setListParam] = useState({
         nameQuery: "",
@@ -55,27 +54,12 @@ const AuthResult = () => {
         },
         {
             title: "",
-            dataIndex: "passResCateId",
-            width: "200px",
-        },
-        {
-            title: "",
             dataIndex: "passResCateName",
             width: "200px",
         },
         {
             title: "",
-            dataIndex: "passResId",
-            width: "200px",
-        },
-        {
-            title: "",
             dataIndex: "passResName",
-            width: "200px",
-        },
-        {
-            title: "",
-            dataIndex: "userId",
             width: "200px",
         },
         {
@@ -90,58 +74,17 @@ const AuthResult = () => {
         },
         {
             title: "",
-            dataIndex: "groupId",
-            width: "200px",
-        },
-        {
-            title: "",
             dataIndex: "groupName",
             width: "200px",
         },
         {
-            title: "创建时间",
+            title: "授权时间",
             dataIndex: "createTime",
             width: "150px",
             sorter: true,
         },
         {
-            title: "更新时间",
-            dataIndex: "updateTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "操作",
-            render: (text, record, index) => {
-                return (
-                    <Space>
-                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            const authResultId = record.id;
-                            authResultDetail.current.show(authResultId);
-                        }}>
-                            <EditOutlined/>编辑
-                        </Button>
-                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
-                                post("/api/auth-result/delete", {
-                                    id: record.id,
-                                }, function (response) {
-                                    const res = response.data;
-                                    if (res.success !== true) {
-                                        showError(res.message);
-                                        return;
-                                    }
-
-                                    showSuccess(res.message);
-                                    loadAuthResultList();
-                                });
-                            });
-                        }}>
-                            <DeleteOutlined/>删除
-                        </Button>
-                    </Space>
-                );
-            },
+            title: "",
         },
     ];
 
@@ -211,7 +154,6 @@ const AuthResult = () => {
                        }}
                 />
             </div>
-            <AuthResultDetail ref={authResultDetail} loadAuthResultList={loadAuthResultList}/>
         </div>
     );
 };

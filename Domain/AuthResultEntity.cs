@@ -5,7 +5,7 @@ namespace Domain;
 /// <summary>
 /// 
 /// </summary>
-public class AuthResultEntity : Entity
+public class AuthResultEntity : EntityNoUpdate
 {
     /// <summary>
     /// 

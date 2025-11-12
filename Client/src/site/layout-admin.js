@@ -309,6 +309,14 @@ const LayoutAdmin = () => {
                                             }
                                         },
                                         {
+                                            key: "auth-result",
+                                            icon: <i className="iconfont icon-pass-res-result" style={{color: "#1677ff"}}/>,
+                                            label: "授权总览",
+                                            onClick: () => {
+                                                navigate("/auth-result");
+                                            }
+                                        },
+                                        {
                                             key: "admin-user",
                                             icon: <i className="iconfont icon-admin-user" style={{color: "#1677ff"}}/>,
                                             label: "管理员",
