@@ -7,6 +7,7 @@ using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using Service;
 using Web.Models.AuthResult;
 
 namespace Web.Controllers;
@@ -17,10 +18,15 @@ public class AuthResultController : Controller
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
     private readonly Db db;
+    private readonly UserAuthService userAuthService;
 
-    public AuthResultController(Db db)
+    public AuthResultController(
+        Db db,
+        UserAuthService userAuthService
+    )
     {
         this.db = db;
+        this.userAuthService = userAuthService;
     }
 
     [HttpPost]
@@ -37,25 +43,25 @@ public class AuthResultController : Controller
             string loginNameQuery = param.LoginNameQuery.Trim();
             query = query.Where(e => e.LoginName.Contains(loginNameQuery));
         }
-        
+
         if (string.IsNullOrWhiteSpace(param.UserNameQuery) == false)
         {
             string userNameQuery = param.UserNameQuery.Trim();
             query = query.Where(e => e.UserName.Contains(userNameQuery));
         }
-        
+
         if (string.IsNullOrWhiteSpace(param.PassResCateNameQuery) == false)
         {
             string passResCateNameQuery = param.PassResCateNameQuery.Trim();
             query = query.Where(e => e.PassResCateName.Contains(passResCateNameQuery));
         }
-        
+
         if (string.IsNullOrWhiteSpace(param.PassResNameQuery) == false)
         {
             string passResNameQuery = param.PassResNameQuery.Trim();
             query = query.Where(e => e.PassResName.Contains(passResNameQuery));
         }
-        
+
         if (string.IsNullOrWhiteSpace(param.GroupNameQuery) == false)
         {
             string groupNameQuery = param.GroupNameQuery.Trim();
@@ -111,6 +117,19 @@ public class AuthResultController : Controller
                 ["authResultList"] = authResultItemList,
                 ["authResultCount"] = authResultCount,
             },
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/auth-result/refresh/auth/cache")]
+    [Transactional(false)]
+    public IActionResult RefreshAuthCache()
+    {
+        userAuthService.BuildAuthCache();
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "更新授权缓存成功!",
         });
     }
 }

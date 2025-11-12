@@ -22,13 +22,15 @@ public class PassResController : Controller
     private readonly PassResCateDataInitService passResCateDataInitService;
     private readonly PassResDataInitService passResDataInitService;
     private readonly ActionLogService actionLogService;
+    private readonly UserAuthService userAuthService;
 
     public PassResController(
         Db db,
         UserLoginService userLoginService,
         PassResCateDataInitService passResCateDataInitService,
         PassResDataInitService passResDataInitService,
-        ActionLogService actionLogService
+        ActionLogService actionLogService,
+        UserAuthService userAuthService
     )
     {
         this.db = db;
@@ -36,6 +38,7 @@ public class PassResController : Controller
         this.passResCateDataInitService = passResCateDataInitService;
         this.passResDataInitService = passResDataInitService;
         this.actionLogService = actionLogService;
+        this.userAuthService = userAuthService;
     }
 
     [HttpPost]
@@ -136,6 +139,19 @@ public class PassResController : Controller
                 ["passResCount"] = passResCount,
                 ["passResCateList"] = passResCateListOptionList,
             },
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/pass-res/refresh/auth/cache")]
+    [Transactional(false)]
+    public IActionResult RefreshAuthCache()
+    {
+        userAuthService.BuildAuthCache();
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "更新授权缓存成功!",
         });
     }
 }
