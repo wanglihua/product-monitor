@@ -41,8 +41,6 @@ const AuthResult = () => {
         });
     };
 
-    const authResultDetail = useRef();
-
     const authResultListColumns = [
         {
             title: "序号",
@@ -53,35 +51,34 @@ const AuthResult = () => {
             },
         },
         {
-            title: "",
+            title: "资源类别名称",
             dataIndex: "passResCateName",
-            width: "200px",
+            width: "130px",
         },
         {
-            title: "",
+            title: "资源名称",
             dataIndex: "passResName",
-            width: "200px",
+            width: "120px",
         },
         {
-            title: "",
+            title: "登录名",
             dataIndex: "loginName",
-            width: "200px",
+            width: "120px",
         },
         {
-            title: "",
+            title: "用户名",
             dataIndex: "userName",
-            width: "200px",
+            width: "120px",
         },
         {
-            title: "",
+            title: "群组名称",
             dataIndex: "groupName",
-            width: "200px",
+            width: "150px",
         },
         {
             title: "授权时间",
             dataIndex: "createTime",
             width: "150px",
-            sorter: true,
         },
         {
             title: "",
@@ -118,15 +115,6 @@ const AuthResult = () => {
                         }}
                     >
                         查询
-                    </Button>
-                    <Button
-                        color="default"
-                        icon={<PlusCircleOutlined style={{color: "green"}}/>}
-                        onClick={(e) => {
-                            authResultDetail.current.show(0);
-                        }}
-                    >
-                        添加
                     </Button>
                 </Space>
             </div>
