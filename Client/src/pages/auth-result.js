@@ -97,8 +97,9 @@ const AuthResult = () => {
 
     return (
         <div>
-            <Title title="" menuKey="auth-result" breadcrumb={[
-                {title: ""},
+            <Title title="授权总览" parentMenuKeys={["system-manage"]} menuKey="auth-result" breadcrumb={[
+                {title: "系统管理"},
+                {title: "授权总览"},
             ]}/>
             <div>
                 <Space>
