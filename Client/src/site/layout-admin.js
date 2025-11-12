@@ -78,10 +78,10 @@ const LayoutAdmin = () => {
     const [menuItems, setMenuItems] = useState([])
 
     useEffect(() => {
-        post("/home/nav/menu/auth/data", {}, function (response) {
+        post("/api/home/nav/menu/auth/data", {}, function (response) {
             const res = response.data;
             if (res.success !== true) {
-                showError(res.message);
+                // showError(res.message);
                 return;
             }
 
@@ -367,6 +367,8 @@ const LayoutAdmin = () => {
                     children: systemManageChildren
                 });
             }
+
+            setMenuItems(navMenuList);
         });
     }, [menuOpenKeys, menuActiveKey]);
 
@@ -440,196 +442,7 @@ const LayoutAdmin = () => {
                             defaultOpenKeys={menuOpenKeys}
                             defaultSelectedKeys={menuActiveKey}
                             selectedKeys={[menuActiveKey]}
-                            items={[
-                                {
-                                    key: "data-monitor",
-                                    icon: <i className="iconfont icon-data-monitor" style={{color: "#1677ff"}}/>,
-                                    label: "数据监测",
-                                    children: [
-                                        {
-                                            key: "product-install-monitor",
-                                            icon: <i className="iconfont icon-product-install-monitor" style={{color: "#1677ff"}}/>,
-                                            label: "安装监测",
-                                            onClick: () => {
-                                                navigate("/product-install-monitor");
-                                            }
-                                        },
-                                        {
-                                            key: "product-url-monitor",
-                                            icon: <i className="iconfont icon-product-url-monitor" style={{color: "#1677ff"}}/>,
-                                            label: "网站监测",
-                                            onClick: () => {
-                                                navigate("/product-url-monitor");
-                                            }
-                                        },
-                                        {
-                                            key: "exception-monitor",
-                                            icon: <i className="iconfont icon-exception-monitor" style={{color: "#1677ff"}}/>,
-                                            label: "异常监测",
-                                            onClick: () => {
-                                                navigate("/exception-monitor");
-                                            }
-                                        },
-                                    ],
-                                },
-                                {
-                                    key: "product-service",
-                                    icon: <i className="iconfont icon-product-service" style={{color: "#1677ff"}}/>,
-                                    label: "产品服务",
-                                    children: [
-                                        {
-                                            key: "product-install",
-                                            icon: <i className="iconfont icon-product-install" style={{color: "#1677ff"}}/>,
-                                            label: "产品安装",
-                                            onClick: () => {
-                                                navigate("/product-install");
-                                            }
-                                        },
-                                        {
-                                            key: "product-update",
-                                            icon: <i className="iconfont icon-product-update" style={{color: "#1677ff"}}/>,
-                                            label: "产品更新",
-                                            onClick: () => {
-                                                navigate("/product-update");
-                                            }
-                                        },
-                                        {
-                                            key: "product-sale-service",
-                                            icon: <i className="iconfont icon-product-sale-service" style={{color: "#1677ff"}}/>,
-                                            label: "售后维护",
-                                            onClick: () => {
-                                                navigate("/product-service");
-                                            }
-                                        },
-                                        {
-                                            key: "product-special-service",
-                                            icon: <i className="iconfont icon-product-special-service" style={{color: "#1677ff"}}/>,
-                                            label: "特殊售后",
-                                            onClick: () => {
-                                                navigate("/product-special-service");
-                                            }
-                                        },
-                                    ],
-                                },
-                                {
-                                    key: "project-manage",
-                                    icon: <i className="iconfont icon-project-manage" style={{color: "#1677ff"}}/>,
-                                    label: "项目管理",
-                                    children: [
-                                        {
-                                            key: "product-sale",
-                                            icon: <i className="iconfont icon-product-sale" style={{color: "#1677ff"}}/>,
-                                            label: "销售目录",
-                                            onClick: () => {
-                                                navigate("/product-sale");
-                                            }
-                                        },
-                                        {
-                                            key: "product-rent",
-                                            icon: <i className="iconfont icon-product-rent" style={{color: "#1677ff"}}/>,
-                                            label: "租赁目录",
-                                            onClick: () => {
-                                                navigate("/product-rent");
-                                            }
-                                        },
-                                        {
-                                            key: "product-eval",
-                                            icon: <i className="iconfont icon-product-eval" style={{color: "#1677ff"}}/>,
-                                            label: "试用目录",
-                                            onClick: () => {
-                                                navigate("/product-eval");
-                                            }
-                                        },
-                                    ],
-                                },
-                                {
-                                    key: "basic-setting",
-                                    icon: <i className="iconfont icon-basic-setting" style={{color: "#1677ff"}}/>,
-                                    label: "基础设置",
-                                    children: [
-                                        {
-                                            key: "product",
-                                            icon: <i className="iconfont icon-product" style={{color: "#1677ff"}}/>,
-                                            label: "产品目录",
-                                            onClick: () => {
-                                                navigate("/product");
-                                            }
-                                        },
-                                        {
-                                            key: "college",
-                                            icon: <i className="iconfont icon-college" style={{color: "#1677ff"}}/>,
-                                            label: "院校目录",
-                                            onClick: () => {
-                                                navigate("/college");
-                                            }
-                                        },
-                                        {
-                                            key: "product-url",
-                                            icon: <i className="iconfont icon-product-url" style={{color: "#1677ff"}}/>,
-                                            label: "网址管理",
-                                            onClick: () => {
-                                                navigate("/product-url");
-                                            }
-                                        },
-
-                                    ],
-                                },
-                                {
-                                    key: "system-manage",
-                                    icon: <i className="iconfont icon-system-manage" style={{color: "#1677ff"}}/>,
-                                    label: "系统管理",
-                                    children: [
-                                        {
-                                            key: "user",
-                                            icon: <i className="iconfont icon-user" style={{color: "#1677ff"}}/>,
-                                            label: "用户",
-                                            onClick: () => {
-                                                navigate("/user");
-                                            }
-                                        },
-                                        {
-                                            key: "group",
-                                            icon: <i className="iconfont icon-group" style={{color: "#1677ff"}}/>,
-                                            label: "群组",
-                                            onClick: () => {
-                                                navigate("/group");
-                                            }
-                                        },
-                                        {
-                                            key: "pass-res",
-                                            icon: <i className="iconfont icon-pass-res" style={{color: "#1677ff"}}/>,
-                                            label: "授权资源",
-                                            onClick: () => {
-                                                navigate("/pass-res");
-                                            }
-                                        },
-                                        {
-                                            key: "auth-result",
-                                            icon: <i className="iconfont icon-pass-res-result" style={{color: "#1677ff"}}/>,
-                                            label: "授权总览",
-                                            onClick: () => {
-                                                navigate("/auth-result");
-                                            }
-                                        },
-                                        {
-                                            key: "admin-user",
-                                            icon: <i className="iconfont icon-admin-user" style={{color: "#1677ff"}}/>,
-                                            label: "管理员",
-                                            onClick: () => {
-                                                navigate("/admin-user");
-                                            }
-                                        },
-                                        {
-                                            key: "action-log",
-                                            icon: <i className="iconfont icon-action-log" style={{color: "#1677ff"}}/>,
-                                            label: "操作日志",
-                                            onClick: () => {
-                                                navigate("/action/log");
-                                            }
-                                        },
-                                    ],
-                                },
-                            ]}
+                            items={menuItems}
                         >
                         </Menu>
 

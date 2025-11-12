@@ -13,8 +13,8 @@ const AuthResult = () => {
         nameQuery: "",
         currentPage: 1,
         pageSize: 15,
-        sortField: "id",
-        sortOrder: "descend",
+        sortField: "",
+        sortOrder: "",
         current_millis: Date.now(),
     });
 

@@ -70,27 +70,33 @@ public class AuthResultController : Controller
 
         int authResultCount = query.Count();
 
-        // 排序字段
-        Expression<Func<AuthResultEntity, object>> sortField = e => e.Id;
+
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
+            // 排序字段
+            Expression<Func<AuthResultEntity, object>> sortField = e => e.Id;
+
             string sortFieldParam = param.SortField;
 
             if (string.Compare(sortFieldParam, nameof(AuthResultListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.CreateTime;
             }
-        }
 
-        // 排序顺序
-        string sortOrder = param.SortOrder;
-        if (sortOrder == SortOrder.Ascend)
-        {
-            query = query.OrderBy(sortField);
+            // 排序顺序
+            string sortOrder = param.SortOrder;
+            if (sortOrder == SortOrder.Ascend)
+            {
+                query = query.OrderBy(sortField);
+            }
+            else
+            {
+                query = query.OrderByDescending(sortField);
+            }
         }
         else
         {
-            query = query.OrderByDescending(sortField);
+            query = query.OrderBy(e => e.PassResCateId).ThenBy(e => e.PassResId);
         }
 
         var authResultList = query

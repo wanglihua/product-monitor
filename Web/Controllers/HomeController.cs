@@ -29,8 +29,8 @@ public class HomeController : Controller
         this.userAuthService = userAuthService;
     }
 
-    [HttpGet]
-    [Route("/home/data")]
+    [HttpPost]
+    [Route("/api/home/data")]
     [Transactional(false)]
     public IActionResult HomeData()
     {
@@ -40,8 +40,8 @@ public class HomeController : Controller
         });
     }
 
-    [HttpGet]
-    [Route("/home/nav/menu/auth/data")]
+    [HttpPost]
+    [Route("/api/home/nav/menu/auth/data")]
     [Transactional(false)]
     public IActionResult NavMenuAuthData()
     {
