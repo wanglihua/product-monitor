@@ -56,18 +56,23 @@ public class UserAuthService
         return userPassResList;
     }
 
-    // /// <summary>
-    // /// 获取授权缓存列表
-    // /// </summary>
-    // public IList<AuthResult> GetAuthResultList()
-    // {
-    //     return new List<AuthResult>();
-    // }
+    /// <summary>
+    /// 获取授权缓存列表
+    /// </summary>
+    public IList<UserPassRes> GetAuthResultList()
+    {
+        if (memoryCache.TryGetValue(cacheKey, out IList<UserPassRes>? userPassResList) == false)
+        {
+            userPassResList = BuildAuthCache();
+        }
+
+        return userPassResList!;
+    }
 
     /// <summary>
     /// 用户是否具有某个资源权限
     /// </summary>
-    public bool UserHasPassRes(int userId, int passResId)
+    public bool UserHasPassRes(long userId, long passResId)
     {
         if (memoryCache.TryGetValue(cacheKey, out IList<UserPassRes>? userPassResList) == false)
         {
@@ -76,6 +81,29 @@ public class UserAuthService
 
         var userPassRes = userPassResList!
             .Where(e => e.UserId == userId && e.PassResId == passResId)
+            .Take(1)
+            .SingleOrDefault();
+
+        return userPassRes != null;
+    }
+
+    /// <summary>
+    /// 用户是否具有某个资源权限列表中某个权限
+    /// </summary>
+    public bool UserHasOneOfPassRes(long userId, IList<long> passResIdList)
+    {
+        if (passResIdList == null || passResIdList.Count == 0)
+        {
+            return false;
+        }
+
+        if (memoryCache.TryGetValue(cacheKey, out IList<UserPassRes>? userPassResList) == false)
+        {
+            userPassResList = BuildAuthCache();
+        }
+
+        var userPassRes = userPassResList!
+            .Where(e => e.UserId == userId && passResIdList.Contains(e.PassResId))
             .Take(1)
             .SingleOrDefault();
 
