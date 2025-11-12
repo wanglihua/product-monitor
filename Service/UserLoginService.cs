@@ -21,13 +21,15 @@ public class UserLoginService
     private readonly WebSessionService webSessionService;
     private readonly PasswordService passwordService;
     private readonly ActionLogService actionLogService;
+    private readonly UserAuthService userAuthService;
 
     public UserLoginService(
         Db db,
         IMemoryCache memoryCache,
         WebSessionService webSessionService,
         PasswordService passwordService,
-        ActionLogService actionLogService
+        ActionLogService actionLogService,
+        UserAuthService userAuthService
     )
     {
         this.db = db;
@@ -35,6 +37,7 @@ public class UserLoginService
         this.webSessionService = webSessionService;
         this.passwordService = passwordService;
         this.actionLogService = actionLogService;
+        this.userAuthService = userAuthService;
     }
 
     public string GetUserLoginUrl()
@@ -204,6 +207,9 @@ public class UserLoginService
         db.Update<UserEntity>(user);
 
         db.SaveChanges();
+
+        // 登录时更新授权缓存
+        userAuthService.BuildAuthCache();
 
         return user.Id;
     }
