@@ -359,6 +359,14 @@ const LayoutAdmin = () => {
                 });
             }
 
+            if (data.systemManage === true) {
+                navMenuList.push({
+                    key: "system-manage",
+                    icon: <i className="iconfont icon-system-manage" style={{color: "#1677ff"}}/>,
+                    label: "系统管理",
+                    children: systemManageChildren
+                });
+            }
         });
     }, [menuOpenKeys, menuActiveKey]);
 

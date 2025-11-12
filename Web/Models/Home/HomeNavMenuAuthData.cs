@@ -5,6 +5,12 @@ namespace Web.Models.Home;
 public class HomeNavMenuAuthData
 {
     /// <summary>
+    /// 是不是管理员
+    /// </summary>
+    [JsonProperty("admin")]
+    public bool Admin { get; set; }
+
+    /// <summary>
     /// 是不是这个目录要显示
     /// </summary>
     [JsonProperty("dataMonitor")]
@@ -18,7 +24,7 @@ public class HomeNavMenuAuthData
 
     [JsonProperty("exceptionMonitor")]
     public bool ExceptionMonitor { get; set; }
-    
+
     /// <summary>
     /// 是不是这个目录要显示
     /// </summary>
@@ -57,7 +63,7 @@ public class HomeNavMenuAuthData
 
     [JsonProperty("projectAnalyze")]
     public bool ProjectAnalyze { get; set; }
-    
+
     /// <summary>
     /// 是不是这个目录要显示
     /// </summary>
