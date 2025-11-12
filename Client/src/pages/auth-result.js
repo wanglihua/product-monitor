@@ -89,7 +89,11 @@ const AuthResult = () => {
         loadAuthResultList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const passResCateNameQueryRef = useRef();
+    const passResNameQueryRef = useRef();
+    const loginNameQueryRef = useRef();
+    const userNameQueryRef = useRef();
+    const groupNameQueryRef = useRef();
 
     return (
         <div>
@@ -98,17 +102,29 @@ const AuthResult = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={passResCateNameQueryRef} addonBefore="资源类别" placeholder="资源类别查询" style={{width: 200}}/>
+                    <Input ref={passResNameQueryRef} addonBefore="资源名称" placeholder="资源名称查询" style={{width: 200}}/>
+                    <Input ref={loginNameQueryRef} addonBefore="登录名" placeholder="登录名查询" style={{width: 200}}/>
+                    <Input ref={userNameQueryRef} addonBefore="用户名" placeholder="用户名查询" style={{width: 200}}/>
+                    <Input ref={groupNameQueryRef} addonBefore="群组名称" placeholder="群组名称查询" style={{width: 200}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const passResCateNameQuery = passResCateNameQueryRef.current.input.value;
+                            const passResNameQuery = passResNameQueryRef.current.input.value;
+                            const loginNameQuery = loginNameQueryRef.current.input.value;
+                            const userNameQuery = userNameQueryRef.current.input.value;
+                            const groupNameQuery = groupNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    passResCateNameQuery: passResCateNameQuery,
+                                    passResNameQuery: passResNameQuery,
+                                    loginNameQuery: loginNameQuery,
+                                    userNameQuery: userNameQuery,
+                                    groupNameQuery: groupNameQuery,
                                     current_millis: Date.now(),
                                 };
                             });
