@@ -15,6 +15,7 @@ public class UserLoginService
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
     private static readonly TimeSpan LoginTimeout = TimeSpan.FromMinutes(60);
+    private static readonly TimeSpan CacheTimeout = TimeSpan.FromSeconds(30); // 只是防止频繁调用而已，30秒钟够了
 
     private readonly Db db;
     private readonly IMemoryCache memoryCache;
@@ -92,7 +93,7 @@ public class UserLoginService
             return 0;
         }
 
-        memoryCache.Set(cacheKey, userId, TimeSpan.FromSeconds(20)); // 只是防止频繁调用而已，20秒钟够了
+        memoryCache.Set(cacheKey, userId, CacheTimeout);
 
         return userId;
     }
@@ -119,7 +120,7 @@ public class UserLoginService
 
         isAdmin = admin != null;
 
-        memoryCache.Set(cacheKey, isAdmin, TimeSpan.FromSeconds(20)); // 只是防止频繁调用而已，20秒钟够了
+        memoryCache.Set(cacheKey, isAdmin, CacheTimeout);
 
         return isAdmin;
     }
@@ -211,18 +212,38 @@ public class UserLoginService
         // 登录时更新授权缓存
         userAuthService.BuildAuthCache();
 
-        return user.Id;
+        long userId = user.Id;
+
+        var admin = db.Set<AdminUserEntity>()
+            .Where(e => e.UserId == userId)
+            .OrderBy(e => e.UserId)
+            .Take(1)
+            .SingleOrDefault();
+
+        bool isAdmin = admin != null;
+
+        // 设置登录 id 缓存 和 是否管理员缓存. 不是必须, 但双重保险
+        memoryCache.Set(GetLoginUserIdCacheKey(sessionId), userId, CacheTimeout);
+        memoryCache.Set(GetIsAdminCacheKey(userId), isAdmin, CacheTimeout);
+
+        return userId;
     }
 
     public void Logout()
     {
-        string sessionId = webSessionService.SessionId;
-        string loginUserIdCacheKey = GetLoginUserIdCacheKey(sessionId);
-        memoryCache.Remove(loginUserIdCacheKey);
-
         long loginUserId = GetLoginUserId();
         string isAdminCacheKey = GetIsAdminCacheKey(loginUserId);
+
+        // 感觉这个比下面的 Remove() 更管用
+        memoryCache.Set(isAdminCacheKey, false, TimeSpan.FromMilliseconds(1));
         memoryCache.Remove(isAdminCacheKey);
+
+        string sessionId = webSessionService.SessionId;
+        string loginUserIdCacheKey = GetLoginUserIdCacheKey(sessionId);
+
+        // 感觉这个比下面的 Remove() 更管用
+        memoryCache.Set(loginUserIdCacheKey, 0, TimeSpan.FromMilliseconds(1));
+        memoryCache.Remove(loginUserIdCacheKey);
 
         // 会有级联删除关联 session data
         db.Set<WebSessionEntity>()

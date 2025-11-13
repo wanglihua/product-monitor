@@ -17,14 +17,20 @@ const Login = () => {
     const {token} = theme.useToken();
     const {post, showSuccess, setUser, showMask, hideMask} = useSiteContext();
 
-    const [respResult, setRespResult] = useState({success: true, message: ""});
+    const [respResult, setRespResult] = useState({
+        success: true,
+        message: "",
+        showCaptcha: false,
+    });
 
     const form = useRef();
     const captcha = useRef();
 
     useEffect(() => {
         setTimeout(() => {
-            captcha.current.refresh();
+            if (captcha.current) {
+                captcha.current.refresh();
+            }
         }, 1000);
     }, []);
 
@@ -51,28 +57,30 @@ const Login = () => {
                 requiredMark={false}
                 onFinish={(values) => {
                     let captchaValue = "";
-                    // 否则 undefined 的值可能会被提交上去
-                    if (isNotEmptyStr(values.captcha)) {
+                    // 也能防止 undefined 的值可能会被提交上去
+                    if (isNotEmptyStr(values.captcha) && respResult.showCaptcha === true) {
                         captchaValue = values.captcha;
                     }
 
-                    // setMask(true);
                     showMask();
                     post("/api/login", {
                         "loginName": values.loginName,
                         "password": values.password,
                         "captcha": captchaValue,
                     }, function (response) {
-                        // setMask(false);
                         hideMask();
                         const res = response.data;
                         if (res.success === false) {
                             setRespResult({
                                 success: false,
                                 message: res.message,
+                                showCaptcha: res.showCaptcha,
                             });
 
-                            captcha.current.refresh();
+                            if (captcha.current) {
+                                captcha.current.refresh();
+                            }
+
                             form.current.setFieldsValue({
                                 captcha: "",
                             });
@@ -126,40 +134,42 @@ const Login = () => {
                         allowClear
                     />
                 </Form.Item>
-                <Form.Item
-                    label="验证码"
-                    name="captcha"
-                    extra={
-                        <div style={{margin: "10px 0 0 10px"}}>
-                            <Space>
-                                <Captcha ref={captcha}/>
-                                &nbsp;
-                                <span
-                                    className='link-btn'
-                                    onClick={() => {
-                                        captcha.current.refresh();
-                                    }}
-                                >
+
+                {respResult.showCaptcha === true && (
+                    <Form.Item
+                        label="验证码"
+                        name="captcha"
+                        extra={
+                            <div style={{margin: "10px 0 0 10px"}}>
+                                <Space>
+                                    <Captcha ref={captcha}/>
+                                    &nbsp;
+                                    <span
+                                        className='link-btn'
+                                        onClick={() => {
+                                            captcha.current.refresh();
+                                        }}
+                                    >
                                     看不清, 换一个
                                 </span>
-                            </Space>
-                        </div>
-                    }
-                    rules={[
-                        {
-                            required: true,
-                            message: '请输入验证码!',
-                        },
-                    ]}
-                >
-                    <Input
-                        prefix={<SafetyOutlined style={{color: "#1677ff"}}/>}
-                        placeholder="验证码"
-                        maxLength={4}
-                        allowClear
-                    />
-                </Form.Item>
-
+                                </Space>
+                            </div>
+                        }
+                        rules={[
+                            {
+                                required: true,
+                                message: '请输入验证码!',
+                            },
+                        ]}
+                    >
+                        <Input
+                            prefix={<SafetyOutlined style={{color: "#1677ff"}}/>}
+                            placeholder="验证码"
+                            maxLength={4}
+                            allowClear
+                        />
+                    </Form.Item>
+                )}
                 <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "center"}}>
                     <Space>
                         <Button type="primary" size="large" htmlType="submit" style={{width: "180px"}}>

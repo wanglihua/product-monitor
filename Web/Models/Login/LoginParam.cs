@@ -36,9 +36,17 @@ public class LoginParamValidator : AbstractValidator<LoginParam>
         RuleFor(e => e.Password).NotEmpty().WithMessage("密码不能为空！");
         RuleFor(e => e.Password).MaximumLength(100).WithMessage("密码长度不能超过100！");
 
-        RuleFor(e => e.Captcha).NotNull().WithMessage("验证码不能为空！");
-        RuleFor(e => e.Captcha).NotEmpty().WithMessage("验证码不能为空！");
-        RuleFor(e => e.Captcha).MinimumLength(4).WithMessage("验证码长度应为4！");
-        RuleFor(e => e.Captcha).MaximumLength(4).WithMessage("验证码长度应为4！");
+        RuleFor(e => e.Captcha).Must(p => {
+            if (string.IsNullOrWhiteSpace(p) == false)
+            {
+                string captcha = p.Trim();
+                if (captcha.Length != 4)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }).WithMessage("验证码长度应为4！");
     }
 }
