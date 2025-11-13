@@ -20,22 +20,25 @@ public class LoginController : Controller
     private readonly UserLoginService userLoginService;
     private readonly CaptchaService captchaService;
     private readonly UserLoginRateLimitService userLoginRateLimitService;
+    private readonly UserLoginFailCountService userLoginFailCountService;
 
     public LoginController(
         Db db,
         UserLoginService userLoginService,
         CaptchaService captchaService,
-        UserLoginRateLimitService userLoginRateLimitService)
+        UserLoginRateLimitService userLoginRateLimitService,
+        UserLoginFailCountService userLoginFailCountService)
     {
         this.db = db;
         this.userLoginService = userLoginService;
         this.captchaService = captchaService;
         this.userLoginRateLimitService = userLoginRateLimitService;
+        this.userLoginFailCountService = userLoginFailCountService;
     }
 
     [HttpPost]
     [Route("/api/login")]
-    [Transactional(true)]
+    [Transactional(false)]
     public IActionResult Login([FromBody] LoginParam param)
     {
         ValidationUtil.Validate<LoginParamValidator, LoginParam>(param);
@@ -44,32 +47,85 @@ public class LoginController : Controller
         string password = param.Password.Trim();
         string captcha = param.Captcha.Trim();
 
-        // 验证码检查
-        if (captchaService.CheckInputCode(captcha) == false)
+        bool shouldShowCaptcha = userLoginFailCountService.ShouldShowCaptcha(loginName);
+        if (shouldShowCaptcha && string.IsNullOrWhiteSpace(captcha) == true)
         {
+            // throw new ValidationException("验证码不能为空！");
+
+            return Json(new Dictionary<string, object> {
+                ["success"] = false,
+                ["message"] = "验证码不能为空！",
+                ["showCaptcha"] = true,
+            });
+        }
+
+        // 验证码检查
+        if ((shouldShowCaptcha || string.IsNullOrWhiteSpace(captcha) == false)
+            && captchaService.CheckInputCode(captcha) == false)
+        {
+            // 如果发现验证码不对,应该马上把原来的验证码设为无效
             captchaService.MakeCurrentExpire();
-            throw new ValidationException("请输入正确的验证码！");
+
+            // throw new ValidationException("请输入正确的验证码！");
+
+            return Json(new Dictionary<string, object> {
+                ["success"] = false,
+                ["message"] = "请输入正确的验证码！",
+                ["showCaptcha"] = true,
+            });
         }
 
         userLoginRateLimitService.CheckRateLimit(loginName);
 
-        long loginedUserId = userLoginService.Login(loginName, password, Request);
+        long loginedUserId = 0;
+
+        try
+        {
+            Transactional.Wrap(db, () => {
+                // 就这个部分放在数据库事务里面了
+                // 这样前后，直接返回json不是抛出异常也不会影响事务
+                loginedUserId = userLoginService.Login(loginName, password, Request);
+            });
+        }
+        catch (Exception exp)
+        {
+            log.Error(exp);
+
+            return Json(new Dictionary<string, object>() {
+                ["success"] = false,
+                ["message"] = exp.Message,
+                ["showCaptcha"] = shouldShowCaptcha,
+            });
+        }
+
         if (loginedUserId <= 0)
         {
+            // 如果发现用户名或者密码不对,应该马上把原来的验证码设为无效
             captchaService.MakeCurrentExpire();
-            throw new ValidationException("登录名不存在或密码错误！");
+
+            // 记录一次登录失败
+            bool showCaptcha = userLoginFailCountService.Add(loginName);
+
+            // throw new ValidationException("登录名不存在或密码错误！");
+
+            return Json(new Dictionary<string, object>() {
+                ["success"] = false,
+                ["message"] = "登录名不存在或密码错误！",
+                ["showCaptcha"] = showCaptcha,
+            });
         }
 
         var user = db.Find<UserEntity>(loginedUserId);
         string userName = user?.UserName ?? string.Empty;
 
-        return Json(new JsonResultData {
-            Success = true,
-            Message = "登录成功！",
-            Data = new Dictionary<string, object> {
-                { "userId", loginedUserId },
-                { "loginName", loginName },
-                { "userName", userName },
+        return Json(new Dictionary<string, object>() {
+            ["success"] = true,
+            ["message"] = "登录成功！",
+            ["showCaptcha"] = false,
+            ["data"] = new Dictionary<string, object> {
+                ["userId"] = loginedUserId,
+                ["loginName"] = loginName,
+                ["userName"] = userName,
             },
         });
     }
