@@ -7,7 +7,7 @@ import Title from "../site/title";
 const UserPassword = () => {
 
     const {token} = theme.useToken();
-    const {post, showConfirm, showError, showSuccess} = useSiteContext();
+    const {post, showError, showSuccess} = useSiteContext();
 
     const form = useRef();
 
