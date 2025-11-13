@@ -33,6 +33,19 @@ const UserPassword = () => {
                         size='middle'
                         requiredMark={false}
                         onFinish={(values) => {
+                            post("/api/user/password/save", {
+                                oldPassword: values.oldPassword,
+                                newPassword: values.newPassword,
+                                newPasswordAgain: values.newPasswordAgain,
+                            }, function (response) {
+                                const res = response.data;
+                                if (res.success === false) {
+                                    showError(res.message);
+                                    return;
+                                }
+
+                                showSuccess(res.message);
+                            });
                         }}
                     >
                         <Descriptions

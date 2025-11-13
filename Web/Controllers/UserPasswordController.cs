@@ -60,7 +60,7 @@ public class UserPasswordController : Controller
         }
 
         string salt = passwordService.GenerateSalt();
-        string password = passwordService.Encrypt(oldPassword, salt);
+        string password = passwordService.Encrypt(newPassword, salt);
 
         user.Password = password;
         user.Salt = salt;
