@@ -281,6 +281,7 @@ public class UserController : Controller
                 throw new ValidationException("只有管理员才能重新设置管理员密码!");
             }
 
+            // 每次修改密码都重新生成 salt
             string salt = passwordService.GenerateSalt();
 
             user.Salt = salt;
