@@ -37,6 +37,7 @@ import UserPassRes from "./pages/user-pass-res";
 import PassResGroup from "./pages/pass-res-group";
 import PassResUser from "./pages/pass-res-user";
 import AuthResult from "./pages/auth-result";
+import UserPassword from "./pages/user-password";
 
 const Router = () => {
     return (
@@ -46,6 +47,7 @@ const Router = () => {
                 <Route element={<LayoutAdmin/>}>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/test" element={<Test/>}/>
+                    <Route path="/user-password" element={<UserPassword/>}/>
                     <Route path="/product" element={<Product/>}/>
                     <Route path="/product-version/:productId" element={<ProductVersion/>}/>
                     <Route path="/college" element={<College/>}/>

@@ -5,9 +5,10 @@ import {Outlet, useNavigate} from "react-router";
 
 import {
     HomeOutlined,
+    KeyOutlined,
+    LogoutOutlined,
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-    PoweroffOutlined,
     UserOutlined,
 } from '@ant-design/icons';
 
@@ -389,7 +390,8 @@ const LayoutAdmin = () => {
                     <span style={{cursor: 'pointer'}}>
                         <Dropdown placement="bottomRight" menu={{
                             items: [
-                                {key: 'logout', label: (<><PoweroffOutlined/>&nbsp;<span>退出登录</span></>)},
+                                {key: 'user-password', label: (<><KeyOutlined/>&nbsp;<span>修改密码</span></>)},
+                                {key: 'logout', label: (<><LogoutOutlined/>&nbsp;<span>退出登录</span></>)},
                             ],
                             onClick: (e) => {
                                 if (e.key === "logout") {
@@ -407,6 +409,10 @@ const LayoutAdmin = () => {
 
                                         navigate("/login");
                                     });
+                                }
+
+                                if (e.key === "user-password") {
+                                    navigate("/user-password");
                                 }
                             },
                         }}>
