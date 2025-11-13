@@ -1,14 +1,13 @@
-import axios from "axios";
-import {Alert, Button, Checkbox, Form, Input, Space, theme} from 'antd';
-import {useRef, useState} from "react";
+import {Alert, Button, Form, Input, Space, theme} from 'antd';
+import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router";
+import {LoginOutlined} from '@ant-design/icons';
 import {getTitle} from "../core/config";
 import {isNotEmptyStr} from '../core/empty';
 import Captcha from './captcha';
 import useSiteContext from './site-context';
 
 import {LockOutlined, SafetyOutlined, UserOutlined} from "@ant-design/icons"
-import {useEffect} from "react";
 
 const Login = () => {
     document.title = getTitle("登录");
@@ -173,9 +172,7 @@ const Login = () => {
                 <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "center"}}>
                     <Space>
                         <Button type="primary" size="large" htmlType="submit" style={{width: "180px"}}>
-                            <i className="iconfont icon-login"/>
-                            &nbsp;
-                            登录
+                            <LoginOutlined />&nbsp;登录
                         </Button>
                     </Space>
                 </Form.Item>
