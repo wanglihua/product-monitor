@@ -40,12 +40,12 @@ public class ProductInstallListItem
     [JsonProperty("description")]
     public string Description { get; set; } = "";
 
+    [JsonProperty("userName")]
+    public string UserName { get; set; } = "";
+
     [JsonProperty("createTime")]
     public string CreateTime { get; set; } = "";
 
     [JsonProperty("updateTime")]
     public string UpdateTime { get; set; } = "";
-
-    [JsonProperty("userName")]
-    public string UserName { get; set; } = "";
 }

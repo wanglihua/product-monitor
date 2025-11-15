@@ -320,4 +320,14 @@ public class ProductInstallController : Controller
             Message = "删除成功！",
         });
     }
+
+    [HttpPost]
+    [Route("/api/product-install/export")]
+    [Transactional(false)]
+    public IActionResult Export([FromBody] ProductInstallListParam param)
+    {
+        ValidationUtil.Validate<ProductInstallListParamValidator, ProductInstallListParam>(param);
+
+        return File(new byte[] { 1 }, ContentType.Xlsx, "file.xlsx");
+    }
 }
