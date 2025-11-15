@@ -102,6 +102,15 @@ public class AuthResultController : Controller
         var authResultList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.Id,
+                PassResCateName = e.PassResCateName,
+                PassResName = e.PassResName,
+                LoginName = e.LoginName,
+                UserName = e.UserName,
+                GroupName = e.GroupName,
+                CreateTime = e.CreateTime,
+            })
             .ToList();
 
         var authResultItemList = authResultList

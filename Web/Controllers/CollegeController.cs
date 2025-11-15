@@ -87,6 +87,15 @@ public class CollegeController : Controller
         var collegeList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.Id,
+                Code = e.Code,
+                Name = e.Name,
+                Province = e.Province,
+                Level = e.Level,
+                CreateTime = e.CreateTime,
+                UpdateTime = e.UpdateTime,
+            })
             .ToList();
 
         var collegeItemList = collegeList

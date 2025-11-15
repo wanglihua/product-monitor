@@ -92,14 +92,20 @@ public class AdminUserController : Controller
         var adminList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.Admin.Id,
+                LoginName = e.User.LoginName,
+                UserName = e.User.UserName,
+                CreateTime = e.Admin.CreateTime,
+            })
             .ToList();
 
         var adminItemList = adminList
             .Select(e => new AdminUserListItem {
-                Id = e.Admin.Id,
-                LoginName = e.User.LoginName,
-                UserName = e.User.UserName,
-                CreateTime = e.Admin.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.Id,
+                LoginName = e.LoginName,
+                UserName = e.UserName,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

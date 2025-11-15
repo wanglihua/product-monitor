@@ -74,17 +74,26 @@ public class ActionLogController : Controller
         var actionLogList = query.OrderByDescending(e => e.ActionLog.Id)
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.ActionLog.Id,
+                LoginName = e.User.LoginName,
+                UserName = e.User.UserName,
+                Type = e.ActionLog.Type,
+                ActionDesc = e.ActionLog.ActionDesc,
+                CreateTime = e.ActionLog.CreateTime,
+            })
             .ToList();
 
         var actionLogItemList = actionLogList
             .Select(e => new ActionLogListItem {
-                Id = e.ActionLog.Id,
-                LoginName = e.User.LoginName,
-                UserName = e.User.UserName,
-                Type = e.ActionLog.Type.Name,
-                ActionDesc = e.ActionLog.ActionDesc,
-                CreateTime = e.ActionLog.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-            }).ToList();
+                Id = e.Id,
+                LoginName = e.LoginName,
+                UserName = e.UserName,
+                Type = e.Type.Name,
+                ActionDesc = e.ActionDesc,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+            })
+            .ToList();
 
         var actionLogTypeList = new List<Dictionary<string, object>> {
             new Dictionary<string, object> {
