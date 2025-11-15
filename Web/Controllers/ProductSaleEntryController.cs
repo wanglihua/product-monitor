@@ -126,19 +126,30 @@ public class ProductSaleEntryController : Controller
         var productSaleEntryList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.ProductSaleEntry.Id,
+                ProductSaleId = e.ProductSaleEntry.ProductSaleId,
+                Version = e.ProductSaleEntry.Version,
+                SaleDate = e.ProductSaleEntry.SaleDate,
+                ServiceExpireDate = e.ProductSaleEntry.ServiceExpireDate,
+                Description = e.ProductSaleEntry.Description,
+                UserName = e.User.UserName,
+                CreateTime = e.ProductSaleEntry.CreateTime,
+                UpdateTime = e.ProductSaleEntry.UpdateTime,
+            })
             .ToList();
 
         var productSaleEntryItemList = productSaleEntryList
             .Select(e => new ProductSaleEntryListItem {
-                Id = e.ProductSaleEntry.Id,
-                ProductSaleId = e.ProductSaleEntry.ProductSaleId,
-                Version = e.ProductSaleEntry.Version,
-                SaleDate = e.ProductSaleEntry.SaleDate.ToString("yyyy-MM-dd"),
-                ServiceExpireDate = e.ProductSaleEntry.ServiceExpireDate.ToString("yyyy-MM-dd"),
-                Description = e.ProductSaleEntry.Description,
-                UserName = e.User.UserName,
-                CreateTime = e.ProductSaleEntry.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductSaleEntry.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.Id,
+                ProductSaleId = e.ProductSaleId,
+                Version = e.Version,
+                SaleDate = e.SaleDate.ToString("yyyy-MM-dd"),
+                ServiceExpireDate = e.ServiceExpireDate.ToString("yyyy-MM-dd"),
+                Description = e.Description,
+                UserName = e.UserName,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

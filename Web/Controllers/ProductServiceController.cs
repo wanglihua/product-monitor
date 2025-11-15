@@ -122,15 +122,12 @@ public class ProductServiceController : Controller
         var productServiceList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
-            .ToList();
-
-        var productServiceItemList = productServiceList
-            .Select(e => new ProductServiceListItem {
+            .Select(e => new {
                 Id = e.ProductService.Id,
                 CollegeName = e.College.Name,
                 ProductName = e.Product.Name,
-                ProjectTypeName = e.ProductService.ProjectType.Name,
-                ServiceDate = e.ProductService.ServiceDate.ToString("yyyy-MM-dd"),
+                ProjectType = e.ProductService.ProjectType,
+                ServiceDate = e.ProductService.ServiceDate,
                 ServiceCount = e.ProductService.ServiceCount,
                 ServiceUrl = e.ProductService.ServiceUrl,
                 LoginUser = e.ProductService.LoginUser,
@@ -138,9 +135,29 @@ public class ProductServiceController : Controller
                 ContactTeacher = e.ProductService.ContactTeacher,
                 ContactMobile = e.ProductService.ContactMobile,
                 Description = e.ProductService.Description,
-                CreateTime = e.ProductService.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductService.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                CreateTime = e.ProductService.CreateTime,
+                UpdateTime = e.ProductService.UpdateTime,
                 UserName = e.User.UserName,
+            })
+            .ToList();
+
+        var productServiceItemList = productServiceList
+            .Select(e => new ProductServiceListItem {
+                Id = e.Id,
+                CollegeName = e.CollegeName,
+                ProductName = e.ProductName,
+                ProjectTypeName = e.ProjectType.Name,
+                ServiceDate = e.ServiceDate.ToString("yyyy-MM-dd"),
+                ServiceCount = e.ServiceCount,
+                ServiceUrl = e.ServiceUrl,
+                LoginUser = e.LoginUser,
+                LoginPassword = e.LoginPassword,
+                ContactTeacher = e.ContactTeacher,
+                ContactMobile = e.ContactMobile,
+                Description = e.Description,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                UserName = e.UserName,
             })
             .ToList();
 

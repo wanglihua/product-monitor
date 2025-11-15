@@ -90,6 +90,16 @@ public class ProductController : Controller
         var productList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.Id,
+                Name = e.Name,
+                EnglishName = e.EnglishName,
+                VersionCount = e.VersionCount,
+                LatestVersion = e.LatestVersion,
+                VersionUpdateTime = e.VersionUpdateTime,
+                CreateTime = e.CreateTime,
+                UpdateTime = e.UpdateTime,
+            })
             .ToList();
 
         var productItemList = productList

@@ -102,17 +102,26 @@ public class ExceptionMonitorController : Controller
         var exceptionMonitorList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.ExceptionMonitor.Id,
+                ProductName = e.Product.Name,
+                IpAddress = e.ExceptionMonitor.IpAddress,
+                ProvinceType = e.ExceptionMonitor.ProvinceType,
+                Port = e.ExceptionMonitor.Port,
+                CreateTime = e.ExceptionMonitor.CreateTime,
+                UpdateTime = e.ExceptionMonitor.UpdateTime,
+            })
             .ToList();
 
         var exceptionMonitorItemList = exceptionMonitorList
             .Select(e => new ExceptionMonitorListItem {
-                Id = e.ExceptionMonitor.Id,
-                ProductName = e.Product.Name,
-                IpAddress = e.ExceptionMonitor.IpAddress,
-                Province = e.ExceptionMonitor.ProvinceType.Name,
-                Port = e.ExceptionMonitor.Port.ToString(),
-                CreateTime = e.ExceptionMonitor.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ExceptionMonitor.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.Id,
+                ProductName = e.ProductName,
+                IpAddress = e.IpAddress,
+                Province = e.ProvinceType.Name,
+                Port = e.Port.ToString(),
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

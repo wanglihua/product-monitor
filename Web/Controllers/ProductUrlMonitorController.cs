@@ -117,18 +117,28 @@ public class ProductUrlMonitorController : Controller
         var productUrlMonitorList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.ProductUrlMonitor.Id,
+                CollegeName = e.College.Name,
+                ProductName = e.Product.Name,
+                ProductUrlType = e.ProductUrlMonitor.ProductUrlType,
+                TaskCount = e.ProductUrlMonitor.TaskCount,
+                TeacherCount = e.ProductUrlMonitor.TeacherCount,
+                CreateTime = e.ProductUrlMonitor.CreateTime,
+                UpdateTime = e.ProductUrlMonitor.UpdateTime,
+            })
             .ToList();
 
         var productUrlMonitorItemList = productUrlMonitorList
             .Select(e => new ProductUrlMonitorListItem {
-                Id = e.ProductUrlMonitor.Id,
-                CollegeName = e.College.Name,
-                ProductName = e.Product.Name,
-                ProductUrlType = e.ProductUrlMonitor.ProductUrlType.Name,
-                TaskCount = e.ProductUrlMonitor.TaskCount,
-                TeacherCount = e.ProductUrlMonitor.TeacherCount,
-                CreateTime = e.ProductUrlMonitor.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductUrlMonitor.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.Id,
+                CollegeName = e.CollegeName,
+                ProductName = e.ProductName,
+                ProductUrlType = e.ProductUrlType.Name,
+                TaskCount = e.TaskCount,
+                TeacherCount = e.TeacherCount,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

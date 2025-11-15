@@ -32,7 +32,14 @@ public class ProductSelectController : Controller
             query = query.Where(e => e.Name.Contains(search));
         }
 
-        var productList = query.OrderBy(e => e.Id).Take(SelectConfig.DropdownItemMaxCount).ToList();
+        var productList = query
+            .OrderBy(e => e.Id)
+            .Take(SelectConfig.DropdownItemMaxCount)
+            .Select(e => new {
+                Id = e.Id,
+                Name = e.Name,
+            })
+            .ToList();
 
         var productItemList = productList
             .Select(e => new Dictionary<string, object>() {

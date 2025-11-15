@@ -122,10 +122,7 @@ public class ProductUpdateController : Controller
         var productUpdateList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
-            .ToList();
-
-        var productUpdateItemList = productUpdateList
-            .Select(e => new ProductUpdateListItem {
+            .Select(e => new {
                 Id = e.ProductUpdate.Id,
                 CollegeName = e.College.Name,
                 ProductName = e.Product.Name,
@@ -135,14 +132,36 @@ public class ProductUpdateController : Controller
                 UpdateUrl = e.ProductUpdate.UpdateUrl,
                 LoginUser = e.ProductUpdate.LoginUser,
                 LoginPassword = e.ProductUpdate.LoginPassword,
-                UpdateDate = e.ProductUpdate.UpdateDate.ToString("yyyy-MM-dd"),
+                UpdateDate = e.ProductUpdate.UpdateDate,
                 SalesManager = e.ProductUpdate.SalesManager,
                 ContactTeacher = e.ProductUpdate.ContactTeacher,
                 ContactMobile = e.ProductUpdate.ContactMobile,
                 Description = e.ProductUpdate.Description,
                 UserName = e.User.UserName,
-                CreateTime = e.ProductUpdate.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductUpdate.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                CreateTime = e.ProductUpdate.CreateTime,
+                UpdateTime = e.ProductUpdate.UpdateTime,
+            })
+            .ToList();
+
+        var productUpdateItemList = productUpdateList
+            .Select(e => new ProductUpdateListItem {
+                Id = e.Id,
+                CollegeName = e.CollegeName,
+                ProductName = e.ProductName,
+                VersionSale = e.VersionSale,
+                VersionUpdate = e.VersionUpdate,
+                UpdateCount = e.UpdateCount,
+                UpdateUrl = e.UpdateUrl,
+                LoginUser = e.LoginUser,
+                LoginPassword = e.LoginPassword,
+                UpdateDate = e.UpdateDate.ToString("yyyy-MM-dd"),
+                SalesManager = e.SalesManager,
+                ContactTeacher = e.ContactTeacher,
+                ContactMobile = e.ContactMobile,
+                Description = e.Description,
+                UserName = e.UserName,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

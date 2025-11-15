@@ -103,10 +103,7 @@ public class ProductEvalController : Controller
         var productEvalList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
-            .ToList();
-
-        var productEvalItemList = productEvalList
-            .Select(e => new ProductEvalListItem {
+            .Select(e => new {
                 Id = e.ProductEval.Id,
                 CollegeName = e.College.Name,
                 ProductName = e.Product.Name,
@@ -114,11 +111,28 @@ public class ProductEvalController : Controller
                 ServiceTimes = e.ProductEval.ServiceTimes,
                 TotalDays = e.ProductEval.TotalDays,
                 RemainDays = e.ProductEval.RemainDays,
-                BeginDate = e.ProductEval.BeginDate.ToString("yyyy-MM-dd"),
-                EndDate = e.ProductEval.EndDate.ToString("yyyy-MM-dd"),
+                BeginDate = e.ProductEval.BeginDate,
+                EndDate = e.ProductEval.EndDate,
                 Description = e.ProductEval.Description,
-                CreateTime = e.ProductEval.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductEval.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                CreateTime = e.ProductEval.CreateTime,
+                UpdateTime = e.ProductEval.UpdateTime,
+            })
+            .ToList();
+
+        var productEvalItemList = productEvalList
+            .Select(e => new ProductEvalListItem {
+                Id = e.Id,
+                CollegeName = e.CollegeName,
+                ProductName = e.ProductName,
+                EvalTimes = e.EvalTimes,
+                ServiceTimes = e.ServiceTimes,
+                TotalDays = e.TotalDays,
+                RemainDays = e.RemainDays,
+                BeginDate = e.BeginDate.ToString("yyyy-MM-dd"),
+                EndDate = e.EndDate.ToString("yyyy-MM-dd"),
+                Description = e.Description,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

@@ -96,6 +96,14 @@ public class UserController : Controller
         var userList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.Id,
+                LoginName = e.LoginName,
+                UserName = e.UserName,
+                LastLoginTime = e.LastLoginTime,
+                Status = e.Status,
+                CreateTime = e.CreateTime,
+            })
             .ToList();
 
         var userItemList = userList

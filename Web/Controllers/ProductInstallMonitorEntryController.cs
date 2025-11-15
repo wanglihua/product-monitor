@@ -102,12 +102,20 @@ public class ProductInstallMonitorEntryController : Controller
         var productInstallMonitorEntryList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.Id,
+                LoginUser = e.LoginUser,
+                AccountType = e.AccountType,
+                IpAddress = e.IpAddress,
+                ProvinceType = e.ProvinceType,
+                CreateTime = e.CreateTime,
+                UpdateTime = e.UpdateTime,
+            })
             .ToList();
 
         var productInstallMonitorEntryItemList = productInstallMonitorEntryList
             .Select(e => new ProductInstallMonitorEntryListItem {
                 Id = e.Id,
-                ProductInstallMonitorId = e.ProductMonitorId.ToString(),
                 LoginUser = e.LoginUser,
                 AccountType = e.AccountType.Name,
                 IpAddress = e.IpAddress,

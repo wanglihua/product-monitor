@@ -36,7 +36,15 @@ public class UserSelectController : Controller
             query = query.Where(e => e.LoginName.Contains(search) || e.UserName.Contains(search));
         }
 
-        var userList = query.OrderBy(e => e.Id).Take(SelectConfig.DropdownItemMaxCount).ToList();
+        var userList = query
+            .OrderBy(e => e.Id)
+            .Take(SelectConfig.DropdownItemMaxCount)
+            .Select(e => new {
+                Id = e.Id,
+                LoginName = e.LoginName,
+                UserName = e.UserName,
+            })
+            .ToList();
 
         var userItemList = userList
             .Select(e => new Dictionary<string, object> {

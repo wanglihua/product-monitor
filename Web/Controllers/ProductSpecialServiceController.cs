@@ -122,14 +122,11 @@ public class ProductSpecialServiceController : Controller
         var productSpecialServiceList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
-            .ToList();
-
-        var productSpecialServiceItemList = productSpecialServiceList
-            .Select(e => new ProductSpecialServiceListItem {
+            .Select(e => new {
                 Id = e.ProductSpecialService.Id,
                 CollegeName = e.College.Name,
                 ProductName = e.Product.Name,
-                ServiceDate = e.ProductSpecialService.ServiceDate.ToString("yyyy-MM-dd"),
+                ServiceDate = e.ProductSpecialService.ServiceDate,
                 ServiceCount = e.ProductSpecialService.ServiceCount,
                 ServiceUrl = e.ProductSpecialService.ServiceUrl,
                 LoginUser = e.ProductSpecialService.LoginUser,
@@ -138,8 +135,27 @@ public class ProductSpecialServiceController : Controller
                 ContactMobile = e.ProductSpecialService.ContactMobile,
                 Description = e.ProductSpecialService.Description,
                 UserName = e.User.UserName,
-                CreateTime = e.ProductSpecialService.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductSpecialService.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                CreateTime = e.ProductSpecialService.CreateTime,
+                UpdateTime = e.ProductSpecialService.UpdateTime,
+            })
+            .ToList();
+
+        var productSpecialServiceItemList = productSpecialServiceList
+            .Select(e => new ProductSpecialServiceListItem {
+                Id = e.Id,
+                CollegeName = e.CollegeName,
+                ProductName = e.ProductName,
+                ServiceDate = e.ServiceDate.ToString("yyyy-MM-dd"),
+                ServiceCount = e.ServiceCount,
+                ServiceUrl = e.ServiceUrl,
+                LoginUser = e.LoginUser,
+                LoginPassword = e.LoginPassword,
+                ContactTeacher = e.ContactTeacher,
+                ContactMobile = e.ContactMobile,
+                Description = e.Description,
+                UserName = e.UserName,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

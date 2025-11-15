@@ -7,9 +7,6 @@ public class ProductRentEntryListItem
     [JsonProperty("id")]
     public long Id { get; set; }
 
-    [JsonProperty("productRentId")]
-    public long ProductRentId { get; set; }
-
     [JsonProperty("totalDays")]
     public int TotalDays { get; set; }
 

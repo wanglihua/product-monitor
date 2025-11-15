@@ -103,10 +103,7 @@ public class ProductSaleController : Controller
         var productSaleList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
-            .ToList();
-
-        var productSaleItemList = productSaleList
-            .Select(e => new ProductSaleListItem {
+            .Select(e => new {
                 Id = e.ProductSale.Id,
                 CollegeName = e.College.Name,
                 ProductName = e.Product.Name,
@@ -115,11 +112,29 @@ public class ProductSaleController : Controller
                 UpdateTimes = e.ProductSale.UpdateTimes,
                 ServiceTimes = e.ProductSale.ServiceTimes,
                 Version = e.ProductSale.Version,
-                SaleDate = e.ProductSale.SaleDate.ToString("yyyy-MM-dd"),
-                ServiceExpireDate = e.ProductSale.ServiceExpireDate.ToString("yyyy-MM-dd"),
+                SaleDate = e.ProductSale.SaleDate,
+                ServiceExpireDate = e.ProductSale.ServiceExpireDate,
                 Description = e.ProductSale.Description,
-                CreateTime = e.ProductSale.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductSale.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                CreateTime = e.ProductSale.CreateTime,
+                UpdateTime = e.ProductSale.UpdateTime,
+            })
+            .ToList();
+
+        var productSaleItemList = productSaleList
+            .Select(e => new ProductSaleListItem {
+                Id = e.Id,
+                CollegeName = e.CollegeName,
+                ProductName = e.ProductName,
+                SaleTimes = e.SaleTimes,
+                InstallTimes = e.InstallTimes,
+                UpdateTimes = e.UpdateTimes,
+                ServiceTimes = e.ServiceTimes,
+                Version = e.Version,
+                SaleDate = e.SaleDate.ToString("yyyy-MM-dd"),
+                ServiceExpireDate = e.ServiceExpireDate.ToString("yyyy-MM-dd"),
+                Description = e.Description,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

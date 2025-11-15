@@ -101,15 +101,22 @@ public class PassResController : Controller
         var passResList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.PassRes.Id,
+                CateName = e.PassResCate.Name,
+                Name = e.PassRes.Name,
+                CreateTime = e.PassRes.CreateTime,
+                UpdateTime = e.PassRes.UpdateTime,
+            })
             .ToList();
 
         var passResItemList = passResList
             .Select(e => new PassResListItem {
-                Id = e.PassRes.Id,
-                CateName = e.PassResCate.Name,
-                Name = e.PassRes.Name,
-                CreateTime = e.PassRes.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.PassRes.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.Id,
+                CateName = e.CateName,
+                Name = e.Name,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

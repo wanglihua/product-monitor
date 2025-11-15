@@ -111,20 +111,32 @@ public class ProductInstallMonitorController : Controller
         var productInstallMonitorList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
-            .ToList();
-
-        var productInstallMonitorItemList = productInstallMonitorList
-            .Select(e => new ProductInstallMonitorListItem {
+            .Select(e => new {
                 Id = e.ProductInstallMonitor.Id,
                 CollegeName = e.College.Name,
                 ProductName = e.Product.Name,
-                Province = e.ProductInstallMonitor.ProvinceType.Name,
+                ProvinceType = e.ProductInstallMonitor.ProvinceType,
                 CpuSerialNo = e.ProductInstallMonitor.CpuSerialNo,
                 NetMacAddress = e.ProductInstallMonitor.NetMacAddress,
                 TaskCount = e.ProductInstallMonitor.TaskCount,
                 TeacherCount = e.ProductInstallMonitor.TeacherCount,
-                CreateTime = e.ProductInstallMonitor.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductInstallMonitor.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                CreateTime = e.ProductInstallMonitor.CreateTime,
+                UpdateTime = e.ProductInstallMonitor.UpdateTime,
+            })
+            .ToList();
+
+        var productInstallMonitorItemList = productInstallMonitorList
+            .Select(e => new ProductInstallMonitorListItem {
+                Id = e.Id,
+                CollegeName = e.CollegeName,
+                ProductName = e.ProductName,
+                Province = e.ProvinceType.Name,
+                CpuSerialNo = e.CpuSerialNo,
+                NetMacAddress = e.NetMacAddress,
+                TaskCount = e.TaskCount,
+                TeacherCount = e.TeacherCount,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

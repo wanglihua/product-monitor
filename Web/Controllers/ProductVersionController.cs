@@ -102,18 +102,28 @@ public class ProductVersionController : Controller
         var productVersionList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
-            .ToList();
-
-        var productVersionItemList = productVersionList
-            .Select(e => new ProductVersionListItem {
+            .Select(e => new {
                 Id = e.ProductVersion.Id,
                 ProductName = e.Product.Name,
                 Version = e.ProductVersion.Version,
                 VersionUpdateBase = e.ProductVersion.VersionUpdateBase,
                 VersionUpdateDesc = e.ProductVersion.VersionUpdateDesc,
-                VersionUpdateTime = e.ProductVersion.VersionUpdateTime.ToString("yyyy-MM-dd"),
-                CreateTime = e.ProductVersion.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductVersion.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                VersionUpdateTime = e.ProductVersion.VersionUpdateTime,
+                CreateTime = e.ProductVersion.CreateTime,
+                UpdateTime = e.ProductVersion.UpdateTime,
+            })
+            .ToList();
+
+        var productVersionItemList = productVersionList
+            .Select(e => new ProductVersionListItem {
+                Id = e.Id,
+                ProductName = e.ProductName,
+                Version = e.Version,
+                VersionUpdateBase = e.VersionUpdateBase,
+                VersionUpdateDesc = e.VersionUpdateDesc,
+                VersionUpdateTime = e.VersionUpdateTime.ToString("yyyy-MM-dd"),
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

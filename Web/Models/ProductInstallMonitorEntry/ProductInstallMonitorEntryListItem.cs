@@ -7,9 +7,6 @@ public class ProductInstallMonitorEntryListItem
     [JsonProperty("id")]
     public long Id { get; set; }
 
-    [JsonProperty("productInstallMonitorId")]
-    public string ProductInstallMonitorId { get; set; } = "";
-
     [JsonProperty("loginUser")]
     public string LoginUser { get; set; } = "";
 

@@ -119,19 +119,30 @@ public class ProductEvalEntryController : Controller
         var productEvalEntryList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.ProductEvalEntry.Id,
+                ProductEvalId = e.ProductEvalEntry.ProductEvalId,
+                TotalDays = e.ProductEvalEntry.TotalDays,
+                BeginDate = e.ProductEvalEntry.BeginDate,
+                EndDate = e.ProductEvalEntry.EndDate,
+                Description = e.ProductEvalEntry.Description,
+                UserName = e.User.UserName,
+                CreateTime = e.ProductEvalEntry.CreateTime,
+                UpdateTime = e.ProductEvalEntry.UpdateTime,
+            })
             .ToList();
 
         var productEvalEntryItemList = productEvalEntryList
             .Select(e => new ProductEvalEntryListItem {
-                Id = e.ProductEvalEntry.Id,
-                ProductEvalId = e.ProductEvalEntry.ProductEvalId,
-                TotalDays = e.ProductEvalEntry.TotalDays,
-                BeginDate = e.ProductEvalEntry.BeginDate.ToString("yyyy-MM-dd"),
-                EndDate = e.ProductEvalEntry.EndDate.ToString("yyyy-MM-dd"),
-                Description = e.ProductEvalEntry.Description,
-                UserName = e.User.UserName,
-                CreateTime = e.ProductEvalEntry.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductEvalEntry.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.Id,
+                ProductEvalId = e.ProductEvalId,
+                TotalDays = e.TotalDays,
+                BeginDate = e.BeginDate.ToString("yyyy-MM-dd"),
+                EndDate = e.EndDate.ToString("yyyy-MM-dd"),
+                Description = e.Description,
+                UserName = e.UserName,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

@@ -119,19 +119,28 @@ public class ProductRentEntryController : Controller
         var productRentEntryList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.ProductRentEntry.Id,
+                TotalDays = e.ProductRentEntry.TotalDays,
+                BeginDate = e.ProductRentEntry.BeginDate,
+                EndDate = e.ProductRentEntry.EndDate,
+                Description = e.ProductRentEntry.Description,
+                UserName = e.User.UserName,
+                CreateTime = e.ProductRentEntry.CreateTime,
+                UpdateTime = e.ProductRentEntry.UpdateTime,
+            })
             .ToList();
 
         var productRentEntryItemList = productRentEntryList
             .Select(e => new ProductRentEntryListItem {
-                Id = e.ProductRentEntry.Id,
-                ProductRentId = e.ProductRentEntry.ProductRentId,
-                TotalDays = e.ProductRentEntry.TotalDays,
-                BeginDate = e.ProductRentEntry.BeginDate.ToString("yyyy-MM-dd"),
-                EndDate = e.ProductRentEntry.EndDate.ToString("yyyy-MM-dd"),
-                Description = e.ProductRentEntry.Description,
-                UserName = e.User.UserName,
-                CreateTime = e.ProductRentEntry.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductRentEntry.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.Id,
+                TotalDays = e.TotalDays,
+                BeginDate = e.BeginDate.ToString("yyyy-MM-dd"),
+                EndDate = e.EndDate.ToString("yyyy-MM-dd"),
+                Description = e.Description,
+                UserName = e.UserName,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 

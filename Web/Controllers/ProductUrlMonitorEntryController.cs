@@ -101,6 +101,16 @@ public class ProductUrlMonitorEntryController : Controller
         var productUrlMonitorEntryList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.Id,
+                ProductUrlMonitorId = e.ProductUrlMonitorId,
+                LoginUser = e.LoginUser,
+                LoginPassword = e.LoginPassword,
+                IpAddress = e.IpAddress,
+                ProvinceType = e.ProvinceType,
+                CreateTime = e.CreateTime,
+                UpdateTime = e.UpdateTime,
+            })
             .ToList();
 
         var productUrlMonitorEntryItemList = productUrlMonitorEntryList

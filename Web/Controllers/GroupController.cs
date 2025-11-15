@@ -84,6 +84,12 @@ public class GroupController : Controller
         var groupList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.Id,
+                Name = e.Name,
+                CreateTime = e.CreateTime,
+                UpdateTime = e.UpdateTime,
+            })
             .ToList();
 
         var groupItemList = groupList

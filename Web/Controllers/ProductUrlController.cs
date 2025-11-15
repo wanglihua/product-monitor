@@ -87,6 +87,16 @@ public class ProductUrlController : Controller
         var productUrlList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.Id,
+                Name = e.Name,
+                Url = e.Url,
+                Type = e.Type,
+                LoginUser = e.LoginUser,
+                LoginPassword = e.LoginPassword,
+                CreateTime = e.CreateTime,
+                UpdateTime = e.UpdateTime,
+            })
             .ToList();
 
         var productUrlItemList = productUrlList

@@ -108,14 +108,20 @@ public class GroupUserController : Controller
         var groupUserList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => new {
+                Id = e.GroupUser.Id,
+                LoginName = e.User.LoginName,
+                UserName = e.User.UserName,
+                CreateTime = e.GroupUser.CreateTime,
+            })
             .ToList();
 
         var groupUserItemList = groupUserList
             .Select(e => new GroupUserListItem {
-                Id = e.GroupUser.Id,
-                LoginName = e.User.LoginName,
-                UserName = e.User.UserName,
-                CreateTime = e.GroupUser.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                Id = e.Id,
+                LoginName = e.LoginName,
+                UserName = e.UserName,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
