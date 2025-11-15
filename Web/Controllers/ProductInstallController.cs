@@ -133,25 +133,43 @@ public class ProductInstallController : Controller
         var productInstallList = query
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
-            .ToList();
-
-        var productInstallItemList = productInstallList
-            .Select(e => new ProductInstallListItem {
+            .Select(e => new {
                 Id = e.ProductInstall.Id,
                 CollegeName = e.College.Name,
                 ProductName = e.Product.Name,
                 VersionSale = e.ProductInstall.VersionSale,
                 VersionInstall = e.ProductInstall.VersionInstall,
-                InstallDate = e.ProductInstall.InstallDate.ToString("yyyy-MM-dd"),
+                InstallDate = e.ProductInstall.InstallDate,
                 UpdateUrl = e.ProductInstall.UpdateUrl,
                 LoginUser = e.ProductInstall.LoginUser,
                 LoginPassword = e.ProductInstall.LoginPassword,
                 ContactTeacher = e.ProductInstall.ContactTeacher,
                 ContactMobile = e.ProductInstall.ContactMobile,
                 Description = e.ProductInstall.Description,
+                LoginName = e.User.LoginName,
                 UserName = e.User.UserName,
-                CreateTime = e.ProductInstall.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductInstall.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                CreateTime = e.ProductInstall.CreateTime,
+                UpdateTime = e.ProductInstall.UpdateTime,
+            })
+            .ToList();
+
+        var productInstallItemList = productInstallList
+            .Select(e => new ProductInstallListItem {
+                Id = e.Id,
+                CollegeName = e.CollegeName,
+                ProductName = e.ProductName,
+                VersionSale = e.VersionSale,
+                VersionInstall = e.VersionInstall,
+                InstallDate = e.InstallDate.ToString("yyyy-MM-dd"),
+                UpdateUrl = e.UpdateUrl,
+                LoginUser = e.LoginUser,
+                LoginPassword = e.LoginPassword,
+                ContactTeacher = e.ContactTeacher,
+                ContactMobile = e.ContactMobile,
+                Description = e.Description,
+                UserName = $"{e.LoginName}-{e.UserName}",
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
@@ -343,25 +361,43 @@ public class ProductInstallController : Controller
 
         var productInstallList = query
             .OrderBy(e => e.ProductInstall.Id)
-            .ToList();
-
-        var productInstallItemList = productInstallList
-            .Select(e => new ProductInstallExcelExportListItem {
+            .Select(e => new {
                 Id = e.ProductInstall.Id,
                 CollegeName = e.College.Name,
                 ProductName = e.Product.Name,
                 VersionSale = e.ProductInstall.VersionSale,
                 VersionInstall = e.ProductInstall.VersionInstall,
-                InstallDate = e.ProductInstall.InstallDate.ToString("yyyy-MM-dd"),
+                InstallDate = e.ProductInstall.InstallDate,
                 UpdateUrl = e.ProductInstall.UpdateUrl,
                 LoginUser = e.ProductInstall.LoginUser,
                 LoginPassword = e.ProductInstall.LoginPassword,
                 ContactTeacher = e.ProductInstall.ContactTeacher,
                 ContactMobile = e.ProductInstall.ContactMobile,
                 Description = e.ProductInstall.Description,
-                UserName = $"{e.User.LoginName}-{e.User.UserName}",
-                CreateTime = e.ProductInstall.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.ProductInstall.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                LoginName = e.User.LoginName,
+                UserName = e.User.UserName,
+                CreateTime = e.ProductInstall.CreateTime,
+                UpdateTime = e.ProductInstall.UpdateTime,
+            })
+            .ToList();
+
+        var productInstallItemList = productInstallList
+            .Select(e => new ProductInstallExcelExportListItem {
+                Id = e.Id,
+                CollegeName = e.CollegeName,
+                ProductName = e.ProductName,
+                VersionSale = e.VersionSale,
+                VersionInstall = e.VersionInstall,
+                InstallDate = e.InstallDate.ToString("yyyy-MM-dd"),
+                UpdateUrl = e.UpdateUrl,
+                LoginUser = e.LoginUser,
+                LoginPassword = e.LoginPassword,
+                ContactTeacher = e.ContactTeacher,
+                ContactMobile = e.ContactMobile,
+                Description = e.Description,
+                UserName = $"{e.LoginName}-{e.UserName}",
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
