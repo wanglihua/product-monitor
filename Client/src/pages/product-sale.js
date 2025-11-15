@@ -60,12 +60,12 @@ const ProductSale = () => {
         {
             title: "学校",
             dataIndex: "collegeName",
-            width: "180px",
+            width: "200px",
         },
         {
             title: "产品",
             dataIndex: "productName",
-            width: "180px",
+            width: "250px",
         },
         {
             title: "销售次数 / 安装次数 / 更新次数 / 售后次数",

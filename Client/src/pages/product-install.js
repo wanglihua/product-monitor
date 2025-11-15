@@ -58,12 +58,12 @@ const ProductInstall = () => {
         {
             title: "学校",
             dataIndex: "collegeName",
-            width: "180px",
+            width: "200px",
         },
         {
             title: "产品",
             dataIndex: "productName",
-            width: "180px",
+            width: "250px",
         },
         {
             title: "销售版本",
@@ -173,6 +173,8 @@ const ProductInstall = () => {
                                 const query = $.param(listParam);
                                 const url = `/api/product-install/export?${query}`;
                                 $(`<form method="post" action="${url}"></form>`).appendTo('body').submit().remove();
+
+                                showSuccess("导出成功, 文件下载中!");
                             });
                         }}
                     >

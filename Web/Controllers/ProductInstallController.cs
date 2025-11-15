@@ -9,6 +9,7 @@ using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using Service;
+using Service.ProductInstall;
 using Web.Models.ProductInstall;
 
 namespace Web.Controllers;
@@ -21,16 +22,19 @@ public class ProductInstallController : Controller
     private readonly Db db;
     private readonly UserLoginService userLoginService;
     private readonly ActionLogService actionLogService;
+    private readonly ProductInstallExcelService productInstallExcelService;
 
     public ProductInstallController(
         Db db,
         UserLoginService userLoginService,
-        ActionLogService actionLogService
+        ActionLogService actionLogService,
+        ProductInstallExcelService productInstallExcelService
     )
     {
         this.db = db;
         this.userLoginService = userLoginService;
         this.actionLogService = actionLogService;
+        this.productInstallExcelService = productInstallExcelService;
     }
 
     private class ProductInstallJoinItem
@@ -44,13 +48,8 @@ public class ProductInstallController : Controller
         public UserEntity User { get; set; } = new();
     }
 
-    [HttpPost]
-    [Route("/api/product-install/list")]
-    [Transactional(false)]
-    public IActionResult List([FromBody] ProductInstallListParam param)
+    private IQueryable<ProductInstallJoinItem> GetListQuery(ProductInstallListParam param)
     {
-        ValidationUtil.Validate<ProductInstallListParamValidator, ProductInstallListParam>(param);
-
         IQueryable<ProductInstallJoinItem> query = db.Set<ProductInstallEntity>()
             .Join(db.Set<CollegeEntity>(),
                 pi => pi.CollegeId,
@@ -88,6 +87,18 @@ public class ProductInstallController : Controller
             string productNameQuery = param.ProductNameQuery.Trim();
             query = query.Where(e => e.Product.Name.Contains(productNameQuery));
         }
+
+        return query;
+    }
+
+    [HttpPost]
+    [Route("/api/product-install/list")]
+    [Transactional(false)]
+    public IActionResult List([FromBody] ProductInstallListParam param)
+    {
+        ValidationUtil.Validate<ProductInstallListParamValidator, ProductInstallListParam>(param);
+
+        IQueryable<ProductInstallJoinItem> query = GetListQuery(param);
 
         int productInstallCount = query.Count();
 
@@ -328,6 +339,34 @@ public class ProductInstallController : Controller
     {
         ValidationUtil.Validate<ProductInstallListParamValidator, ProductInstallListParam>(param);
 
-        return File(new byte[] { 1 }, ContentType.Xlsx, "file.xlsx");
+        IQueryable<ProductInstallJoinItem> query = GetListQuery(param);
+
+        var productInstallList = query
+            .OrderBy(e => e.ProductInstall.Id)
+            .ToList();
+
+        var productInstallItemList = productInstallList
+            .Select(e => new ProductInstallExcelExportListItem {
+                Id = e.ProductInstall.Id,
+                CollegeName = e.College.Name,
+                ProductName = e.Product.Name,
+                VersionSale = e.ProductInstall.VersionSale,
+                VersionInstall = e.ProductInstall.VersionInstall,
+                InstallDate = e.ProductInstall.InstallDate.ToString("yyyy-MM-dd"),
+                UpdateUrl = e.ProductInstall.UpdateUrl,
+                LoginUser = e.ProductInstall.LoginUser,
+                LoginPassword = e.ProductInstall.LoginPassword,
+                ContactTeacher = e.ProductInstall.ContactTeacher,
+                ContactMobile = e.ProductInstall.ContactMobile,
+                Description = e.ProductInstall.Description,
+                UserName = $"{e.User.LoginName}-{e.User.UserName}",
+                CreateTime = e.ProductInstall.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.ProductInstall.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+            })
+            .ToList();
+
+        var excelContent = productInstallExcelService.GetExcelContent(productInstallItemList);
+
+        return File(excelContent, ContentType.Xlsx, "产品安装.xlsx");
     }
 }

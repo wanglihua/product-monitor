@@ -56,12 +56,12 @@ const ProductSpecialService = () => {
         {
             title: "学校",
             dataIndex: "collegeName",
-            width: "180px",
+            width: "200px",
         },
         {
             title: "产品",
             dataIndex: "productName",
-            width: "180px",
+            width: "250px",
         },
         {
             title: "联系老师",

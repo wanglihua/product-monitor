@@ -78,7 +78,7 @@ const ProductUrlMonitor = () => {
         {
             title: "产品",
             dataIndex: "productName",
-            width: "280px",
+            width: "250px",
         },
         {
             title: "教师账号数量",

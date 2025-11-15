@@ -71,7 +71,7 @@ const ProductInstallMonitor = () => {
         {
             title: "产品",
             dataIndex: "productName",
-            width: "280px",
+            width: "250px",
         },
         {
             title: "省份",
