@@ -324,7 +324,7 @@ public class ProductInstallController : Controller
     [HttpPost]
     [Route("/api/product-install/export")]
     [Transactional(false)]
-    public IActionResult Export([FromBody] ProductInstallListParam param)
+    public IActionResult Export(ProductInstallListParam param)
     {
         ValidationUtil.Validate<ProductInstallListParamValidator, ProductInstallListParam>(param);
 

@@ -17,6 +17,9 @@ importers:
       dayjs:
         specifier: ^1.11.18
         version: 1.11.18
+      jquery:
+        specifier: ^3.7.1
+        version: 3.7.1
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -379,6 +382,9 @@ packages:
   is-fullwidth-code-point@2.0.0:
     resolution: {integrity: sha512-VHskAKYM8RfSFXwee5t5cbN5PZeq1Wrh6qd5bkyiXIf6UQcN6w/A0eXM9r6t8d+GYOh+o6ZhiEnb88LN/Y8m2w==}
     engines: {node: '>=4'}
+
+  jquery@3.7.1:
+    resolution: {integrity: sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -1153,6 +1159,8 @@ snapshots:
       entities: 2.2.0
 
   is-fullwidth-code-point@2.0.0: {}
+
+  jquery@3.7.1: {}
 
   js-tokens@4.0.0: {}
 
