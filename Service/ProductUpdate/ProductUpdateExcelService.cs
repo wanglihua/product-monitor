@@ -116,7 +116,7 @@ public class ProductUpdateExcelService
         cell.SetCellValue("记录人");
 
         cell = row.CreateCell(cellIndex);
-        sheet.SetColumnWidth(cellIndex++, 16 * 256);
+        sheet.SetColumnWidth(cellIndex++, 80 * 256);
         cell.CellStyle = headerCellStyle;
         cell.SetCellType(CellType.String);
         cell.SetCellValue("其他备注");

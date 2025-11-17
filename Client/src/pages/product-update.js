@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {DeleteOutlined, EditOutlined, FileExcelOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import $ from "jquery";
 import ProductUpdateDetail from "./product-update-detail";
 
 import useSiteContext from "../site/site-context";
