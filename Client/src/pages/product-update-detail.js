@@ -32,7 +32,7 @@ const ProductUpdateDetailInner = (props) => {
     return (
         <Modal
             title={title.current}
-            width="880px"
+            width="980px"
             destroyOnClose={true}
             footer={null}
             open={open}
@@ -397,7 +397,7 @@ const ProductUpdateDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
+                                <Input.TextArea
                                     maxLength={512}
                                     placeholder="其他备注"
                                     allowClear

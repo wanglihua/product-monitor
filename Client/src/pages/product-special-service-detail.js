@@ -32,7 +32,7 @@ const ProductSpecialServiceDetailInner = (props) => {
     return (
         <Modal
             title={title.current}
-            width="880px"
+            width="980px"
             destroyOnClose={true}
             footer={null}
             open={open}

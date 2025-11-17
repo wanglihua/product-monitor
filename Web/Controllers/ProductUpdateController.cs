@@ -9,6 +9,7 @@ using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using Service;
+using Service.ProductUpdate;
 using Web.Models.ProductUpdate;
 
 namespace Web.Controllers;
@@ -20,16 +21,19 @@ public class ProductUpdateController : Controller
 
     private readonly Db db;
     private readonly UserLoginService userLoginService;
+    private readonly ProductUpdateExcelService productUpdateExcelService;
     private readonly ActionLogService actionLogService;
 
     public ProductUpdateController(
         Db db,
         UserLoginService userLoginService,
+        ProductUpdateExcelService productUpdateExcelService,
         ActionLogService actionLogService
     )
     {
         this.db = db;
         this.userLoginService = userLoginService;
+        this.productUpdateExcelService = productUpdateExcelService;
         this.actionLogService = actionLogService;
     }
 
@@ -44,13 +48,8 @@ public class ProductUpdateController : Controller
         public UserEntity User { get; set; } = new();
     }
 
-    [HttpPost]
-    [Route("/api/product-update/list")]
-    [Transactional(false)]
-    public IActionResult List([FromBody] ProductUpdateListParam param)
+    private IQueryable<ProductUpdateJoinItem> GetListQuery(ProductUpdateListParam param)
     {
-        ValidationUtil.Validate<ProductUpdateListParamValidator, ProductUpdateListParam>(param);
-
         IQueryable<ProductUpdateJoinItem> query = db.Set<ProductUpdateEntity>()
             .Join(db.Set<CollegeEntity>(),
                 pu => pu.CollegeId,
@@ -88,6 +87,18 @@ public class ProductUpdateController : Controller
             string productNameQuery = param.ProductNameQuery.Trim();
             query = query.Where(e => e.Product.Name.Contains(productNameQuery));
         }
+
+        return query;
+    }
+
+    [HttpPost]
+    [Route("/api/product-update/list")]
+    [Transactional(false)]
+    public IActionResult List([FromBody] ProductUpdateListParam param)
+    {
+        ValidationUtil.Validate<ProductUpdateListParamValidator, ProductUpdateListParam>(param);
+
+        IQueryable<ProductUpdateJoinItem> query = GetListQuery(param);
 
         int productUpdateCount = query.Count();
 
@@ -345,5 +356,63 @@ public class ProductUpdateController : Controller
             Success = true,
             Message = "删除成功！",
         });
+    }
+
+    [HttpPost]
+    [Route("/api/product-update/export")]
+    [Transactional(false)]
+    public IActionResult Export(ProductUpdateListParam param)
+    {
+        ValidationUtil.Validate<ProductUpdateListParamValidator, ProductUpdateListParam>(param);
+
+        IQueryable<ProductUpdateJoinItem> query = GetListQuery(param);
+
+        var productUpdateList = query
+            .OrderBy(e => e.ProductUpdate.Id)
+            .Select(e => new {
+                Id = e.ProductUpdate.Id,
+                CollegeName = e.College.Name,
+                ProductName = e.Product.Name,
+                VersionSale = e.ProductUpdate.VersionSale,
+                VersionUpdate = e.ProductUpdate.VersionUpdate,
+                UpdateCount = e.ProductUpdate.UpdateCount,
+                UpdateUrl = e.ProductUpdate.UpdateUrl,
+                LoginUser = e.ProductUpdate.LoginUser,
+                LoginPassword = e.ProductUpdate.LoginPassword,
+                UpdateDate = e.ProductUpdate.UpdateDate,
+                ContactTeacher = e.ProductUpdate.ContactTeacher,
+                ContactMobile = e.ProductUpdate.ContactMobile,
+                LoginName = e.User.LoginName,
+                UserName = e.User.UserName,
+                Description = e.ProductUpdate.Description,
+                CreateTime = e.ProductUpdate.CreateTime,
+                UpdateTime = e.ProductUpdate.UpdateTime,
+            })
+            .ToList();
+
+        var productUpdateItemList = productUpdateList
+            .Select(e => new ProductUpdateExcelExportListItem {
+                Id = e.Id,
+                CollegeName = e.CollegeName,
+                ProductName = e.ProductName,
+                VersionSale = e.VersionSale,
+                VersionUpdate = e.VersionUpdate,
+                UpdateCount = e.UpdateCount,
+                UpdateUrl = e.UpdateUrl,
+                LoginUser = e.LoginUser,
+                LoginPassword = e.LoginPassword,
+                UpdateDate = e.UpdateDate.ToString("yyyy-MM-dd"),
+                ContactTeacher = e.ContactTeacher,
+                ContactMobile = e.ContactMobile,
+                UserName = $"{e.LoginName}-{e.UserName}",
+                Description = e.Description,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+            })
+            .ToList();
+
+        var excelContent = productUpdateExcelService.GetExcelContent(productUpdateItemList);
+
+        return File(excelContent, ContentType.Xlsx, "产品更新.xlsx");
     }
 }
