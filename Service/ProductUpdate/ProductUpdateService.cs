@@ -2,7 +2,7 @@ using Core;
 using Domain;
 using NLog;
 
-namespace Service;
+namespace Service.ProductUpdate;
 
 [Service(ServiceType.Scoped)]
 public class ProductUpdateService
