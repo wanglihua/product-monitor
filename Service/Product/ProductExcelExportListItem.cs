@@ -13,7 +13,7 @@ public class ProductExcelExportListItem
     public string EnglishName { get; set; } = "";
 
     /// <summary>
-    /// 产品英文名
+    /// 版本数量
     /// </summary>
     public int VersionCount { get; set; }
 

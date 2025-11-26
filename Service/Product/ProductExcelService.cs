@@ -46,6 +46,12 @@ public class ProductExcelService
         sheet.SetColumnWidth(cellIndex++, 32 * 256);
         cell.CellStyle = headerCellStyle;
         cell.SetCellType(CellType.String);
+        cell.SetCellValue("版本数量");
+
+        cell = row.CreateCell(cellIndex);
+        sheet.SetColumnWidth(cellIndex++, 32 * 256);
+        cell.CellStyle = headerCellStyle;
+        cell.SetCellType(CellType.String);
         cell.SetCellValue("最新版本号");
 
         cell = row.CreateCell(cellIndex);
@@ -73,6 +79,12 @@ public class ProductExcelService
             cell.SetCellType(CellType.String);
             cell.SetCellValue(item.EnglishName);
 
+            // 版本数量
+            cell = row.CreateCell(cellIndex++);
+            cell.CellStyle = contentCellStyle;
+            cell.SetCellType(CellType.Numeric);
+            cell.SetCellValue(item.VersionCount);
+
             // 最新版本号
             cell = row.CreateCell(cellIndex++);
             cell.CellStyle = contentCellStyle;
@@ -95,6 +107,19 @@ public class ProductExcelService
 
     public void Import(IFormFile excelFile)
     {
+        if (excelFile == null)
+        {
+            throw new ValidationException("导入失败，文件未上传！");
+        }
+
+        IWorkbook workbook = new XSSFWorkbook(excelFile.OpenReadStream());
+        ISheet sheet = workbook.GetSheetAt(0);
+        if (sheet == null)
+        {
+            throw new ValidationException("导入的Excel文件应该至少有一个工作表！");
+        }
+        
+        var productExcelImportList = new  List<ProductExcelImportListItem>();
         
     }
 }
