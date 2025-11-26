@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Util;
+using Microsoft.AspNetCore.Http;
 using NLog;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -90,5 +91,10 @@ public class ProductExcelService
         memoryStream.Flush();
 
         return memoryStream.ToArray();
+    }
+
+    public void Import(IFormFile excelFile)
+    {
+        
     }
 }

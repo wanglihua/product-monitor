@@ -174,6 +174,14 @@ const Product = () => {
                         color="default"
                         icon={<FileExcelOutlined/>}
                         onClick={(e) => {
+                        }}
+                    >
+                        导入
+                    </Button>
+                    <Button
+                        color="default"
+                        icon={<FileExcelOutlined/>}
+                        onClick={(e) => {
                             showConfirm("确认要导出吗！", "确认", () => {
                                 const query = $.param(listParam);
                                 const url = `/api/product/export?${query}`;

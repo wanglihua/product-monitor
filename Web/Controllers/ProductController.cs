@@ -300,4 +300,22 @@ public class ProductController : Controller
 
         return File(excelContent, ContentType.Xlsx, "产品.xlsx");
     }
+
+    [HttpPost]
+    [Route("/api/product/import")]
+    [Transactional(false)]
+    public IActionResult Import(IFormFile excelFile)
+    {
+        if (excelFile == null)
+        {
+            throw new ValidationException("导入失败，文件未上传！");
+        }
+
+        productExcelService.Import(excelFile);
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "导入成功！",
+        });
+    }
 }
