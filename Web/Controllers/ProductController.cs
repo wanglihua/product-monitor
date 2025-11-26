@@ -22,28 +22,27 @@ public class ProductController : Controller
     private readonly Db db;
     private readonly UserLoginService userLoginService;
     private readonly ProductService productService;
+    private readonly ProductExcelService productExcelService;
     private readonly ActionLogService actionLogService;
 
     public ProductController(
         Db db,
         UserLoginService userLoginService,
         ProductService productService,
+        ProductExcelService productExcelService,
         ActionLogService actionLogService
     )
     {
         this.db = db;
         this.userLoginService = userLoginService;
         this.productService = productService;
+        this.productExcelService = productExcelService;
         this.actionLogService = actionLogService;
     }
 
-    [HttpPost]
-    [Route("/api/product/list")]
-    [Transactional(false)]
-    public IActionResult List([FromBody] ProductListParam param)
+    [NonAction]
+    private IQueryable<ProductEntity> GetListQuery(ProductListParam param)
     {
-        ValidationUtil.Validate<ProductListParamValidator, ProductListParam>(param);
-
         IQueryable<ProductEntity> query = db.Set<ProductEntity>();
 
         if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
@@ -57,6 +56,18 @@ public class ProductController : Controller
             string englishNameQuery = param.EnglishNameQuery.Trim();
             query = query.Where(p => p.EnglishName.Contains(englishNameQuery));
         }
+
+        return query;
+    }
+
+    [HttpPost]
+    [Route("/api/product/list")]
+    [Transactional(false)]
+    public IActionResult List([FromBody] ProductListParam param)
+    {
+        ValidationUtil.Validate<ProductListParamValidator, ProductListParam>(param);
+
+        IQueryable<ProductEntity> query = GetListQuery(param);
 
         int productCount = query.Count();
 
@@ -260,5 +271,33 @@ public class ProductController : Controller
             Success = true,
             Message = "删除成功！",
         });
+    }
+
+    [HttpPost]
+    [Route("/api/product/export")]
+    [Transactional(false)]
+    public IActionResult Export(ProductListParam param)
+    {
+        ValidationUtil.Validate<ProductListParamValidator, ProductListParam>(param);
+
+        IQueryable<ProductEntity> query = GetListQuery(param);
+
+        var productList = query
+            .OrderBy(e => e.Id)
+            .ToList();
+
+        var productItemList = productList
+            .Select(e => new ProductExcelExportListItem {
+                Name = e.Name,
+                EnglishName = e.EnglishName,
+                VersionCount = e.VersionCount,
+                LatestVersion = e.LatestVersion,
+                VersionUpdateTime = e.VersionUpdateTime?.ToString("yyyy-MM-dd") ?? "",
+            })
+            .ToList();
+
+        var excelContent = productExcelService.GetExcelContent(productItemList);
+
+        return File(excelContent, ContentType.Xlsx, "产品.xlsx");
     }
 }

@@ -48,6 +48,7 @@ public class ProductInstallController : Controller
         public UserEntity User { get; set; } = new();
     }
 
+    [NonAction]
     private IQueryable<ProductInstallJoinItem> GetListQuery(ProductInstallListParam param)
     {
         IQueryable<ProductInstallJoinItem> query = db.Set<ProductInstallEntity>()

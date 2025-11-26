@@ -48,6 +48,7 @@ public class ProductUpdateController : Controller
         public UserEntity User { get; set; } = new();
     }
 
+    [NonAction]
     private IQueryable<ProductUpdateJoinItem> GetListQuery(ProductUpdateListParam param)
     {
         IQueryable<ProductUpdateJoinItem> query = db.Set<ProductUpdateEntity>()
