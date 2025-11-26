@@ -1,7 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
+import {DeleteOutlined, EditOutlined, FileExcelOutlined, PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import {useNavigate} from "react-router";
+import $ from "jquery";
 import ProductDetail from "./product-detail";
 
 import useSiteContext from "../site/site-context";
@@ -168,6 +169,21 @@ const Product = () => {
                         }}
                     >
                         添加
+                    </Button>
+                    <Button
+                        color="default"
+                        icon={<FileExcelOutlined/>}
+                        onClick={(e) => {
+                            showConfirm("确认要导出吗！", "确认", () => {
+                                const query = $.param(listParam);
+                                const url = `/api/product/export?${query}`;
+                                $(`<form method="post" action="${url}"></form>`).appendTo('body').submit().remove();
+
+                                showSuccess("导出成功, 文件下载中!");
+                            });
+                        }}
+                    >
+                        导出
                     </Button>
                 </Space>
             </div>

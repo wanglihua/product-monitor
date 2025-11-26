@@ -30,23 +30,23 @@ public class ProductExcelService
         int cellIndex = 0;
 
         ICell cell = row.CreateCell(cellIndex);
-        sheet.SetColumnWidth(cellIndex++, 32 * 256);
+        sheet.SetColumnWidth(cellIndex++, 48 * 256);
         cell.CellStyle = headerCellStyle;
         cell.SetCellType(CellType.String);
         cell.SetCellValue("产品名称");
-        
+
         cell = row.CreateCell(cellIndex);
         sheet.SetColumnWidth(cellIndex++, 32 * 256);
         cell.CellStyle = headerCellStyle;
         cell.SetCellType(CellType.String);
         cell.SetCellValue("产品英文名");
-        
+
         cell = row.CreateCell(cellIndex);
         sheet.SetColumnWidth(cellIndex++, 32 * 256);
         cell.CellStyle = headerCellStyle;
         cell.SetCellType(CellType.String);
         cell.SetCellValue("最新版本号");
-        
+
         cell = row.CreateCell(cellIndex);
         sheet.SetColumnWidth(cellIndex++, 32 * 256);
         cell.CellStyle = headerCellStyle;
@@ -65,19 +65,19 @@ public class ProductExcelService
             cell.CellStyle = contentCellStyle;
             cell.SetCellType(CellType.String);
             cell.SetCellValue(item.Name);
-            
+
             // 产品英文名
             cell = row.CreateCell(cellIndex++);
             cell.CellStyle = contentCellStyle;
             cell.SetCellType(CellType.String);
             cell.SetCellValue(item.EnglishName);
-            
+
             // 最新版本号
             cell = row.CreateCell(cellIndex++);
             cell.CellStyle = contentCellStyle;
             cell.SetCellType(CellType.String);
             cell.SetCellValue(item.LatestVersion);
-            
+
             // 版本更新时间
             cell = row.CreateCell(cellIndex++);
             cell.CellStyle = contentCellStyle;
