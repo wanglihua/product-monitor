@@ -2,7 +2,7 @@
 using Domain;
 using NLog;
 
-namespace Service;
+namespace Service.Product;
 
 [Service(ServiceType.Scoped)]
 public class ProductService

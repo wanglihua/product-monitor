@@ -2,16 +2,16 @@ using Core;
 using Domain;
 using NLog;
 
-namespace Service;
+namespace Service.ProductService;
 
 [Service(ServiceType.Scoped)]
-public class ProductSpecialServiceService
+public class ProductServiceService
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
     private readonly Db db;
 
-    public ProductSpecialServiceService(Db db)
+    public ProductServiceService(Db db)
     {
         this.db = db;
     }

@@ -9,6 +9,7 @@ using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 using Service;
+using Service.Product;
 using Web.Models.Product;
 
 namespace Web.Controllers;
