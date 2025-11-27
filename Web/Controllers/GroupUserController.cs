@@ -227,7 +227,7 @@ public class GroupUserController : Controller
     [HttpPost]
     [Route("/api/group-user/empty")]
     [Transactional(true)]
-    public IActionResult Empty([FromBody] GroupUserEmptyParam param)
+    public new IActionResult Empty([FromBody] GroupUserEmptyParam param)
     {
         ValidationUtil.Validate<GroupUserEmptyParamValidator, GroupUserEmptyParam>(param);
 

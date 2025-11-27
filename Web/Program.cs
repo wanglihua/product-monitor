@@ -2,7 +2,7 @@ using Core;
 using Core.Config;
 using Domain;
 using IGeekFan.AspNetCore.Knife4jUI;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using NLog;

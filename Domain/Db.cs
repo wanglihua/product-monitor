@@ -44,11 +44,8 @@ public class Db : DbContext
                 160: SQL Server 2022
              */
 
-            //  options.UseCompatibilityLevel(100); 这个要 ef core 8.0才行
+            options.UseCompatibilityLevel(100); // 这个要 ef core 8.0才行
         });
-
-        // ef core 7.0 中暂时用这个办法来支持 sqlserver 2008 分页
-        optionsBuilder.ReplaceService<IQueryTranslationPostprocessorFactory, SqlServer2008QueryTranslationPostprocessorFactory>();
 
         // 这里不用这个了 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution); // 对 no tracking 的 entity Update 时 会更新所有字段
 
