@@ -5,6 +5,8 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <AssemblyName>ProductMonitor.Web</AssemblyName>
+        <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+        <PublishSelfContained>true</PublishSelfContained>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -20,7 +22,7 @@
 
     <ItemGroup>
         <PackageReference Include="IGeekFan.AspNetCore.Knife4jUI" Version="0.0.16"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1"/>
     </ItemGroup>
 
 </Project>
