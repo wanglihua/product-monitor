@@ -29,7 +29,7 @@ public class PassResDataInitService(Db db)
         }
 
         var passResIdList = passResList.Select(e => e.Id).ToList();
-        var passResListInDb = db.Set<PassResEntity>()
+        var passResListInDb = db.PassRes
             .Where(e => passResIdList.Contains(e.Id))
             .ToList();
 

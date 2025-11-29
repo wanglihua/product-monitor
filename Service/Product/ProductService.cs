@@ -11,18 +11,19 @@ public class ProductService(Db db)
 
     public void UpdateLatestVersionData(long productId)
     {
-        var product = db.Set<ProductEntity>().Find(productId);
+        var product = db.Product.Find(productId);
         if (product is null)
         {
             throw new ValidationException($"指定的产品#{productId}不存在!");
         }
 
-        var versionCount = db.Set<ProductVersionEntity>()
+        var versionCount = db.ProductVersion
             .Count(e => e.ProductId == productId);
 
         product.VersionCount = versionCount;
 
-        var productLatestVersion = db.Set<ProductVersionEntity>().Where(e => e.ProductId == productId)
+        var productLatestVersion = db.ProductVersion
+            .Where(e => e.ProductId == productId)
             .OrderByDescending(e => e.Id)
             .Take(1)
             .SingleOrDefault();

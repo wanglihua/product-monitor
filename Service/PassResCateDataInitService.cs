@@ -23,7 +23,7 @@ public class PassResCateDataInitService(Db db)
         }
 
         var cateIdList = cateList.Select(e => e.Id).ToList();
-        var cateListInDb = db.Set<PassResCateEntity>()
+        var cateListInDb = db.PassResCate
             .Where(e => cateIdList.Contains(e.Id))
             .ToList();
 

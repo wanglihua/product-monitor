@@ -28,7 +28,7 @@ public class ProductRentService(Db db)
             throw new ValidationException($"学校#{collegeId}和产品#{productId}对应的租赁目录已经存在!");
         }
 
-        var college = db.Set<CollegeEntity>().Find(collegeId);
+        var college = db.College.Find(collegeId);
         if (college is null)
         {
             throw new ValidationException($"指定的学校#{collegeId}不存在!");
@@ -67,13 +67,13 @@ public class ProductRentService(Db db)
     /// <param name="productRentId">租赁目录id</param>
     public void UpdateProductRentByLatestData(long productRentId)
     {
-        var productRent = db.Set<ProductRentEntity>().Find(productRentId);
+        var productRent = db.ProductRent.Find(productRentId);
         if (productRent is null)
         {
             throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
         }
 
-        var productRentEntryLatest = db.Set<ProductRentEntryEntity>()
+        var productRentEntryLatest = db.ProductRentEntry
             .Where(e => e.ProductRentId == productRentId)
             .OrderByDescending(e => e.Id)
             .Take(1)

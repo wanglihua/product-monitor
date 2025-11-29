@@ -13,7 +13,7 @@ public class AdminUserService(Db db)
             return false;
         }
 
-        var adminUserExist = db.Set<AdminUserEntity>()
+        var adminUserExist = db.AdminUser
             .Where(e => e.UserId == userId)
             .OrderBy(e => e.UserId)
             .Take(1)

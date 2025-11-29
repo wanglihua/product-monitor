@@ -18,7 +18,7 @@ public class ProductSaleService(Db db)
     /// <returns>返回创建的销售目录Id</returns>
     public long Create(long collegeId, long productId, long userId)
     {
-        var productSale = db.Set<ProductSaleEntity>()
+        var productSale = db.ProductSale
             .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
             .OrderBy(e => e.CollegeId)
             .Take(1)
@@ -28,7 +28,7 @@ public class ProductSaleService(Db db)
             throw new ValidationException($"学校#{collegeId}和产品#{productId}对应的销售目录已经存在!");
         }
 
-        var college = db.Set<CollegeEntity>().Find(collegeId);
+        var college = db.College.Find(collegeId);
         if (college is null)
         {
             throw new ValidationException($"指定的学校#{collegeId}不存在!");
@@ -68,13 +68,13 @@ public class ProductSaleService(Db db)
     /// <param name="productSaleId">销售目录id</param>
     public void UpdateProductSaleByLatestData(long productSaleId)
     {
-        var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
+        var productSale = db.ProductSale.Find(productSaleId);
         if (productSale is null)
         {
             throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
         }
 
-        var productSaleEntryLatest = db.Set<ProductSaleEntryEntity>()
+        var productSaleEntryLatest = db.ProductSaleEntry
             .Where(e => e.ProductSaleId == productSaleId)
             .OrderByDescending(e => e.Id)
             .Take(1)

@@ -24,10 +24,10 @@ public class UserAuthService(Db db)
 
     private IList<UserPassRes> GetUserPassResList()
     {
-        var userPassResEntityList = db.Set<UserPassResEntity>().ToList();
+        var userPassResEntityList = db.UserPassRes.ToList();
 
-        var groupPassResList = db.Set<GroupUserEntity>()
-            .Join(db.Set<GroupPassResEntity>(),
+        var groupPassResList = db.GroupUser
+            .Join(db.roupPassRes,
                 gu => gu.GroupId,
                 gpr => gpr.GroupId,
                 (gu, gpr) => new { GroupUser = gu, GroupPassRes = gpr })

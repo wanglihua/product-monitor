@@ -18,7 +18,7 @@ public class ProductEvalService(Db db)
     /// <returns>返回创建的试用目录Id</returns>
     public long Create(long collegeId, long productId, long userId)
     {
-        var productEval = db.Set<ProductEvalEntity>()
+        var productEval = db.ProductEval
             .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
             .OrderBy(e => e.CollegeId)
             .Take(1)
@@ -28,7 +28,7 @@ public class ProductEvalService(Db db)
             throw new ValidationException($"学校#{collegeId}和产品#{productId}对应的试用目录已经存在!");
         }
 
-        var college = db.Set<CollegeEntity>().Find(collegeId);
+        var college = db.College.Find(collegeId);
         if (college is null)
         {
             throw new ValidationException($"指定的学校#{collegeId}不存在!");
@@ -67,13 +67,13 @@ public class ProductEvalService(Db db)
     /// <param name="productEvalId">试用目录id</param>
     public void UpdateProductEvalByLatestData(long productEvalId)
     {
-        var productEval = db.Set<ProductEvalEntity>().Find(productEvalId);
+        var productEval = db.ProductEval.Find(productEvalId);
         if (productEval is null)
         {
             throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
         }
 
-        var productEvalEntryLatest = db.Set<ProductEvalEntryEntity>()
+        var productEvalEntryLatest = db.roductEvalEntry
             .Where(e => e.ProductEvalId == productEvalId)
             .OrderByDescending(e => e.Id)
             .Take(1)

@@ -31,7 +31,7 @@ public class UserLoginService(
     public void ResetLoginTimeout(string sessionId)
     {
         DateTime now = DateTime.Now;
-        db.Set<WebSessionDataEntity>()
+        db.WebSessionData
             .Where(e => e.SessionId == sessionId && e.Type == WebSessionDataType.LoginUserId)
             .ExecuteUpdate(e => e
                 .SetProperty(x => x.UpdateTime, now)
@@ -116,7 +116,7 @@ public class UserLoginService(
     /// <returns>登录成功的用户id，如果登录不成功就返回0</returns>
     public long Login(string loginName, string password, HttpRequest request)
     {
-        var user = db.Set<UserEntity>()
+        var user = db.User
             .Where(e => loginName == e.LoginName)
             .OrderBy(e => e.LoginName)
             .Take(1)
@@ -148,7 +148,7 @@ public class UserLoginService(
         }
 
         string sessionId = webSessionService.SessionId;
-        var webSession = db.Set<WebSessionEntity>()
+        var webSession = db.WebSession
             .Where(e => e.SessionId == sessionId)
             .OrderBy(e => e.SessionId)
             .Take(1)
@@ -159,7 +159,7 @@ public class UserLoginService(
         }
 
         long webSessionId = webSession.Id;
-        var userLoginSessionData = db.Set<WebSessionDataEntity>()
+        var userLoginSessionData = db.WebSessionData
             .Where(e => e.WebSessionId == webSessionId && e.Type == WebSessionDataType.LoginUserId)
             .OrderBy(e => e.WebSessionId)
             .Take(1)
