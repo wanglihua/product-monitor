@@ -29,14 +29,14 @@ public class ProductInstallMonitorEntryController(
         ValidationUtil.Validate<ProductInstallMonitorEntryListParamValidator, ProductInstallMonitorEntryListParam>(param);
 
         long productInstallMonitorId = param.ProductInstallMonitorId;
-        var productInstallMonitor = db.Set<ProductInstallMonitorEntity>().Find(productInstallMonitorId);
+        var productInstallMonitor = db.ProductInstallMonitor.Find(productInstallMonitorId);
         if (productInstallMonitor is null)
         {
             throw new ValidationException($"指定的安装检测#{productInstallMonitorId}不存在!");
         }
 
         long collegeId = productInstallMonitor.CollegeId;
-        var college = db.Set<CollegeEntity>().Find(collegeId);
+        var college = db.College.Find(collegeId);
         if (college is null)
         {
             throw new ValidationException($"指定学校#{collegeId}不存在!");
@@ -45,7 +45,7 @@ public class ProductInstallMonitorEntryController(
         string collegeName = college.Name;
 
         long productId = productInstallMonitor.ProductId;
-        var product = db.Set<ProductEntity>().Find(productId);
+        var product = db.Product.Find(productId);
         if (product is null)
         {
             throw new ValidationException($"指定产品#{productId}不存在!");
@@ -53,7 +53,7 @@ public class ProductInstallMonitorEntryController(
 
         string productName = product.Name;
 
-        IQueryable<ProductInstallMonitorEntryEntity> query = db.Set<ProductInstallMonitorEntryEntity>();
+        IQueryable<ProductInstallMonitorEntryEntity> query = db.ProductInstallMonitorEntry;
 
         query = query.Where(p => p.ProductMonitorId == productInstallMonitorId);
 
@@ -145,7 +145,7 @@ public class ProductInstallMonitorEntryController(
 
         if (productInstallMonitorEntryId > 0)
         {
-            var productInstallMonitorEntry = db.Set<ProductInstallMonitorEntryEntity>().Find(productInstallMonitorEntryId);
+            var productInstallMonitorEntry = db.ProductInstallMonitorEntry.Find(productInstallMonitorEntryId);
             if (productInstallMonitorEntry is not null)
             {
                 model = new ProductInstallMonitorEntryDetailModel {
@@ -174,7 +174,7 @@ public class ProductInstallMonitorEntryController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productInstallMonitorEntryId = param.Id;
-        var productInstallMonitorEntry = db.Set<ProductInstallMonitorEntryEntity>().Find(productInstallMonitorEntryId);
+        var productInstallMonitorEntry = db.ProductInstallMonitorEntry.Find(productInstallMonitorEntryId);
         if (productInstallMonitorEntry is null)
         {
             throw new ValidationException($"指定的院校使用详情#{productInstallMonitorEntryId}不存在!");

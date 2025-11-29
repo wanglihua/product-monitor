@@ -45,7 +45,7 @@ public class GroupUserController(
         }
 
         IQueryable<GroupJointItem> query = db.GroupUser
-            .Join(db.Set<UserEntity>(),
+            .Join(db.User,
                 gu => gu.UserId,
                 u => u.Id,
                 (gu, u) => new GroupJointItem {

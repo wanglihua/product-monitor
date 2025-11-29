@@ -37,15 +37,15 @@ public class ProductInstallController(
     [NonAction]
     private IQueryable<ProductInstallJoinItem> GetListQuery(ProductInstallListParam param)
     {
-        IQueryable<ProductInstallJoinItem> query = db.Set<ProductInstallEntity>()
-            .Join(db.Set<CollegeEntity>(),
+        IQueryable<ProductInstallJoinItem> query = db.ProductInstall
+            .Join(db.College,
                 pi => pi.CollegeId,
                 c => c.Id,
                 (pi, c) => new ProductInstallJoinItem {
                     ProductInstall = pi,
                     College = c,
                 })
-            .Join(db.Set<ProductEntity>(),
+            .Join(db.Product,
                 pi => pi.ProductInstall.ProductId,
                 p => p.Id,
                 (pi, p) => new ProductInstallJoinItem {
@@ -53,7 +53,7 @@ public class ProductInstallController(
                     College = pi.College,
                     Product = p,
                 })
-            .Join(db.Set<UserEntity>(),
+            .Join(db.User,
                 pi => pi.ProductInstall.UserId,
                 u => u.Id,
                 (pi, u) => new ProductInstallJoinItem {
@@ -198,7 +198,7 @@ public class ProductInstallController(
 
         if (productInstallId > 0)
         {
-            var productInstall = db.Set<ProductInstallEntity>().Find(productInstallId);
+            var productInstall = db.ProductInstall.Find(productInstallId);
             if (productInstall is null)
             {
                 throw new ValidationException($"指定的产品安装#{productInstallId}不存在!");
@@ -262,7 +262,7 @@ public class ProductInstallController(
         }
         else
         {
-            productInstall = db.Set<ProductInstallEntity>().Find(productInstallId);
+            productInstall = db.ProductInstall.Find(productInstallId);
             if (productInstall is null)
             {
                 throw new ValidationException($"指定的产品安装#{productInstallId}不存在!");
@@ -318,7 +318,7 @@ public class ProductInstallController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productInstallId = param.Id;
-        var productInstall = db.Set<ProductInstallEntity>().Find(productInstallId);
+        var productInstall = db.ProductInstall.Find(productInstallId);
         if (productInstall is null)
         {
             throw new ValidationException($"指定的产品安装#{productInstallId}不存在!");

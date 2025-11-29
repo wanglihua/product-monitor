@@ -37,15 +37,15 @@ public class ProductUpdateController(
     [NonAction]
     private IQueryable<ProductUpdateJoinItem> GetListQuery(ProductUpdateListParam param)
     {
-        IQueryable<ProductUpdateJoinItem> query = db.Set<ProductUpdateEntity>()
-            .Join(db.Set<CollegeEntity>(),
+        IQueryable<ProductUpdateJoinItem> query = db.ProductUpdate
+            .Join(db.College,
                 pu => pu.CollegeId,
                 c => c.Id,
                 (pu, c) => new ProductUpdateJoinItem {
                     ProductUpdate = pu,
                     College = c,
                 })
-            .Join(db.Set<ProductEntity>(),
+            .Join(db.Product,
                 pu => pu.ProductUpdate.ProductId,
                 p => p.Id,
                 (pu, p) => new ProductUpdateJoinItem {
@@ -53,7 +53,7 @@ public class ProductUpdateController(
                     College = pu.College,
                     Product = p,
                 })
-            .Join(db.Set<UserEntity>(),
+            .Join(db.User,
                 pu => pu.ProductUpdate.UserId,
                 u => u.Id,
                 (pu, u) => new ProductUpdateJoinItem {
@@ -201,7 +201,7 @@ public class ProductUpdateController(
 
         if (productUpdateId > 0)
         {
-            var productUpdate = db.Set<ProductUpdateEntity>().Find(productUpdateId);
+            var productUpdate = db.ProductUpdate.Find(productUpdateId);
             if (productUpdate is null)
             {
                 throw new ValidationException($"指定的产品更新#{productUpdateId}不存在!");
@@ -267,7 +267,7 @@ public class ProductUpdateController(
         }
         else
         {
-            productUpdate = db.Set<ProductUpdateEntity>().Find(productUpdateId);
+            productUpdate = db.ProductUpdate.Find(productUpdateId);
             if (productUpdate is null)
             {
                 throw new ValidationException($"指定的产品更新#{productUpdateId}不存在!");
@@ -326,7 +326,7 @@ public class ProductUpdateController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productUpdateId = param.Id;
-        var productUpdate = db.Set<ProductUpdateEntity>().Find(productUpdateId);
+        var productUpdate = db.ProductUpdate.Find(productUpdateId);
         if (productUpdate is null)
         {
             throw new ValidationException($"指定的产品更新#{productUpdateId}不存在!");

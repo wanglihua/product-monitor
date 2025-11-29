@@ -29,14 +29,14 @@ public class ProductUrlMonitorEntryController(
         ValidationUtil.Validate<ProductUrlMonitorEntryListParamValidator, ProductUrlMonitorEntryListParam>(param);
 
         long productUrlMonitorId = param.ProductUrlMonitorId;
-        var productUrlMonitor = db.Set<ProductUrlMonitorEntity>().Find(productUrlMonitorId);
+        var productUrlMonitor = db.ProductUrlMonitor.Find(productUrlMonitorId);
         if (productUrlMonitor is null)
         {
             throw new ValidationException($"指定的网站监测#{productUrlMonitorId}不存在!");
         }
 
         long collegeId = productUrlMonitor.CollegeId;
-        var college = db.Set<CollegeEntity>().Find(collegeId);
+        var college = db.College.Find(collegeId);
         if (college is null)
         {
             throw new ValidationException($"指定学校#{collegeId}不存在!");
@@ -45,7 +45,7 @@ public class ProductUrlMonitorEntryController(
         string collegeName = college.Name;
 
         long productId = productUrlMonitor.ProductId;
-        var product = db.Set<ProductEntity>().Find(productId);
+        var product = db.Product.Find(productId);
         if (product is null)
         {
             throw new ValidationException($"指定产品#{productId}不存在!");
@@ -53,7 +53,7 @@ public class ProductUrlMonitorEntryController(
 
         string productName = product.Name;
 
-        IQueryable<ProductUrlMonitorEntryEntity> query = db.Set<ProductUrlMonitorEntryEntity>();
+        IQueryable<ProductUrlMonitorEntryEntity> query = db.ProductUrlMonitorEntry;
 
 
         int productUrlMonitorEntryCount = query.Count();
@@ -146,7 +146,7 @@ public class ProductUrlMonitorEntryController(
 
         if (productUrlMonitorEntryId > 0)
         {
-            var productUrlMonitorEntry = db.Set<ProductUrlMonitorEntryEntity>().Find(productUrlMonitorEntryId);
+            var productUrlMonitorEntry = db.ProductUrlMonitorEntry.Find(productUrlMonitorEntryId);
             if (productUrlMonitorEntry is not null)
             {
                 model = new ProductUrlMonitorEntryDetailModel {
@@ -184,7 +184,7 @@ public class ProductUrlMonitorEntryController(
         }
         else
         {
-            productUrlMonitorEntry = db.Set<ProductUrlMonitorEntryEntity>().Find(productUrlMonitorEntryId);
+            productUrlMonitorEntry = db.ProductUrlMonitorEntry.Find(productUrlMonitorEntryId);
             if (productUrlMonitorEntry is null)
             {
                 throw new ValidationException($"指定的网站监测详情#{productUrlMonitorEntryId}不存在!");
@@ -234,7 +234,7 @@ public class ProductUrlMonitorEntryController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productUrlMonitorEntryId = param.Id;
-        var productUrlMonitorEntry = db.Set<ProductUrlMonitorEntryEntity>().Find(productUrlMonitorEntryId);
+        var productUrlMonitorEntry = db.ProductUrlMonitorEntry.Find(productUrlMonitorEntryId);
         if (productUrlMonitorEntry is null)
         {
             throw new ValidationException($"指定的网站监测详情#{productUrlMonitorEntryId}不存在!");

@@ -31,7 +31,7 @@ public class UserController(
     {
         ValidationUtil.Validate<UserListParamValidator, UserListParam>(param);
 
-        IQueryable<UserEntity> query = db.Set<UserEntity>();
+        IQueryable<UserEntity> query = db.User;
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
@@ -135,7 +135,7 @@ public class UserController(
 
         if (userId > 0)
         {
-            var user = db.Set<UserEntity>().Find(userId);
+            var user = db.User.Find(userId);
             if (user is not null)
             {
                 model.Id = user.Id;
@@ -216,7 +216,7 @@ public class UserController(
         {
             user = new UserEntity();
 
-            var otherUser = db.Set<UserEntity>()
+            var otherUser = db.User
                 .Where(e => e.LoginName == loginName)
                 .OrderBy(e => e.LoginName)
                 .Take(1)
@@ -229,13 +229,13 @@ public class UserController(
         }
         else
         {
-            user = db.Set<UserEntity>().Find(userId);
+            user = db.User.Find(userId);
             if (user is null)
             {
                 throw new ValidationException($"指定的用户#{userId}不存在！");
             }
 
-            var otherUser = db.Set<UserEntity>()
+            var otherUser = db.User
                 .Where(e => e.LoginName == loginName && e.Id != userId)
                 .OrderBy(e => e.LoginName)
                 .Take(1)
@@ -314,13 +314,13 @@ public class UserController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long userId = param.Id;
-        var user = db.Set<UserEntity>().Find(userId);
+        var user = db.User.Find(userId);
         if (user is null)
         {
             throw new ValidationException($"指定的用户#{userId}不存在！");
         }
 
-        var admin = db.Set<AdminUserEntity>()
+        var admin = db.AdminUser
             .Where(e => e.UserId == userId)
             .OrderBy(e => e.UserId)
             .Take(1)
@@ -333,9 +333,9 @@ public class UserController(
         // todo 还有其他可能要删除的关联数据
 
         // 删除日志不是很好
-        // db.Set<ActionLogEntity>()
+        // db.ActionLog
         //     .Where(e => e.UserId == userId)
-        //     .ExecuteDelete<ActionLogEntity>();
+        //     .Log;
 
         // 删除用户
         db.Remove<UserEntity>(user);

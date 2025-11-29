@@ -37,15 +37,15 @@ public class ProductInstallMonitorController(
     {
         ValidationUtil.Validate<ProductInstallMonitorListParamValidator, ProductInstallMonitorListParam>(param);
 
-        IQueryable<ProductInstallMonitorJoinItem> query = db.Set<ProductInstallMonitorEntity>()
-            .Join(db.Set<CollegeEntity>(),
+        IQueryable<ProductInstallMonitorJoinItem> query = db.ProductInstallMonitor
+            .Join(db.College,
                 pim => pim.CollegeId,
                 c => c.Id,
                 (pim, c) => new ProductInstallMonitorJoinItem {
                     ProductInstallMonitor = pim,
                     College = c,
                 })
-            .Join(db.Set<ProductEntity>(),
+            .Join(db.Product,
                 pim => pim.ProductInstallMonitor.ProductId,
                 p => p.Id,
                 (pim, p) => new ProductInstallMonitorJoinItem {
@@ -160,7 +160,7 @@ public class ProductInstallMonitorController(
 
         if (productInstallMonitorId > 0)
         {
-            var productInstallMonitor = db.Set<ProductInstallMonitorEntity>().Find(productInstallMonitorId);
+            var productInstallMonitor = db.ProductInstallMonitor.Find(productInstallMonitorId);
             if (productInstallMonitor is not null)
             {
                 model = new ProductInstallMonitorDetailModel {
@@ -191,7 +191,7 @@ public class ProductInstallMonitorController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productInstallMonitorId = param.Id;
-        var productInstallMonitor = db.Set<ProductInstallMonitorEntity>().Find(productInstallMonitorId);
+        var productInstallMonitor = db.ProductInstallMonitor.Find(productInstallMonitorId);
         if (productInstallMonitor is null)
         {
             throw new ValidationException($"指定的安装监测#{productInstallMonitorId}不存在!");

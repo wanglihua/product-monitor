@@ -37,14 +37,14 @@ public class ProductRentEntryController(
         ValidationUtil.Validate<ProductRentEntryListParamValidator, ProductRentEntryListParam>(param);
 
         long productRentId = param.ProductRentId;
-        var productRent = db.Set<ProductRentEntity>().Find(productRentId);
+        var productRent = db.ProductRent.Find(productRentId);
         if (productRent is null)
         {
             throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
         }
 
         long collegeId = productRent.CollegeId;
-        var college = db.Set<CollegeEntity>().Find(collegeId);
+        var college = db.College.Find(collegeId);
         if (college is null)
         {
             throw new ValidationException($"指定学校#{collegeId}不存在!");
@@ -53,7 +53,7 @@ public class ProductRentEntryController(
         string collegeName = college.Name;
 
         long productId = productRent.ProductId;
-        var product = db.Set<ProductEntity>().Find(productId);
+        var product = db.Product.Find(productId);
         if (product is null)
         {
             throw new ValidationException($"指定产品#{productId}不存在!");
@@ -61,8 +61,8 @@ public class ProductRentEntryController(
 
         string productName = product.Name;
 
-        IQueryable<ProductRentEntryJoinItem> query = db.Set<ProductRentEntryEntity>()
-            .Join(db.Set<UserEntity>(),
+        IQueryable<ProductRentEntryJoinItem> query = db.ProductRentEntry
+            .Join(db.User,
                 pse => pse.UserId,
                 u => u.Id,
                 (pse, u) => new ProductRentEntryJoinItem {
@@ -157,7 +157,7 @@ public class ProductRentEntryController(
         long productRentId = param.ProductRentId;
         if (productRentEntryId > 0)
         {
-            var productRentEntry = db.Set<ProductRentEntryEntity>().Find(productRentEntryId);
+            var productRentEntry = db.ProductRentEntry.Find(productRentEntryId);
             if (productRentEntry is null)
             {
                 throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
@@ -168,14 +168,14 @@ public class ProductRentEntryController(
 
         if (productRentId > 0)
         {
-            var productRent = db.Set<ProductRentEntity>().Find(productRentId);
+            var productRent = db.ProductRent.Find(productRentId);
             if (productRent is null)
             {
                 throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
             }
 
             collegeId = productRent.CollegeId;
-            var college = db.Set<CollegeEntity>().Find(collegeId);
+            var college = db.College.Find(collegeId);
             if (college is null)
             {
                 throw new ValidationException($"指定学校#{collegeId}不存在!");
@@ -184,7 +184,7 @@ public class ProductRentEntryController(
             collegeName = college.Name;
 
             productId = productRent.ProductId;
-            var product = db.Set<ProductEntity>().Find(productId);
+            var product = db.Product.Find(productId);
             if (product is null)
             {
                 throw new ValidationException($"指定产品#{productId}不存在!");
@@ -210,7 +210,7 @@ public class ProductRentEntryController(
 
         if (productRentEntryId > 0)
         {
-            var productRentEntry = db.Set<ProductRentEntryEntity>().Find(productRentEntryId);
+            var productRentEntry = db.ProductRentEntry.Find(productRentEntryId);
             if (productRentEntry is null)
             {
                 throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
@@ -267,7 +267,7 @@ public class ProductRentEntryController(
                 }
 
                 collegeId = model.CollegeId;
-                var college = db.Set<CollegeEntity>().Find(collegeId);
+                var college = db.College.Find(collegeId);
                 if (college is null)
                 {
                     throw new ValidationException($"指定的学校#{collegeId}不存在!");
@@ -305,7 +305,7 @@ public class ProductRentEntryController(
         ProductRentEntryEntity? productRentEntry;
         if (isCreate == false)
         {
-            productRentEntry = db.Set<ProductRentEntryEntity>().Find(productRentEntryId);
+            productRentEntry = db.ProductRentEntry.Find(productRentEntryId);
             if (productRentEntry is null)
             {
                 throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
@@ -321,7 +321,7 @@ public class ProductRentEntryController(
             }
             else
             {
-                var productRent = db.Set<ProductRentEntity>()
+                var productRent = db.ProductRent
                     .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
                     .OrderBy(e => e.CollegeId)
                     .Take(1)
@@ -393,7 +393,7 @@ public class ProductRentEntryController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productRentEntryId = param.Id;
-        var productRentEntry = db.Set<ProductRentEntryEntity>().Find(productRentEntryId);
+        var productRentEntry = db.ProductRentEntry.Find(productRentEntryId);
         if (productRentEntry is null)
         {
             throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
@@ -409,7 +409,7 @@ public class ProductRentEntryController(
         // 删除最后一个明细数据的时候，删除主数据
         bool productRentDeleted = false;
         long productRentId = productRentEntry.ProductRentId;
-        var productRentEntryExists = db.Set<ProductRentEntryEntity>()
+        var productRentEntryExists = db.ProductRentEntry
             .Where(e => e.ProductRentId == productRentId)
             .OrderBy(e => e.ProductRentId)
             .Take(1)
@@ -417,7 +417,7 @@ public class ProductRentEntryController(
         if (productRentEntryExists is null)
         {
             // 如果最后一个明细也不存在了， 就删除主数据
-            var productRent = db.Set<ProductRentEntity>().Find(productRentId);
+            var productRent = db.ProductRent.Find(productRentId);
             if (productRent is null)
             {
                 // 一般肯定存在的

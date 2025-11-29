@@ -39,14 +39,14 @@ public class ProductVersionController(
 
         long productId = param.ProductId;
 
-        var product = db.Set<ProductEntity>().Find(productId);
+        var product = db.Product.Find(productId);
         if (product is null)
         {
             throw new ValidationException($"指定的产品#{productId}不存在!");
         }
 
-        IQueryable<ProductVersionJoinItem> query = db.Set<ProductVersionEntity>()
-            .Join(db.Set<ProductEntity>(),
+        IQueryable<ProductVersionJoinItem> query = db.ProductVersion
+            .Join(db.Product,
                 pv => pv.ProductId,
                 p => p.Id,
                 (pv, p) => new ProductVersionJoinItem {
@@ -133,7 +133,7 @@ public class ProductVersionController(
         ValidationUtil.Validate<ProductVersionDetailParamValidator, ProductVersionDetailParam>(param);
 
         long productId = param.ProductId;
-        var product = db.Set<ProductEntity>().Find(productId);
+        var product = db.Product.Find(productId);
         if (product is null)
         {
             throw new ValidationException($"指定的产品#{productId}不存在!");
@@ -155,7 +155,7 @@ public class ProductVersionController(
 
         if (productVersionId > 0)
         {
-            var productVersion = db.Set<ProductVersionEntity>().Find(productVersionId);
+            var productVersion = db.ProductVersion.Find(productVersionId);
             if (productVersion is not null)
             {
                 model = new ProductVersionDetailModel {
@@ -185,7 +185,7 @@ public class ProductVersionController(
         ValidationUtil.Validate<ProductVersionDetailModelValidator, ProductVersionDetailModel>(model);
 
         long productId = model.ProductId;
-        var product = db.Set<ProductEntity>().Find(productId);
+        var product = db.Product.Find(productId);
         if (product is null)
         {
             throw new ValidationException($"指定的产品目录#{productId}不存在!");
@@ -204,7 +204,7 @@ public class ProductVersionController(
         }
         else
         {
-            productVersion = db.Set<ProductVersionEntity>().Find(productVersionId);
+            productVersion = db.ProductVersion.Find(productVersionId);
             if (productVersion is null)
             {
                 throw new ValidationException($"指定的产品版本#{productVersionId}不存在!");
@@ -260,14 +260,14 @@ public class ProductVersionController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productVersionId = param.Id;
-        var productVersion = db.Set<ProductVersionEntity>().Find(productVersionId);
+        var productVersion = db.ProductVersion.Find(productVersionId);
         if (productVersion is null)
         {
             throw new ValidationException($"指定的产品版本#{productVersionId}不存在!");
         }
 
         long productId = productVersion.ProductId;
-        var product = db.Set<ProductEntity>().Find(productId);
+        var product = db.Product.Find(productId);
         if (product is null)
         {
             throw new ValidationException($"指定的产品目录#{productId}不存在!");

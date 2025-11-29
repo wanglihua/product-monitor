@@ -39,15 +39,15 @@ public class ProductSpecialServiceController(
     {
         ValidationUtil.Validate<ProductSpecialServiceListParamValidator, ProductSpecialServiceListParam>(param);
 
-        IQueryable<ProductSpecialServiceJoinItem> query = db.Set<ProductSpecialServiceEntity>()
-            .Join(db.Set<CollegeEntity>(),
+        IQueryable<ProductSpecialServiceJoinItem> query = db.ProductSpecialService
+            .Join(db.College,
                 pss => pss.CollegeId,
                 c => c.Id,
                 (pss, c) => new ProductSpecialServiceJoinItem {
                     ProductSpecialService = pss,
                     College = c,
                 })
-            .Join(db.Set<ProductEntity>(),
+            .Join(db.Product,
                 pss => pss.ProductSpecialService.ProductId,
                 p => p.Id,
                 (pss, p) => new ProductSpecialServiceJoinItem {
@@ -55,7 +55,7 @@ public class ProductSpecialServiceController(
                     College = pss.College,
                     Product = p,
                 })
-            .Join(db.Set<UserEntity>(),
+            .Join(db.User,
                 pss => pss.ProductSpecialService.UserId,
                 u => u.Id,
                 (pss, u) => new ProductSpecialServiceJoinItem {
@@ -184,7 +184,7 @@ public class ProductSpecialServiceController(
 
         if (productSpecialServiceId > 0)
         {
-            var productSpecialService = db.Set<ProductSpecialServiceEntity>().Find(productSpecialServiceId);
+            var productSpecialService = db.ProductSpecialService.Find(productSpecialServiceId);
 
             if (productSpecialService is null)
             {
@@ -248,7 +248,7 @@ public class ProductSpecialServiceController(
         }
         else
         {
-            productSpecialService = db.Set<ProductSpecialServiceEntity>().Find(productSpecialServiceId);
+            productSpecialService = db.ProductSpecialService.Find(productSpecialServiceId);
             if (productSpecialService is null)
             {
                 throw new ValidationException($"指定的特殊售后#{productSpecialServiceId}不存在!");
@@ -303,7 +303,7 @@ public class ProductSpecialServiceController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productSpecialServiceId = param.Id;
-        var productSpecialService = db.Set<ProductSpecialServiceEntity>().Find(productSpecialServiceId);
+        var productSpecialService = db.ProductSpecialService.Find(productSpecialServiceId);
         if (productSpecialService is null)
         {
             throw new ValidationException($"指定的特殊售后#{productSpecialServiceId}不存在!");

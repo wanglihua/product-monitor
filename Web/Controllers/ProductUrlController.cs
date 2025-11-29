@@ -28,7 +28,7 @@ public class ProductUrlController(
     {
         ValidationUtil.Validate<ProductUrlListParamValidator, ProductUrlListParam>(param);
 
-        IQueryable<ProductUrlEntity> query = db.Set<ProductUrlEntity>();
+        IQueryable<ProductUrlEntity> query = db.ProductUrl;
 
         if (param.TypeQuery != ProductUrlType.None)
         {
@@ -145,7 +145,7 @@ public class ProductUrlController(
 
         if (productUrlId > 0)
         {
-            var productUrl = db.Set<ProductUrlEntity>().Find(productUrlId);
+            var productUrl = db.ProductUrl.Find(productUrlId);
             if (productUrl is not null)
             {
                 model = new ProductUrlDetailModel {
@@ -184,7 +184,7 @@ public class ProductUrlController(
         }
         else
         {
-            productUrl = db.Set<ProductUrlEntity>().Find(productUrlId);
+            productUrl = db.ProductUrl.Find(productUrlId);
             if (productUrl is null)
             {
                 throw new ValidationException($"指定的网址管理#{productUrlId}不存在!");
@@ -235,7 +235,7 @@ public class ProductUrlController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productUrlId = param.Id;
-        var productUrl = db.Set<ProductUrlEntity>().Find(productUrlId);
+        var productUrl = db.ProductUrl.Find(productUrlId);
         if (productUrl is null)
         {
             throw new ValidationException($"指定的网址管理#{productUrlId}不存在!");

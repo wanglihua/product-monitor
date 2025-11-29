@@ -32,15 +32,15 @@ public class ProductRentController(Db db) : Controller
     {
         ValidationUtil.Validate<ProductRentListParamValidator, ProductRentListParam>(param);
 
-        IQueryable<ProductRentJoinItem> query = db.Set<ProductRentEntity>()
-            .Join(db.Set<CollegeEntity>(),
+        IQueryable<ProductRentJoinItem> query = db.ProductRent
+            .Join(db.College,
                 pr => pr.CollegeId,
                 c => c.Id,
                 (pr, c) => new ProductRentJoinItem {
                     ProductRent = pr,
                     College = c,
                 })
-            .Join(db.Set<ProductEntity>(),
+            .Join(db.Product,
                 pr => pr.ProductRent.ProductId,
                 p => p.Id,
                 (pr, p) => new ProductRentJoinItem {

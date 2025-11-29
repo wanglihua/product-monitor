@@ -186,7 +186,7 @@ public class ProductEvalEntryController(
             collegeName = college.Name;
 
             productId = productEval.ProductId;
-            var product = db.Set<ProductEntity>().Find(productId);
+            var product = db.Product.Find(productId);
             if (product is null)
             {
                 throw new ValidationException($"指定产品#{productId}不存在!");
@@ -410,7 +410,7 @@ public class ProductEvalEntryController(
         // 删除最后一个明细数据的时候，删除主数据
         bool productEvalDeleted = false;
         long productEvalId = productEvalEntry.ProductEvalId;
-        var productEvalEntryExists = db.Set<ProductEvalEntryEntity>()
+        var productEvalEntryExists = db.ProductEvalEntry
             .Where(e => e.ProductEvalId == productEvalId)
             .OrderBy(e => e.ProductEvalId)
             .Take(1)
@@ -418,7 +418,7 @@ public class ProductEvalEntryController(
         if (productEvalEntryExists is null)
         {
             // 如果最后一个明细也不存在了， 就删除主数据
-            var productEval = db.Set<ProductEvalEntity>().Find(productEvalId);
+            var productEval = db.ProductEval.Find(productEvalId);
             if (productEval is null)
             {
                 // 一般肯定存在的

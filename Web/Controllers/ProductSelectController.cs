@@ -17,7 +17,7 @@ public class ProductSelectController(Db db) : Controller
     [Transactional(false)]
     public IActionResult Data([FromBody] ProductSelectDataQueryParam param)
     {
-        IQueryable<ProductEntity> query = db.Set<ProductEntity>();
+        IQueryable<ProductEntity> query = db.Product;
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {

@@ -139,7 +139,7 @@ public class GroupPassResController(
             throw new ValidationException($"指定的群组#{groupId}不存在!");
         }
 
-        IQueryable<GroupPassResJoinItem> query = db.Set<PassResEntity>()
+        IQueryable<GroupPassResJoinItem> query = db.PassRes
             .Join(db.PassResCate,
                 pr => pr.CateId,
                 prc => prc.Id,

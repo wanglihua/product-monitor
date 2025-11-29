@@ -37,14 +37,14 @@ public class ProductSaleEntryController(
         ValidationUtil.Validate<ProductSaleEntryListParamValidator, ProductSaleEntryListParam>(param);
 
         long productSaleId = param.ProductSaleId;
-        var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
+        var productSale = db.ProductSale.Find(productSaleId);
         if (productSale is null)
         {
             throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
         }
 
         long collegeId = productSale.CollegeId;
-        var college = db.Set<CollegeEntity>().Find(collegeId);
+        var college = db.College.Find(collegeId);
         if (college is null)
         {
             throw new ValidationException($"指定学校#{collegeId}不存在!");
@@ -53,7 +53,7 @@ public class ProductSaleEntryController(
         string collegeName = college.Name;
 
         long productId = productSale.ProductId;
-        var product = db.Set<ProductEntity>().Find(productId);
+        var product = db.Product.Find(productId);
         if (product is null)
         {
             throw new ValidationException($"指定产品#{productId}不存在!");
@@ -61,8 +61,8 @@ public class ProductSaleEntryController(
 
         string productName = product.Name;
 
-        IQueryable<ProductSaleEntryJoinItem> query = db.Set<ProductSaleEntryEntity>()
-            .Join(db.Set<UserEntity>(),
+        IQueryable<ProductSaleEntryJoinItem> query = db.ProductSaleEntry
+            .Join(db.User,
                 pse => pse.UserId,
                 u => u.Id,
                 (pse, u) => new ProductSaleEntryJoinItem {
@@ -166,7 +166,7 @@ public class ProductSaleEntryController(
         long productSaleId = param.ProductSaleId;
         if (productSaleEntryId > 0)
         {
-            var productSaleEntry = db.Set<ProductSaleEntryEntity>().Find(productSaleEntryId);
+            var productSaleEntry = db.ProductSaleEntry.Find(productSaleEntryId);
             if (productSaleEntry is null)
             {
                 throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
@@ -177,14 +177,14 @@ public class ProductSaleEntryController(
 
         if (productSaleId > 0)
         {
-            var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
+            var productSale = db.ProductSale.Find(productSaleId);
             if (productSale is null)
             {
                 throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
             }
 
             collegeId = productSale.CollegeId;
-            var college = db.Set<CollegeEntity>().Find(collegeId);
+            var college = db.College.Find(collegeId);
             if (college is null)
             {
                 throw new ValidationException($"指定学校#{collegeId}不存在!");
@@ -193,7 +193,7 @@ public class ProductSaleEntryController(
             collegeName = college.Name;
 
             productId = productSale.ProductId;
-            var product = db.Set<ProductEntity>().Find(productId);
+            var product = db.Product.Find(productId);
             if (product is null)
             {
                 throw new ValidationException($"指定产品#{productId}不存在!");
@@ -220,7 +220,7 @@ public class ProductSaleEntryController(
 
         if (productSaleEntryId > 0)
         {
-            var productSaleEntry = db.Set<ProductSaleEntryEntity>().Find(productSaleEntryId);
+            var productSaleEntry = db.ProductSaleEntry.Find(productSaleEntryId);
             if (productSaleEntry is null)
             {
                 throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
@@ -278,7 +278,7 @@ public class ProductSaleEntryController(
                 }
 
                 collegeId = model.CollegeId;
-                var college = db.Set<CollegeEntity>().Find(collegeId);
+                var college = db.College.Find(collegeId);
                 if (college is null)
                 {
                     throw new ValidationException($"指定的学校#{collegeId}不存在!");
@@ -308,7 +308,7 @@ public class ProductSaleEntryController(
         ProductSaleEntryEntity? productSaleEntry;
         if (isCreate == false)
         {
-            productSaleEntry = db.Set<ProductSaleEntryEntity>().Find(productSaleEntryId);
+            productSaleEntry = db.ProductSaleEntry.Find(productSaleEntryId);
             if (productSaleEntry is null)
             {
                 throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
@@ -324,7 +324,7 @@ public class ProductSaleEntryController(
             }
             else
             {
-                var productSale = db.Set<ProductSaleEntity>()
+                var productSale = db.ProductSale
                     .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
                     .OrderBy(e => e.CollegeId)
                     .Take(1)
@@ -388,7 +388,7 @@ public class ProductSaleEntryController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productSaleEntryId = param.Id;
-        var productSaleEntry = db.Set<ProductSaleEntryEntity>().Find(productSaleEntryId);
+        var productSaleEntry = db.ProductSaleEntry.Find(productSaleEntryId);
         if (productSaleEntry is null)
         {
             throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
@@ -404,7 +404,7 @@ public class ProductSaleEntryController(
         // 删除最后一个明细数据的时候，删除主数据
         bool productSaleDeleted = false;
         long productSaleId = productSaleEntry.ProductSaleId;
-        var productSaleEntryExists = db.Set<ProductSaleEntryEntity>()
+        var productSaleEntryExists = db.ProductSaleEntry
             .Where(e => e.ProductSaleId == productSaleId)
             .OrderBy(e => e.ProductSaleId)
             .Take(1)
@@ -412,7 +412,7 @@ public class ProductSaleEntryController(
         if (productSaleEntryExists is null)
         {
             // 如果最后一个明细也不存在了， 就删除主数据
-            var productSale = db.Set<ProductSaleEntity>().Find(productSaleId);
+            var productSale = db.ProductSale.Find(productSaleId);
             if (productSale is null)
             {
                 // 一般肯定存在的

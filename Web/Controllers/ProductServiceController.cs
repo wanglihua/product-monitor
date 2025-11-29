@@ -39,15 +39,15 @@ public class ProductServiceController(
     {
         ValidationUtil.Validate<ProductServiceListParamValidator, ProductServiceListParam>(param);
 
-        IQueryable<ProductServiceJoinItem> query = db.Set<ProductServiceEntity>()
-            .Join(db.Set<CollegeEntity>(),
+        IQueryable<ProductServiceJoinItem> query = db.ProductService
+            .Join(db.College,
                 ps => ps.CollegeId,
                 c => c.Id,
                 (ps, c) => new ProductServiceJoinItem {
                     ProductService = ps,
                     College = c,
                 })
-            .Join(db.Set<ProductEntity>(),
+            .Join(db.Product,
                 ps => ps.ProductService.ProductId,
                 p => p.Id,
                 (ps, p) => new ProductServiceJoinItem {
@@ -55,7 +55,7 @@ public class ProductServiceController(
                     College = ps.College,
                     Product = p,
                 })
-            .Join(db.Set<UserEntity>(),
+            .Join(db.User,
                 pii => pii.ProductService.UserId,
                 u => u.Id,
                 (pii, u) => new ProductServiceJoinItem {
@@ -185,7 +185,7 @@ public class ProductServiceController(
 
         if (productServiceId > 0)
         {
-            var productService = db.Set<ProductServiceEntity>().Find(productServiceId);
+            var productService = db.ProductService.Find(productServiceId);
             if (productService is null)
             {
                 throw new ValidationException($"指定的售后维护#{productServiceId}不存在!");
@@ -249,7 +249,7 @@ public class ProductServiceController(
         }
         else
         {
-            productService = db.Set<ProductServiceEntity>().Find(productServiceId);
+            productService = db.ProductService.Find(productServiceId);
             if (productService is null)
             {
                 throw new ValidationException($"指定的售后服务#{productServiceId}不存在!");
@@ -305,7 +305,7 @@ public class ProductServiceController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productServiceId = param.Id;
-        var productService = db.Set<ProductServiceEntity>().Find(productServiceId);
+        var productService = db.ProductService.Find(productServiceId);
         if (productService is null)
         {
             throw new ValidationException($"指定的售后服务#{productServiceId}不存在!");

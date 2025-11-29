@@ -37,15 +37,15 @@ public class ProductUrlMonitorController(
     {
         ValidationUtil.Validate<ProductUrlMonitorListParamValidator, ProductUrlMonitorListParam>(param);
 
-        IQueryable<ProductUrlMonitorJoinItem> query = db.Set<ProductUrlMonitorEntity>()
-            .Join(db.Set<CollegeEntity>(),
+        IQueryable<ProductUrlMonitorJoinItem> query = db.ProductUrlMonitor
+            .Join(db.College,
                 pum => pum.CollegeId,
                 c => c.Id,
                 (pum, c) => new ProductUrlMonitorJoinItem {
                     ProductUrlMonitor = pum,
                     College = c,
                 })
-            .Join(db.Set<ProductEntity>(),
+            .Join(db.Product,
                 pum => pum.ProductUrlMonitor.ProductId,
                 p => p.Id,
                 (pum, p) => new ProductUrlMonitorJoinItem {
@@ -175,7 +175,7 @@ public class ProductUrlMonitorController(
 
         if (productUrlMonitorId > 0)
         {
-            var productUrlMonitor = db.Set<ProductUrlMonitorEntity>().Find(productUrlMonitorId);
+            var productUrlMonitor = db.ProductUrlMonitor.Find(productUrlMonitorId);
             if (productUrlMonitor is not null)
             {
                 model = new ProductUrlMonitorDetailModel {
@@ -204,7 +204,7 @@ public class ProductUrlMonitorController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productUrlMonitorId = param.Id;
-        var productUrlMonitor = db.Set<ProductUrlMonitorEntity>().Find(productUrlMonitorId);
+        var productUrlMonitor = db.ProductUrlMonitor.Find(productUrlMonitorId);
         if (productUrlMonitor is null)
         {
             throw new ValidationException($"指定的网站监测#{productUrlMonitorId}不存在!");
