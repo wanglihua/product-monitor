@@ -36,7 +36,7 @@ public class UserPasswordController(
 
         long loginUserId = userLoginService.GetLoginUserId();
 
-        var user = db.Set<UserEntity>().Find(loginUserId);
+        var user = db.User.Find(loginUserId);
         if (user == null)
         {
             throw new ValidationException($"指定的用户#{loginUserId}不存在!");

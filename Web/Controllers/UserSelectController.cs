@@ -21,7 +21,7 @@ public class UserSelectController(Db db) : Controller
     {
         ValidationUtil.Validate<UserSelectDataQueryParamValidator, UserSelectDataQueryParam>(param);
 
-        IQueryable<UserEntity> query = db.Set<UserEntity>();
+        IQueryable<UserEntity> query = db.User;
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {

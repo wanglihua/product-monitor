@@ -30,20 +30,20 @@ public class UserPassResController(
 
         long passResId = param.PassResId;
 
-        var passRes = db.Set<PassResEntity>().Find(passResId);
+        var passRes = db.PassRes.Find(passResId);
         if (passRes is null)
         {
             throw new ValidationException($"指定的权限资源#{passResId}不存在!");
         }
 
         long passResCateId = passRes.CateId;
-        var passResCate = db.Set<PassResCateEntity>().Find(passResCateId);
+        var passResCate = db.PassResCate.Find(passResCateId);
         if (passResCate is null)
         {
             throw new ValidationException($"指定的权限资源类别#{passResCateId}不存在!");
         }
 
-        IQueryable<UserEntity> query = db.Set<UserEntity>();
+        IQueryable<UserEntity> query = db.User;
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
@@ -94,7 +94,7 @@ public class UserPassResController(
 
         var userIdList = userList.Select(e => e.Id).ToList();
 
-        var userPassResList = db.Set<UserPassResEntity>()
+        var userPassResList = db.UserPassRes
             .Where(e => e.PassResId == passResId && userIdList.Contains(e.UserId))
             .ToList();
 
@@ -143,14 +143,14 @@ public class UserPassResController(
         ValidationUtil.Validate<UserPassResListParamValidator, UserPassResListParam>(param);
 
         long userId = param.UserId;
-        var user = db.Set<UserEntity>().Find(userId);
+        var user = db.User.Find(userId);
         if (user is null)
         {
             throw new ValidationException($"指定的用户#{userId}不存在!");
         }
 
-        IQueryable<UserPassResJoinItem> query = db.Set<PassResEntity>()
-            .Join(db.Set<PassResCateEntity>(),
+        IQueryable<UserPassResJoinItem> query = db.PassRes
+            .Join(db.PassResCate,
                 pr => pr.CateId,
                 prc => prc.Id,
                 (pr, prc) => new UserPassResJoinItem {
@@ -196,7 +196,7 @@ public class UserPassResController(
             .ToList();
 
         var passResIdList = passResList.Select(e => e.PassRes.Id).ToList();
-        var userPassResList = db.Set<UserPassResEntity>()
+        var userPassResList = db.UserPassRes
             .Where(e => e.UserId == userId && passResIdList.Contains(e.PassResId))
             .ToList();
 
@@ -241,7 +241,7 @@ public class UserPassResController(
         long userId = param.UserId;
         long passResId = param.PassResId;
 
-        var userPassRes = db.Set<UserPassResEntity>()
+        var userPassRes = db.UserPassRes
             .Where(e => e.UserId == userId && e.PassResId == passResId)
             .OrderBy(e => e.UserId)
             .Take(1)
@@ -281,7 +281,7 @@ public class UserPassResController(
         long userId = param.UserId;
         long passResId = param.PassResId;
 
-        var userPassRes = db.Set<UserPassResEntity>()
+        var userPassRes = db.UserPassRes
             .Where(e => e.UserId == userId && e.PassResId == passResId)
             .OrderBy(e => e.UserId)
             .Take(1)
