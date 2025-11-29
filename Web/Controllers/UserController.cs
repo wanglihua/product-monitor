@@ -298,10 +298,12 @@ public class UserController : Controller
 
         if (isCreate == true)
         {
+            db.Set<UserEntity>().Add(user);
             db.Add<UserEntity>(user);
         }
         else
         {
+            db.Set<UserEntity>().Update(user);
             db.Update<UserEntity>(user);
         }
 

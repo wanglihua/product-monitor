@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using Core;
+﻿using Core;
 
 namespace Domain;
 

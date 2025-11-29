@@ -1,14 +1,12 @@
 ﻿using Core;
 using Core.Config;
-using Core.Database;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using NLog;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Domain;
 
-public class Db : DbContext
+public partial class Db : DbContext
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
