@@ -241,7 +241,7 @@ public class ProductVersionController : Controller
         }
         else
         {
-            db.Update<ProductVersionEntity>(productVersion);
+            db.ProductVersion.Update(productVersion);
         }
 
         db.SaveChanges();

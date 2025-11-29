@@ -45,7 +45,7 @@ public class ProductService
             product.VersionUpdateTime = null;
         }
 
-        db.Update<ProductEntity>(product);
+        db.Product.Update(product);
         db.SaveChanges();
     }
 }

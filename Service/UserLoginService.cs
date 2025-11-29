@@ -197,7 +197,7 @@ public class UserLoginService
         else
         {
             userLoginSessionData.Data = user.Id.ToString();
-            db.Update<WebSessionDataEntity>(userLoginSessionData);
+            db.WebSessionData.Update(userLoginSessionData);
         }
 
         // login log
@@ -205,8 +205,8 @@ public class UserLoginService
 
         // user 
         user.LastLoginTime = DateTime.Now;
-        db.Update<UserEntity>(user);
 
+        db.User.Update(user);
         db.SaveChanges();
 
         // 登录时更新授权缓存

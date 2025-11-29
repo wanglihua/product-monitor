@@ -194,7 +194,7 @@ public class CollegeController : Controller
         }
         else
         {
-            db.Update<CollegeEntity>(college);
+            db.College.Update(college);
         }
 
         db.SaveChanges();

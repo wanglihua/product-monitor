@@ -215,7 +215,7 @@ public class ProductUrlMonitorEntryController : Controller
         }
         else
         {
-            db.Update<ProductUrlMonitorEntryEntity>(productUrlMonitorEntry);
+            db.ProductUrlMonitorEntry.Update(productUrlMonitorEntry);
         }
 
         db.SaveChanges();

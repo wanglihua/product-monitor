@@ -75,7 +75,7 @@ public class PassResDataInitService
             {
                 if (isUpdate == true)
                 {
-                    db.Update<PassResEntity>(passResInDb);
+                    db.PassRes.Update(passRes);
                 }
                 else
                 {

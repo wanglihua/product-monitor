@@ -208,7 +208,7 @@ public class ProductController : Controller
         }
         else
         {
-            db.Update<ProductEntity>(product);
+            db.Product.Update(product);
         }
 
         db.SaveChanges();

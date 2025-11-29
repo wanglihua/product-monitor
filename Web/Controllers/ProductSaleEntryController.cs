@@ -369,7 +369,7 @@ public class ProductSaleEntryController : Controller
         }
         else
         {
-            db.Update<ProductSaleEntryEntity>(productSaleEntry);
+            db.ProductSaleEntry.Update(productSaleEntry);
         }
 
         db.SaveChanges();

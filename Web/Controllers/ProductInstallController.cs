@@ -302,7 +302,7 @@ public class ProductInstallController : Controller
         }
         else
         {
-            db.Update<ProductInstallEntity>(productInstall);
+            db.ProductInstall.Update(productInstall);
         }
 
         db.SaveChanges();

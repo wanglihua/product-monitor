@@ -107,7 +107,7 @@ public class ProductRentService
         // RentTimes
         // ServiceTimes
 
-        db.Update<ProductRentEntity>(productRent);
+        db.ProductRent.Update(productRent);
         db.SaveChanges();
     }
 }

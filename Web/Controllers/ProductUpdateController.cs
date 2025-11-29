@@ -309,7 +309,7 @@ public class ProductUpdateController : Controller
         }
         else
         {
-            db.Update<ProductUpdateEntity>(productUpdate);
+            db.ProductUpdate.Update(productUpdate);
         }
 
         db.SaveChanges();

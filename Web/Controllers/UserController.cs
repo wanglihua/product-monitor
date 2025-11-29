@@ -302,7 +302,7 @@ public class UserController : Controller
         }
         else
         {
-            db.Update<UserEntity>(user);
+            db.User.Update(user);
         }
 
         db.SaveChanges();

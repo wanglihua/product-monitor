@@ -375,7 +375,7 @@ public class ProductEvalEntryController : Controller
         }
         else
         {
-            db.Update<ProductEvalEntryEntity>(productEvalEntry);
+            db.ProductEvalEntry.Update(productEvalEntry);
         }
 
         db.SaveChanges();

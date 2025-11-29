@@ -103,7 +103,7 @@ public class ProductSaleService
         // UpdateTimes
         // ServiceTimes
 
-        db.Update<ProductSaleEntity>(productSale);
+        db.ProductSale.Update(productSale);
         db.SaveChanges();
     }
 }

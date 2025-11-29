@@ -285,7 +285,7 @@ public class ProductSpecialServiceController : Controller
         }
         else
         {
-            db.Update<ProductSpecialServiceEntity>(productSpecialService);
+            db.ProductSpecialService.Update(productSpecialService);
         }
 
         db.SaveChanges();

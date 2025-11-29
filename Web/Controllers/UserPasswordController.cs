@@ -4,6 +4,7 @@ using Core.Database;
 using Core.Util;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.UserPassword;
@@ -65,7 +66,7 @@ public class UserPasswordController : Controller
         user.Password = password;
         user.Salt = salt;
 
-        db.Update<UserEntity>(user);
+        db.User.Update(user);
         db.SaveChanges();
 
         return Json(new Dictionary<string, object> {

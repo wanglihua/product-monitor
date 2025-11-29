@@ -216,7 +216,7 @@ public class ProductUrlController : Controller
         }
         else
         {
-            db.Update<ProductUrlEntity>(productUrl);
+            db.ProductUrl.Update(productUrl);
         }
 
         db.SaveChanges();

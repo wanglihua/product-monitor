@@ -181,7 +181,7 @@ public class GroupController : Controller
         }
         else
         {
-            db.Update<GroupEntity>(group);
+            db.Group.Update(group);
         }
 
         db.SaveChanges();

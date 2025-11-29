@@ -374,7 +374,7 @@ public class ProductRentEntryController : Controller
         }
         else
         {
-            db.Update<ProductRentEntryEntity>(productRentEntry);
+            db.ProductRentEntry.Update(productRentEntry);
         }
 
         db.SaveChanges();

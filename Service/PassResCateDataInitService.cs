@@ -63,7 +63,7 @@ public class PassResCateDataInitService
             {
                 if (isUpdate == true)
                 {
-                    db.Update<PassResCateEntity>(cateInDb);
+                    db.PassResCate.Update(cateInDb);
                 }
                 else
                 {
