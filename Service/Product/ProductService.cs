@@ -5,16 +5,9 @@ using NLog;
 namespace Service.Product;
 
 [Service(ServiceType.Scoped)]
-public class ProductService
+public class ProductService(Db db)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public ProductService(Db db)
-    {
-        this.db = db;
-    }
 
     public void UpdateLatestVersionData(long productId)
     {

@@ -5,16 +5,9 @@ using NLog;
 namespace Service;
 
 [Service(ServiceType.Scoped)]
-public class ProductSaleService
+public class ProductSaleService(Db db)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public ProductSaleService(Db db)
-    {
-        this.db = db;
-    }
 
     /// <summary>
     /// 创建销售目录

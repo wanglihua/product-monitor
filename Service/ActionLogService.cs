@@ -4,15 +4,8 @@ using Domain;
 namespace Service;
 
 [Service(ServiceType.Scoped)]
-public class ActionLogService
+public class ActionLogService(Db db)
 {
-    private readonly Db db;
-
-    public ActionLogService(Db db)
-    {
-        this.db = db;
-    }
-
     public void Add(long userId, ActionLogType type)
     {
         Add(userId, type, string.Empty);

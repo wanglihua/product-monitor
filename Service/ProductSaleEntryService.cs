@@ -1,5 +1,4 @@
 using Core;
-using Domain;
 using NLog;
 
 namespace Service;
@@ -8,11 +7,4 @@ namespace Service;
 public class ProductSaleEntryService
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public ProductSaleEntryService(Db db)
-    {
-        this.db = db;
-    }
 }

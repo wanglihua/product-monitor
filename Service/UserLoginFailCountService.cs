@@ -4,7 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 namespace Service;
 
 [Service(ServiceType.Scoped)]
-public class UserLoginFailCountService
+public class UserLoginFailCountService(IMemoryCache memoryCache)
 {
     /// <summary>
     /// 限制时间60分钟
@@ -15,13 +15,6 @@ public class UserLoginFailCountService
     /// 在限制时间内，可以不用验证码登录失败的次数
     /// </summary>
     private static readonly int limitCount = 3;
-
-    private readonly IMemoryCache memoryCache;
-
-    public UserLoginFailCountService(IMemoryCache memoryCache)
-    {
-        this.memoryCache = memoryCache;
-    }
 
     /// <summary>
     /// 添加一次失败记录, 并返回是否应该显示验证码

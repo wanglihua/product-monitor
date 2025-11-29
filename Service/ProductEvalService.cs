@@ -5,16 +5,9 @@ using NLog;
 namespace Service;
 
 [Service(ServiceType.Scoped)]
-public class ProductEvalService
+public class ProductEvalService(Db db)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public ProductEvalService(Db db)
-    {
-        this.db = db;
-    }
 
     /// <summary>
     /// 创建试用目录

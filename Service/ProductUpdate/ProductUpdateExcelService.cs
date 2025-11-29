@@ -1,6 +1,5 @@
 using Core;
 using Core.Util;
-using Domain;
 using NLog;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -11,13 +10,6 @@ namespace Service.ProductUpdate;
 public class ProductUpdateExcelService
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public ProductUpdateExcelService(Db db)
-    {
-        this.db = db;
-    }
 
     public byte[] GetExcelContent(IList<ProductUpdateExcelExportListItem> productUpdateList)
     {

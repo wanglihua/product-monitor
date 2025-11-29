@@ -7,15 +7,8 @@ namespace Web.Middlewares;
 /// 这个 middleware 的作用是保持 cookie 中一直有一个 session id，
 /// 保持 WebSessionService的成员SessionId中的值 和 cookie 中的 session id 一致
 /// </summary>
-public class SessionIdCookieMiddleware
+public class SessionIdCookieMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate next;
-
-    public SessionIdCookieMiddleware(RequestDelegate next)
-    {
-        this.next = next;
-    }
-
     public async Task Invoke(HttpContext context, [FromServices] WebSessionService webSessionService)
     {
         #region session id 处理

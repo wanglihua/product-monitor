@@ -1,6 +1,5 @@
 ﻿using Core.Auth;
 using Core.Database;
-using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
@@ -11,7 +10,6 @@ namespace Web.Controllers;
 
 [Auth]
 public class HomeController(
-    Db db,
     UserLoginService userLoginService,
     UserAuthService userAuthService) : Controller
 {

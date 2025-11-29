@@ -7,7 +7,7 @@ namespace Service;
 /// 用户登录频率限制，不能过于频繁
 /// </summary>
 [Service(ServiceType.Scoped)]
-public class UserLoginRateLimitService
+public class UserLoginRateLimitService(IMemoryCache memoryCache)
 {
     /// <summary>
     /// 限制时间60秒
@@ -18,13 +18,6 @@ public class UserLoginRateLimitService
     /// 在限制时间内，可以登录的次数
     /// </summary>
     private static readonly int limitCount = 5;
-
-    private readonly IMemoryCache memoryCache;
-
-    public UserLoginRateLimitService(IMemoryCache memoryCache)
-    {
-        this.memoryCache = memoryCache;
-    }
 
     public void CheckRateLimit(string loginName)
     {

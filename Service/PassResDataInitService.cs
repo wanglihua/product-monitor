@@ -5,15 +5,8 @@ using Domain.PassRes;
 namespace Service;
 
 [Service(ServiceType.Scoped)]
-public class PassResDataInitService
+public class PassResDataInitService(Db db)
 {
-    private readonly Db db;
-
-    public PassResDataInitService(Db db)
-    {
-        this.db = db;
-    }
-
     public void InitData()
     {
         var passResList = new List<PassResEntity>();

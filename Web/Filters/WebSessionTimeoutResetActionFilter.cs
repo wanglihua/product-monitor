@@ -4,23 +4,11 @@ using Service;
 
 namespace Web.Filters;
 
-public class WebSessionTimeoutResetActionFilter : IActionFilter
+public class WebSessionTimeoutResetActionFilter(
+    WebSessionService webSessionService,
+    WebSessionTimeoutResetService webSessionTimeoutResetService,
+    UserLoginService userLoginService) : IActionFilter
 {
-    private readonly WebSessionService webSessionService;
-    private readonly WebSessionTimeoutResetService webSessionTimeoutResetService;
-    private readonly UserLoginService userLoginService;
-
-    public WebSessionTimeoutResetActionFilter(
-        WebSessionService webSessionService,
-        WebSessionTimeoutResetService webSessionTimeoutResetService,
-        UserLoginService userLoginService
-    )
-    {
-        this.webSessionService = webSessionService;
-        this.webSessionTimeoutResetService = webSessionTimeoutResetService;
-        this.userLoginService = userLoginService;
-    }
-
     public void OnActionExecuting(ActionExecutingContext context)
     {
         string sessionId = webSessionService.SessionId;

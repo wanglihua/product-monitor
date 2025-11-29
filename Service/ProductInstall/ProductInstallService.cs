@@ -1,18 +1,10 @@
 using Core;
-using Domain;
 using NLog;
 
-namespace Service;
+namespace Service.ProductInstall;
 
 [Service(ServiceType.Scoped)]
 public class ProductInstallService
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public ProductInstallService(Db db)
-    {
-        this.db = db;
-    }
 }

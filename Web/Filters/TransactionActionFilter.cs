@@ -10,19 +10,12 @@ namespace Web.Filters;
 /// <summary>
 /// "services.AddScoped&lt;TransactionActionFilter&gt;();" // 必须是 AddScoped
 /// </summary>
-public class TransactionActionFilter : IActionFilter
+public class TransactionActionFilter(Db db) : IActionFilter
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    private readonly Db db;
-
     private IDbContextTransaction? transaction;
     private bool autoTransaction = false;
-
-    public TransactionActionFilter(Db db)
-    {
-        this.db = db;
-    }
 
     public void OnActionExecuting(ActionExecutingContext context)
     {

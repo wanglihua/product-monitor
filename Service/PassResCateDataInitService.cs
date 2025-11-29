@@ -4,15 +4,8 @@ using Domain;
 namespace Service;
 
 [Service(ServiceType.Scoped)]
-public class PassResCateDataInitService
+public class PassResCateDataInitService(Db db)
 {
-    private readonly Db db;
-
-    public PassResCateDataInitService(Db db)
-    {
-        this.db = db;
-    }
-
     public void InitData()
     {
         var cateList = PassResCate.GetLst();

@@ -4,15 +4,8 @@ using Domain;
 namespace Service;
 
 [Service(ServiceType.Scoped)]
-public class AdminUserService
+public class AdminUserService(Db db)
 {
-    private readonly Db db;
-
-    public AdminUserService(Db db)
-    {
-        this.db = db;
-    }
-
     public bool IsAdminUser(long userId)
     {
         if (userId <= 0)

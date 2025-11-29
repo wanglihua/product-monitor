@@ -10,36 +10,18 @@ using NLog;
 namespace Service;
 
 [Service(ServiceType.Scoped)]
-public class UserLoginService
+public class UserLoginService(
+    Db db,
+    IMemoryCache memoryCache,
+    WebSessionService webSessionService,
+    PasswordService passwordService,
+    ActionLogService actionLogService,
+    UserAuthService userAuthService)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
     private static readonly TimeSpan LoginTimeout = TimeSpan.FromMinutes(60);
     private static readonly TimeSpan CacheTimeout = TimeSpan.FromSeconds(30); // 只是防止频繁调用而已，30秒钟够了
-
-    private readonly Db db;
-    private readonly IMemoryCache memoryCache;
-    private readonly WebSessionService webSessionService;
-    private readonly PasswordService passwordService;
-    private readonly ActionLogService actionLogService;
-    private readonly UserAuthService userAuthService;
-
-    public UserLoginService(
-        Db db,
-        IMemoryCache memoryCache,
-        WebSessionService webSessionService,
-        PasswordService passwordService,
-        ActionLogService actionLogService,
-        UserAuthService userAuthService
-    )
-    {
-        this.db = db;
-        this.memoryCache = memoryCache;
-        this.webSessionService = webSessionService;
-        this.passwordService = passwordService;
-        this.actionLogService = actionLogService;
-        this.userAuthService = userAuthService;
-    }
 
     public string GetUserLoginUrl()
     {

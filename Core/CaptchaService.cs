@@ -10,23 +10,13 @@ using NLog;
 namespace Core;
 
 [Service(ServiceType.Scoped)]
-public class CaptchaService
+public class CaptchaService(
+    IMemoryCache memoryCache,
+    WebSessionService webSessionService)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
     private const int defaultCodeLength = 4;
-
-    private readonly IMemoryCache memoryCache;
-    private readonly WebSessionService webSessionService;
-
-    public CaptchaService(
-        IMemoryCache memoryCache,
-        WebSessionService webSessionService
-    )
-    {
-        this.memoryCache = memoryCache;
-        this.webSessionService = webSessionService;
-    }
 
     public byte[] Create(int codeLength = defaultCodeLength)
     {

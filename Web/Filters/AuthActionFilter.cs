@@ -7,18 +7,11 @@ using Service;
 
 namespace Web.Filters;
 
-public class AuthActionFilter : IActionFilter
+public class AuthActionFilter(
+    UserLoginService userLoginService,
+    UserAuthService userAuthService) : IActionFilter
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly UserLoginService userLoginService;
-    private readonly UserAuthService userAuthService;
-
-    public AuthActionFilter(UserLoginService userLoginService, UserAuthService userAuthService)
-    {
-        this.userLoginService = userLoginService;
-        this.userAuthService = userAuthService;
-    }
 
     public void OnActionExecuting(ActionExecutingContext context)
     {
