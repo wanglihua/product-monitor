@@ -13,21 +13,11 @@ using Web.Models.AuthResult;
 namespace Web.Controllers;
 
 [Auth(PassRes.SystemManage.PassRes)]
-public class AuthResultController : Controller
+public class AuthResultController(
+    Db db,
+    UserAuthService userAuthService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserAuthService userAuthService;
-
-    public AuthResultController(
-        Db db,
-        UserAuthService userAuthService
-    )
-    {
-        this.db = db;
-        this.userAuthService = userAuthService;
-    }
 
     [HttpPost]
     [Route("/api/auth-result/list")]

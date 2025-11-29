@@ -9,16 +9,9 @@ using Web.Models.ProductSelect;
 namespace Web.Controllers;
 
 [Auth]
-public class ProductSelectController : Controller
+public class ProductSelectController(Db db) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public ProductSelectController(Db db)
-    {
-        this.db = db;
-    }
 
     [HttpPost("/api/product/select/data")]
     [Transactional(false)]

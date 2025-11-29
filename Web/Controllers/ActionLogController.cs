@@ -11,16 +11,9 @@ using Web.Models.ActionLog;
 namespace Web.Controllers;
 
 [Auth(PassRes.SystemManage.ActionLog)]
-public class ActionLogController : Controller
+public class ActionLogController(Db db) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public ActionLogController(Db db)
-    {
-        this.db = db;
-    }
 
     private class ActionLogJoinItem
     {

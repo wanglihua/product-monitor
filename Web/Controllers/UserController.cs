@@ -14,33 +14,15 @@ using Web.Models.User;
 namespace Web.Controllers;
 
 [Auth(PassRes.SystemManage.User)]
-public class UserController : Controller
+public class UserController(
+    Db db,
+    UserLoginService userLoginService,
+    PasswordService passwordService,
+    AdminUserService adminUserService,
+    ActionLogService actionLogService,
+    UserAuthService userAuthService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly PasswordService passwordService;
-    private readonly AdminUserService adminUserService;
-    private readonly ActionLogService actionLogService;
-    private readonly UserAuthService userAuthService;
-
-    public UserController(
-        Db db,
-        UserLoginService userLoginService,
-        PasswordService passwordService,
-        AdminUserService adminUserService,
-        ActionLogService actionLogService,
-        UserAuthService userAuthService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.passwordService = passwordService;
-        this.adminUserService = adminUserService;
-        this.actionLogService = actionLogService;
-        this.userAuthService = userAuthService;
-    }
 
     [HttpPost]
     [Route("/api/user/list")]

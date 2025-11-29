@@ -10,16 +10,9 @@ using Web.Models.GroupSelect;
 namespace Web.Controllers;
 
 [Auth]
-public class GroupSelectController : Controller
+public class GroupSelectController(Db db) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public GroupSelectController(Db db)
-    {
-        this.db = db;
-    }
 
     [HttpPost]
     [Route("/api/group/select/data")]

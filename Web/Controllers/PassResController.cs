@@ -13,33 +13,15 @@ using Web.Models.PassRes;
 namespace Web.Controllers;
 
 [Auth(PassRes.SystemManage.PassRes)]
-public class PassResController : Controller
+public class PassResController(
+    Db db,
+    UserLoginService userLoginService,
+    PassResCateDataInitService passResCateDataInitService,
+    PassResDataInitService passResDataInitService,
+    ActionLogService actionLogService,
+    UserAuthService userAuthService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly PassResCateDataInitService passResCateDataInitService;
-    private readonly PassResDataInitService passResDataInitService;
-    private readonly ActionLogService actionLogService;
-    private readonly UserAuthService userAuthService;
-
-    public PassResController(
-        Db db,
-        UserLoginService userLoginService,
-        PassResCateDataInitService passResCateDataInitService,
-        PassResDataInitService passResDataInitService,
-        ActionLogService actionLogService,
-        UserAuthService userAuthService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.passResCateDataInitService = passResCateDataInitService;
-        this.passResDataInitService = passResDataInitService;
-        this.actionLogService = actionLogService;
-        this.userAuthService = userAuthService;
-    }
 
     [HttpPost]
     [Route("/api/pass-res/init/data")]

@@ -12,18 +12,9 @@ using Web.Models.ProductEval;
 namespace Web.Controllers;
 
 [Auth(PassRes.ProjectManage.ProductEval)]
-public class ProductEvalController : Controller
+public class ProductEvalController(Db db) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public ProductEvalController(
-        Db db
-    )
-    {
-        this.db = db;
-    }
 
     private class ProductEvalJoinItem
     {

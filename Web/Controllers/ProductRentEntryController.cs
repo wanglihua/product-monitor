@@ -14,27 +14,13 @@ using Web.Models.ProductRentEntry;
 namespace Web.Controllers;
 
 [Auth(PassRes.ProjectManage.ProductRent)]
-public class ProductRentEntryController : Controller
+public class ProductRentEntryController(
+    Db db,
+    UserLoginService userLoginService,
+    ActionLogService actionLogService,
+    ProductRentService productRentService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
-    private readonly ProductRentService productRentService;
-
-    public ProductRentEntryController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService,
-        ProductRentService productRentService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
-        this.productRentService = productRentService;
-    }
 
     private class ProductRentEntryJoinItem
     {

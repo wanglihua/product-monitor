@@ -12,29 +12,14 @@ using Web.Models.Login;
 namespace Web.Controllers;
 
 [NoAuth]
-public class LoginController : Controller
+public class LoginController(
+    Db db,
+    UserLoginService userLoginService,
+    CaptchaService captchaService,
+    UserLoginRateLimitService userLoginRateLimitService,
+    UserLoginFailCountService userLoginFailCountService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly CaptchaService captchaService;
-    private readonly UserLoginRateLimitService userLoginRateLimitService;
-    private readonly UserLoginFailCountService userLoginFailCountService;
-
-    public LoginController(
-        Db db,
-        UserLoginService userLoginService,
-        CaptchaService captchaService,
-        UserLoginRateLimitService userLoginRateLimitService,
-        UserLoginFailCountService userLoginFailCountService)
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.captchaService = captchaService;
-        this.userLoginRateLimitService = userLoginRateLimitService;
-        this.userLoginFailCountService = userLoginFailCountService;
-    }
 
     [HttpPost]
     [Route("/api/login")]

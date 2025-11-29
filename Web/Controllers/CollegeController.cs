@@ -14,24 +14,12 @@ using Web.Models.College;
 namespace Web.Controllers;
 
 [Auth(PassRes.BasicSetting.College)]
-public class CollegeController : Controller
+public class CollegeController(
+    Db db,
+    UserLoginService userLoginService,
+    ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
-
-    public CollegeController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
-    }
 
     [HttpPost]
     [Route("/api/college/list")]

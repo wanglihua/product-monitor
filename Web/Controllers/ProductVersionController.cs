@@ -15,27 +15,13 @@ using Web.Models.ProductVersion;
 namespace Web.Controllers;
 
 [Auth(PassRes.BasicSetting.Product)]
-public class ProductVersionController : Controller
+public class ProductVersionController(
+    Db db,
+    UserLoginService userLoginService,
+    ProductService productService,
+    ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ProductService productService;
-    private readonly ActionLogService actionLogService;
-
-    public ProductVersionController(
-        Db db,
-        UserLoginService userLoginService,
-        ProductService productService,
-        ActionLogService actionLogService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.productService = productService;
-        this.actionLogService = actionLogService;
-    }
 
     private class ProductVersionJoinItem
     {

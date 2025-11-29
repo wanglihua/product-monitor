@@ -15,30 +15,14 @@ using Web.Models.Product;
 namespace Web.Controllers;
 
 [Auth(PassRes.BasicSetting.Product)]
-public class ProductController : Controller
+public class ProductController(
+    Db db,
+    UserLoginService userLoginService,
+    ProductService productService,
+    ProductExcelService productExcelService,
+    ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ProductService productService;
-    private readonly ProductExcelService productExcelService;
-    private readonly ActionLogService actionLogService;
-
-    public ProductController(
-        Db db,
-        UserLoginService userLoginService,
-        ProductService productService,
-        ProductExcelService productExcelService,
-        ActionLogService actionLogService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.productService = productService;
-        this.productExcelService = productExcelService;
-        this.actionLogService = actionLogService;
-    }
 
     [NonAction]
     private IQueryable<ProductEntity> GetListQuery(ProductListParam param)

@@ -6,15 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers;
 
 [NoAuth]
-public class CaptchaController : Controller
+public class CaptchaController(CaptchaService captchaService) : Controller
 {
-    private readonly CaptchaService captchaService;
-
-    public CaptchaController(CaptchaService captchaService)
-    {
-        this.captchaService = captchaService;
-    }
-
     [HttpGet]
     [Route("/api/captcha")]
     [Transactional(false)]

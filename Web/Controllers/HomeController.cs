@@ -10,24 +10,12 @@ using Web.Models.Home;
 namespace Web.Controllers;
 
 [Auth]
-public class HomeController : Controller
+public class HomeController(
+    Db db,
+    UserLoginService userLoginService,
+    UserAuthService userAuthService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly UserAuthService userAuthService;
-
-    public HomeController(
-        Db db,
-        UserLoginService userLoginService,
-        UserAuthService userAuthService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.userAuthService = userAuthService;
-    }
 
     [HttpPost]
     [Route("/api/home/data")]

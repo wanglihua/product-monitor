@@ -14,27 +14,13 @@ using Web.Models.ProductEvalEntry;
 namespace Web.Controllers;
 
 [Auth(PassRes.ProjectManage.ProductEval)]
-public class ProductEvalEntryController : Controller
+public class ProductEvalEntryController(
+    Db db,
+    UserLoginService userLoginService,
+    ActionLogService actionLogService,
+    ProductEvalService productEvalService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
-    private readonly ProductEvalService productEvalService;
-
-    public ProductEvalEntryController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService,
-        ProductEvalService productEvalService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
-        this.productEvalService = productEvalService;
-    }
 
     private class ProductEvalEntryJoinItem
     {

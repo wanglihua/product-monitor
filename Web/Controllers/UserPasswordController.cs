@@ -4,7 +4,6 @@ using Core.Database;
 using Core.Util;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.UserPassword;
@@ -12,24 +11,12 @@ using Web.Models.UserPassword;
 namespace Web.Controllers;
 
 [Auth]
-public class UserPasswordController : Controller
+public class UserPasswordController(
+    Db db,
+    UserLoginService userLoginService,
+    PasswordService passwordService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly PasswordService passwordService;
-
-    public UserPasswordController(
-        Db db,
-        UserLoginService userLoginService,
-        PasswordService passwordService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.passwordService = passwordService;
-    }
 
     [HttpPost]
     [Route("/api/user/password/save")]

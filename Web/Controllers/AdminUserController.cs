@@ -13,24 +13,12 @@ using Web.Models.AdminUser;
 namespace Web.Controllers;
 
 [Auth(AdminOnly = true)]
-public class AdminUserController : Controller
+public class AdminUserController(
+    Db db,
+    UserLoginService userLoginService,
+    ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
-
-    public AdminUserController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
-    }
 
     private class AdminUserJoinItem
     {

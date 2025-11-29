@@ -14,24 +14,12 @@ using Web.Models.UserPassRes;
 namespace Web.Controllers;
 
 [Auth(PassRes.SystemManage.PassRes)]
-public class UserPassResController : Controller
+public class UserPassResController(
+    Db db,
+    UserLoginService userLoginService,
+    ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
-
-    public UserPassResController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
-    }
 
     [HttpPost]
     [Route("/api/user-pass-res/user/list")]

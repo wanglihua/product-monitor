@@ -15,27 +15,13 @@ using Web.Models.ProductUpdate;
 namespace Web.Controllers;
 
 [Auth(PassRes.ProductService.ProductUpdate)]
-public class ProductUpdateController : Controller
+public class ProductUpdateController(
+    Db db,
+    UserLoginService userLoginService,
+    ProductUpdateExcelService productUpdateExcelService,
+    ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ProductUpdateExcelService productUpdateExcelService;
-    private readonly ActionLogService actionLogService;
-
-    public ProductUpdateController(
-        Db db,
-        UserLoginService userLoginService,
-        ProductUpdateExcelService productUpdateExcelService,
-        ActionLogService actionLogService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.productUpdateExcelService = productUpdateExcelService;
-        this.actionLogService = actionLogService;
-    }
 
     private class ProductUpdateJoinItem
     {

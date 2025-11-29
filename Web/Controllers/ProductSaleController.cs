@@ -12,18 +12,9 @@ using Web.Models.ProductSale;
 namespace Web.Controllers;
 
 [Auth(PassRes.ProjectManage.ProductSale)]
-public class ProductSaleController : Controller
+public class ProductSaleController(Db db) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public ProductSaleController(
-        Db db
-    )
-    {
-        this.db = db;
-    }
 
     private class ProductSaleJoinItem
     {

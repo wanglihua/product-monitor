@@ -15,24 +15,12 @@ using Web.Models.GroupUser;
 namespace Web.Controllers;
 
 [Auth(PassRes.SystemManage.Group)]
-public class GroupUserController : Controller
+public class GroupUserController(
+    Db db,
+    UserLoginService userLoginService,
+    ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
-
-    public GroupUserController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
-    }
 
     private class GroupJointItem
     {

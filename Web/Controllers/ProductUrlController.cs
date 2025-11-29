@@ -14,24 +14,12 @@ using Web.Models.ProductUrl;
 namespace Web.Controllers;
 
 [Auth(PassRes.BasicSetting.ProductUrl)]
-public class ProductUrlController : Controller
+public class ProductUrlController(
+    Db db,
+    UserLoginService userLoginService,
+    ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
-
-    public ProductUrlController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
-    }
 
     [HttpPost]
     [Route("/api/product-url/list")]

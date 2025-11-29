@@ -14,24 +14,12 @@ using Web.Models.ProductUrlMonitor;
 namespace Web.Controllers;
 
 [Auth(PassRes.DataMonitor.ProductUrlMonitor)]
-public class ProductUrlMonitorController : Controller
+public class ProductUrlMonitorController(
+    Db db,
+    UserLoginService userLoginService,
+    ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
-
-    public ProductUrlMonitorController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
-    }
 
     private class ProductUrlMonitorJoinItem
     {

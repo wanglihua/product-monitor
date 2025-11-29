@@ -14,24 +14,12 @@ using Web.Models.ProductUrlMonitorEntry;
 namespace Web.Controllers;
 
 [Auth(PassRes.DataMonitor.ProductUrlMonitor)]
-public class ProductUrlMonitorEntryController : Controller
+public class ProductUrlMonitorEntryController(
+    Db db,
+    UserLoginService userLoginService,
+    ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
-
-    public ProductUrlMonitorEntryController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
-    }
 
     [HttpPost]
     [Route("/api/product-url-monitor-entry/list")]

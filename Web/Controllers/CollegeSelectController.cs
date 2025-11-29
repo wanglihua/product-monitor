@@ -10,16 +10,9 @@ using Web.Models.CollegeSelect;
 namespace Web.Controllers;
 
 [Auth]
-public class CollegeSelectController : Controller
+public class CollegeSelectController(Db db) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public CollegeSelectController(Db db)
-    {
-        this.db = db;
-    }
 
     [HttpPost]
     [Route("/api/college/select/data")]

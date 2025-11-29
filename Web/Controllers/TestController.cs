@@ -8,18 +8,11 @@ using NLog;
 namespace Web.Controllers;
 
 [NoAuth]
-public class TestController : Controller
+public class TestController(
+    Db db,
+    PasswordService passwordService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly PasswordService passwordService;
-
-    public TestController(Db db, PasswordService passwordService)
-    {
-        this.db = db;
-        this.passwordService = passwordService;
-    }
 
 #if DEBUG
 

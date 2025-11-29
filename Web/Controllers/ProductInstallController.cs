@@ -15,27 +15,13 @@ using Web.Models.ProductInstall;
 namespace Web.Controllers;
 
 [Auth(PassRes.ProductService.ProductInstall)]
-public class ProductInstallController : Controller
+public class ProductInstallController(
+    Db db,
+    UserLoginService userLoginService,
+    ActionLogService actionLogService,
+    ProductInstallExcelService productInstallExcelService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
-    private readonly ProductInstallExcelService productInstallExcelService;
-
-    public ProductInstallController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService,
-        ProductInstallExcelService productInstallExcelService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
-        this.productInstallExcelService = productInstallExcelService;
-    }
 
     private class ProductInstallJoinItem
     {

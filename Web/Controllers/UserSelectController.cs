@@ -10,16 +10,9 @@ using Web.Models.UserSelect;
 namespace Web.Controllers;
 
 [Auth]
-public class UserSelectController : Controller
+public class UserSelectController(Db db) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public UserSelectController(Db db)
-    {
-        this.db = db;
-    }
 
     [HttpPost]
     [Route("/api/user/select/data")]

@@ -14,24 +14,12 @@ using Web.Models.GroupPassRes;
 namespace Web.Controllers;
 
 [Auth(PassRes.SystemManage.PassRes)]
-public class GroupPassResController : Controller
+public class GroupPassResController(
+    Db db,
+    UserLoginService userLoginService,
+    ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
-
-    public GroupPassResController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
-    }
 
     [HttpPost]
     [Route("/api/group-pass-res/group/list")]

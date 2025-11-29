@@ -12,18 +12,9 @@ using Web.Models.ProductRent;
 namespace Web.Controllers;
 
 [Auth(PassRes.ProjectManage.ProductRent)]
-public class ProductRentController : Controller
+public class ProductRentController(Db db) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-
-    public ProductRentController(
-        Db db
-    )
-    {
-        this.db = db;
-    }
 
     private class ProductRentJoinItem
     {

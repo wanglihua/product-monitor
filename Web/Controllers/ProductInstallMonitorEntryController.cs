@@ -14,24 +14,12 @@ using Web.Models.ProductInstallMonitorEntry;
 namespace Web.Controllers;
 
 [Auth(PassRes.DataMonitor.ProductInstallMonitor)]
-public class ProductInstallMonitorEntryController : Controller
+public class ProductInstallMonitorEntryController(
+    Db db,
+    UserLoginService userLoginService,
+    ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
-    private readonly Db db;
-    private readonly UserLoginService userLoginService;
-    private readonly ActionLogService actionLogService;
-
-    public ProductInstallMonitorEntryController(
-        Db db,
-        UserLoginService userLoginService,
-        ActionLogService actionLogService
-    )
-    {
-        this.db = db;
-        this.userLoginService = userLoginService;
-        this.actionLogService = actionLogService;
-    }
 
     [HttpPost]
     [Route("/api/product-install-monitor-entry/list")]
