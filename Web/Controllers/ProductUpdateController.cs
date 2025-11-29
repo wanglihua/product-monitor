@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Service.ProductUpdate;
@@ -37,7 +38,7 @@ public class ProductUpdateController(
     [NonAction]
     private IQueryable<ProductUpdateJoinItem> GetListQuery(ProductUpdateListParam param)
     {
-        IQueryable<ProductUpdateJoinItem> query = db.ProductUpdate
+        IQueryable<ProductUpdateJoinItem> query = db.ProductUpdate.AsNoTracking()
             .Join(db.College,
                 pu => pu.CollegeId,
                 c => c.Id,

@@ -5,6 +5,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Web.Models.ActionLog;
 
@@ -29,7 +30,7 @@ public class ActionLogController(Db db) : Controller
     {
         ValidationUtil.Validate<ActionLogListParamValidator, ActionLogListParam>(param);
 
-        IQueryable<ActionLogJoinItem> query = db.ActionLog
+        IQueryable<ActionLogJoinItem> query = db.ActionLog.AsNoTracking()
             .Join(db.User,
                 actionLog => actionLog.UserId,
                 user => user.Id,

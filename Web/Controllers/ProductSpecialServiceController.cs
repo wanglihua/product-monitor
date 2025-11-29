@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.ProductSpecialService;
@@ -39,7 +40,7 @@ public class ProductSpecialServiceController(
     {
         ValidationUtil.Validate<ProductSpecialServiceListParamValidator, ProductSpecialServiceListParam>(param);
 
-        IQueryable<ProductSpecialServiceJoinItem> query = db.ProductSpecialService
+        IQueryable<ProductSpecialServiceJoinItem> query = db.ProductSpecialService.AsNoTracking()
             .Join(db.College,
                 pss => pss.CollegeId,
                 c => c.Id,

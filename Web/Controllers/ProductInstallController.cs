@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Service.ProductInstall;
@@ -37,7 +38,7 @@ public class ProductInstallController(
     [NonAction]
     private IQueryable<ProductInstallJoinItem> GetListQuery(ProductInstallListParam param)
     {
-        IQueryable<ProductInstallJoinItem> query = db.ProductInstall
+        IQueryable<ProductInstallJoinItem> query = db.ProductInstall.AsNoTracking()
             .Join(db.College,
                 pi => pi.CollegeId,
                 c => c.Id,

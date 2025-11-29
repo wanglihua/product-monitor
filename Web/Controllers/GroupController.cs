@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.Group;
@@ -29,7 +30,7 @@ public class GroupController(
     {
         ValidationUtil.Validate<GroupListParamValidator, GroupListParam>(param);
 
-        IQueryable<GroupEntity> query = db.Group;
+        IQueryable<GroupEntity> query = db.Group.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
         {

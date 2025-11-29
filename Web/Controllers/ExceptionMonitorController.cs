@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.ExceptionMonitor;
@@ -35,7 +36,7 @@ public class ExceptionMonitorController(
     {
         ValidationUtil.Validate<ExceptionMonitorListParamValidator, ExceptionMonitorListParam>(param);
 
-        IQueryable<ExceptionMonitorJoinItem> query = db.ExceptionMonitor
+        IQueryable<ExceptionMonitorJoinItem> query = db.ExceptionMonitor.AsNoTracking()
             .Join(db.Product,
                 em => em.ProductId,
                 p => p.Id,

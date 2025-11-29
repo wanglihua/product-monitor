@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.ProductInstallMonitor;
@@ -37,7 +38,7 @@ public class ProductInstallMonitorController(
     {
         ValidationUtil.Validate<ProductInstallMonitorListParamValidator, ProductInstallMonitorListParam>(param);
 
-        IQueryable<ProductInstallMonitorJoinItem> query = db.ProductInstallMonitor
+        IQueryable<ProductInstallMonitorJoinItem> query = db.ProductInstallMonitor.AsNoTracking()
             .Join(db.College,
                 pim => pim.CollegeId,
                 c => c.Id,

@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.ProductUrlMonitorEntry;
@@ -53,7 +54,7 @@ public class ProductUrlMonitorEntryController(
 
         string productName = product.Name;
 
-        IQueryable<ProductUrlMonitorEntryEntity> query = db.ProductUrlMonitorEntry;
+        IQueryable<ProductUrlMonitorEntryEntity> query = db.ProductUrlMonitorEntry.AsNoTracking();
 
 
         int productUrlMonitorEntryCount = query.Count();

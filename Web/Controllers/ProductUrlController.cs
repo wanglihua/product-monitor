@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.ProductUrl;
@@ -28,7 +29,7 @@ public class ProductUrlController(
     {
         ValidationUtil.Validate<ProductUrlListParamValidator, ProductUrlListParam>(param);
 
-        IQueryable<ProductUrlEntity> query = db.ProductUrl;
+        IQueryable<ProductUrlEntity> query = db.ProductUrl.AsNoTracking();
 
         if (param.TypeQuery != ProductUrlType.None)
         {

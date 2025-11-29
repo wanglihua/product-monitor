@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.ProductRentEntry;
@@ -61,7 +62,7 @@ public class ProductRentEntryController(
 
         string productName = product.Name;
 
-        IQueryable<ProductRentEntryJoinItem> query = db.ProductRentEntry
+        IQueryable<ProductRentEntryJoinItem> query = db.ProductRentEntry.AsNoTracking()
             .Join(db.User,
                 pse => pse.UserId,
                 u => u.Id,

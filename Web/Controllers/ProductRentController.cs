@@ -6,6 +6,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Web.Models.ProductRent;
 
@@ -32,7 +33,7 @@ public class ProductRentController(Db db) : Controller
     {
         ValidationUtil.Validate<ProductRentListParamValidator, ProductRentListParam>(param);
 
-        IQueryable<ProductRentJoinItem> query = db.ProductRent
+        IQueryable<ProductRentJoinItem> query = db.ProductRent.AsNoTracking()
             .Join(db.College,
                 pr => pr.CollegeId,
                 c => c.Id,

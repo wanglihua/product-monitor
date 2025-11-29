@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.GroupPassRes;
@@ -42,7 +43,7 @@ public class GroupPassResController(
             throw new ValidationException($"指定的权限资源类别#{passResCateId}不存在!");
         }
 
-        IQueryable<GroupEntity> query = db.Group;
+        IQueryable<GroupEntity> query = db.Group.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.GroupNameQuery) == false)
         {
@@ -139,7 +140,7 @@ public class GroupPassResController(
             throw new ValidationException($"指定的群组#{groupId}不存在!");
         }
 
-        IQueryable<GroupPassResJoinItem> query = db.PassRes
+        IQueryable<GroupPassResJoinItem> query = db.PassRes.AsNoTracking()
             .Join(db.PassResCate,
                 pr => pr.CateId,
                 prc => prc.Id,

@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.ProductUrlMonitor;
@@ -37,7 +38,7 @@ public class ProductUrlMonitorController(
     {
         ValidationUtil.Validate<ProductUrlMonitorListParamValidator, ProductUrlMonitorListParam>(param);
 
-        IQueryable<ProductUrlMonitorJoinItem> query = db.ProductUrlMonitor
+        IQueryable<ProductUrlMonitorJoinItem> query = db.ProductUrlMonitor.AsNoTracking()
             .Join(db.College,
                 pum => pum.CollegeId,
                 c => c.Id,

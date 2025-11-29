@@ -6,6 +6,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.AuthResult;
@@ -26,7 +27,7 @@ public class AuthResultController(
     {
         ValidationUtil.Validate<AuthResultListParamValidator, AuthResultListParam>(param);
 
-        IQueryable<AuthResultEntity> query = db.AuthResult;
+        IQueryable<AuthResultEntity> query = db.AuthResult.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {

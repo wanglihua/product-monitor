@@ -6,6 +6,7 @@ using Core.Util;
 using Core.Web;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.AdminUser;
@@ -34,7 +35,7 @@ public class AdminUserController(
     {
         ValidationUtil.Validate<AdminUserListParamValidator, AdminUserListParam>(param);
 
-        IQueryable<AdminUserJoinItem> query = db.AdminUser
+        IQueryable<AdminUserJoinItem> query = db.AdminUser.AsNoTracking()
             .Join(db.User,
                 admin => admin.UserId,
                 user => user.Id,

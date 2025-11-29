@@ -6,6 +6,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.PassRes;
@@ -55,7 +56,7 @@ public class PassResController(
     {
         ValidationUtil.Validate<PassResListParamValidator, PassResListParam>(param);
 
-        IQueryable<PassResJoinItem> query = db.PassRes
+        IQueryable<PassResJoinItem> query = db.PassRes.AsNoTracking()
             .Join(db.PassResCate,
                 pr => pr.CateId,
                 prc => prc.Id,

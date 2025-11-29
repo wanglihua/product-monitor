@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.ProductService;
@@ -39,7 +40,7 @@ public class ProductServiceController(
     {
         ValidationUtil.Validate<ProductServiceListParamValidator, ProductServiceListParam>(param);
 
-        IQueryable<ProductServiceJoinItem> query = db.ProductService
+        IQueryable<ProductServiceJoinItem> query = db.ProductService.AsNoTracking()
             .Join(db.College,
                 ps => ps.CollegeId,
                 c => c.Id,

@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.UserPassRes;
@@ -43,7 +44,7 @@ public class UserPassResController(
             throw new ValidationException($"指定的权限资源类别#{passResCateId}不存在!");
         }
 
-        IQueryable<UserEntity> query = db.User;
+        IQueryable<UserEntity> query = db.User.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
@@ -149,7 +150,7 @@ public class UserPassResController(
             throw new ValidationException($"指定的用户#{userId}不存在!");
         }
 
-        IQueryable<UserPassResJoinItem> query = db.PassRes
+        IQueryable<UserPassResJoinItem> query = db.PassRes.AsNoTracking()
             .Join(db.PassResCate,
                 pr => pr.CateId,
                 prc => prc.Id,

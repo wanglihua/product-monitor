@@ -44,7 +44,7 @@ public class GroupUserController(
             throw new ValidationException($"指定的群组#{groupId}不存在!");
         }
 
-        IQueryable<GroupJointItem> query = db.GroupUser
+        IQueryable<GroupJointItem> query = db.GroupUser.AsNoTracking()
             .Join(db.User,
                 gu => gu.UserId,
                 u => u.Id,

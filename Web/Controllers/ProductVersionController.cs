@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Service.Product;
@@ -45,7 +46,7 @@ public class ProductVersionController(
             throw new ValidationException($"指定的产品#{productId}不存在!");
         }
 
-        IQueryable<ProductVersionJoinItem> query = db.ProductVersion
+        IQueryable<ProductVersionJoinItem> query = db.ProductVersion.AsNoTracking()
             .Join(db.Product,
                 pv => pv.ProductId,
                 p => p.Id,

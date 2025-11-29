@@ -4,6 +4,7 @@ using Core.Database;
 using Core.Util;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Web.Models.CollegeSelect;
 
@@ -21,7 +22,7 @@ public class CollegeSelectController(Db db) : Controller
     {
         ValidationUtil.Validate<CollegeSelectDataQueryParamValidator, CollegeSelectDataQueryParam>(param);
 
-        IQueryable<CollegeEntity> query = db.College;
+        IQueryable<CollegeEntity> query = db.College.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {

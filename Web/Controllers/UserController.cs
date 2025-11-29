@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.User;
@@ -31,7 +32,7 @@ public class UserController(
     {
         ValidationUtil.Validate<UserListParamValidator, UserListParam>(param);
 
-        IQueryable<UserEntity> query = db.User;
+        IQueryable<UserEntity> query = db.User.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {

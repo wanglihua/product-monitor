@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.College;
@@ -28,7 +29,7 @@ public class CollegeController(
     {
         ValidationUtil.Validate<CollegeListParamValidator, CollegeListParam>(param);
 
-        IQueryable<CollegeEntity> query = db.College;
+        IQueryable<CollegeEntity> query = db.College.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.CodeQuery) == false)
         {

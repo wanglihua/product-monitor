@@ -4,6 +4,7 @@ using Core.Database;
 using Core.Util;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Web.Models.UserSelect;
 
@@ -21,7 +22,7 @@ public class UserSelectController(Db db) : Controller
     {
         ValidationUtil.Validate<UserSelectDataQueryParamValidator, UserSelectDataQueryParam>(param);
 
-        IQueryable<UserEntity> query = db.User;
+        IQueryable<UserEntity> query = db.User.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {

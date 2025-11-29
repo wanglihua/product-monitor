@@ -3,6 +3,7 @@ using Core.Config;
 using Core.Database;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Web.Models.ProductSelect;
 
@@ -17,7 +18,7 @@ public class ProductSelectController(Db db) : Controller
     [Transactional(false)]
     public IActionResult Data([FromBody] ProductSelectDataQueryParam param)
     {
-        IQueryable<ProductEntity> query = db.Product;
+        IQueryable<ProductEntity> query = db.Product.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {

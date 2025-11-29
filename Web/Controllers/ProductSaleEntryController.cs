@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.ProductSaleEntry;
@@ -61,7 +62,7 @@ public class ProductSaleEntryController(
 
         string productName = product.Name;
 
-        IQueryable<ProductSaleEntryJoinItem> query = db.ProductSaleEntry
+        IQueryable<ProductSaleEntryJoinItem> query = db.ProductSaleEntry.AsNoTracking()
             .Join(db.User,
                 pse => pse.UserId,
                 u => u.Id,

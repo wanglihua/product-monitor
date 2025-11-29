@@ -4,6 +4,7 @@ using Core.Database;
 using Core.Util;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Web.Models.GroupSelect;
 
@@ -21,7 +22,7 @@ public class GroupSelectController(Db db) : Controller
     {
         ValidationUtil.Validate<GroupSelectDataQueryParamValidator, GroupSelectDataQueryParam>(param);
 
-        IQueryable<GroupEntity> query = db.Group;
+        IQueryable<GroupEntity> query = db.Group.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {

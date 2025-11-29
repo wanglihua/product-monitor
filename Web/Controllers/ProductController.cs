@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Service.Product;
@@ -27,7 +28,7 @@ public class ProductController(
     [NonAction]
     private IQueryable<ProductEntity> GetListQuery(ProductListParam param)
     {
-        IQueryable<ProductEntity> query = db.Product;
+        IQueryable<ProductEntity> query = db.Product.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
         {

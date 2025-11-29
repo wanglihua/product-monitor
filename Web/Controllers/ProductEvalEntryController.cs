@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.ProductEvalEntry;
@@ -36,7 +37,7 @@ public class ProductEvalEntryController(
     {
         ValidationUtil.Validate<ProductEvalEntryListParamValidator, ProductEvalEntryListParam>(param);
 
-        IQueryable<ProductEvalEntryJoinItem> query = db.ProductEvalEntry
+        IQueryable<ProductEvalEntryJoinItem> query = db.ProductEvalEntry.AsNoTracking()
             .Join(db.User,
                 pse => pse.UserId,
                 u => u.Id,

@@ -7,6 +7,7 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.ProductInstallMonitorEntry;
@@ -53,7 +54,7 @@ public class ProductInstallMonitorEntryController(
 
         string productName = product.Name;
 
-        IQueryable<ProductInstallMonitorEntryEntity> query = db.ProductInstallMonitorEntry;
+        IQueryable<ProductInstallMonitorEntryEntity> query = db.ProductInstallMonitorEntry.AsNoTracking();
 
         query = query.Where(p => p.ProductMonitorId == productInstallMonitorId);
 
