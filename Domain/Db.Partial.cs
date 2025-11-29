@@ -8,6 +8,8 @@ public partial class Db
 
     public DbSet<AdminUserEntity> AdminUser { get; set; }
 
+    public DbSet<AuthResultEntity> AuthResult { get; set; }
+
     public DbSet<CollegeChangeLogEntity> CollegeChangeLog { get; set; }
 
     public DbSet<CollegeEntity> College { get; set; }

@@ -29,20 +29,20 @@ public class GroupPassResController(
         ValidationUtil.Validate<PassResGroupListParamValidator, PassResGroupListParam>(param);
 
         long passResId = param.PassResId;
-        var passRes = db.Set<PassResEntity>().Find(passResId);
+        var passRes = db.PassRes.Find(passResId);
         if (passRes is null)
         {
             throw new ValidationException($"指定的权限资源#{passResId}不存在!");
         }
 
         long passResCateId = passRes.CateId;
-        var passResCate = db.Set<PassResCateEntity>().Find(passResCateId);
+        var passResCate = db.PassResCate.Find(passResCateId);
         if (passResCate is null)
         {
             throw new ValidationException($"指定的权限资源类别#{passResCateId}不存在!");
         }
 
-        IQueryable<GroupEntity> query = db.Set<GroupEntity>();
+        IQueryable<GroupEntity> query = db.Group;
 
         if (string.IsNullOrWhiteSpace(param.GroupNameQuery) == false)
         {
@@ -82,7 +82,7 @@ public class GroupPassResController(
 
         var groupIdList = groupList.Select(e => e.Id).ToList();
 
-        var groupPassResList = db.Set<GroupPassResEntity>()
+        var groupPassResList = db.GroupPassRes
             .Where(e => e.PassResId == passResId && groupIdList.Contains(e.GroupId))
             .ToList();
 
@@ -133,14 +133,14 @@ public class GroupPassResController(
         ValidationUtil.Validate<GroupPassResListParamValidator, GroupPassResListParam>(param);
 
         long groupId = param.GroupId;
-        var group = db.Set<GroupEntity>().Find(groupId);
+        var group = db.Group.Find(groupId);
         if (group is null)
         {
             throw new ValidationException($"指定的群组#{groupId}不存在!");
         }
 
         IQueryable<GroupPassResJoinItem> query = db.Set<PassResEntity>()
-            .Join(db.Set<PassResCateEntity>(),
+            .Join(db.PassResCate,
                 pr => pr.CateId,
                 prc => prc.Id,
                 (pr, prc) => new GroupPassResJoinItem {
@@ -186,7 +186,7 @@ public class GroupPassResController(
             .ToList();
 
         var passResIdList = passResList.Select(e => e.PassRes.Id).ToList();
-        var groupPassResList = db.Set<GroupPassResEntity>()
+        var groupPassResList = db.GroupPassRes
             .Where(e => e.GroupId == groupId && passResIdList.Contains(e.PassResId))
             .ToList();
 
@@ -230,7 +230,7 @@ public class GroupPassResController(
         long groupId = param.GroupId;
         long passResId = param.PassResId;
 
-        var groupPassRes = db.Set<GroupPassResEntity>()
+        var groupPassRes = db.GroupPassRes
             .Where(e => e.GroupId == groupId && e.PassResId == passResId)
             .OrderBy(e => e.GroupId)
             .Take(1)
@@ -272,7 +272,7 @@ public class GroupPassResController(
         long groupId = param.GroupId;
         long passResId = param.PassResId;
 
-        var groupPassRes = db.Set<GroupPassResEntity>()
+        var groupPassRes = db.GroupPassRes
             .Where(e => e.GroupId == groupId && e.PassResId == passResId)
             .OrderBy(e => e.GroupId)
             .Take(1)

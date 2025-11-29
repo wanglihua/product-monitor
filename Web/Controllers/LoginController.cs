@@ -141,7 +141,7 @@ public class LoginController(
 
         if (loginUserId > 0)
         {
-            var user = db.Set<UserEntity>().Find(loginUserId);
+            var user = db.User.Find(loginUserId);
             if (user is not null)
             {
                 logined = true;

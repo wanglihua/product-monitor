@@ -53,7 +53,7 @@ public class UserLoginService(
             return loginUserId;
         }
 
-        var userLoginSessionData = db.Set<WebSessionDataEntity>()
+        var userLoginSessionData = db.WebSessionData
             .Where(e => e.SessionId == sessionId && e.Type == WebSessionDataType.LoginUserId)
             .OrderBy(e => e.SessionId)
             .Take(1)
@@ -94,7 +94,7 @@ public class UserLoginService(
             return isAdmin;
         }
 
-        var admin = db.Set<AdminUserEntity>()
+        var admin = db.AdminUser
             .Where(e => e.UserId == userId)
             .OrderBy(e => e.UserId)
             .Take(1)
@@ -196,7 +196,7 @@ public class UserLoginService(
 
         long userId = user.Id;
 
-        var admin = db.Set<AdminUserEntity>()
+        var admin = db.AdminUser
             .Where(e => e.UserId == userId)
             .OrderBy(e => e.UserId)
             .Take(1)
@@ -228,7 +228,7 @@ public class UserLoginService(
         memoryCache.Remove(loginUserIdCacheKey);
 
         // 会有级联删除关联 session data
-        db.Set<WebSessionEntity>()
+        db.WebSession
             .Where(e => e.SessionId == sessionId)
             .ExecuteDelete();
 

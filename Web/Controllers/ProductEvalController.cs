@@ -32,15 +32,15 @@ public class ProductEvalController(Db db) : Controller
     {
         ValidationUtil.Validate<ProductEvalListParamValidator, ProductEvalListParam>(param);
 
-        IQueryable<ProductEvalJoinItem> query = db.Set<ProductEvalEntity>()
-            .Join(db.Set<CollegeEntity>(),
+        IQueryable<ProductEvalJoinItem> query = db.ProductEval
+            .Join(db.College,
                 ps => ps.CollegeId,
                 c => c.Id,
                 (ps, c) => new ProductEvalJoinItem {
                     ProductEval = ps,
                     College = c,
                 })
-            .Join(db.Set<ProductEntity>(),
+            .Join(db.Product,
                 ps => ps.ProductEval.ProductId,
                 p => p.Id,
                 (ps, p) => new ProductEvalJoinItem {

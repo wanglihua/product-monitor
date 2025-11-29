@@ -38,13 +38,13 @@ public class GroupUserController(
 
         long groupId = param.GroupId;
 
-        var group = db.Set<GroupEntity>().Find(groupId);
+        var group = db.Group.Find(groupId);
         if (group is null)
         {
             throw new ValidationException($"指定的群组#{groupId}不存在!");
         }
 
-        IQueryable<GroupJointItem> query = db.Set<GroupUserEntity>()
+        IQueryable<GroupJointItem> query = db.GroupUser
             .Join(db.Set<UserEntity>(),
                 gu => gu.UserId,
                 u => u.Id,
@@ -157,7 +157,7 @@ public class GroupUserController(
         long groupId = model.GroupId;
         long userId = model.UserId;
 
-        var groupUserExist = db.Set<GroupUserEntity>()
+        var groupUserExist = db.GroupUser
             .Where(e => e.GroupId == groupId && e.UserId == userId)
             .OrderBy(e => e.GroupId)
             .Take(1)
@@ -193,7 +193,7 @@ public class GroupUserController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long groupUserId = param.Id;
-        var groupUser = db.Set<GroupUserEntity>().Find(groupUserId);
+        var groupUser = db.GroupUser.Find(groupUserId);
         if (groupUser is null)
         {
             throw new ValidationException($"指定的群组成员#{groupUserId}不存在!");
@@ -220,13 +220,13 @@ public class GroupUserController(
         ValidationUtil.Validate<GroupUserEmptyParamValidator, GroupUserEmptyParam>(param);
 
         long groupId = param.GroupId;
-        var group = db.Set<GroupEntity>().Find(groupId);
+        var group = db.Group.Find(groupId);
         if (group is null)
         {
             throw new ValidationException($"指定的群组#{groupId}不存在!");
         }
 
-        db.Set<GroupUserEntity>()
+        db.GroupUser
             .Where(e => e.GroupId == groupId)
             .ExecuteDelete();
 

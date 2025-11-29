@@ -26,7 +26,7 @@ public class AuthResultController(
     {
         ValidationUtil.Validate<AuthResultListParamValidator, AuthResultListParam>(param);
 
-        IQueryable<AuthResultEntity> query = db.Set<AuthResultEntity>();
+        IQueryable<AuthResultEntity> query = db.AuthResult;
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {

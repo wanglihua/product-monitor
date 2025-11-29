@@ -18,7 +18,7 @@ public class ProductRentService(Db db)
     /// <returns>返回创建的租赁目录Id</returns>
     public long Create(long collegeId, long productId, long userId)
     {
-        var productRent = db.Set<ProductRentEntity>()
+        var productRent = db.ProductRent
             .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
             .OrderBy(e => e.CollegeId)
             .Take(1)

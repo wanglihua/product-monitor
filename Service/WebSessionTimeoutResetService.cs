@@ -31,7 +31,7 @@ public class WebSessionTimeoutResetService
         {
             Transactional.Wrap(db, () => {
                 DateTime now = DateTime.Now;
-                int count = db.Set<WebSessionEntity>()
+                int count = db.WebSession
                     .Where(e => e.SessionId == sessionId)
                     .ExecuteUpdate(e => e
                             .SetProperty(x => x.UpdateTime, now)
@@ -56,7 +56,7 @@ public class WebSessionTimeoutResetService
                     // 多加了10分钟是让过期10分钟的数据也保留了
                     var timeoutSessionUpdateTime = DateTime.Now.Add(-WebSessionService.SessionTimeout.Add(TimeSpan.FromMinutes(10)));
                     // 外键 ON DELETE CASCADE 存在，会同时清理 WebSessionDataEntity
-                    db.Set<WebSessionEntity>()
+                    db.WebSession
                         .Where(e => e.UpdateTime < timeoutSessionUpdateTime)
                         .ExecuteDelete();
                 }

@@ -27,7 +27,7 @@ public class UserAuthService(Db db)
         var userPassResEntityList = db.UserPassRes.ToList();
 
         var groupPassResList = db.GroupUser
-            .Join(db.roupPassRes,
+            .Join(db.GroupPassRes,
                 gu => gu.GroupId,
                 gpr => gpr.GroupId,
                 (gu, gpr) => new { GroupUser = gu, GroupPassRes = gpr })

@@ -29,7 +29,7 @@ public class GroupController(
     {
         ValidationUtil.Validate<GroupListParamValidator, GroupListParam>(param);
 
-        IQueryable<GroupEntity> query = db.Set<GroupEntity>();
+        IQueryable<GroupEntity> query = db.Group;
 
         if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
         {
@@ -118,7 +118,7 @@ public class GroupController(
 
         if (groupId > 0)
         {
-            var group = db.Set<GroupEntity>().Find(groupId);
+            var group = db.Group.Find(groupId);
             if (group is not null)
             {
                 model = new GroupDetailModel {
@@ -152,7 +152,7 @@ public class GroupController(
         }
         else
         {
-            group = db.Set<GroupEntity>().Find(groupId);
+            group = db.Group.Find(groupId);
             if (group is null)
             {
                 throw new ValidationException($"指定的群组#{groupId}不存在!");
@@ -198,13 +198,13 @@ public class GroupController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long groupId = param.Id;
-        var group = db.Set<GroupEntity>().Find(groupId);
+        var group = db.Group.Find(groupId);
         if (group is null)
         {
             throw new ValidationException($"指定的群组#{groupId}不存在!");
         }
 
-        var groupUserExist = db.Set<GroupUserEntity>()
+        var groupUserExist = db.GroupUser
             .Where(e => e.GroupId == groupId)
             .OrderBy(e => e.GroupId)
             .Take(1)
@@ -214,7 +214,7 @@ public class GroupController(
             throw new ValidationException("请先删除群组成员, 再删除群组!");
         }
 
-        var groupPassResExist = db.Set<GroupPassResEntity>()
+        var groupPassResExist = db.GroupPassRes
             .Where(e => e.GroupId == groupId)
             .OrderBy(e => e.GroupId)
             .Take(1)

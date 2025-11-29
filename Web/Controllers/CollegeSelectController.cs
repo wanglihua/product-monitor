@@ -21,7 +21,7 @@ public class CollegeSelectController(Db db) : Controller
     {
         ValidationUtil.Validate<CollegeSelectDataQueryParamValidator, CollegeSelectDataQueryParam>(param);
 
-        IQueryable<CollegeEntity> query = db.Set<CollegeEntity>();
+        IQueryable<CollegeEntity> query = db.College;
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {

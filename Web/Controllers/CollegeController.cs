@@ -28,7 +28,7 @@ public class CollegeController(
     {
         ValidationUtil.Validate<CollegeListParamValidator, CollegeListParam>(param);
 
-        IQueryable<CollegeEntity> query = db.Set<CollegeEntity>();
+        IQueryable<CollegeEntity> query = db.College;
 
         if (string.IsNullOrWhiteSpace(param.CodeQuery) == false)
         {
@@ -127,7 +127,7 @@ public class CollegeController(
 
         if (collegeId > 0)
         {
-            var college = db.Set<CollegeEntity>().Find(collegeId);
+            var college = db.College.Find(collegeId);
             if (college is not null)
             {
                 model = new CollegeDetailModel {
@@ -164,7 +164,7 @@ public class CollegeController(
         }
         else
         {
-            college = db.Set<CollegeEntity>().Find(collegeId);
+            college = db.College.Find(collegeId);
             if (college is null)
             {
                 throw new ValidationException($"指定的院校目录#{collegeId}不存在!");
@@ -213,7 +213,7 @@ public class CollegeController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long collegeId = param.Id;
-        var college = db.Set<CollegeEntity>().Find(collegeId);
+        var college = db.College.Find(collegeId);
         if (college is null)
         {
             throw new ValidationException($"指定的院校目录#{collegeId}不存在!");

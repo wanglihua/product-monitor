@@ -27,7 +27,7 @@ public class ProductController(
     [NonAction]
     private IQueryable<ProductEntity> GetListQuery(ProductListParam param)
     {
-        IQueryable<ProductEntity> query = db.Set<ProductEntity>();
+        IQueryable<ProductEntity> query = db.Product;
 
         if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
         {
@@ -138,7 +138,7 @@ public class ProductController(
 
         if (productId > 0)
         {
-            var product = db.Set<ProductEntity>().Find(productId);
+            var product = db.Product.Find(productId);
             if (product is not null)
             {
                 model = new ProductDetailModel {
@@ -173,7 +173,7 @@ public class ProductController(
         }
         else
         {
-            product = db.Set<ProductEntity>().Find(productId);
+            product = db.Product.Find(productId);
             if (product is null)
             {
                 throw new ValidationException($"指定的产品目录#{productId}不存在!");
@@ -227,14 +227,14 @@ public class ProductController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productId = param.Id;
-        var product = db.Set<ProductEntity>().Find(productId);
+        var product = db.Product.Find(productId);
         if (product is null)
         {
             throw new ValidationException($"指定的产品目录#{productId}不存在!");
         }
 
         // 判断产品版本是否存在
-        var productVersionExist = db.Set<ProductVersionEntity>()
+        var productVersionExist = db.ProductVersion
             .Where(e => e.ProductId == productId)
             .OrderBy(e => e.ProductId)
             .Take(1)

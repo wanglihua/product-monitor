@@ -21,7 +21,7 @@ public class GroupSelectController(Db db) : Controller
     {
         ValidationUtil.Validate<GroupSelectDataQueryParamValidator, GroupSelectDataQueryParam>(param);
 
-        IQueryable<GroupEntity> query = db.Set<GroupEntity>();
+        IQueryable<GroupEntity> query = db.Group;
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {

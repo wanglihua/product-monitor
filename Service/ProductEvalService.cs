@@ -73,7 +73,7 @@ public class ProductEvalService(Db db)
             throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
         }
 
-        var productEvalEntryLatest = db.roductEvalEntry
+        var productEvalEntryLatest = db.ProductEvalEntry
             .Where(e => e.ProductEvalId == productEvalId)
             .OrderByDescending(e => e.Id)
             .Take(1)

@@ -29,8 +29,8 @@ public class ActionLogController(Db db) : Controller
     {
         ValidationUtil.Validate<ActionLogListParamValidator, ActionLogListParam>(param);
 
-        IQueryable<ActionLogJoinItem> query = db.Set<ActionLogEntity>()
-            .Join(db.Set<UserEntity>(),
+        IQueryable<ActionLogJoinItem> query = db.ActionLog
+            .Join(db.User,
                 actionLog => actionLog.UserId,
                 user => user.Id,
                 (actionLog, user) => new ActionLogJoinItem {
@@ -49,7 +49,7 @@ public class ActionLogController(Db db) : Controller
             string loginNameQuery = param.LoginNameQuery.Trim();
 
             // 先过滤用户再过滤日志表, 日志数据量大的情况下会更快
-            var userIdList = db.Set<UserEntity>()
+            var userIdList = db.User
                 .Where(e => e.LoginName.Contains(loginNameQuery) || e.UserName.Contains(loginNameQuery))
                 .Select(e => e.Id)
                 .ToList();

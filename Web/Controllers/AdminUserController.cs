@@ -34,8 +34,8 @@ public class AdminUserController(
     {
         ValidationUtil.Validate<AdminUserListParamValidator, AdminUserListParam>(param);
 
-        IQueryable<AdminUserJoinItem> query = db.Set<AdminUserEntity>()
-            .Join(db.Set<UserEntity>(),
+        IQueryable<AdminUserJoinItem> query = db.AdminUser
+            .Join(db.User,
                 admin => admin.UserId,
                 user => user.Id,
                 (admin, user) => new AdminUserJoinItem { Admin = admin, User = user }
@@ -117,7 +117,7 @@ public class AdminUserController(
         long loginUserId = userLoginService.GetLoginUserId();
 
         string loginName = param.LoginName.Trim();
-        var user = db.Set<UserEntity>()
+        var user = db.User
             .Where(e => e.LoginName == loginName)
             .OrderBy(e => e.LoginName)
             .Take(1)
@@ -128,7 +128,7 @@ public class AdminUserController(
         }
 
         long userId = user.Id;
-        var admin = db.Set<AdminUserEntity>()
+        var admin = db.AdminUser
             .Where(e => e.UserId == userId)
             .OrderBy(e => e.UserId)
             .Take(1)
@@ -165,20 +165,20 @@ public class AdminUserController(
 
         long adminId = param.Id;
 
-        var admin = db.Set<AdminUserEntity>().Find(adminId);
+        var admin = db.AdminUser.Find(adminId);
         if (admin is null)
         {
             throw new ValidationException($"指定的管理员#{adminId}不存在！");
         }
 
         long userId = admin.UserId;
-        var user = db.Set<UserEntity>().Find(userId);
+        var user = db.User.Find(userId);
         if (user is null)
         {
             throw new ValidationException($"指定的用户#{userId}不存在!");
         }
 
-        var adminOther = db.Set<AdminUserEntity>()
+        var adminOther = db.AdminUser
             .Where(e => e.Id != adminId)
             .OrderBy(e => e.Id)
             .Take(1)

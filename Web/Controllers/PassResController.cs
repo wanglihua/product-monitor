@@ -55,8 +55,8 @@ public class PassResController(
     {
         ValidationUtil.Validate<PassResListParamValidator, PassResListParam>(param);
 
-        IQueryable<PassResJoinItem> query = db.Set<PassResEntity>()
-            .Join(db.Set<PassResCateEntity>(),
+        IQueryable<PassResJoinItem> query = db.PassRes
+            .Join(db.PassResCate,
                 pr => pr.CateId,
                 prc => prc.Id,
                 (pr, prc) => new PassResJoinItem {
@@ -102,7 +102,7 @@ public class PassResController(
             })
             .ToList();
 
-        var passResCateList = db.Set<PassResCateEntity>()
+        var passResCateList = db.PassResCate
             .OrderBy(e => e.Id)
             .ToList();
 

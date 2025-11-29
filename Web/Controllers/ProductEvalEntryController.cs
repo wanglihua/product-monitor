@@ -36,8 +36,8 @@ public class ProductEvalEntryController(
     {
         ValidationUtil.Validate<ProductEvalEntryListParamValidator, ProductEvalEntryListParam>(param);
 
-        IQueryable<ProductEvalEntryJoinItem> query = db.Set<ProductEvalEntryEntity>()
-            .Join(db.Set<UserEntity>(),
+        IQueryable<ProductEvalEntryJoinItem> query = db.ProductEvalEntry
+            .Join(db.User,
                 pse => pse.UserId,
                 u => u.Id,
                 (pse, u) => new ProductEvalEntryJoinItem {
@@ -46,14 +46,14 @@ public class ProductEvalEntryController(
                 });
 
         long productEvalId = param.ProductEvalId;
-        var productEval = db.Set<ProductEvalEntity>().Find(productEvalId);
+        var productEval = db.ProductEval.Find(productEvalId);
         if (productEval is null)
         {
             throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
         }
 
         long collegeId = productEval.CollegeId;
-        var college = db.Set<CollegeEntity>().Find(collegeId);
+        var college = db.College.Find(collegeId);
         if (college is null)
         {
             throw new ValidationException($"指定学校#{collegeId}不存在!");
@@ -62,7 +62,7 @@ public class ProductEvalEntryController(
         string collegeName = college.Name;
 
         long productId = productEval.ProductId;
-        var product = db.Set<ProductEntity>().Find(productId);
+        var product = db.Product.Find(productId);
         if (product is null)
         {
             throw new ValidationException($"指定产品#{productId}不存在!");
@@ -159,7 +159,7 @@ public class ProductEvalEntryController(
         long productEvalId = param.ProductEvalId;
         if (productEvalEntryId > 0)
         {
-            var productEvalEntry = db.Set<ProductEvalEntryEntity>().Find(productEvalEntryId);
+            var productEvalEntry = db.ProductEvalEntry.Find(productEvalEntryId);
             if (productEvalEntry is null)
             {
                 throw new ValidationException($"指定的试用目录明细#{productEvalEntryId}不存在!");
@@ -170,14 +170,14 @@ public class ProductEvalEntryController(
 
         if (productEvalId > 0)
         {
-            var productEval = db.Set<ProductEvalEntity>().Find(productEvalId);
+            var productEval = db.ProductEval.Find(productEvalId);
             if (productEval is null)
             {
                 throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
             }
 
             collegeId = productEval.CollegeId;
-            var college = db.Set<CollegeEntity>().Find(collegeId);
+            var college = db.College.Find(collegeId);
             if (college is null)
             {
                 throw new ValidationException($"指定学校#{collegeId}不存在!");
@@ -212,7 +212,7 @@ public class ProductEvalEntryController(
 
         if (productEvalEntryId > 0)
         {
-            var productEvalEntry = db.Set<ProductEvalEntryEntity>().Find(productEvalEntryId);
+            var productEvalEntry = db.ProductEvalEntry.Find(productEvalEntryId);
             if (productEvalEntry is null)
             {
                 throw new ValidationException($"指定的试用目录明细#{productEvalEntryId}不存在!");
@@ -269,7 +269,7 @@ public class ProductEvalEntryController(
                 }
 
                 collegeId = model.CollegeId;
-                var college = db.Set<CollegeEntity>().Find(collegeId);
+                var college = db.College.Find(collegeId);
                 if (college is null)
                 {
                     throw new ValidationException($"指定的学校#{collegeId}不存在!");
@@ -307,7 +307,7 @@ public class ProductEvalEntryController(
         ProductEvalEntryEntity? productEvalEntry;
         if (isCreate == false)
         {
-            productEvalEntry = db.Set<ProductEvalEntryEntity>().Find(productEvalEntryId);
+            productEvalEntry = db.ProductEvalEntry.Find(productEvalEntryId);
             if (productEvalEntry is null)
             {
                 throw new ValidationException($"指定的试用目录明细#{productEvalEntryId}不存在!");
@@ -323,7 +323,7 @@ public class ProductEvalEntryController(
             }
             else
             {
-                var productEval = db.Set<ProductEvalEntity>()
+                var productEval = db.ProductEval
                     .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
                     .OrderBy(e => e.CollegeId)
                     .Take(1)
@@ -394,7 +394,7 @@ public class ProductEvalEntryController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productEvalEntryId = param.Id;
-        var productEvalEntry = db.Set<ProductEvalEntryEntity>().Find(productEvalEntryId);
+        var productEvalEntry = db.ProductEvalEntry.Find(productEvalEntryId);
         if (productEvalEntry is null)
         {
             throw new ValidationException($"指定的试用目录明细#{productEvalEntryId}不存在!");

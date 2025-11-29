@@ -35,8 +35,8 @@ public class ExceptionMonitorController(
     {
         ValidationUtil.Validate<ExceptionMonitorListParamValidator, ExceptionMonitorListParam>(param);
 
-        IQueryable<ExceptionMonitorJoinItem> query = db.Set<ExceptionMonitorEntity>()
-            .Join(db.Set<ProductEntity>(),
+        IQueryable<ExceptionMonitorJoinItem> query = db.ExceptionMonitor
+            .Join(db.Product,
                 em => em.ProductId,
                 p => p.Id,
                 (em, p) => new ExceptionMonitorJoinItem {
@@ -157,7 +157,7 @@ public class ExceptionMonitorController(
 
         if (exceptionMonitorId > 0)
         {
-            var exceptionMonitor = db.Set<ExceptionMonitorEntity>().Find(exceptionMonitorId);
+            var exceptionMonitor = db.ExceptionMonitor.Find(exceptionMonitorId);
             if (exceptionMonitor is not null)
             {
                 model = new ExceptionMonitorDetailModel {
@@ -185,7 +185,7 @@ public class ExceptionMonitorController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long exceptionMonitorId = param.Id;
-        var exceptionMonitor = db.Set<ExceptionMonitorEntity>().Find(exceptionMonitorId);
+        var exceptionMonitor = db.ExceptionMonitor.Find(exceptionMonitorId);
         if (exceptionMonitor is null)
         {
             throw new ValidationException($"指定的异常检测#{exceptionMonitorId}不存在!");
