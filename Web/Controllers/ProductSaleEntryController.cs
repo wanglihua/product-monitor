@@ -365,7 +365,7 @@ public class ProductSaleEntryController : Controller
 
         if (isCreate == true)
         {
-            db.Add<ProductSaleEntryEntity>(productSaleEntry);
+            db.ProductSaleEntry.Add(productSaleEntry);
         }
         else
         {

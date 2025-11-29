@@ -192,7 +192,7 @@ public class UserLoginService
                 Data = user.Id.ToString(),
             };
 
-            db.Add<WebSessionDataEntity>(userLoginSessionData);
+            db.WebSessionData.Add(userLoginSessionData);
         }
         else
         {

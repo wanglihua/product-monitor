@@ -269,7 +269,7 @@ public class UserPassResController : Controller
             PassResId = passResId,
         };
 
-        db.Add<UserPassResEntity>(userPassRes);
+        db.UserPassRes.Add(userPassRes);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

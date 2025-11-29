@@ -177,7 +177,7 @@ public class GroupController : Controller
 
         if (isCreate == true)
         {
-            db.Add<GroupEntity>(group);
+            db.Group.Add(group);
         }
         else
         {

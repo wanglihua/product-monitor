@@ -50,7 +50,7 @@ public class TestController : Controller
         //     Salt = salt,
         // };
         //
-        // db.Add<UserEntity>(user);
+        // db.User.Add(user);
         //
         // db.SaveChanges();
 

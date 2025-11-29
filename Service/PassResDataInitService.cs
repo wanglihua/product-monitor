@@ -79,7 +79,7 @@ public class PassResDataInitService
                 }
                 else
                 {
-                    db.Add<PassResEntity>(passResInDb);
+                    db.PassRes.Add(passResInDb);
                 }
             }
         }

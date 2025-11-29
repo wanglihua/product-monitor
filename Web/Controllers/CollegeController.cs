@@ -190,7 +190,7 @@ public class CollegeController : Controller
 
         if (isCreate == true)
         {
-            db.Add<CollegeEntity>(college);
+            db.College.Add(college);
         }
         else
         {

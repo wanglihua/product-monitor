@@ -62,7 +62,7 @@ public class ProductSaleService
             Description = "",
         };
 
-        db.Add<ProductSaleEntity>(productSale);
+        db.ProductSale.Add(productSale);
 
         db.SaveChanges();
 

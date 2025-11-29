@@ -154,7 +154,7 @@ public class AdminUserController : Controller
             UserId = userId,
         };
 
-        db.Add<AdminUserEntity>(admin);
+        db.AdminUser.Add(admin);
         db.SaveChanges();
 
         string actionDesc = $"{user.LoginName}#{user.Id}";

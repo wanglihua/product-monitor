@@ -26,7 +26,7 @@ public class ActionLogService
             ActionDesc = actionDesc,
         };
 
-        db.Add<ActionLogEntity>(actionLog);
+        db.ActionLog.Add(actionLog);
 
         db.SaveChanges();
     }

@@ -14,6 +14,8 @@ public partial class Db
 
     public DbSet<ExceptionMonitorEntity> ExceptionMonitor { get; set; }
 
+    public DbSet<GroupEntity> Group { get; set; }
+
     public DbSet<GroupPassResEntity> GroupPassRes { get; set; }
 
     public DbSet<GroupUserEntity> GroupUser { get; set; }
@@ -41,30 +43,30 @@ public partial class Db
     public DbSet<ProductSaleEntity> ProductSale { get; set; }
 
     public DbSet<ProductSaleEntryEntity> ProductSaleEntry { get; set; }
-    
-    public DbSet<ProductServiceEntity>  ProductService { get; set; }
-    
-    public DbSet<ProductSpecialServiceEntity>  ProductSpecialService { get; set; }
-    
-    public DbSet<ProductUpdateEntity>  ProductUpdate { get; set; }
-    
-    public DbSet<ProductUrlEntity>  ProductUrl { get; set; }
-    
-    public DbSet<ProductUrlMonitorEntity>  ProductUrlMonitor { get; set; }
-    
-    public DbSet<ProductUrlMonitorEntryEntity>   ProductUrlMonitorEntry { get; set; }
-    
-    public DbSet<ProductVersionEntity>  ProductVersion { get; set; }
-    
-    public DbSet<TestEntity>  Test { get; set; }
-    
-    public DbSet<UserEntity>  User { get; set; }
-    
-    public DbSet<UserPassRes>  UserPassRes { get; set; }
-    
-    public DbSet<UserPassResEntity>   UserPassResEntity { get; set; }
-    
-    public DbSet<WebSessionDataEntity>  WebSessionData { get; set; }
-    
-    
+
+    public DbSet<ProductServiceEntity> ProductService { get; set; }
+
+    public DbSet<ProductSpecialServiceEntity> ProductSpecialService { get; set; }
+
+    public DbSet<ProductUpdateEntity> ProductUpdate { get; set; }
+
+    public DbSet<ProductUrlEntity> ProductUrl { get; set; }
+
+    public DbSet<ProductUrlMonitorEntity> ProductUrlMonitor { get; set; }
+
+    public DbSet<ProductUrlMonitorEntryEntity> ProductUrlMonitorEntry { get; set; }
+
+    public DbSet<ProductVersionEntity> ProductVersion { get; set; }
+
+    public DbSet<TestEntity> Test { get; set; }
+
+    public DbSet<UserEntity> User { get; set; }
+
+    public DbSet<UserPassResEntity> UserPassRes { get; set; }
+
+    public DbSet<UserPassResEntity> UserPassResEntity { get; set; }
+
+    public DbSet<WebSessionDataEntity> WebSessionData { get; set; }
+
+    public DbSet<WebSessionEntity> WebSession { get; set; }
 }

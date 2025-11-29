@@ -298,7 +298,7 @@ public class ProductInstallController : Controller
 
         if (isCreate == true)
         {
-            db.Add<ProductInstallEntity>(productInstall);
+            db.ProductInstall.Add(productInstall);
         }
         else
         {

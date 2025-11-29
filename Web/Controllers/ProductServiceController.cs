@@ -283,7 +283,7 @@ public class ProductServiceController : Controller
 
         if (isCreate == true)
         {
-            db.Add<ProductServiceEntity>(productService);
+            db.ProductService.Add(productService);
         }
         else
         {

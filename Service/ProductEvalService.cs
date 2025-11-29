@@ -61,7 +61,7 @@ public class ProductEvalService
             Description = "",
         };
 
-        db.Add<ProductEvalEntity>(productEval);
+        db.ProductEval.Add(productEval);
 
         db.SaveChanges();
 

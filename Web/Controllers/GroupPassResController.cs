@@ -261,7 +261,7 @@ public class GroupPassResController : Controller
         groupPassRes.GroupId = param.GroupId;
         groupPassRes.PassResId = param.PassResId;
 
-        db.Add<GroupPassResEntity>(groupPassRes);
+        db.GroupPassRes.Add(groupPassRes);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

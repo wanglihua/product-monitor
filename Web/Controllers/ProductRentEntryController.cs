@@ -370,7 +370,7 @@ public class ProductRentEntryController : Controller
 
         if (isCreate == true)
         {
-            db.Add<ProductRentEntryEntity>(productRentEntry);
+            db.ProductRentEntry.Add(productRentEntry);
         }
         else
         {

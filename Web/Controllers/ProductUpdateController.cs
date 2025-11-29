@@ -305,7 +305,7 @@ public class ProductUpdateController : Controller
 
         if (isCreate == true)
         {
-            db.Add<ProductUpdateEntity>(productUpdate);
+            db.ProductUpdate.Add(productUpdate);
         }
         else
         {

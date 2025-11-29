@@ -184,7 +184,7 @@ public class GroupUserController : Controller
             UserId = userId
         };
 
-        db.Add<GroupUserEntity>(groupUser);
+        db.GroupUser.Add(groupUser);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

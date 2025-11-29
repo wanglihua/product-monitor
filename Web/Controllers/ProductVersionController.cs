@@ -237,7 +237,7 @@ public class ProductVersionController : Controller
 
         if (isCreate == true)
         {
-            db.Add<ProductVersionEntity>(productVersion);
+            db.ProductVersion.Add(productVersion);
         }
         else
         {

@@ -212,7 +212,7 @@ public class ProductUrlController : Controller
 
         if (isCreate == true)
         {
-            db.Add<ProductUrlEntity>(productUrl);
+            db.ProductUrl.Add(productUrl);
         }
         else
         {

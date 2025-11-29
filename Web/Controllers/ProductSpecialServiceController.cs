@@ -281,7 +281,7 @@ public class ProductSpecialServiceController : Controller
 
         if (isCreate == true)
         {
-            db.Add<ProductSpecialServiceEntity>(productSpecialService);
+            db.ProductSpecialService.Add(productSpecialService);
         }
         else
         {

@@ -204,7 +204,7 @@ public class ProductController : Controller
 
         if (isCreate == true)
         {
-            db.Add<ProductEntity>(product);
+            db.Product.Add(product);
         }
         else
         {

@@ -46,7 +46,7 @@ public class WebSessionTimeoutResetService
                     };
 
                     // 这里并发时, 有时会出问题
-                    db.Add<WebSessionEntity>(webSession);
+                    db.WebSession.Add(webSession);
                     db.SaveChanges();
                 }
 

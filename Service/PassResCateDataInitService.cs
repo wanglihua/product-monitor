@@ -67,7 +67,7 @@ public class PassResCateDataInitService
                 }
                 else
                 {
-                    db.Add<PassResCateEntity>(cateInDb);
+                    db.PassResCate.Add(cateInDb);
                 }
             }
         }

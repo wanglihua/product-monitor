@@ -61,7 +61,7 @@ public class ProductRentService
             Description = "",
         };
 
-        db.Add<ProductRentEntity>(productRent);
+        db.ProductRent.Add(productRent);
 
         db.SaveChanges();
 

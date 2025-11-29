@@ -211,7 +211,7 @@ public class ProductUrlMonitorEntryController : Controller
 
         if (isCreate == true)
         {
-            db.Add<ProductUrlMonitorEntryEntity>(productUrlMonitorEntry);
+            db.ProductUrlMonitorEntry.Add(productUrlMonitorEntry);
         }
         else
         {
