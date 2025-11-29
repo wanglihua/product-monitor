@@ -394,7 +394,7 @@ public class ProductSaleEntryController(
             throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
         }
 
-        db.Remove<ProductSaleEntryEntity>(productSaleEntry);
+        db.ProductSaleEntry.Remove(productSaleEntry);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
@@ -419,7 +419,7 @@ public class ProductSaleEntryController(
                 throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
             }
 
-            db.Remove<ProductSaleEntity>(productSale);
+            db.ProductSale.Remove(productSale);
             db.SaveChanges();
 
             string actionDesc = $"#{productSale.Id}";

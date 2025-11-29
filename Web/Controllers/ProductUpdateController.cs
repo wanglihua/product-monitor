@@ -332,7 +332,7 @@ public class ProductUpdateController(
             throw new ValidationException($"指定的产品更新#{productUpdateId}不存在!");
         }
 
-        db.Remove<ProductUpdateEntity>(productUpdate);
+        db.ProductUpdate.Remove(productUpdate);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

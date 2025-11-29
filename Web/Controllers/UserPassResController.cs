@@ -292,7 +292,7 @@ public class UserPassResController(
             throw new ValidationException($"指定的用户授权不存在! userId:{userId},passResId:{passResId}");
         }
 
-        db.Remove<UserPassResEntity>(userPassRes);
+        db.UserPassRes.Remove(userPassRes);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

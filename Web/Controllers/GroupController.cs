@@ -224,7 +224,7 @@ public class GroupController(
             throw new ValidationException("请先清除群组授权, 再删除群组!");
         }
 
-        db.Remove<GroupEntity>(group);
+        db.Group.Remove(group);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

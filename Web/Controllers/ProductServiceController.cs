@@ -311,7 +311,7 @@ public class ProductServiceController(
             throw new ValidationException($"指定的售后服务#{productServiceId}不存在!");
         }
 
-        db.Remove<ProductServiceEntity>(productService);
+        db.ProductService.Remove(productService);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

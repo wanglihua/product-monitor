@@ -244,7 +244,7 @@ public class ProductController(
             throw new ValidationException("请先删除产品版本, 再删除产品!");
         }
 
-        db.Remove<ProductEntity>(product);
+        db.Product.Remove(product);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

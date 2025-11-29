@@ -199,7 +199,7 @@ public class GroupUserController(
             throw new ValidationException($"指定的群组成员#{groupUserId}不存在!");
         }
 
-        db.Remove<GroupUserEntity>(groupUser);
+        db.GroupUser.Remove(groupUser);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

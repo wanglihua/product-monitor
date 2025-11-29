@@ -273,7 +273,7 @@ public class ProductVersionController(
             throw new ValidationException($"指定的产品目录#{productId}不存在!");
         }
 
-        db.Remove<ProductVersionEntity>(productVersion);
+        db.ProductVersion.Remove(productVersion);
         db.SaveChanges();
 
         productService.UpdateLatestVersionData(productId);

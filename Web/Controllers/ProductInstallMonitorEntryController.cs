@@ -180,7 +180,7 @@ public class ProductInstallMonitorEntryController(
             throw new ValidationException($"指定的院校使用详情#{productInstallMonitorEntryId}不存在!");
         }
 
-        db.Remove<ProductInstallMonitorEntryEntity>(productInstallMonitorEntry);
+        db.ProductInstallMonitorEntry.Remove(productInstallMonitorEntry);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

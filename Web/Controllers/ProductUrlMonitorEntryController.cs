@@ -240,7 +240,7 @@ public class ProductUrlMonitorEntryController(
             throw new ValidationException($"指定的网站监测详情#{productUrlMonitorEntryId}不存在!");
         }
 
-        db.Remove<ProductUrlMonitorEntryEntity>(productUrlMonitorEntry);
+        db.ProductUrlMonitorEntry.Remove(productUrlMonitorEntry);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

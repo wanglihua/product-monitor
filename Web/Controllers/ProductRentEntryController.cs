@@ -399,7 +399,7 @@ public class ProductRentEntryController(
             throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
         }
 
-        db.Remove<ProductRentEntryEntity>(productRentEntry);
+        db.ProductRentEntry.Remove(productRentEntry);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
@@ -424,7 +424,7 @@ public class ProductRentEntryController(
                 throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
             }
 
-            db.Remove<ProductRentEntity>(productRent);
+            db.ProductRent.Remove(productRent);
             db.SaveChanges();
 
             string actionDesc = $"#{productRent.Id}";

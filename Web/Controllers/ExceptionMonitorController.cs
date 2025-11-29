@@ -191,7 +191,7 @@ public class ExceptionMonitorController(
             throw new ValidationException($"指定的异常检测#{exceptionMonitorId}不存在!");
         }
 
-        db.Remove<ExceptionMonitorEntity>(exceptionMonitor);
+        db.ExceptionMonitor.Remove(exceptionMonitor);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

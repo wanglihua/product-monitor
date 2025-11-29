@@ -188,7 +188,7 @@ public class AdminUserController(
             throw new ValidationException("必需至少保留一位管理员！");
         }
 
-        db.Remove<AdminUserEntity>(admin);
+        db.AdminUser.Remove(admin);
         db.SaveChanges();
 
         string actionDesc = $"{user.LoginName}#{user.Id}";

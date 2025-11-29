@@ -283,7 +283,7 @@ public class GroupPassResController(
             throw new ValidationException($"指定的群组授权不存在! groupId:{groupId},passResId:{passResId}");
         }
 
-        db.Remove<GroupPassResEntity>(groupPassRes);
+        db.GroupPassRes.Remove(groupPassRes);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

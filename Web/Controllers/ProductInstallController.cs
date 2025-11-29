@@ -324,7 +324,7 @@ public class ProductInstallController(
             throw new ValidationException($"指定的产品安装#{productInstallId}不存在!");
         }
 
-        db.Remove<ProductInstallEntity>(productInstall);
+        db.ProductInstall.Remove(productInstall);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

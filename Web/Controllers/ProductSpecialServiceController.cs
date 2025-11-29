@@ -309,7 +309,7 @@ public class ProductSpecialServiceController(
             throw new ValidationException($"指定的特殊售后#{productSpecialServiceId}不存在!");
         }
 
-        db.Remove<ProductSpecialServiceEntity>(productSpecialService);
+        db.ProductSpecialService.Remove(productSpecialService);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

@@ -219,7 +219,7 @@ public class CollegeController(
             throw new ValidationException($"指定的院校目录#{collegeId}不存在!");
         }
 
-        db.Remove<CollegeEntity>(college);
+        db.College.Remove(college);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

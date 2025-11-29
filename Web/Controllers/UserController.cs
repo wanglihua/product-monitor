@@ -338,7 +338,7 @@ public class UserController(
         //     .Log;
 
         // 删除用户
-        db.Remove<UserEntity>(user);
+        db.User.Remove(user);
 
         db.SaveChanges();
 

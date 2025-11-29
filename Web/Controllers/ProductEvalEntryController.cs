@@ -400,7 +400,7 @@ public class ProductEvalEntryController(
             throw new ValidationException($"指定的试用目录明细#{productEvalEntryId}不存在!");
         }
 
-        db.Remove<ProductEvalEntryEntity>(productEvalEntry);
+        db.ProductEvalEntry.Remove(productEvalEntry);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
@@ -425,7 +425,7 @@ public class ProductEvalEntryController(
                 throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
             }
 
-            db.Remove<ProductEvalEntity>(productEval);
+            db.ProductEval.Remove(productEval);
             db.SaveChanges();
 
             string actionDesc = $"#{productEval.Id}";

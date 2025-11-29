@@ -197,7 +197,7 @@ public class ProductInstallMonitorController(
             throw new ValidationException($"指定的安装监测#{productInstallMonitorId}不存在!");
         }
 
-        db.Remove<ProductInstallMonitorEntity>(productInstallMonitor);
+        db.ProductInstallMonitor.Remove(productInstallMonitor);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();

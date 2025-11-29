@@ -241,7 +241,7 @@ public class ProductUrlController(
             throw new ValidationException($"指定的网址管理#{productUrlId}不存在!");
         }
 
-        db.Remove<ProductUrlEntity>(productUrl);
+        db.ProductUrl.Remove(productUrl);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
