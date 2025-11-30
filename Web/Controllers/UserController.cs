@@ -236,7 +236,7 @@ public class UserController(
                 throw new ValidationException($"指定的用户#{userId}不存在！");
             }
 
-            var otherUser = db.User
+            var otherUser = db.User.AsNoTracking()
                 .Where(e => e.LoginName == loginName && e.Id != userId)
                 .OrderBy(e => e.LoginName)
                 .Take(1)
@@ -321,7 +321,7 @@ public class UserController(
             throw new ValidationException($"指定的用户#{userId}不存在！");
         }
 
-        var admin = db.AdminUser
+        var admin = db.AdminUser.AsNoTracking()
             .Where(e => e.UserId == userId)
             .OrderBy(e => e.UserId)
             .Take(1)

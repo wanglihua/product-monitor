@@ -14,7 +14,7 @@ public static class StaticConfigurationManager
 #if DEBUG
         configBuilder = configBuilder.AddJsonFile("appsettings.Development.json");
 #else
-            configBuilder = configBuilder.AddJsonFile("appsettings.json");
+        configBuilder = configBuilder.AddJsonFile("appsettings.json");
 #endif
 
         Configuration = configBuilder.Build();
