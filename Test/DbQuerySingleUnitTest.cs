@@ -13,6 +13,7 @@ public class DbQuerySingleUnitTest
 
         var user = db.User
             .Where(e => e.Id > 0)
+            .OrderBy(e => e.Id)
             .Take(1)
             .SingleOrDefault();
     }
