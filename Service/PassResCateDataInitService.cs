@@ -1,5 +1,6 @@
 ﻿using Core;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service;
 
@@ -23,7 +24,7 @@ public class PassResCateDataInitService(Db db)
         }
 
         var cateIdList = cateList.Select(e => e.Id).ToList();
-        var cateListInDb = db.PassResCate
+        var cateListInDb = db.PassResCate.AsTracking()
             .Where(e => cateIdList.Contains(e.Id))
             .ToList();
 

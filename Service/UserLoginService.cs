@@ -53,7 +53,7 @@ public class UserLoginService(
             return loginUserId;
         }
 
-        var userLoginSessionData = db.WebSessionData
+        var userLoginSessionData = db.WebSessionData.AsNoTracking()
             .Where(e => e.SessionId == sessionId && e.Type == WebSessionDataType.LoginUserId)
             .OrderBy(e => e.SessionId)
             .Take(1)
@@ -94,7 +94,7 @@ public class UserLoginService(
             return isAdmin;
         }
 
-        var admin = db.AdminUser
+        var admin = db.AdminUser.AsNoTracking()
             .Where(e => e.UserId == userId)
             .OrderBy(e => e.UserId)
             .Take(1)
@@ -116,7 +116,7 @@ public class UserLoginService(
     /// <returns>登录成功的用户id，如果登录不成功就返回0</returns>
     public long Login(string loginName, string password, HttpRequest request)
     {
-        var user = db.User
+        var user = db.User.AsTracking() // 后面会更改用户最后登录时间等
             .Where(e => loginName == e.LoginName)
             .OrderBy(e => e.LoginName)
             .Take(1)
@@ -148,7 +148,7 @@ public class UserLoginService(
         }
 
         string sessionId = webSessionService.SessionId;
-        var webSession = db.WebSession
+        var webSession = db.WebSession.AsNoTracking()
             .Where(e => e.SessionId == sessionId)
             .OrderBy(e => e.SessionId)
             .Take(1)
@@ -159,7 +159,7 @@ public class UserLoginService(
         }
 
         long webSessionId = webSession.Id;
-        var userLoginSessionData = db.WebSessionData
+        var userLoginSessionData = db.WebSessionData.AsTracking()
             .Where(e => e.WebSessionId == webSessionId && e.Type == WebSessionDataType.LoginUserId)
             .OrderBy(e => e.WebSessionId)
             .Take(1)
@@ -196,7 +196,7 @@ public class UserLoginService(
 
         long userId = user.Id;
 
-        var admin = db.AdminUser
+        var admin = db.AdminUser.AsNoTracking()
             .Where(e => e.UserId == userId)
             .OrderBy(e => e.UserId)
             .Take(1)

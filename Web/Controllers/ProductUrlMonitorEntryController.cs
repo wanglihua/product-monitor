@@ -55,7 +55,7 @@ public class ProductUrlMonitorEntryController(
         string productName = product.Name;
 
         IQueryable<ProductUrlMonitorEntryEntity> query = db.ProductUrlMonitorEntry.AsNoTracking();
-
+        query = query.Where(e => e.ProductUrlMonitorId == productUrlMonitorId);
 
         int productUrlMonitorEntryCount = query.Count();
 

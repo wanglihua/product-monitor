@@ -38,7 +38,7 @@ public class ProductInstallController(
     [NonAction]
     private IQueryable<ProductInstallJoinItem> GetListQuery(ProductInstallListParam param)
     {
-        IQueryable<ProductInstallJoinItem> query = db.ProductInstall.AsNoTracking()
+        IQueryable<ProductInstallJoinItem> query = db.ProductInstall
             .Join(db.College,
                 pi => pi.CollegeId,
                 c => c.Id,
@@ -62,7 +62,8 @@ public class ProductInstallController(
                     College = pi.College,
                     Product = pi.Product,
                     User = u,
-                });
+                })
+            .AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
         {

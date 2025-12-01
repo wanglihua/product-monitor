@@ -1,5 +1,6 @@
 using Core;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 
 namespace Service;
@@ -18,7 +19,7 @@ public class ProductSaleService(Db db)
     /// <returns>返回创建的销售目录Id</returns>
     public long Create(long collegeId, long productId, long userId)
     {
-        var productSale = db.ProductSale
+        var productSale = db.ProductSale.AsNoTracking()
             .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
             .OrderBy(e => e.CollegeId)
             .Take(1)
@@ -74,7 +75,7 @@ public class ProductSaleService(Db db)
             throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
         }
 
-        var productSaleEntryLatest = db.ProductSaleEntry
+        var productSaleEntryLatest = db.ProductSaleEntry.AsNoTracking()
             .Where(e => e.ProductSaleId == productSaleId)
             .OrderByDescending(e => e.Id)
             .Take(1)

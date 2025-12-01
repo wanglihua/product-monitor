@@ -83,7 +83,7 @@ public class GroupPassResController(
 
         var groupIdList = groupList.Select(e => e.Id).ToList();
 
-        var groupPassResList = db.GroupPassRes
+        var groupPassResList = db.GroupPassRes.AsNoTracking()
             .Where(e => e.PassResId == passResId && groupIdList.Contains(e.GroupId))
             .ToList();
 
@@ -148,7 +148,8 @@ public class GroupPassResController(
                     PassRes = pr,
                     PassResCate = prc
                 }
-            );
+            )
+            .AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.PassResNameQuery) == false)
         {
@@ -187,7 +188,7 @@ public class GroupPassResController(
             .ToList();
 
         var passResIdList = passResList.Select(e => e.PassRes.Id).ToList();
-        var groupPassResList = db.GroupPassRes
+        var groupPassResList = db.GroupPassRes.AsNoTracking()
             .Where(e => e.GroupId == groupId && passResIdList.Contains(e.PassResId))
             .ToList();
 
@@ -231,7 +232,7 @@ public class GroupPassResController(
         long groupId = param.GroupId;
         long passResId = param.PassResId;
 
-        var groupPassRes = db.GroupPassRes
+        var groupPassRes = db.GroupPassRes.AsNoTracking()
             .Where(e => e.GroupId == groupId && e.PassResId == passResId)
             .OrderBy(e => e.GroupId)
             .Take(1)
@@ -273,7 +274,7 @@ public class GroupPassResController(
         long groupId = param.GroupId;
         long passResId = param.PassResId;
 
-        var groupPassRes = db.GroupPassRes
+        var groupPassRes = db.GroupPassRes.AsNoTracking()
             .Where(e => e.GroupId == groupId && e.PassResId == passResId)
             .OrderBy(e => e.GroupId)
             .Take(1)

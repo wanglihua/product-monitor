@@ -35,12 +35,13 @@ public class AdminUserController(
     {
         ValidationUtil.Validate<AdminUserListParamValidator, AdminUserListParam>(param);
 
-        IQueryable<AdminUserJoinItem> query = db.AdminUser.AsNoTracking()
+        IQueryable<AdminUserJoinItem> query = db.AdminUser
             .Join(db.User,
                 admin => admin.UserId,
                 user => user.Id,
                 (admin, user) => new AdminUserJoinItem { Admin = admin, User = user }
-            );
+            )
+            .AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
@@ -118,7 +119,7 @@ public class AdminUserController(
         long loginUserId = userLoginService.GetLoginUserId();
 
         string loginName = param.LoginName.Trim();
-        var user = db.User
+        var user = db.User.AsNoTracking()
             .Where(e => e.LoginName == loginName)
             .OrderBy(e => e.LoginName)
             .Take(1)
@@ -129,7 +130,7 @@ public class AdminUserController(
         }
 
         long userId = user.Id;
-        var admin = db.AdminUser
+        var admin = db.AdminUser.AsNoTracking()
             .Where(e => e.UserId == userId)
             .OrderBy(e => e.UserId)
             .Take(1)

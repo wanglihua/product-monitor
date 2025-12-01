@@ -30,14 +30,15 @@ public class ActionLogController(Db db) : Controller
     {
         ValidationUtil.Validate<ActionLogListParamValidator, ActionLogListParam>(param);
 
-        IQueryable<ActionLogJoinItem> query = db.ActionLog.AsNoTracking()
+        IQueryable<ActionLogJoinItem> query = db.ActionLog
             .Join(db.User,
                 actionLog => actionLog.UserId,
                 user => user.Id,
                 (actionLog, user) => new ActionLogJoinItem {
                     ActionLog = actionLog,
                     User = user,
-                });
+                })
+            .AsNoTracking();
 
         if (param.ActionLogTypeQuery is not null && param.ActionLogTypeQuery != ActionLogType.None)
         {
@@ -50,7 +51,7 @@ public class ActionLogController(Db db) : Controller
             string loginNameQuery = param.LoginNameQuery.Trim();
 
             // 先过滤用户再过滤日志表, 日志数据量大的情况下会更快
-            var userIdList = db.User
+            var userIdList = db.User.AsNoTracking()
                 .Where(e => e.LoginName.Contains(loginNameQuery) || e.UserName.Contains(loginNameQuery))
                 .Select(e => e.Id)
                 .ToList();

@@ -62,14 +62,15 @@ public class ProductRentEntryController(
 
         string productName = product.Name;
 
-        IQueryable<ProductRentEntryJoinItem> query = db.ProductRentEntry.AsNoTracking()
+        IQueryable<ProductRentEntryJoinItem> query = db.ProductRentEntry
             .Join(db.User,
                 pse => pse.UserId,
                 u => u.Id,
                 (pse, u) => new ProductRentEntryJoinItem {
                     ProductRentEntry = pse,
                     User = u,
-                });
+                })
+            .AsNoTracking();
 
         query = query.Where(p => p.ProductRentEntry.ProductRentId == productRentId);
 
@@ -322,7 +323,7 @@ public class ProductRentEntryController(
             }
             else
             {
-                var productRent = db.ProductRent
+                var productRent = db.ProductRent.AsNoTracking()
                     .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
                     .OrderBy(e => e.CollegeId)
                     .Take(1)
@@ -410,7 +411,7 @@ public class ProductRentEntryController(
         // 删除最后一个明细数据的时候，删除主数据
         bool productRentDeleted = false;
         long productRentId = productRentEntry.ProductRentId;
-        var productRentEntryExists = db.ProductRentEntry
+        var productRentEntryExists = db.ProductRentEntry.AsNoTracking()
             .Where(e => e.ProductRentId == productRentId)
             .OrderBy(e => e.ProductRentId)
             .Take(1)

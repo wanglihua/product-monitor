@@ -235,7 +235,7 @@ public class ProductController(
         }
 
         // 判断产品版本是否存在
-        var productVersionExist = db.ProductVersion
+        var productVersionExist = db.ProductVersion.AsNoTracking()
             .Where(e => e.ProductId == productId)
             .OrderBy(e => e.ProductId)
             .Take(1)

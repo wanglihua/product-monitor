@@ -1,5 +1,6 @@
 ﻿using Core;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 
 namespace Service.Product;
@@ -22,7 +23,7 @@ public class ProductService(Db db)
 
         product.VersionCount = versionCount;
 
-        var productLatestVersion = db.ProductVersion
+        var productLatestVersion = db.ProductVersion.AsTracking()
             .Where(e => e.ProductId == productId)
             .OrderByDescending(e => e.Id)
             .Take(1)

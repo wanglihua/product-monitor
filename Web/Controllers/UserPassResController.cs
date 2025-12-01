@@ -95,7 +95,7 @@ public class UserPassResController(
 
         var userIdList = userList.Select(e => e.Id).ToList();
 
-        var userPassResList = db.UserPassRes
+        var userPassResList = db.UserPassRes.AsNoTracking()
             .Where(e => e.PassResId == passResId && userIdList.Contains(e.UserId))
             .ToList();
 
@@ -150,7 +150,7 @@ public class UserPassResController(
             throw new ValidationException($"指定的用户#{userId}不存在!");
         }
 
-        IQueryable<UserPassResJoinItem> query = db.PassRes.AsNoTracking()
+        IQueryable<UserPassResJoinItem> query = db.PassRes
             .Join(db.PassResCate,
                 pr => pr.CateId,
                 prc => prc.Id,
@@ -158,7 +158,8 @@ public class UserPassResController(
                     PassRes = pr,
                     PassResCate = prc
                 }
-            );
+            )
+            .AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.PassResNameQuery) == false)
         {
@@ -197,7 +198,7 @@ public class UserPassResController(
             .ToList();
 
         var passResIdList = passResList.Select(e => e.PassRes.Id).ToList();
-        var userPassResList = db.UserPassRes
+        var userPassResList = db.UserPassRes.AsNoTracking()
             .Where(e => e.UserId == userId && passResIdList.Contains(e.PassResId))
             .ToList();
 
@@ -242,7 +243,7 @@ public class UserPassResController(
         long userId = param.UserId;
         long passResId = param.PassResId;
 
-        var userPassRes = db.UserPassRes
+        var userPassRes = db.UserPassRes.AsNoTracking()
             .Where(e => e.UserId == userId && e.PassResId == passResId)
             .OrderBy(e => e.UserId)
             .Take(1)
@@ -282,7 +283,7 @@ public class UserPassResController(
         long userId = param.UserId;
         long passResId = param.PassResId;
 
-        var userPassRes = db.UserPassRes
+        var userPassRes = db.UserPassRes.AsNoTracking()
             .Where(e => e.UserId == userId && e.PassResId == passResId)
             .OrderBy(e => e.UserId)
             .Take(1)

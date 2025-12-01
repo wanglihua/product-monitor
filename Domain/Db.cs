@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Config;
+using Core.Database;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
@@ -42,7 +43,12 @@ public partial class Db : DbContext
                 160: SQL Server 2022
              */
 
-            options.UseCompatibilityLevel(100); // 这个要 ef core 8.0才行
+            // 这个要 ef core 8.0才行
+#if DEBUG
+            options.UseCompatibilityLevel(SqlServerCompatibilityLevel.SqlServer2022);
+#else
+            options.UseCompatibilityLevel(SqlServerCompatibilityLevel.SqlServer2008);
+#endif
         });
 
         // 这里不用这个了 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution); // 对 no tracking 的 entity Update 时 会更新所有字段

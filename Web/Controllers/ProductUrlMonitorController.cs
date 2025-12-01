@@ -38,7 +38,7 @@ public class ProductUrlMonitorController(
     {
         ValidationUtil.Validate<ProductUrlMonitorListParamValidator, ProductUrlMonitorListParam>(param);
 
-        IQueryable<ProductUrlMonitorJoinItem> query = db.ProductUrlMonitor.AsNoTracking()
+        IQueryable<ProductUrlMonitorJoinItem> query = db.ProductUrlMonitor
             .Join(db.College,
                 pum => pum.CollegeId,
                 c => c.Id,
@@ -53,7 +53,8 @@ public class ProductUrlMonitorController(
                     ProductUrlMonitor = pum.ProductUrlMonitor,
                     College = pum.College,
                     Product = p,
-                });
+                })
+            .AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
         {

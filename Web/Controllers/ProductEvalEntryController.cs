@@ -37,14 +37,15 @@ public class ProductEvalEntryController(
     {
         ValidationUtil.Validate<ProductEvalEntryListParamValidator, ProductEvalEntryListParam>(param);
 
-        IQueryable<ProductEvalEntryJoinItem> query = db.ProductEvalEntry.AsNoTracking()
+        IQueryable<ProductEvalEntryJoinItem> query = db.ProductEvalEntry
             .Join(db.User,
                 pse => pse.UserId,
                 u => u.Id,
                 (pse, u) => new ProductEvalEntryJoinItem {
                     ProductEvalEntry = pse,
                     User = u,
-                });
+                })
+            .AsNoTracking();
 
         long productEvalId = param.ProductEvalId;
         var productEval = db.ProductEval.Find(productEvalId);
@@ -324,7 +325,7 @@ public class ProductEvalEntryController(
             }
             else
             {
-                var productEval = db.ProductEval
+                var productEval = db.ProductEval.AsNoTracking()
                     .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
                     .OrderBy(e => e.CollegeId)
                     .Take(1)
@@ -411,7 +412,7 @@ public class ProductEvalEntryController(
         // 删除最后一个明细数据的时候，删除主数据
         bool productEvalDeleted = false;
         long productEvalId = productEvalEntry.ProductEvalId;
-        var productEvalEntryExists = db.ProductEvalEntry
+        var productEvalEntryExists = db.ProductEvalEntry.AsNoTracking()
             .Where(e => e.ProductEvalId == productEvalId)
             .OrderBy(e => e.ProductEvalId)
             .Take(1)

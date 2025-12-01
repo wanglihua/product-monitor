@@ -38,7 +38,7 @@ public class ProductUpdateController(
     [NonAction]
     private IQueryable<ProductUpdateJoinItem> GetListQuery(ProductUpdateListParam param)
     {
-        IQueryable<ProductUpdateJoinItem> query = db.ProductUpdate.AsNoTracking()
+        IQueryable<ProductUpdateJoinItem> query = db.ProductUpdate
             .Join(db.College,
                 pu => pu.CollegeId,
                 c => c.Id,
@@ -62,7 +62,8 @@ public class ProductUpdateController(
                     College = pu.College,
                     Product = pu.Product,
                     User = u,
-                });
+                })
+            .AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
         {

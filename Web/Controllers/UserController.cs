@@ -217,7 +217,7 @@ public class UserController(
         {
             user = new UserEntity();
 
-            var otherUser = db.User
+            var otherUser = db.User.AsNoTracking()
                 .Where(e => e.LoginName == loginName)
                 .OrderBy(e => e.LoginName)
                 .Take(1)
@@ -334,7 +334,7 @@ public class UserController(
         // todo 还有其他可能要删除的关联数据
 
         // 删除日志不是很好
-        // db.ActionLog
+        // db.ActionLog.AsNoTracking()
         //     .Where(e => e.UserId == userId)
         //     .Log;
 

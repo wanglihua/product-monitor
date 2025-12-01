@@ -40,7 +40,7 @@ public class ProductServiceController(
     {
         ValidationUtil.Validate<ProductServiceListParamValidator, ProductServiceListParam>(param);
 
-        IQueryable<ProductServiceJoinItem> query = db.ProductService.AsNoTracking()
+        IQueryable<ProductServiceJoinItem> query = db.ProductService
             .Join(db.College,
                 ps => ps.CollegeId,
                 c => c.Id,
@@ -64,7 +64,8 @@ public class ProductServiceController(
                     College = pii.College,
                     Product = pii.Product,
                     User = u,
-                });
+                })
+            .AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
         {

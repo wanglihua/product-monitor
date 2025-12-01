@@ -1,5 +1,6 @@
 ﻿using Core;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service;
 
@@ -13,7 +14,7 @@ public class AdminUserService(Db db)
             return false;
         }
 
-        var adminUserExist = db.AdminUser
+        var adminUserExist = db.AdminUser.AsNoTracking()
             .Where(e => e.UserId == userId)
             .OrderBy(e => e.UserId)
             .Take(1)

@@ -56,14 +56,15 @@ public class PassResController(
     {
         ValidationUtil.Validate<PassResListParamValidator, PassResListParam>(param);
 
-        IQueryable<PassResJoinItem> query = db.PassRes.AsNoTracking()
+        IQueryable<PassResJoinItem> query = db.PassRes
             .Join(db.PassResCate,
                 pr => pr.CateId,
                 prc => prc.Id,
                 (pr, prc) => new PassResJoinItem {
                     PassRes = pr,
                     PassResCate = prc,
-                });
+                })
+            .AsNoTracking();
 
         if (param.CateIdQuery > 0)
         {
@@ -103,7 +104,7 @@ public class PassResController(
             })
             .ToList();
 
-        var passResCateList = db.PassResCate
+        var passResCateList = db.PassResCate.AsNoTracking()
             .OrderBy(e => e.Id)
             .ToList();
 

@@ -1,5 +1,6 @@
 using Core;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 
 namespace Service;
@@ -18,7 +19,7 @@ public class ProductRentService(Db db)
     /// <returns>返回创建的租赁目录Id</returns>
     public long Create(long collegeId, long productId, long userId)
     {
-        var productRent = db.ProductRent
+        var productRent = db.ProductRent.AsNoTracking()
             .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
             .OrderBy(e => e.CollegeId)
             .Take(1)
@@ -73,7 +74,7 @@ public class ProductRentService(Db db)
             throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
         }
 
-        var productRentEntryLatest = db.ProductRentEntry
+        var productRentEntryLatest = db.ProductRentEntry.AsNoTracking()
             .Where(e => e.ProductRentId == productRentId)
             .OrderByDescending(e => e.Id)
             .Take(1)

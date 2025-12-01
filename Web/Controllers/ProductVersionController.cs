@@ -46,14 +46,15 @@ public class ProductVersionController(
             throw new ValidationException($"指定的产品#{productId}不存在!");
         }
 
-        IQueryable<ProductVersionJoinItem> query = db.ProductVersion.AsNoTracking()
+        IQueryable<ProductVersionJoinItem> query = db.ProductVersion
             .Join(db.Product,
                 pv => pv.ProductId,
                 p => p.Id,
                 (pv, p) => new ProductVersionJoinItem {
                     ProductVersion = pv,
                     Product = p,
-                });
+                })
+            .AsNoTracking();
 
         query = query.Where(e => e.ProductVersion.ProductId == productId);
 

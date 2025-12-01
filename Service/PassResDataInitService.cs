@@ -1,6 +1,7 @@
 ﻿using Core;
 using Domain;
 using Domain.PassRes;
+using Microsoft.EntityFrameworkCore;
 
 namespace Service;
 
@@ -29,7 +30,7 @@ public class PassResDataInitService(Db db)
         }
 
         var passResIdList = passResList.Select(e => e.Id).ToList();
-        var passResListInDb = db.PassRes
+        var passResListInDb = db.PassRes.AsTracking()
             .Where(e => passResIdList.Contains(e.Id))
             .ToList();
 

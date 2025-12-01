@@ -1,5 +1,6 @@
 ﻿using Core;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Service;
@@ -24,13 +25,15 @@ public class UserAuthService(Db db)
 
     private IList<UserPassRes> GetUserPassResList()
     {
-        var userPassResEntityList = db.UserPassRes.ToList();
+        var userPassResEntityList = db.UserPassRes.AsNoTracking()
+            .ToList();
 
         var groupPassResList = db.GroupUser
             .Join(db.GroupPassRes,
                 gu => gu.GroupId,
                 gpr => gpr.GroupId,
                 (gu, gpr) => new { GroupUser = gu, GroupPassRes = gpr })
+            .AsNoTracking()
             .ToList();
 
         var userPassResList = new List<UserPassRes>();

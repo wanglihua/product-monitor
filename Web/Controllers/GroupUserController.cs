@@ -157,7 +157,7 @@ public class GroupUserController(
         long groupId = model.GroupId;
         long userId = model.UserId;
 
-        var groupUserExist = db.GroupUser
+        var groupUserExist = db.GroupUser.AsNoTracking()
             .Where(e => e.GroupId == groupId && e.UserId == userId)
             .OrderBy(e => e.GroupId)
             .Take(1)

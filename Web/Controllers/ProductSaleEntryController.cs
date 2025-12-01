@@ -62,14 +62,15 @@ public class ProductSaleEntryController(
 
         string productName = product.Name;
 
-        IQueryable<ProductSaleEntryJoinItem> query = db.ProductSaleEntry.AsNoTracking()
+        IQueryable<ProductSaleEntryJoinItem> query = db.ProductSaleEntry
             .Join(db.User,
                 pse => pse.UserId,
                 u => u.Id,
                 (pse, u) => new ProductSaleEntryJoinItem {
                     ProductSaleEntry = pse,
                     User = u,
-                });
+                })
+            .AsNoTracking();
 
         query = query.Where(p => p.ProductSaleEntry.ProductSaleId == productSaleId);
 
@@ -325,7 +326,7 @@ public class ProductSaleEntryController(
             }
             else
             {
-                var productSale = db.ProductSale
+                var productSale = db.ProductSale.AsNoTracking()
                     .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
                     .OrderBy(e => e.CollegeId)
                     .Take(1)
@@ -405,7 +406,7 @@ public class ProductSaleEntryController(
         // 删除最后一个明细数据的时候，删除主数据
         bool productSaleDeleted = false;
         long productSaleId = productSaleEntry.ProductSaleId;
-        var productSaleEntryExists = db.ProductSaleEntry
+        var productSaleEntryExists = db.ProductSaleEntry.AsNoTracking()
             .Where(e => e.ProductSaleId == productSaleId)
             .OrderBy(e => e.ProductSaleId)
             .Take(1)
