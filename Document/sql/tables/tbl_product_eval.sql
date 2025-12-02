@@ -22,7 +22,7 @@
     INDEX ix_product_eval_product_id (product_id),
     CONSTRAINT fk_product_eval_college_id FOREIGN KEY (college_id) REFERENCES tbl_college (id),
     INDEX ix_college_eval_college_id (college_id),
-)
+);
 
 -- DROP TABLE tbl_product_eval;
 

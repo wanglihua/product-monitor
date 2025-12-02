@@ -4,14 +4,13 @@
 
     code        NVARCHAR(64)  NOT NULL,
     name        NVARCHAR(128) NOT NULL,
-    province    INT           NOT NULL DEFAULT 0,
-    level       INT           NOT NULL DEFAULT 0,
-
+    province    INT           NOT NULL CONSTRAINT df_college_province DEFAULT 0,
+    level       INT           NOT NULL CONSTRAINT df_college_level DEFAULT 0,
     create_time DATETIME      NOT NULL,
     update_time DATETIME      NOT NULL,
 
     CONSTRAINT pk_college PRIMARY KEY (id),
-    INDEX ix_college_code (code)
+    INDEX ix_college_code (code),
 );
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'院校目录', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college';

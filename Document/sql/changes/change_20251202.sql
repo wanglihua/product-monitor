@@ -1,0 +1,1 @@
+﻿CREATE INDEX ix_product_name ON tbl_product (name);

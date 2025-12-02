@@ -4,7 +4,7 @@ CREATE TABLE tbl_action_log
     type_code   INT           NOT NULL, -- ActionLogType
     user_id     BIGINT        NOT NULL,
 
-    action_desc NVARCHAR(512) NOT NULL DEFAULT '',
+    action_desc NVARCHAR(512) NOT NULL CONSTRAINT df_action_log_desc DEFAULT '',
 
     create_time DATETIME      NOT NULL,
 

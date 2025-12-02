@@ -5,7 +5,7 @@
     college_id       BIGINT   NOT NULL,
     product_id       BIGINT   NOT NULL,
 
-    product_url_type INT      NOT NULL DEFAULT 0,
+    product_url_type INT      NOT NULL CONSTRAINT df_product_url_monitor_product_url_type DEFAULT 0,
 
     task_count       INT      NOT NULL,
     teacher_count    INT      NOT NULL,

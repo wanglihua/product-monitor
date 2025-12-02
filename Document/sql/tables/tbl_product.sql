@@ -11,7 +11,8 @@
     create_time         DATETIME      NOT NULL,
     update_time         DATETIME      NOT NULL,
 
-    CONSTRAINT pk_product PRIMARY KEY (id)
+    CONSTRAINT pk_product PRIMARY KEY (id),
+    INDEX ix_product_name (name),
 );
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'产品目录', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product';

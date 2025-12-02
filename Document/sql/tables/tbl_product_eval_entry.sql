@@ -23,7 +23,6 @@
 
     CONSTRAINT fk_product_eval_entry_product_eval_id FOREIGN KEY (product_eval_id) REFERENCES tbl_product_eval (id),
     INDEX ix_product_eval_entry_product_eval_id (product_eval_id),
-
 );
 
 -- DROP TABLE tbl_product_eval_entry;

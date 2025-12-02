@@ -5,7 +5,7 @@
     product_monitor_id BIGINT        NOT NULL,
 
     login_user         NVARCHAR(128) NOT NULL,
-    account_type       INT           NOT NULL DEFAULT 0,
+    account_type       INT           NOT NULL CONSTRAINT df_product_install_monitor_entry_account_type DEFAULT 0,
     ip_address         NVARCHAR(32)  NOT NULL,
     province_type      INT           NOT NULL,
 

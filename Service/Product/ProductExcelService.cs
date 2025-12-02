@@ -118,8 +118,55 @@ public class ProductExcelService
         {
             throw new ValidationException("导入的Excel文件应该至少有一个工作表！");
         }
-        
-        var productExcelImportList = new  List<ProductExcelImportListItem>();
-        
+
+        var productExcelImportList = new List<ProductExcelImportListItem>();
+
+        // 略过标题行，所以 rowIndex = 1 开始
+        int lastRowNum = sheet.LastRowNum;
+        for (int rowIndex = 1; rowIndex <= lastRowNum; rowIndex++)
+        {
+            IRow row = sheet.GetRow(rowIndex);
+
+            if (row == null)
+            {
+                break;
+            }
+
+            // 设置单元格的格式为 String，这样后面用 StringCellValue 取值的时候，就不会出错了
+            int cellIndex = 0;
+            int lastCellNum = row.LastCellNum;
+            for (cellIndex = 0; cellIndex < lastCellNum; cellIndex++)
+            {
+                ICell cell = row.GetCell(cellIndex);
+                if (cell == null)
+                {
+                    cell = row.CreateCell(cellIndex);
+                }
+
+                cell.SetCellType(CellType.String);
+            }
+
+            cellIndex = 0;
+
+            // 产品名称
+            string name = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                break;
+            }
+
+            //  产品英文名称
+            string englishName = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+
+            productExcelImportList.Add(new ProductExcelImportListItem {
+                Name = name,
+                EnglishName = englishName,
+            });
+        }
+
+        if (productExcelImportList.Count == 0)
+        {
+            throw new ValidationException("产品导入列表为空!");
+        }
     }
 }

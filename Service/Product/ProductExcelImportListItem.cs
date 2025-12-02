@@ -12,18 +12,18 @@ public class ProductExcelImportListItem
     /// </summary>
     public string EnglishName { get; set; } = "";
 
-    /// <summary>
-    /// 版本数量
-    /// </summary>
-    public int VersionCount { get; set; }
-
-    /// <summary>
-    /// 最新版本号
-    /// </summary>
-    public string LatestVersion { get; set; } = "";
-
-    /// <summary>
-    /// 版本更新时间
-    /// </summary>
-    public DateTime? VersionUpdateTime { get; set; }
+    // /// <summary>
+    // /// 版本数量
+    // /// </summary>
+    // public int VersionCount { get; set; }
+    //
+    // /// <summary>
+    // /// 最新版本号
+    // /// </summary>
+    // public string LatestVersion { get; set; } = "";
+    //
+    // /// <summary>
+    // /// 版本更新时间
+    // /// </summary>
+    // public DateTime? VersionUpdateTime { get; set; }
 }

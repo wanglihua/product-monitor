@@ -288,7 +288,7 @@ public class ProductController(
 
     [HttpPost]
     [Route("/api/product/import")]
-    [Transactional(false)]
+    [Transactional(false)] // 内部有事务
     public IActionResult Import(IFormFile excelFile)
     {
         if (excelFile == null)

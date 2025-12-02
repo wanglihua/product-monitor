@@ -7,7 +7,7 @@
     login_user             NVARCHAR(128) NOT NULL,
     login_password         NVARCHAR(128) NOT NULL,
     ip_address             NVARCHAR(32)  NOT NULL,
-    province_type          INT           NOT NULL DEFAULT 0,
+    province_type          INT           NOT NULL CONSTRAINT df_product_url_monitor_entry_province_type DEFAULT 0,
 
     create_time            DATETIME      NOT NULL,
     update_time            DATETIME      NOT NULL,

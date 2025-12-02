@@ -11,7 +11,7 @@ CREATE TABLE tbl_group_pass_res
     CONSTRAINT fk_group_pass_res_group_id FOREIGN KEY (group_id) REFERENCES tbl_group (id),
     INDEX ix_group_pass_res_group_id (group_id),
     CONSTRAINT fk_group_pass_res_pass_res_id FOREIGN KEY (pass_res_id) REFERENCES tbl_pass_res (id),
-    INDEX ix_group_pass_res_pass_res_id (pass_res_id)
+    INDEX ix_group_pass_res_pass_res_id (pass_res_id),
 );
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'群组授权', 'SCHEMA', 'dbo', 'TABLE', 'tbl_group_pass_res';

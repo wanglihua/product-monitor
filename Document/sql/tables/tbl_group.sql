@@ -7,7 +7,7 @@ CREATE TABLE tbl_group
     create_time DATETIME      NOT NULL,
     update_time DATETIME      NOT NULL,
 
-    CONSTRAINT pk_group PRIMARY KEY (id)
+    CONSTRAINT pk_group PRIMARY KEY (id),
 );
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'群组', 'SCHEMA', 'dbo', 'TABLE', 'tbl_group';

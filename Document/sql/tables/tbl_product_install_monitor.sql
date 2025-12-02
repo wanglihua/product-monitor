@@ -5,7 +5,7 @@
     college_id      BIGINT        NOT NULL,
     product_id      BIGINT        NOT NULL,
 
-    province_type   INT           NOT NULL DEFAULT 0,
+    province_type   INT           NOT NULL CONSTRAINT df_product_install_monitor_province_type DEFAULT 0,
 
     cpu_serial_no   NVARCHAR(128) NOT NULL,
     net_mac_address NVARCHAR(128) NOT NULL,
