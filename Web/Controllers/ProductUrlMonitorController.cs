@@ -82,12 +82,12 @@ public class ProductUrlMonitorController(
         {
             string sortFieldParam = param.SortField;
 
-            if (string.Compare(sortFieldParam, nameof(ProductUrlMonitorListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(ProductUrlMonitorListItem.CreateTime))
             {
                 sortField = e => e.ProductUrlMonitor.CreateTime;
             }
 
-            if (string.Compare(sortFieldParam, nameof(ProductUrlMonitorListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(ProductUrlMonitorListItem.UpdateTime))
             {
                 sortField = e => e.ProductUrlMonitor.UpdateTime;
             }

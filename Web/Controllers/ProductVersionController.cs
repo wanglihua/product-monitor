@@ -66,12 +66,12 @@ public class ProductVersionController(
         {
             string sortFieldParam = param.SortField;
 
-            if (string.Compare(sortFieldParam, nameof(ProductVersionListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(ProductVersionListItem.CreateTime))
             {
                 sortField = e => e.ProductVersion.CreateTime;
             }
 
-            if (string.Compare(sortFieldParam, nameof(ProductVersionListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(ProductVersionListItem.UpdateTime))
             {
                 sortField = e => e.ProductVersion.UpdateTime;
             }

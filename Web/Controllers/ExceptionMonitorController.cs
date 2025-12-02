@@ -66,12 +66,12 @@ public class ExceptionMonitorController(
         {
             string sortFieldParam = param.SortField;
 
-            if (string.Compare(sortFieldParam, nameof(ExceptionMonitorListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(ExceptionMonitorListItem.CreateTime))
             {
                 sortField = e => e.ExceptionMonitor.CreateTime;
             }
 
-            if (string.Compare(sortFieldParam, nameof(ExceptionMonitorListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(ExceptionMonitorListItem.UpdateTime))
             {
                 sortField = e => e.ExceptionMonitor.UpdateTime;
             }

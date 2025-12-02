@@ -97,12 +97,12 @@ public class ProductInstallController(
         {
             string sortFieldParam = param.SortField;
 
-            if (string.Compare(sortFieldParam, nameof(ProductInstallListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(ProductInstallListItem.CreateTime))
             {
                 sortField = e => e.ProductInstall.CreateTime;
             }
 
-            if (string.Compare(sortFieldParam, nameof(ProductInstallListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(ProductInstallListItem.UpdateTime))
             {
                 sortField = e => e.ProductInstall.UpdateTime;
             }

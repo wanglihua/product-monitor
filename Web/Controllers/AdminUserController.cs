@@ -62,7 +62,7 @@ public class AdminUserController(
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
-            if (string.Compare(sortFieldParam, nameof(AdminUserListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(AdminUserListItem.CreateTime))
             {
                 sortField = e => e.Admin.CreateTime;
             }

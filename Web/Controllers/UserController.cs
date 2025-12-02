@@ -54,12 +54,12 @@ public class UserController(
         {
             string sortFieldParam = param.SortField;
 
-            if (string.Compare(sortFieldParam, nameof(UserListItem.LastLoginTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(UserListItem.LastLoginTime))
             {
                 sortField = e => e.LastLoginTime!;
             }
 
-            if (string.Compare(sortFieldParam, nameof(UserListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(UserListItem.CreateTime))
             {
                 sortField = e => e.CreateTime;
             }

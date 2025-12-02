@@ -71,12 +71,12 @@ public class ProductRentController(Db db) : Controller
         {
             string sortFieldParam = param.SortField;
 
-            if (string.Compare(sortFieldParam, nameof(ProductRentListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(ProductRentListItem.CreateTime))
             {
                 sortField = e => e.ProductRent.CreateTime;
             }
 
-            if (string.Compare(sortFieldParam, nameof(ProductRentListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(ProductRentListItem.UpdateTime))
             {
                 sortField = e => e.ProductRent.UpdateTime;
             }

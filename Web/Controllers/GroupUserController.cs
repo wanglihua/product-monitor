@@ -76,7 +76,7 @@ public class GroupUserController(
         {
             string sortFieldParam = param.SortField;
 
-            if (string.Compare(sortFieldParam, nameof(GroupUserListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            if (sortFieldParam == nameof(GroupUserListItem.CreateTime))
             {
                 sortField = e => e.GroupUser.CreateTime;
             }
