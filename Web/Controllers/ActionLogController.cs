@@ -1,4 +1,4 @@
-﻿using Core.Auth;
+using Core.Auth;
 using Core.Database;
 using Core.Util;
 using Core.Web;
@@ -66,9 +66,16 @@ public class ActionLogController(Db db) : Controller
 
         int actionLogCount = query.Count();
 
-        var actionLogList = query.OrderByDescending(e => e.ActionLog.Id)
+        // 只对id分页会很多, 数据量大的时候会很明显
+        var actionLogIdList = query.OrderByDescending(e => e.ActionLog.Id)
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
+            .Select(e => e.ActionLog.Id)
+            .ToList();
+
+        var actionLogList = query
+            .Where(e => actionLogIdList.Contains(e.ActionLog.Id))
+            .OrderByDescending(e => e.ActionLog.Id)
             .Select(e => new {
                 Id = e.ActionLog.Id,
                 LoginName = e.User.LoginName,
