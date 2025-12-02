@@ -1,6 +1,9 @@
 ﻿using Core;
+using Core.Database;
 using Core.Util;
+using Domain;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -8,7 +11,7 @@ using NPOI.XSSF.UserModel;
 namespace Service.Product;
 
 [Service(ServiceType.Scoped)]
-public class ProductExcelService
+public class ProductExcelService(Db db)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
@@ -168,5 +171,32 @@ public class ProductExcelService
         {
             throw new ValidationException("产品导入列表为空!");
         }
+
+        // 把耗时的Excel操作排除在数据库事务之外
+        Transactional.Wrap(db, () => {
+            foreach (var item in productExcelImportList)
+            {
+                string name = item.Name;
+                var productExist = db.Product.AsNoTracking()
+                    .Where(e => e.Name == name)
+                    .Take(1)
+                    .SingleOrDefault();
+
+                if (productExist is not null)
+                {
+                    throw new ValidationException($"指定的产品名称【{name}】已经存在!");
+                }
+
+                db.Product.Add(new ProductEntity {
+                    Name = item.Name,
+                    EnglishName = item.EnglishName,
+                    VersionCount = 0,
+                    LatestVersion = "",
+                    VersionUpdateTime = null,
+                });
+            }
+
+            db.SaveChanges();
+        });
     }
 }
