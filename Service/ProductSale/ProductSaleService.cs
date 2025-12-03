@@ -106,7 +106,6 @@ public class ProductSaleService(Db db)
         productSale.UpdateTimes = updateTimes;
         productSale.ServiceTimes = serviceTimes;
 
-        db.ProductSale.Update(productSale);
         db.SaveChanges();
     }
 }

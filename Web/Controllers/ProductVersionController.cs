@@ -227,10 +227,6 @@ public class ProductVersionController(
         {
             db.ProductVersion.Add(productVersion);
         }
-        else
-        {
-            db.ProductVersion.Update(productVersion);
-        }
 
         db.SaveChanges();
 

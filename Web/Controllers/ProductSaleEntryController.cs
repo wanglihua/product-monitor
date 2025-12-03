@@ -356,10 +356,6 @@ public class ProductSaleEntryController(
         {
             db.ProductSaleEntry.Add(productSaleEntry);
         }
-        else
-        {
-            db.ProductSaleEntry.Update(productSaleEntry);
-        }
 
         db.SaveChanges();
 

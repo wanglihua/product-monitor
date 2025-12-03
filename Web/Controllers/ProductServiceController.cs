@@ -277,10 +277,6 @@ public class ProductServiceController(
         {
             db.ProductService.Add(productService);
         }
-        else
-        {
-            db.ProductService.Update(productService);
-        }
 
         db.SaveChanges();
 

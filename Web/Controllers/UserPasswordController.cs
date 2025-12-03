@@ -53,7 +53,6 @@ public class UserPasswordController(
         user.Password = password;
         user.Salt = salt;
 
-        db.User.Update(user);
         db.SaveChanges();
 
         return Json(new Dictionary<string, object> {

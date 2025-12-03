@@ -283,10 +283,6 @@ public class UserController(
         {
             db.User.Add(user);
         }
-        else
-        {
-            db.User.Update(user);
-        }
 
         db.SaveChanges();
 

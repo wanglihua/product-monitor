@@ -101,7 +101,6 @@ public class ProductEvalService(Db db)
         // EvalTimes
         // ServiceTimes
 
-        db.ProductEval.Update(productEval);
         db.SaveChanges();
     }
 }

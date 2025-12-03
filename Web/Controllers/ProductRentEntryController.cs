@@ -361,10 +361,6 @@ public class ProductRentEntryController(
         {
             db.ProductRentEntry.Add(productRentEntry);
         }
-        else
-        {
-            db.ProductRentEntry.Update(productRentEntry);
-        }
 
         db.SaveChanges();
 

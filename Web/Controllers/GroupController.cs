@@ -166,10 +166,6 @@ public class GroupController(
         {
             db.Group.Add(group);
         }
-        else
-        {
-            db.Group.Update(group);
-        }
 
         db.SaveChanges();
 

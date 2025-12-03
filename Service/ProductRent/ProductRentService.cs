@@ -110,7 +110,6 @@ public class ProductRentService(Db db)
         productRent.RentTimes = rentTimes;
         productRent.ServiceTimes = serviceTimes;
 
-        db.ProductRent.Update(productRent);
         db.SaveChanges();
     }
 }

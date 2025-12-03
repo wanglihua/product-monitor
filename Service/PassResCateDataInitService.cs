@@ -36,12 +36,10 @@ public class PassResCateDataInitService(Db db)
                 .Take(1)
                 .SingleOrDefault();
 
-            bool shouldSave = false;
-            bool isUpdate = true;
+            bool shouldInsert = false;
             if (cateInDb is null)
             {
-                shouldSave = true;
-                isUpdate = false;
+                shouldInsert = true;
                 cateInDb = new PassResCateEntity {
                     Id = cate.Id
                 };
@@ -49,20 +47,12 @@ public class PassResCateDataInitService(Db db)
 
             if (cateInDb.Name != cate.Name)
             {
-                shouldSave = true;
                 cateInDb.Name = cate.Name;
             }
 
-            if (shouldSave == true)
+            if (shouldInsert == true)
             {
-                if (isUpdate == true)
-                {
-                    db.PassResCate.Update(cateInDb);
-                }
-                else
-                {
-                    db.PassResCate.Add(cateInDb);
-                }
+                db.PassResCate.Add(cateInDb);
             }
         }
 

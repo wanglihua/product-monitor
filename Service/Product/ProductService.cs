@@ -40,7 +40,6 @@ public class ProductService(Db db)
             product.VersionUpdateTime = null;
         }
 
-        db.Product.Update(product);
         db.SaveChanges();
     }
 }

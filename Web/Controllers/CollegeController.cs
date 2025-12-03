@@ -181,10 +181,6 @@ public class CollegeController(
         {
             db.College.Add(college);
         }
-        else
-        {
-            db.College.Update(college);
-        }
 
         db.SaveChanges();
 

@@ -27,8 +27,6 @@ public class DbJointTrackingUnitTest
 
         if (adminUser != null)
         {
-            // db.User.Update(adminUser.User);
-
             adminUser.User.UserName = "管理员123";
 
             db.SaveChanges();

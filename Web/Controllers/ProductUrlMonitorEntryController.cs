@@ -202,10 +202,6 @@ public class ProductUrlMonitorEntryController(
         {
             db.ProductUrlMonitorEntry.Add(productUrlMonitorEntry);
         }
-        else
-        {
-            db.ProductUrlMonitorEntry.Update(productUrlMonitorEntry);
-        }
 
         db.SaveChanges();
 

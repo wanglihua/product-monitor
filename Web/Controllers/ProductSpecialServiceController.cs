@@ -278,10 +278,6 @@ public class ProductSpecialServiceController(
         {
             db.ProductSpecialService.Add(productSpecialService);
         }
-        else
-        {
-            db.ProductSpecialService.Update(productSpecialService);
-        }
 
         db.SaveChanges();
 

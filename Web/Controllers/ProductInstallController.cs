@@ -288,10 +288,6 @@ public class ProductInstallController(
         {
             db.ProductInstall.Add(productInstall);
         }
-        else
-        {
-            db.ProductInstall.Update(productInstall);
-        }
 
         db.SaveChanges();
 

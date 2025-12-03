@@ -203,10 +203,6 @@ public class ProductUrlController(
         {
             db.ProductUrl.Add(productUrl);
         }
-        else
-        {
-            db.ProductUrl.Update(productUrl);
-        }
 
         db.SaveChanges();
 

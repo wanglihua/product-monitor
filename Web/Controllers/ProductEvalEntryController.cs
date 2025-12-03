@@ -362,10 +362,6 @@ public class ProductEvalEntryController(
         {
             db.ProductEvalEntry.Add(productEvalEntry);
         }
-        else
-        {
-            db.ProductEvalEntry.Update(productEvalEntry);
-        }
 
         db.SaveChanges();
 
@@ -433,6 +429,8 @@ public class ProductEvalEntryController(
 
             string actionDesc = $"#{productEval.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductEvalDelete, actionDesc);
+
+            productEvalService.UpdateProductEvalByLatestData(productEvalId);
 
             productEvalDeleted = true;
         }

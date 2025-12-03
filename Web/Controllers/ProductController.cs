@@ -191,10 +191,6 @@ public class ProductController(
         {
             db.Product.Add(product);
         }
-        else
-        {
-            db.Product.Update(product);
-        }
 
         db.SaveChanges();
 

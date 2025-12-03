@@ -42,12 +42,10 @@ public class PassResDataInitService(Db db)
                 .Take(1)
                 .SingleOrDefault();
 
-            bool shouldSave = false;
-            bool isUpdate = true;
+            bool shouldInsert = false;
             if (passResInDb is null)
             {
-                shouldSave = true;
-                isUpdate = false;
+                shouldInsert = true;
                 passResInDb = new PassResEntity {
                     Id = passRes.Id
                 };
@@ -55,26 +53,17 @@ public class PassResDataInitService(Db db)
 
             if (passResInDb.CateId != passRes.CateId)
             {
-                shouldSave = true;
                 passResInDb.CateId = passRes.CateId;
             }
 
             if (passResInDb.Name != passRes.Name)
             {
-                shouldSave = true;
                 passResInDb.Name = passRes.Name;
             }
 
-            if (shouldSave == true)
+            if (shouldInsert == true)
             {
-                if (isUpdate == true)
-                {
-                    db.PassRes.Update(passRes);
-                }
-                else
-                {
-                    db.PassRes.Add(passResInDb);
-                }
+                db.PassRes.Add(passResInDb);
             }
         }
 
