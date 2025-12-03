@@ -24,6 +24,7 @@ const ProductSpecialServiceDetailInner = (props) => {
 
     const [state, setState] = useState({});
 
+    const [projectTypeOptions, setProjectTypeOptions] = useState([]);
     const [collegeSelectOptions, setCollegeSelectOptions] = useState([]);
     const [productSelectOptions, setProductSelectOptions] = useState([]);
 
@@ -79,6 +80,8 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 label: data.productName,
                             }]);
                         }
+
+                        setProjectTypeOptions(data.projectTypeList)
 
                         form.current.setFieldsValue({
                             collegeId: collegeId,

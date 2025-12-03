@@ -47,6 +47,14 @@ public class ProductSpecialServiceDetailModel
 
     [JsonProperty("description")]
     public string Description { get; set; } = "";
+
+    [JsonProperty("projectTypeList")]
+    public IList<Dictionary<string, object>> ProjectTypeList => ProjectType.GetList()
+        .Select(e => new Dictionary<string, object> {
+            ["value"] = e.Id,
+            ["label"] = e.Name,
+        })
+        .ToList();
 }
 
 public class ProductSpecialServiceDetailModelValidator : AbstractValidator<ProductSpecialServiceDetailModel>
