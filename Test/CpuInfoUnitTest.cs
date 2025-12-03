@@ -8,8 +8,7 @@ namespace Test;
 [TestFixture]
 public class CpuInfoUnitTest
 {
-    [Test]
-    public void GetCpuInfo()
+    private string GetCpuId()
     {
         string cpuId = "";
 
@@ -21,8 +20,7 @@ public class CpuInfoUnitTest
 
         if (managementObjectCollection == null)
         {
-            Console.WriteLine("");
-            return;
+            return "";
         }
 
         foreach (var managementObject in managementObjectCollection)
@@ -41,6 +39,13 @@ public class CpuInfoUnitTest
             cpuId = cupInfoList.OrderByDescending(m => m).FirstOrDefault() ?? "";
         }
 
+        return cpuId;
+    }
+
+    [Test]
+    public void TestGetCpuId()
+    {
+        string cpuId = GetCpuId();
         Console.WriteLine(cpuId);
     }
 }
