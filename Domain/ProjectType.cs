@@ -30,6 +30,7 @@ public record ProjectType : CodeTypeBase, ICodeType<ProjectType>
     public static readonly IReadOnlyList<ProjectType> codeTypeList = new List<ProjectType> {
         Sale,
         Rent,
+        Eval,
     };
 
     public static readonly IDictionary<int, ProjectType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);

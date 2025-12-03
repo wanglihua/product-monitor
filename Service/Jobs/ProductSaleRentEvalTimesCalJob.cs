@@ -2,6 +2,7 @@
 using Domain;
 using NLog;
 using Quartz;
+using Service.ProductEval;
 using Service.ProductRent;
 using Service.ProductSale;
 
@@ -44,11 +45,20 @@ public class ProductSaleRentEvalTimesCalJob : IJob
 
         // 租赁目录
         var productRentService = new ProductRentService(db);
-        var productRentListToUpdate = db.ProductRent.Where(e => e.UpdateTime > DateTime.Now).ToList();
+        var productRentListToUpdate = db.ProductRent.Where(e => e.UpdateTime > someTimeAgo).ToList();
         foreach (var productRent in productRentListToUpdate)
         {
             long productRentId = productRent.Id;
             productRentService.UpdateProductRentByLatestData(productRentId);
+        }
+
+        // 试用目录
+        var productEvalService = new ProductEvalService(db);
+        var productEvalListToUpdate = db.ProductEval.Where(e => e.UpdateTime > someTimeAgo).ToList();
+        foreach (var productEval in productEvalListToUpdate)
+        {
+            long productEvalId = productEval.Id;
+            productEvalService.UpdateProductEvalByLatestData(productEvalId);
         }
 
         return Task.CompletedTask;

@@ -260,9 +260,50 @@ public class ProductServiceController(
             }
         }
 
-        productService.CollegeId = model.CollegeId;
-        productService.ProductId = model.ProductId;
-        productService.ProjectType = ProjectType.GetById(model.ProjectTypeCode);
+        var projectType = ProjectType.GetById(model.ProjectTypeCode);
+        long collegeId = model.CollegeId;
+        long productId = model.ProductId;
+
+        // 检查 项目类型 学校 和 产品 关联
+        if (projectType == ProjectType.Sale)
+        {
+            var productSale = db.ProductSale.AsNoTracking()
+                .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+                .Take(1)
+                .SingleOrDefault();
+            if (productSale is null)
+            {
+                throw new ValidationException("指定的学校和产品组合在销售目录中不存在！");
+            }
+        }
+
+        if (projectType == ProjectType.Rent)
+        {
+            var productRent = db.ProductRent.AsNoTracking()
+                .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+                .Take(1)
+                .SingleOrDefault();
+            if (productRent is null)
+            {
+                throw new ValidationException("指定的学校和产品组合在租赁目录中不存在！");
+            }
+        }
+
+        if (projectType == ProjectType.Eval)
+        {
+            var productEval = db.ProductEval.AsNoTracking()
+                .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+                .Take(1)
+                .SingleOrDefault();
+            if (productEval is null)
+            {
+                throw new ValidationException("指定的学校和产品组合在试用目录中不存在！");
+            }
+        }
+
+        productService.CollegeId = collegeId;
+        productService.ProductId = productId;
+        productService.ProjectType = projectType;
         productService.ServiceDate = DateTime.Parse(model.ServiceDate).Date;
         productService.ServiceCount = model.ServiceCount;
         productService.ServiceUrl = model.ServiceUrl ?? "";

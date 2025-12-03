@@ -261,8 +261,49 @@ public class ProductSpecialServiceController(
             }
         }
 
-        productSpecialService.CollegeId = model.CollegeId;
-        productSpecialService.ProductId = model.ProductId;
+        var projectType = ProjectType.GetById(model.ProjectTypeCode);
+        long collegeId = model.CollegeId;
+        long productId = model.ProductId;
+
+        // 检查 项目类型 学校 和 产品 关联
+        if (projectType == ProjectType.Sale)
+        {
+            var productSale = db.ProductSale.AsNoTracking()
+                .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+                .Take(1)
+                .SingleOrDefault();
+            if (productSale is null)
+            {
+                throw new ValidationException("指定的学校和产品组合在销售目录中不存在！");
+            }
+        }
+
+        if (projectType == ProjectType.Rent)
+        {
+            var productRent = db.ProductRent.AsNoTracking()
+                .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+                .Take(1)
+                .SingleOrDefault();
+            if (productRent is null)
+            {
+                throw new ValidationException("指定的学校和产品组合在租赁目录中不存在！");
+            }
+        }
+
+        if (projectType == ProjectType.Eval)
+        {
+            var productEval = db.ProductEval.AsNoTracking()
+                .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+                .Take(1)
+                .SingleOrDefault();
+            if (productEval is null)
+            {
+                throw new ValidationException("指定的学校和产品组合在试用目录中不存在！");
+            }
+        }
+
+        productSpecialService.CollegeId = collegeId;
+        productSpecialService.ProductId = productId;
         productSpecialService.ProjectType = ProjectType.GetById(model.ProjectTypeCode);
         productSpecialService.ServiceDate = DateTime.Parse(model.ServiceDate).Date;
         productSpecialService.ServiceCount = model.ServiceCount;

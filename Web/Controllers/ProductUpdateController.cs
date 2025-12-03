@@ -276,8 +276,21 @@ public class ProductUpdateController(
             }
         }
 
-        productUpdate.CollegeId = model.CollegeId;
-        productUpdate.ProductId = model.ProductId;
+        long collegeId = model.CollegeId;
+        long productId = model.ProductId;
+
+        // 检查 学校 和 产品 关联
+        var productSale = db.ProductSale.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+        if (productSale is null)
+        {
+            throw new ValidationException("指定的学校和产品组合在销售目录中不存在！");
+        }
+
+        productUpdate.CollegeId = collegeId;
+        productUpdate.ProductId = productId;
         productUpdate.VersionSale = model.VersionSale ?? "";
         productUpdate.VersionUpdate = model.VersionUpdate ?? "";
         productUpdate.UpdateCount = model.UpdateCount;

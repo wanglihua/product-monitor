@@ -271,8 +271,21 @@ public class ProductInstallController(
             }
         }
 
-        productInstall.CollegeId = model.CollegeId;
-        productInstall.ProductId = model.ProductId;
+        long collegeId = model.CollegeId;
+        long productId = model.ProductId;
+
+        // 检查 学校 和 产品 关联
+        var productSale = db.ProductSale.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+        if (productSale is null)
+        {
+            throw new ValidationException("指定的学校和产品组合在销售目录中不存在！");
+        }
+
+        productInstall.CollegeId = collegeId;
+        productInstall.ProductId = productId;
         productInstall.VersionSale = model.VersionSale ?? "";
         productInstall.VersionInstall = model.VersionInstall ?? "";
         productInstall.InstallDate = DateTime.Parse(model.InstallDate).Date;

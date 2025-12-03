@@ -97,9 +97,16 @@ public class ProductEvalService(Db db)
 
         productEval.RemainDays = remainDays;
 
-        // todo 还有这两个字段的更新
-        // EvalTimes
-        // ServiceTimes
+        // 两个次数计算的字段
+        long productId = productEval.ProductId;
+        long collegeId = productEval.CollegeId;
+
+        int evalTimes = db.ProductEvalEntry.Count(e => e.ProductEvalId == productEvalId);
+        int serviceTimes = db.ProductService.Count(e => e.ProductId == productId && e.CollegeId == collegeId && e.ProjectType == ProjectType.Eval)
+                           + db.ProductSpecialService.Count(e => e.ProductId == productId && e.CollegeId == collegeId && e.ProjectType == ProjectType.Eval);
+
+        productEval.EvalTimes = evalTimes;
+        productEval.ServiceTimes = serviceTimes;
 
         db.SaveChanges();
     }
