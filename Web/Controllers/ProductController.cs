@@ -62,6 +62,11 @@ public class ProductController(
         {
             string sortFieldParam = param.SortField;
 
+            if (sortFieldParam == nameof(ProductListItem.Name))
+            {
+                sortField = e => e.Name;
+            }
+
             if (sortFieldParam == nameof(ProductListItem.CreateTime))
             {
                 sortField = e => e.CreateTime;
