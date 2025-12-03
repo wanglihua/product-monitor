@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
+using Service.ProductSale;
 using Web.Models.ProductSaleEntry;
 
 namespace Web.Controllers;
@@ -426,6 +427,8 @@ public class ProductSaleEntryController(
 
             string actionDesc = $"#{productSale.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductSaleDelete, actionDesc);
+
+            productSaleService.UpdateProductSaleByLatestData(productSaleId);
 
             productSaleDeleted = true;
         }

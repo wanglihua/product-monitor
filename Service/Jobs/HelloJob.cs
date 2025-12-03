@@ -1,6 +1,5 @@
 ﻿using Core;
 using Domain;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Quartz;
@@ -19,7 +18,7 @@ public class HelloJob : IJob
         // var sampleTrigger = TriggerBuilder.Create().StartNow().WithCronSchedule("* * * * * ? *").Build();
         var jobTrigger = TriggerBuilder.Create()
             .StartAt(new DateTimeOffset(DateTime.Parse("2025-01-01 00:00"), new TimeSpan(8, 0, 0)))
-            .WithSimpleSchedule(x => x.WithIntervalInSeconds(1).RepeatForever())
+            .WithSimpleSchedule(x => x.WithIntervalInSeconds(20).RepeatForever())
             .Build();
 
         // await scheduler.ScheduleJob(sampleJob, sampleTrigger);

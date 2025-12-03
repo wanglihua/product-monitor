@@ -3,7 +3,7 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 
-namespace Service;
+namespace Service.ProductSale;
 
 [Service(ServiceType.Scoped)]
 public class ProductSaleService(Db db)
@@ -91,11 +91,20 @@ public class ProductSaleService(Db db)
         productSale.ServiceExpireDate = productSaleEntryLatest.ServiceExpireDate;
         productSale.Description = productSaleEntryLatest.Description;
 
-        // todo 还有这四个字段的更新
-        // SaleTimes
-        // InstallTimes
-        // UpdateTimes
-        // ServiceTimes
+        // 四个次数计算的字段
+        long productId = productSale.ProductId;
+        long collegeId = productSale.CollegeId;
+
+        int saleTimes = db.ProductSaleEntry.Count(e => e.ProductSaleId == productSaleId);
+        int installTimes = db.ProductInstall.Count(e => e.ProductId == productId && e.CollegeId == collegeId);
+        int updateTimes = db.ProductUpdate.Count(e => e.ProductId == productId && e.CollegeId == collegeId);
+        int serviceTimes = db.ProductService.Count(e => e.ProductId == productId && e.CollegeId == collegeId)
+                           + db.ProductSpecialService.Count(e => e.ProductId == productId && e.CollegeId == collegeId);
+
+        productSale.SaleTimes = saleTimes;
+        productSale.InstallTimes = installTimes;
+        productSale.UpdateTimes = updateTimes;
+        productSale.ServiceTimes = serviceTimes;
 
         db.ProductSale.Update(productSale);
         db.SaveChanges();
