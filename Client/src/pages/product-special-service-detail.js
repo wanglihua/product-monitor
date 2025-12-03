@@ -83,6 +83,7 @@ const ProductSpecialServiceDetailInner = (props) => {
                         form.current.setFieldsValue({
                             collegeId: collegeId,
                             productId: productId,
+                            projectTypeCode: projectTypeCode,
                             serviceDate: dayjs(data.serviceDate),
                             serviceCount: data.serviceCount,
                             serviceUrl: data.serviceUrl,
@@ -116,6 +117,7 @@ const ProductSpecialServiceDetailInner = (props) => {
                             id: productSpecialServiceId,
                             collegeId: values.collegeId,
                             productId: values.productId,
+                            projectTypeCode: values.projectTypeCode,
                             serviceDate: values.serviceDate,
                             serviceCount: values.serviceCount,
                             serviceUrl: values.serviceUrl,
@@ -209,6 +211,22 @@ const ProductSpecialServiceDetailInner = (props) => {
                                             setProductSelectOptions(res.productList);
                                         });
                                     }}
+                                />
+                            </Form.Item>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="项目类型">
+                            <Form.Item
+                                name="projectTypeCode"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请输入项目类型!',
+                                    },
+                                ]}
+                            >
+                                <Select
+                                    placeholder="请选择项目类型"
+                                    options={projectTypeOptions}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -328,10 +346,6 @@ const ProductSpecialServiceDetailInner = (props) => {
                                     placeholder="联系电话"
                                     allowClear
                                 />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="">
-                            <Form.Item>
                             </Form.Item>
                         </Descriptions.Item>
                         <Descriptions.Item label="售后问题">
