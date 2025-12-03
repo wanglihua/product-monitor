@@ -66,7 +66,7 @@ public partial class Db : DbContext
 
         if (optionsBuilder.IsConfigured == false)
         {
-            log.Warn("Db.OnConfiguring call Configure()");
+            log.Info("Db.OnConfiguring call Configure()");
 
             Configure(optionsBuilder);
         }
@@ -74,7 +74,7 @@ public partial class Db : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        log.Warn("Db.OnModelCreating");
+        log.Info("Db.OnModelCreating");
 
         base.OnModelCreating(modelBuilder);
 

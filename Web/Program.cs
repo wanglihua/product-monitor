@@ -9,6 +9,7 @@ using NLog;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using Service;
+using Service.Jobs;
 using StackExchange.Profiling;
 using StackExchange.Profiling.SqlFormatters;
 using StackExchange.Profiling.Storage;
@@ -158,6 +159,10 @@ public static class Program
         // app.UseSwaggerUI();
         app.UseKnife4UI();
 #endif
+
+        var quartz = new QuartzStartup(app.Services);
+        app.Lifetime.ApplicationStarted.Register(quartz.Start);
+        app.Lifetime.ApplicationStopping.Register(quartz.Stop);
 
 #if DEBUG
         Console.WriteLine("started");
