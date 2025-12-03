@@ -98,8 +98,8 @@ public class ProductSaleService(Db db)
         int saleTimes = db.ProductSaleEntry.Count(e => e.ProductSaleId == productSaleId);
         int installTimes = db.ProductInstall.Count(e => e.ProductId == productId && e.CollegeId == collegeId);
         int updateTimes = db.ProductUpdate.Count(e => e.ProductId == productId && e.CollegeId == collegeId);
-        int serviceTimes = db.ProductService.Count(e => e.ProductId == productId && e.CollegeId == collegeId)
-                           + db.ProductSpecialService.Count(e => e.ProductId == productId && e.CollegeId == collegeId);
+        int serviceTimes = db.ProductService.Count(e => e.ProductId == productId && e.CollegeId == collegeId && e.ProjectType == ProjectType.Sale)
+                           + db.ProductSpecialService.Count(e => e.ProductId == productId && e.CollegeId == collegeId /* && e.ProjectType == ProjectType.Sale */);
 
         productSale.SaleTimes = saleTimes;
         productSale.InstallTimes = installTimes;
