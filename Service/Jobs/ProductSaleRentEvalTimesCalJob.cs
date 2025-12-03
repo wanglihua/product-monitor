@@ -2,12 +2,13 @@
 using Domain;
 using NLog;
 using Quartz;
+using Service.ProductRent;
 using Service.ProductSale;
 
 namespace Service.Jobs;
 
 [Service(ServiceType.Singleton)]
-public class ProductSaleTimesCalJob : IJob
+public class ProductSaleRentEvalTimesCalJob : IJob
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
@@ -15,7 +16,7 @@ public class ProductSaleTimesCalJob : IJob
 
     public static void Schedule(IScheduler scheduler)
     {
-        var jobDetail = JobBuilder.Create<ProductSaleTimesCalJob>().WithDescription("ProductSaleTimesCalJob").Build();
+        var jobDetail = JobBuilder.Create<ProductSaleRentEvalTimesCalJob>().WithDescription("ProductSaleRentEvalTimesCalJob").Build();
 
         var jobTrigger = TriggerBuilder.Create()
             .StartAt(new DateTimeOffset(DateTime.Parse("2025-01-01 00:00"), new TimeSpan(8, 0, 0)))
@@ -31,13 +32,23 @@ public class ProductSaleTimesCalJob : IJob
 
         Db db = new Db();
 
-        ProductSaleService productSaleService = new ProductSaleService(db);
+        // 销售目录
+        var productSaleService = new ProductSaleService(db);
 
         var productSaleListToUpdate = db.ProductSale.Where(e => e.UpdateTime > someTimeAgo).ToList();
         foreach (var productSale in productSaleListToUpdate)
         {
             long productSaleId = productSale.Id;
             productSaleService.UpdateProductSaleByLatestData(productSaleId);
+        }
+
+        // 租赁目录
+        var productRentService = new ProductRentService(db);
+        var productRentListToUpdate = db.ProductRent.Where(e => e.UpdateTime > DateTime.Now).ToList();
+        foreach (var productRent in productRentListToUpdate)
+        {
+            long productRentId = productRent.Id;
+            productRentService.UpdateProductRentByLatestData(productRentId);
         }
 
         return Task.CompletedTask;

@@ -35,7 +35,7 @@ public class QuartzStartup(IServiceProvider serviceProvider)
 //         HelloJob.Schedule(scheduler);
 // #endif
 
-        ProductSaleTimesCalJob.Schedule(scheduler);
+        ProductSaleRentEvalTimesCalJob.Schedule(scheduler);
     }
 
     public void Stop()

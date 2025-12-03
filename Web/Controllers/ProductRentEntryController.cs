@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
+using Service.ProductRent;
 using Web.Models.ProductRentEntry;
 
 namespace Web.Controllers;
@@ -431,6 +432,8 @@ public class ProductRentEntryController(
 
             string actionDesc = $"#{productRent.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductRentDelete, actionDesc);
+
+            productRentService.UpdateProductRentByLatestData(productRentId);
 
             productRentDeleted = true;
         }

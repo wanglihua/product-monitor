@@ -3,7 +3,7 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 
-namespace Service;
+namespace Service.ProductRent;
 
 [Service(ServiceType.Scoped)]
 public class ProductRentService(Db db)
@@ -97,9 +97,18 @@ public class ProductRentService(Db db)
 
         productRent.RemainDays = remainDays;
 
-        // todo 还有这两个字段的更新
+        // 两个次数计算的字段
         // RentTimes
         // ServiceTimes
+        long productId = productRent.ProductId;
+        long collegeId = productRent.CollegeId;
+
+        int rentTimes = db.ProductRentEntry.Count(e => e.ProductRentId == productRentId);
+        int serviceTimes = db.ProductService.Count(e => e.ProductId == productId && e.CollegeId == collegeId && e.ProjectType == ProjectType.Rent)
+                           + db.ProductSpecialService.Count(e => e.ProductId == productId && e.CollegeId == collegeId && e.ProjectType == ProjectType.Rent);
+
+        productRent.RentTimes = rentTimes;
+        productRent.ServiceTimes = serviceTimes;
 
         db.ProductRent.Update(productRent);
         db.SaveChanges();

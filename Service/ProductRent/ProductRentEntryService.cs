@@ -1,7 +1,7 @@
 using Core;
 using NLog;
 
-namespace Service;
+namespace Service.ProductRent;
 
 [Service(ServiceType.Scoped)]
 public class ProductRentEntryService
