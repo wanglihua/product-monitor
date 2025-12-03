@@ -47,11 +47,14 @@ public partial class Db : DbContext
             // 这个要 ef core 8.0才行
 #if DEBUG
             options.UseCompatibilityLevel(SqlServerCompatibilityLevel.SqlServer2008);
+            options.UseRowNumberForPaging();
 #else
             options.UseCompatibilityLevel(SqlServerCompatibilityLevel.SqlServer2008);
+            options.UseRowNumberForPaging();
 #endif
         });
 
+        // 好像这个注释掉也没事，还是先放着吧
         optionsBuilder.ReplaceService<IQueryTranslationPostprocessorFactory, SqlServer2008QueryTranslationPostprocessorFactory>();
 
         // 这里不用这个了 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution); // 对 no tracking 的 entity Update 时 会更新所有字段
