@@ -87,12 +87,12 @@ public class ProductSpecialServiceController(
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductSpecialServiceListItem.CreateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductSpecialServiceListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductSpecialService.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductSpecialServiceListItem.UpdateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductSpecialServiceListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductSpecialService.UpdateTime;
             }

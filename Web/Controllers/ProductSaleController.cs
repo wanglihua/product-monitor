@@ -71,12 +71,12 @@ public class ProductSaleController(Db db) : Controller
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductSaleListItem.CreateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductSaleListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductSale.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductSaleListItem.UpdateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductSaleListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductSale.UpdateTime;
             }

@@ -51,7 +51,7 @@ public class CollegeController(
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(CollegeListItem.CreateTime))
+            if (string.Compare(sortFieldParam, nameof(CollegeListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.CreateTime;
             }

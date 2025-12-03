@@ -76,12 +76,12 @@ public class ProductInstallMonitorController(
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductInstallMonitorListItem.CreateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductInstallMonitorListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductInstallMonitor.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductInstallMonitorListItem.UpdateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductInstallMonitorListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductInstallMonitor.UpdateTime;
             }

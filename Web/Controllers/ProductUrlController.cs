@@ -51,12 +51,12 @@ public class ProductUrlController(
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductUrlListItem.CreateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductUrlListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductUrlListItem.UpdateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductUrlListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.UpdateTime;
             }

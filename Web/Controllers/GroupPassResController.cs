@@ -59,7 +59,7 @@ public class GroupPassResController(
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(PassResGroupListItem.GroupName))
+            if (string.Compare(sortFieldParam, nameof(PassResGroupListItem.GroupName), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.Name;
             }
@@ -165,7 +165,7 @@ public class GroupPassResController(
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(GroupPassResListItem.PassResName))
+            if (string.Compare(sortFieldParam, nameof(GroupPassResListItem.PassResName), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.PassRes.Name;
             }

@@ -83,12 +83,12 @@ public class ProductRentEntryController(
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductRentEntryListItem.CreateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductRentEntryListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductRentEntry.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductRentEntryListItem.UpdateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductRentEntryListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductRentEntry.UpdateTime;
             }

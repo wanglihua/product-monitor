@@ -97,12 +97,12 @@ public class ProductUpdateController(
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductUpdateListItem.CreateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductUpdate.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductUpdateListItem.UpdateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductUpdate.UpdateTime;
             }

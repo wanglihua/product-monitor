@@ -46,12 +46,12 @@ public class GroupController(
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(GroupListItem.CreateTime))
+            if (string.Compare(sortFieldParam, nameof(GroupListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.CreateTime;
             }
 
-            if (sortFieldParam == nameof(GroupListItem.UpdateTime))
+            if (string.Compare(sortFieldParam, nameof(GroupListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.UpdateTime;
             }

@@ -69,7 +69,7 @@ public class AuthResultController(
 
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(AuthResultListItem.CreateTime))
+            if (string.Compare(sortFieldParam, nameof(AuthResultListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.CreateTime;
             }

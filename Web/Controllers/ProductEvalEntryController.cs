@@ -83,12 +83,12 @@ public class ProductEvalEntryController(
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(ProductEvalEntryListItem.CreateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductEvalEntryListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductEvalEntry.CreateTime;
             }
 
-            if (sortFieldParam == nameof(ProductEvalEntryListItem.UpdateTime))
+            if (string.Compare(sortFieldParam, nameof(ProductEvalEntryListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductEvalEntry.UpdateTime;
             }

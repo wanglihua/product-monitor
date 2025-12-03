@@ -66,12 +66,12 @@ public class UserPassResController(
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(PassResUserListItem.LoginName))
+            if (string.Compare(sortFieldParam, nameof(PassResUserListItem.LoginName), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.LoginName;
             }
 
-            if (sortFieldParam == nameof(PassResUserListItem.UserName))
+            if (string.Compare(sortFieldParam, nameof(PassResUserListItem.UserName), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.UserName;
             }
@@ -175,7 +175,7 @@ public class UserPassResController(
         {
             string sortFieldParam = param.SortField;
 
-            if (sortFieldParam == nameof(UserPassResListItem.PassResName))
+            if (string.Compare(sortFieldParam, nameof(UserPassResListItem.PassResName), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.PassRes.Name;
             }
