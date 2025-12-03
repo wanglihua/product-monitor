@@ -20,7 +20,7 @@ public record ProjectType : CodeTypeBase, ICodeType<ProjectType>
     /// <summary>
     /// 试用项目
     /// </summary>
-    public static readonly ProjectType Eval = new(2_00, "试用项目");
+    public static readonly ProjectType Eval = new(3_00, "试用项目");
 
     /// <summary>
     /// None
