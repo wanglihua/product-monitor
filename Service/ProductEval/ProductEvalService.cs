@@ -3,7 +3,7 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 
-namespace Service;
+namespace Service.ProductEval;
 
 [Service(ServiceType.Scoped)]
 public class ProductEvalService(Db db)

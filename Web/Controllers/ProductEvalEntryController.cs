@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
+using Service.ProductEval;
 using Web.Models.ProductEvalEntry;
 
 namespace Web.Controllers;

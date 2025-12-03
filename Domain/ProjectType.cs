@@ -18,6 +18,11 @@ public record ProjectType : CodeTypeBase, ICodeType<ProjectType>
     public static readonly ProjectType Rent = new(2_00, "租赁项目");
 
     /// <summary>
+    /// 试用项目
+    /// </summary>
+    public static readonly ProjectType Eval = new(2_00, "试用项目");
+
+    /// <summary>
     /// None
     /// </summary>
     public static readonly ProjectType None = new(0, "");
