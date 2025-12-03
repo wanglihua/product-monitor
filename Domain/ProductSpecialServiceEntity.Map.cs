@@ -1,4 +1,5 @@
 using Core;
+using Core.CodeType;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,6 +19,11 @@ public class ProductSpecialServiceEntityMap : IEntityTypeConfiguration<ProductSp
 
         builder.Property(e => e.ProductId)
             .HasColumnName("product_id")
+            .IsRequired(true);
+
+        builder.Property(e => e.ProjectType)
+            .HasColumnName("project_type_code")
+            .HasConversion<CodeTypeConversion<ProjectType>>()
             .IsRequired(true);
 
         builder.Property(e => e.ServiceDate)

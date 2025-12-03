@@ -13,6 +13,9 @@ public class ProductSpecialServiceListItem
     [JsonProperty("productName")]
     public string ProductName { get; set; } = "";
 
+    [JsonProperty("projectTypeName")]
+    public string ProjectTypeName { get; set; } = "";
+
     [JsonProperty("serviceDate")]
     public string ServiceDate { get; set; } = "";
 

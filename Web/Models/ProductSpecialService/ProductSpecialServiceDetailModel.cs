@@ -1,3 +1,4 @@
+using Domain;
 using FluentValidation;
 using Newtonsoft.Json;
 
@@ -19,6 +20,9 @@ public class ProductSpecialServiceDetailModel
 
     [JsonProperty("productName")]
     public string ProductName { get; set; } = "";
+
+    [JsonProperty("projectTypeCode")]
+    public int ProjectTypeCode { get; set; }
 
     [JsonProperty("serviceDate")]
     public string ServiceDate { get; set; } = "";
@@ -54,6 +58,10 @@ public class ProductSpecialServiceDetailModelValidator : AbstractValidator<Produ
 
         RuleFor(e => e.ProductId).NotNull().WithMessage("产品不能为空!");
         RuleFor(e => e.ProductId).NotEmpty().WithMessage("产品不能为空!");
+
+        RuleFor(e => e.ProjectTypeCode)
+            .Must(p => ProjectType.GetById(p) != ProjectType.None)
+            .WithMessage("项目类型不能为空!");
 
         RuleFor(e => e.ServiceDate).NotNull().WithMessage("售后时间不能为空!");
         RuleFor(e => e.ServiceDate).NotEmpty().WithMessage("售后时间不能为空!");

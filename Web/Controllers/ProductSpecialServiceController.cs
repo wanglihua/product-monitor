@@ -116,6 +116,7 @@ public class ProductSpecialServiceController(
                 Id = e.ProductSpecialService.Id,
                 CollegeName = e.College.Name,
                 ProductName = e.Product.Name,
+                ProjectType = e.ProductSpecialService.ProjectType,
                 ServiceDate = e.ProductSpecialService.ServiceDate,
                 ServiceCount = e.ProductSpecialService.ServiceCount,
                 ServiceUrl = e.ProductSpecialService.ServiceUrl,
@@ -135,6 +136,7 @@ public class ProductSpecialServiceController(
                 Id = e.Id,
                 CollegeName = e.CollegeName,
                 ProductName = e.ProductName,
+                ProjectTypeName = e.ProjectType.Name,
                 ServiceDate = e.ServiceDate.ToString("yyyy-MM-dd"),
                 ServiceCount = e.ServiceCount,
                 ServiceUrl = e.ServiceUrl,
@@ -174,6 +176,7 @@ public class ProductSpecialServiceController(
             CollegeName = "",
             ProductId = 0,
             ProductName = "",
+            ProjectTypeCode = 0,
             ServiceDate = DateTime.Today.ToString("yyyy-MM-dd"),
             ServiceCount = 0,
             ServiceUrl = "",
@@ -213,6 +216,7 @@ public class ProductSpecialServiceController(
                 CollegeName = college.Name,
                 ProductId = productSpecialService.ProductId,
                 ProductName = product.Name,
+                ProjectTypeCode = productSpecialService.ProjectType.Id,
                 ServiceDate = productSpecialService.ServiceDate.ToString("yyyy-MM-dd"),
                 ServiceCount = productSpecialService.ServiceCount,
                 ServiceUrl = productSpecialService.ServiceUrl,
@@ -259,6 +263,7 @@ public class ProductSpecialServiceController(
 
         productSpecialService.CollegeId = model.CollegeId;
         productSpecialService.ProductId = model.ProductId;
+        productSpecialService.ProjectType = ProjectType.GetById(model.ProjectTypeCode);
         productSpecialService.ServiceDate = DateTime.Parse(model.ServiceDate).Date;
         productSpecialService.ServiceCount = model.ServiceCount;
         productSpecialService.ServiceUrl = model.ServiceUrl ?? "";

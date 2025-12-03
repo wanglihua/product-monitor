@@ -173,7 +173,9 @@ public class ProductServiceController(
         var model = new ProductServiceDetailModel {
             Id = 0,
             CollegeId = 0,
+            CollegeName = "",
             ProductId = 0,
+            ProductName = "",
             ProjectTypeCode = 0,
             ServiceDate = DateTime.Today.ToString("yyyy-MM-dd"),
             ServiceCount = 0,
