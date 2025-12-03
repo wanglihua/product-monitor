@@ -31,4 +31,14 @@ public class ProductInstallMonitorEntryEntity : Entity
     /// 使用省份
     /// </summary>
     public ProvinceType ProvinceType { get; set; } = ProvinceType.None;
+
+    /// <summary>
+    /// CPU序列号
+    /// </summary>
+    public string CpuSerialNo { get; set; } = "";
+
+    /// <summary>
+    /// 网卡硬件地址
+    /// </summary>
+    public string NetMacAddress { get; set; } = "";
 }

@@ -36,5 +36,15 @@ public class ProductInstallMonitorEntryEntityMap : IEntityTypeConfiguration<Prod
             .HasConversion<CodeTypeConversion<ProvinceType>>()
             .HasColumnName("province_type")
             .IsRequired(true);
+
+        builder.Property(e => e.CpuSerialNo)
+            .HasColumnName("cpu_serial_no")
+            .HasMaxLength(128)
+            .IsRequired(true);
+
+        builder.Property(e => e.NetMacAddress)
+            .HasColumnName("net_mac_address")
+            .HasMaxLength(128)
+            .IsRequired(true);
     }
 }
