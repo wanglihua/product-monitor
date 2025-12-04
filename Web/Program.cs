@@ -25,14 +25,18 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-#if DEBUG
-        builder.WebHost
-            .UseUrls("http://*:5001")
-            .UseKestrel();
-#endif
-
         // ConfigurationManager configuration = builder.Configuration; 总是用 StaticConfigurationManager 得了
         // IWebHostEnvironment environment = builder.Environment; 总是用 #if DEBUG 来区分感觉更方便
+
+        var configuration = StaticConfigurationManager.Configuration;
+
+        WebServerConfig.ReadConfig(configuration);
+        if (string.Compare(WebServerConfig.WebServer, WebServerConfig.Kestrel, StringComparison.OrdinalIgnoreCase) == 0)
+        {
+            builder.WebHost
+                .UseUrls("http://*:5001")
+                .UseKestrel();
+        }
 
 #if DEBUG
         LogManager.Setup().LoadConfigurationFromFile("nlog.dev.config");
@@ -49,7 +53,7 @@ public static class Program
 #endif
 
         // 读取数据库配置
-        DatabaseConfig.ReadConfig(StaticConfigurationManager.Configuration);
+        DatabaseConfig.ReadConfig(configuration);
 
         var services = builder.Services;
 

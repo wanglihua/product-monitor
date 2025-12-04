@@ -27,37 +27,27 @@ public partial class Db : DbContext
 
     public static void Configure(DbContextOptionsBuilder optionsBuilder)
     {
-        // 数据 migration 和 单元测试时会用到这个逻辑
         if (string.IsNullOrWhiteSpace(DatabaseConfig.ConnectionString) == true)
         {
             DatabaseConfig.ReadConfig(StaticConfigurationManager.Configuration);
         }
 
-        optionsBuilder.UseSqlServer(DatabaseConfig.ConnectionString, options => {
-            /*
-                100: SQL Server 2008
-                110: SQL Server 2012
-                120: SQL Server 2014
-                130: SQL Server 2016
-                140: SQL Server 2017
-                150: SQL Server 2019
-                160: SQL Server 2022
-             */
+        int compatibilityLevel = SqlServerCompatibilityLevel.GetByVersion(DatabaseConfig.SqlVersion);
 
-            // 这个要 ef core 8.0才行
-#if DEBUG
-            options.UseCompatibilityLevel(SqlServerCompatibilityLevel.SqlServer2008);
-            options.UseRowNumberForPaging();
-#else
-            options.UseCompatibilityLevel(SqlServerCompatibilityLevel.SqlServer2008);
-            options.UseRowNumberForPaging();
-#endif
+        optionsBuilder.UseSqlServer(DatabaseConfig.ConnectionString, options => {
+            options.UseCompatibilityLevel(compatibilityLevel);
+
+            if (compatibilityLevel == SqlServerCompatibilityLevel.SqlServer2008)
+            {
+                options.UseRowNumberForPaging();
+            }
         });
 
-        // 好像这个注释掉也没事，还是先放着吧
-        optionsBuilder.ReplaceService<IQueryTranslationPostprocessorFactory, SqlServer2008QueryTranslationPostprocessorFactory>();
-
-        // 这里不用这个了 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution); // 对 no tracking 的 entity Update 时 会更新所有字段
+        if (SqlServerCompatibilityLevel.GetByVersion(DatabaseConfig.SqlVersion) == SqlServerCompatibilityLevel.SqlServer2008)
+        {
+            // 好像这个注释掉也没事，还是先放着吧
+            optionsBuilder.ReplaceService<IQueryTranslationPostprocessorFactory, SqlServer2008QueryTranslationPostprocessorFactory>();
+        }
 
 #if DEBUG
         optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information)
