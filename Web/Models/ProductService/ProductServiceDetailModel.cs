@@ -27,8 +27,8 @@ public class ProductServiceDetailModel
     [JsonProperty("serviceDate")]
     public string ServiceDate { get; set; } = "";
 
-    [JsonProperty("serviceCount")]
-    public int ServiceCount { get; set; }
+    // [JsonProperty("serviceCount")]
+    // public int ServiceCount { get; set; }
 
     [JsonProperty("serviceUrl")]
     public string ServiceUrl { get; set; } = "";

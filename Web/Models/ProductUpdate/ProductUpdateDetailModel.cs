@@ -26,8 +26,8 @@ public class ProductUpdateDetailModel
     [JsonProperty("versionUpdate")]
     public string VersionUpdate { get; set; } = "";
 
-    [JsonProperty("updateCount")]
-    public int UpdateCount { get; set; }
+    // [JsonProperty("updateCount")]
+    // public int UpdateCount { get; set; }
 
     [JsonProperty("updateUrl")]
     public string UpdateUrl { get; set; } = "";
