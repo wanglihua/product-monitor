@@ -67,6 +67,7 @@ const UserPassword = () => {
                                 >
                                     <Input.Password
                                         maxLength={18}
+                                        autoComplete="false"
                                         placeholder="原密码"
                                         allowClear
                                     />
@@ -84,6 +85,7 @@ const UserPassword = () => {
                                 >
                                     <Input.Password
                                         maxLength={18}
+                                        autoComplete="false"
                                         placeholder="新密码"
                                         allowClear
                                     />
@@ -101,6 +103,7 @@ const UserPassword = () => {
                                 >
                                     <Input.Password
                                         maxLength={18}
+                                        autoComplete="false"
                                         placeholder="新密码重输"
                                         allowClear
                                     />

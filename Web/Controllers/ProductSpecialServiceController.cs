@@ -265,7 +265,9 @@ public class ProductSpecialServiceController(
         long collegeId = model.CollegeId;
         long productId = model.ProductId;
 
-        // 检查 项目类型 学校 和 产品 关联
+        // 这里 【不用】 检查 项目类型 学校 和 产品 关联
+
+        /*
         if (projectType == ProjectType.Sale)
         {
             var productSale = db.ProductSale.AsNoTracking()
@@ -301,10 +303,11 @@ public class ProductSpecialServiceController(
                 throw new ValidationException("指定的学校和产品组合在试用目录中不存在！");
             }
         }
+        */
 
         productSpecialService.CollegeId = collegeId;
         productSpecialService.ProductId = productId;
-        productSpecialService.ProjectType = ProjectType.GetById(model.ProjectTypeCode);
+        productSpecialService.ProjectType = projectType;
         productSpecialService.ServiceDate = DateTime.Parse(model.ServiceDate).Date;
         productSpecialService.ServiceCount = model.ServiceCount;
         productSpecialService.ServiceUrl = model.ServiceUrl ?? "";
