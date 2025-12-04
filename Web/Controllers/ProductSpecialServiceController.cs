@@ -367,6 +367,10 @@ public class ProductSpecialServiceController(
         string actionDesc = $"#{productSpecialService.Id}";
         actionLogService.Add(loginUserId, ActionLogType.ProductSpecialServiceDelete, actionDesc);
 
+        long collegeId = productSpecialService.CollegeId;
+        long productId = productSpecialService.ProductId;
+        productSpecialServiceService.RefreshServiceCount(collegeId, productId);
+
         return Json(new JsonResultData {
             Success = true,
             Message = "删除成功！",

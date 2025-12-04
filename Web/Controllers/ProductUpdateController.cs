@@ -352,6 +352,10 @@ public class ProductUpdateController(
         long loginUserId = userLoginService.GetLoginUserId();
         string actionDesc = $"#{productUpdate.Id}";
         actionLogService.Add(loginUserId, ActionLogType.ProductUpdateDelete, actionDesc);
+        
+        long collegeId = productUpdate.CollegeId;
+        long productId = productUpdate.ProductId;
+        productUpdateService.RefreshUpdateCount(collegeId, productId);
 
         return Json(new JsonResultData {
             Success = true,

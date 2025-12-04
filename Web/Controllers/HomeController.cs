@@ -15,6 +15,18 @@ public class HomeController(
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
+    // 可用于查看 或 判断 后台服务是否正常运行, 是否可连通
+    [HttpGet, HttpPost]
+    [Route("/api/home")]
+    [Transactional(false)]
+    public IActionResult Index()
+    {
+        return Json(new Dictionary<string, object> {
+            ["success"] = true,
+            ["message"] = ""
+        });
+    }
+
     [HttpPost]
     [Route("/api/home/data")]
     [Transactional(false)]
