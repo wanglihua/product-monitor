@@ -10,12 +10,6 @@ public class ProductServiceService(Db db)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    public int GetServiceCount(long collegeId, long productId)
-    {
-        int serviceCount = db.ProductService.Count(e => e.CollegeId == collegeId && e.ProductId == productId);
-        return serviceCount;
-    }
-
     public void RefreshServiceCount(long collegeId, long productId)
     {
         int updateCount = db.ProductService.Count(e => e.CollegeId == collegeId && e.ProductId == productId);

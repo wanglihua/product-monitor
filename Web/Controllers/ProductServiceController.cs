@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
+using Service.ProductService;
 using Web.Models.ProductService;
 
 namespace Web.Controllers;
@@ -18,6 +19,7 @@ namespace Web.Controllers;
 public class ProductServiceController(
     Db db,
     UserLoginService userLoginService,
+    ProductServiceService productServiceService,
     ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
@@ -305,7 +307,7 @@ public class ProductServiceController(
         productService.ProductId = productId;
         productService.ProjectType = projectType;
         productService.ServiceDate = DateTime.Parse(model.ServiceDate).Date;
-        productService.ServiceCount = model.ServiceCount;
+        // productService.ServiceCount = model.ServiceCount; 这个值不是从界面上取得后保存的
         productService.ServiceUrl = model.ServiceUrl ?? "";
         productService.LoginUser = model.LoginUser ?? "";
         productService.LoginPassword = model.LoginPassword ?? "";
@@ -331,6 +333,8 @@ public class ProductServiceController(
             string actionDesc = $"#{productService.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductServiceUpdate, actionDesc);
         }
+
+        productServiceService.RefreshServiceCount(collegeId, productId);
 
         return Json(new JsonResultData {
             Success = true,

@@ -19,6 +19,7 @@ namespace Web.Controllers;
 public class ProductUpdateController(
     Db db,
     UserLoginService userLoginService,
+    ProductUpdateService productUpdateService,
     ProductUpdateExcelService productUpdateExcelService,
     ActionLogService actionLogService) : Controller
 {
@@ -293,7 +294,7 @@ public class ProductUpdateController(
         productUpdate.ProductId = productId;
         productUpdate.VersionSale = model.VersionSale ?? "";
         productUpdate.VersionUpdate = model.VersionUpdate ?? "";
-        productUpdate.UpdateCount = model.UpdateCount;
+        // productUpdate.UpdateCount = model.UpdateCount; 这个值不是从界面上取得后保存的
         productUpdate.UpdateUrl = model.UpdateUrl ?? "";
         productUpdate.LoginUser = model.LoginUser ?? "";
         productUpdate.LoginPassword = model.LoginPassword ?? "";
@@ -322,6 +323,8 @@ public class ProductUpdateController(
             string actionDesc = $"#{productUpdate.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductUpdateUpdate, actionDesc);
         }
+
+        productUpdateService.RefreshUpdateCount(collegeId, productId);
 
         return Json(new JsonResultData {
             Success = true,
