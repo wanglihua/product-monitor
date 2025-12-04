@@ -88,7 +88,6 @@ const ProductSpecialServiceDetailInner = (props) => {
                             productId: productId,
                             projectTypeCode: projectTypeCode,
                             serviceDate: dayjs(data.serviceDate),
-                            serviceCount: data.serviceCount,
                             serviceUrl: data.serviceUrl,
                             loginUser: data.loginUser,
                             loginPassword: data.loginPassword,
@@ -122,7 +121,6 @@ const ProductSpecialServiceDetailInner = (props) => {
                             productId: values.productId,
                             projectTypeCode: values.projectTypeCode,
                             serviceDate: values.serviceDate,
-                            serviceCount: values.serviceCount,
                             serviceUrl: values.serviceUrl,
                             loginUser: values.loginUser,
                             loginPassword: values.loginPassword,
@@ -153,6 +151,25 @@ const ProductSpecialServiceDetailInner = (props) => {
                         column={2}
                         labelStyle={{width: "120px"}}
                     >
+                        <Descriptions.Item label="项目类型">
+                            <Form.Item
+                                name="projectTypeCode"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请输入项目类型!',
+                                    },
+                                ]}
+                            >
+                                <Select
+                                    placeholder="请选择项目类型"
+                                    options={projectTypeOptions}
+                                />
+                            </Form.Item>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="">
+                            <Form.Item></Form.Item>
+                        </Descriptions.Item>
                         <Descriptions.Item label="学校">
                             <Form.Item
                                 name="collegeId"
@@ -217,22 +234,6 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 />
                             </Form.Item>
                         </Descriptions.Item>
-                        <Descriptions.Item label="项目类型">
-                            <Form.Item
-                                name="projectTypeCode"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入项目类型!',
-                                    },
-                                ]}
-                            >
-                                <Select
-                                    placeholder="请选择项目类型"
-                                    options={projectTypeOptions}
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
                         <Descriptions.Item label="售后时间">
                             <Form.Item
                                 name="serviceDate"
@@ -246,23 +247,6 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 <DatePicker
                                     style={{width: "100%"}}
                                     placeholder="售后时间"
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="售后次数">
-                            <Form.Item
-                                name="serviceCount"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入售后次数!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={4}
-                                    placeholder="售后次数"
-                                    allowClear
                                 />
                             </Form.Item>
                         </Descriptions.Item>

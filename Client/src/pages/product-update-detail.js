@@ -85,7 +85,6 @@ const ProductUpdateDetailInner = (props) => {
                             productId: productId,
                             versionSale: data.versionSale,
                             versionUpdate: data.versionUpdate,
-                            updateCount: data.updateCount,
                             updateUrl: data.updateUrl,
                             loginUser: data.loginUser,
                             loginPassword: data.loginPassword,
@@ -121,7 +120,6 @@ const ProductUpdateDetailInner = (props) => {
                             productId: values.productId,
                             versionSale: values.versionSale,
                             versionUpdate: values.versionUpdate,
-                            updateCount: values.updateCount,
                             updateUrl: values.updateUrl,
                             loginUser: values.loginUser,
                             loginPassword: values.loginPassword,
@@ -252,23 +250,6 @@ const ProductUpdateDetailInner = (props) => {
                                 />
                             </Form.Item>
                         </Descriptions.Item>
-                        <Descriptions.Item label="更新次数">
-                            <Form.Item
-                                name="updateCount"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入更新次数!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={4}
-                                    placeholder="更新次数"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
                         <Descriptions.Item label="更新网址">
                             <Form.Item
                                 name="updateUrl"
@@ -285,6 +266,9 @@ const ProductUpdateDetailInner = (props) => {
                                     allowClear
                                 />
                             </Form.Item>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="">
+                            <Form.Item></Form.Item>
                         </Descriptions.Item>
                         <Descriptions.Item label="更新账号">
                             <Form.Item
