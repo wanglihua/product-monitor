@@ -172,6 +172,7 @@ const UserDetailInner = (props) => {
                                 <Input.Password
                                     minLength={6}
                                     maxLength={20}
+                                    autoComplete="false"
                                     placeholder="密码"
                                     allowClear
                                 />
@@ -191,6 +192,7 @@ const UserDetailInner = (props) => {
                                 <Input.Password
                                     minLength={6}
                                     maxLength={20}
+                                    autoComplete="false"
                                     placeholder="密码重输"
                                     allowClear
                                 />
