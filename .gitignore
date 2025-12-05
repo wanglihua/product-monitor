@@ -1,6 +1,11 @@
 .idea
 .vs
 _ReSharper.Caches
+packages
+Client/bin
+Client/obj
+ClientTest/bin
+ClientTest/obj
 Frontend/bin
 Frontend/obj
 Core/bin
