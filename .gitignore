@@ -1,8 +1,8 @@
 .idea
 .vs
 _ReSharper.Caches
-Client/bin
-Client/obj
+Frontend/bin
+Frontend/obj
 Core/bin
 Core/obj
 Domain/bin
