@@ -30,6 +30,8 @@ public record CodeTypeBase
     /// <returns></returns>
     public new bool Equals(object? x, object? y)
     {
+        Console.WriteLine("code type base equals");
+        
         if (x is null && y is null) // 两个同时为 null
         {
             return true;
