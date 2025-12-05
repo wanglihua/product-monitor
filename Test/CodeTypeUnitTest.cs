@@ -11,7 +11,7 @@ public class CodeTypeUnitTest
     {
         Member1 = 1,
         Member2 = 2,
-        Member3 = 2
+        Member3 = 2 // 两个成员的值相同的时候，他也不会报错
     }
 
     [Test]
