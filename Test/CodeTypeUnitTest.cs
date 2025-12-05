@@ -6,6 +6,14 @@ namespace Test;
 [TestFixture]
 public class CodeTypeUnitTest
 {
+
+    private enum DummyType
+    {
+        Member1 = 1,
+        Member2 = 2,
+        Member3 = 2
+    }
+
     [Test]
     public void TestCodeTypeEqual()
     {

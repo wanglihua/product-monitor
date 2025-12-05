@@ -9,4 +9,4 @@
 
     key        nvarchr(128) NOT NULL,
 
-);
+);yy
