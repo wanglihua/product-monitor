@@ -22,31 +22,25 @@ public record CodeTypeBase
         this.Name = name;
     }
 
-    /// <summary>
-    /// 判断相等, 这个的实现方式很重要
-    /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <returns></returns>
-    public new bool Equals(object? x, object? y)
+    public override string ToString()
+    {
+        return Id.ToString();
+    }
+
+    public override bool Equals(object obj)
     {
         Console.WriteLine("code type base equals");
-        
-        if (x is null && y is null) // 两个同时为 null
-        {
-            return true;
-        }
 
-        if (x is null || y is null) // 两个中只有其中一个为 null
+        if (obj is CodeTypeBase other == false)
         {
             return false;
         }
 
-        if ((x is CodeTypeBase xCodeType == false) || (y is CodeTypeBase yCodeType == false))
-        {
-            return false;
-        }
+        return Id == other.Id;
+    }
 
-        return xCodeType.Id == yCodeType.Id;
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
     }
 }
