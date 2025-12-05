@@ -24,6 +24,11 @@ public record AccountType : CodeTypeBase, ICodeType<AccountType>
     /// </summary>
     public static readonly AccountType None = new(0, "");
 
+
+    private AccountType(int id, string name) : base(id, name)
+    {
+    }
+
     private static readonly IReadOnlyList<AccountType> codeTypeList = new List<AccountType> {
         Admin,
         Teacher,
@@ -45,9 +50,5 @@ public record AccountType : CodeTypeBase, ICodeType<AccountType>
         }
 
         return None;
-    }
-
-    private AccountType(int id, string name) : base(id, name)
-    {
     }
 }

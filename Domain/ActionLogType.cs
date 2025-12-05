@@ -375,6 +375,11 @@ public record ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
     /// </summary>
     public static readonly ActionLogType None = new(0, "");
 
+
+    private ActionLogType(int id, string name) : base(id, name)
+    {
+    }
+
     private static readonly IReadOnlyList<ActionLogType> codeTypeList = new List<ActionLogType>() {
         UserLogin,
         UserCreate,
@@ -466,10 +471,6 @@ public record ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
     public static IList<ActionLogType> GetList()
     {
         return codeTypeList.ToList();
-    }
-
-    private ActionLogType(int id, string name) : base(id, name)
-    {
     }
 }
 

@@ -27,6 +27,11 @@ public record ProductUrlType : CodeTypeBase, ICodeType<ProductUrlType>
     /// </summary>
     public static readonly ProductUrlType None = new(0, "");
 
+
+    private ProductUrlType(int id, string name) : base(id, name)
+    {
+    }
+
     private static readonly IReadOnlyList<ProductUrlType> codeTypeList = new List<ProductUrlType> {
         Eval,
         Rent,
@@ -48,10 +53,6 @@ public record ProductUrlType : CodeTypeBase, ICodeType<ProductUrlType>
     public static IList<ProductUrlType> GetList()
     {
         return codeTypeList.ToList();
-    }
-
-    private ProductUrlType(int id, string name) : base(id, name)
-    {
     }
 }
 

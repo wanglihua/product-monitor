@@ -27,6 +27,11 @@ public record CollegeLevelType : CodeTypeBase, ICodeType<CollegeLevelType>
     /// </summary>
     public static readonly CollegeLevelType None = new(0, "");
 
+
+    private CollegeLevelType(int id, string name) : base(id, name)
+    {
+    }
+
     private static readonly IReadOnlyList<CollegeLevelType> codeTypeList = new List<CollegeLevelType>() {
         Undergraduate,
         JuniorCollege,
@@ -48,9 +53,5 @@ public record CollegeLevelType : CodeTypeBase, ICodeType<CollegeLevelType>
         }
 
         return None;
-    }
-
-    private CollegeLevelType(int id, string name) : base(id, name)
-    {
     }
 }

@@ -41,7 +41,7 @@ public record UserStatus : CodeTypeBase, ICodeType<UserStatus>
         return None;
     }
 
-    public UserStatus(int id, string name) : base(id, name)
+    private UserStatus(int id, string name) : base(id, name)
     {
     }
 }

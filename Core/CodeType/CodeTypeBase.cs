@@ -5,12 +5,14 @@ public record CodeTypeBase
     /// <summary>
     /// 编码
     /// </summary>
-    public int Id { get; protected set; }
+    public int Id { get; init; }
+    // public int Id { get; protected set; }
 
     /// <summary>
     /// 名称
     /// </summary>
-    public string Name { get; protected set; }
+    public string Name { get; init; }
+    // public string Name { get; protected set; }
 
     protected CodeTypeBase(int id, string name)
     {
