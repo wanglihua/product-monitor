@@ -7,7 +7,7 @@ namespace Test;
 public class DbTypeQueryUnitTest
 {
     [Test]
-    public void TestDbTypqQuery()
+    public void TestDbTypeQuery()
     {
         Db db = new Db();
 
