@@ -256,7 +256,7 @@ public class ProductRentEntryController(
             if (model.ProductRentId > 0)
             {
                 productRentId = model.ProductRentId;
-                var productRent = db.Find<ProductRentEntity>(productRentId);
+                var productRent = db.ProductRent.Find(productRentId);
                 if (productRent is null)
                 {
                     throw new ValidationException($"指定的租赁目录#{productRentId}不存在！");
@@ -282,7 +282,7 @@ public class ProductRentEntryController(
                 }
 
                 productId = model.ProductId;
-                var product = db.Find<ProductEntity>(productId);
+                var product = db.Product.Find(productId);
                 if (product is null)
                 {
                     throw new ValidationException($"指定的产品#{productId}不存在!");

@@ -157,22 +157,35 @@ public class ClientKeyController(
 
         if (clientKeyId > 0)
         {
-            var clientKey = db.Set<ClientKeyEntity>().Find(clientKeyId);
+            var clientKey = db.ClientKey.Find(clientKeyId);
             if (clientKey is null)
             {
-                
+                throw new ValidationException($"指定的客户端密钥#{clientKeyId}不存在！");
             }
 
-            if (clientKey is not null)
+            long collegeId = clientKey.CollegeId;
+            var college = db.College.Find(collegeId);
+            if (college is null)
             {
-                model = new ClientKeyDetailModel {
-                    Id = clientKey.Id,
-                    CollegeId = clientKey.CollegeId,
-                    ProductId = clientKey.ProductId,
-                    KeyType = clientKey.KeyType.Id,
-                    ClientKey = clientKey.ClientKey,
-                };
+                throw new ValidationException($"指定的学校#{collegeId}不存在!");
             }
+
+            long productId = clientKey.ProductId;
+            var product = db.Product.Find(productId);
+            if (product is null)
+            {
+                throw new ValidationException($"指定的产品#{productId}不存在!");
+            }
+
+            model = new ClientKeyDetailModel {
+                Id = clientKey.Id,
+                CollegeId = clientKey.CollegeId,
+                CollegeName = college.Name,
+                ProductId = clientKey.ProductId,
+                ProductName = product.Name,
+                KeyType = clientKey.KeyType.Id,
+                ClientKey = clientKey.ClientKey,
+            };
         }
 
         return Json(new JsonResultData {
@@ -189,6 +202,8 @@ public class ClientKeyController(
     {
         ValidationUtil.Validate<ClientKeyDetailModelValidator, ClientKeyDetailModel>(model);
 
+        long loginUserId = userLoginService.GetLoginUserId();
+
         long clientKeyId = model.Id;
         bool isCreate = clientKeyId == 0;
 
@@ -199,7 +214,7 @@ public class ClientKeyController(
         }
         else
         {
-            clientKey = db.Set<ClientKeyEntity>().Find(clientKeyId);
+            clientKey = db.ClientKey.Find(clientKeyId);
             if (clientKey is null)
             {
                 throw new ValidationException($"指定的客户端密钥#{clientKeyId}不存在!");
@@ -208,9 +223,9 @@ public class ClientKeyController(
 
         clientKey.CollegeId = model.CollegeId;
         clientKey.ProductId = model.ProductId;
-        clientKey.KeyType = model.KeyType;
+        clientKey.KeyType = ClientKeyType.GetById(model.KeyType);
         clientKey.ClientKey = model.ClientKey ?? "";
-        clientKey.UserId = model.UserId;
+        clientKey.UserId = loginUserId;
 
         if (isCreate == true)
         {
@@ -219,7 +234,6 @@ public class ClientKeyController(
 
         db.SaveChanges();
 
-        long loginUserId = userLoginService.GetLoginUserId();
         if (isCreate == true)
         {
             string actionDesc = $"{clientKey.ClientKey}#{clientKey.Id}";
@@ -245,7 +259,7 @@ public class ClientKeyController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long clientKeyId = param.Id;
-        var clientKey = db.Set<ClientKeyEntity>().Find(clientKeyId);
+        var clientKey = db.ClientKey.Find(clientKeyId);
         if (clientKey is null)
         {
             throw new ValidationException($"指定的客户端密钥#{clientKeyId}不存在!");

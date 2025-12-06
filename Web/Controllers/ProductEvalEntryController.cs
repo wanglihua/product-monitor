@@ -258,7 +258,7 @@ public class ProductEvalEntryController(
             if (model.ProductEvalId > 0)
             {
                 productEvalId = model.ProductEvalId;
-                var productEval = db.Find<ProductEvalEntity>(productEvalId);
+                var productEval = db.ProductEval.Find(productEvalId);
                 if (productEval is null)
                 {
                     throw new ValidationException($"指定的试用目录#{productEvalId}不存在！");
@@ -284,7 +284,7 @@ public class ProductEvalEntryController(
                 }
 
                 productId = model.ProductId;
-                var product = db.Find<ProductEntity>(productId);
+                var product = db.Product.Find(productId);
                 if (product is null)
                 {
                     throw new ValidationException($"指定的产品#{productId}不存在!");

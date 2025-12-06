@@ -100,7 +100,7 @@ public class LoginController(
             });
         }
 
-        var user = db.Find<UserEntity>(loginedUserId);
+        var user = db.User.Find(loginedUserId);
         string userName = user?.UserName ?? string.Empty;
 
         return Json(new Dictionary<string, object>() {

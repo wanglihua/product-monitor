@@ -198,14 +198,14 @@ public class ProductServiceController(
             }
 
             long collegeId = productService.CollegeId;
-            var college = db.Find<CollegeEntity>(collegeId);
+            var college = db.College.Find(collegeId);
             if (college is null)
             {
                 throw new ValidationException($"指定的学校#{collegeId}不存在!");
             }
 
             long productId = productService.ProductId;
-            var product = db.Find<ProductEntity>(productId);
+            var product = db.Product.Find(productId);
             if (product is null)
             {
                 throw new ValidationException($"指定的产品#{productId}不存在!");
