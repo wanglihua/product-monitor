@@ -27,7 +27,7 @@ internal class Offset2RowNumberConvertVisitor(
     private SelectExpression VisitSelect(SelectExpression selectExpression)
     {
         // if we have no offset, we do not need to use ROW_NUMBER for offset calculations
-        if (selectExpression.Offset == null)
+        if (selectExpression.Offset is null)
         {
             return selectExpression;
         }
@@ -79,7 +79,7 @@ internal class Offset2RowNumberConvertVisitor(
         // apply offset and limit
         var rowNumberGtOffset = sqlExpressionFactory.GreaterThan(rowNumberAlias, oldOffset);
         enhancedSelect.ApplyPredicate(rowNumberGtOffset);
-        if (oldLimit != null)
+        if (oldLimit is not null)
         {
             if (oldOrderings.Count == 0)
             {

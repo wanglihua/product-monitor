@@ -99,7 +99,7 @@ public class UserAuthService(Db db)
             .Take(1)
             .SingleOrDefault();
 
-        return userPassRes != null;
+        return userPassRes is not null;
     }
 
     /// <summary>
@@ -122,7 +122,7 @@ public class UserAuthService(Db db)
     /// </summary>
     public bool UserHasOneOfPassRes(long userId, IList<long> passResIdList)
     {
-        if (passResIdList == null || passResIdList.Count == 0)
+        if (passResIdList is null || passResIdList.Count == 0)
         {
             return false;
         }
@@ -137,6 +137,6 @@ public class UserAuthService(Db db)
             .Take(1)
             .SingleOrDefault();
 
-        return userPassRes != null;
+        return userPassRes is not null;
     }
 }

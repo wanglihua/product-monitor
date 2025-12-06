@@ -33,7 +33,7 @@ public class HelloJob : IJob
             .Where(e => e.Id == 1)
             .Take(1)
             .SingleOrDefault();
-        if (user != null)
+        if (user is not null)
         {
             Console.WriteLine(user.LoginName);
         }

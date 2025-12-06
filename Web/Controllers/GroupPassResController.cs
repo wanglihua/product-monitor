@@ -102,7 +102,7 @@ public class GroupPassResController(
                     Id = group.Id,
                     GroupId = group.Id,
                     GroupName = group.Name,
-                    Grant = groupPassRes != null,
+                    Grant = groupPassRes is not null,
                     CreateTime = groupPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
                 }
             );
@@ -206,7 +206,7 @@ public class GroupPassResController(
                 PassResId = passRes.PassRes.Id,
                 PassResCateName = passRes.PassResCate.Name,
                 PassResName = passRes.PassRes.Name,
-                Grant = groupPassRes != null,
+                Grant = groupPassRes is not null,
                 CreateTime = groupPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
             });
         }

@@ -20,16 +20,15 @@ public class ClientKeyEntity : Entity
     /// <summary>
     /// 类型
     /// </summary>
-    public int KeyType { get; set; }
+    public ClientKeyType KeyType { get; set; } = ClientKeyType.None;
 
     /// <summary>
     /// 密钥
     /// </summary>
-    public string ClientKey { get; set; } = ""; 
+    public string ClientKey { get; set; } = "";
 
     /// <summary>
     /// 操作人
     /// </summary>
     public long UserId { get; set; }
-
 }

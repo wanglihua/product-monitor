@@ -18,7 +18,7 @@ public class AuthActionFilter(
         log.Trace("AuthActionFilter.OnActionExecuting");
 
         var actionDescriptor = context.ActionDescriptor as ControllerActionDescriptor;
-        if (actionDescriptor == null)
+        if (actionDescriptor is null)
         {
             return;
         }
@@ -30,13 +30,13 @@ public class AuthActionFilter(
 
         // 如果有 NoAuth 标记，就不用进行登录检查
         object[] controllerNoAuthAttributes = actionDescriptor.ControllerTypeInfo.GetCustomAttributes(typeof(NoAuthAttribute), true);
-        if (controllerNoAuthAttributes != null && controllerNoAuthAttributes.Length != 0)
+        if (controllerNoAuthAttributes is not null && controllerNoAuthAttributes.Length != 0)
         {
             return;
         }
 
         object[] actionNoAuthAttributes = actionDescriptor.MethodInfo.GetCustomAttributes(typeof(NoAuthAttribute), true);
-        if (actionNoAuthAttributes != null && actionNoAuthAttributes.Length != 0)
+        if (actionNoAuthAttributes is not null && actionNoAuthAttributes.Length != 0)
         {
             return;
         }

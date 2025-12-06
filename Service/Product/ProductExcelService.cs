@@ -110,14 +110,14 @@ public class ProductExcelService(Db db)
 
     public void Import(IFormFile excelFile)
     {
-        if (excelFile == null)
+        if (excelFile is null)
         {
             throw new ValidationException("导入失败，文件未上传！");
         }
 
         IWorkbook workbook = new XSSFWorkbook(excelFile.OpenReadStream());
         ISheet sheet = workbook.GetSheetAt(0);
-        if (sheet == null)
+        if (sheet is null)
         {
             throw new ValidationException("导入的Excel文件应该至少有一个工作表！");
         }
@@ -130,7 +130,7 @@ public class ProductExcelService(Db db)
         {
             IRow row = sheet.GetRow(rowIndex);
 
-            if (row == null)
+            if (row is null)
             {
                 break;
             }
@@ -141,7 +141,7 @@ public class ProductExcelService(Db db)
             for (cellIndex = 0; cellIndex < lastCellNum; cellIndex++)
             {
                 ICell cell = row.GetCell(cellIndex);
-                if (cell == null)
+                if (cell is null)
                 {
                     cell = row.CreateCell(cellIndex);
                 }

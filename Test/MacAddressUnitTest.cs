@@ -18,7 +18,7 @@ public class MacAddressUnitTest
 
         ManagementObjectCollection managementObjectCollection = managementClass.GetInstances();
 
-        if (managementObjectCollection == null)
+        if (managementObjectCollection is null)
         {
             return "";
         }

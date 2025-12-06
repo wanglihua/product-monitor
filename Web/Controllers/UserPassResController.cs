@@ -113,7 +113,7 @@ public class UserPassResController(
                 UserId = user.Id,
                 LoginName = user.LoginName,
                 UserName = user.UserName,
-                Grant = userPassRes != null,
+                Grant = userPassRes is not null,
                 CreateTime = userPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
             });
         }
@@ -216,7 +216,7 @@ public class UserPassResController(
                 PassResId = passRes.PassRes.Id,
                 PassResCateName = passRes.PassResCate.Name,
                 PassResName = passRes.PassRes.Name,
-                Grant = userPassRes != null,
+                Grant = userPassRes is not null,
                 CreateTime = userPassRes?.CreateTime.ToString("yyyy-MM-dd HH:mm") ?? "",
             });
         }

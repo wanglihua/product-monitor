@@ -25,7 +25,7 @@ public class DbJointTrackingUnitTest
             .Take(1)
             .SingleOrDefault();
 
-        if (adminUser != null)
+        if (adminUser is not null)
         {
             adminUser.User.UserName = "管理员123";
 

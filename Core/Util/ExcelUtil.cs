@@ -80,7 +80,7 @@ public static class ExcelUtil
 
         IRow targetRow = sheet.GetRow(targetRowIndex);
         IRow sourceRow = sheet.GetRow(sourceRowIndex);
-        if (targetRow != null)
+        if (targetRow is not null)
         {
             sheet.ShiftRows(targetRowIndex, sheet.LastRowNum, 1, true, false);
         }
@@ -90,21 +90,21 @@ public static class ExcelUtil
         for (int cellNum = (int)sourceRow.FirstCellNum; cellNum < (int)sourceRow.LastCellNum; ++cellNum)
         {
             ICell sourceCell = sourceRow.GetCell(cellNum);
-            if (sourceCell != null)
+            if (sourceCell is not null)
             {
                 ICell newCell = newRow.CreateCell(cellNum);
 
-                if (sourceCell.CellStyle != null)
+                if (sourceCell.CellStyle is not null)
                 {
                     newCell.CellStyle = sourceCell.CellStyle;
                 }
 
-                if (sourceCell.CellComment != null)
+                if (sourceCell.CellComment is not null)
                 {
                     newCell.CellComment = sourceCell.CellComment;
                 }
 
-                if (sourceCell.Hyperlink != null)
+                if (sourceCell.Hyperlink is not null)
                 {
                     newCell.Hyperlink = sourceCell.Hyperlink;
                 }
@@ -141,7 +141,7 @@ public static class ExcelUtil
         {
             CellRangeAddress mergedRegion = sheet.GetMergedRegion(index);
 
-            if (mergedRegion == null)
+            if (mergedRegion is null)
             {
                 continue;
             }

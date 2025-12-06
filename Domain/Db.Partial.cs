@@ -10,6 +10,8 @@ public partial class Db
 
     public DbSet<AuthResultEntity> AuthResult { get; set; }
 
+    public DbSet<ClientKeyEntity> ClientKey { get; set; }
+
     public DbSet<CollegeChangeLogEntity> CollegeChangeLog { get; set; }
 
     public DbSet<CollegeEntity> College { get; set; }

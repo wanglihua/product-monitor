@@ -100,7 +100,7 @@ public class UserLoginService(
             .Take(1)
             .SingleOrDefault();
 
-        isAdmin = admin != null;
+        isAdmin = admin is not null;
 
         memoryCache.Set(cacheKey, isAdmin, CacheTimeout);
 
@@ -200,7 +200,7 @@ public class UserLoginService(
             .Take(1)
             .SingleOrDefault();
 
-        bool isAdmin = admin != null;
+        bool isAdmin = admin is not null;
 
         // 设置登录 id 缓存 和 是否管理员缓存. 不是必须, 但双重保险
         memoryCache.Set(GetLoginUserIdCacheKey(sessionId), userId, CacheTimeout);

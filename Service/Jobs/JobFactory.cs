@@ -11,7 +11,7 @@ public class JobFactory(IServiceProvider serviceProvider) : IJobFactory
     public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
     {
         string? jobDescription = bundle.JobDetail.Description;
-        if (jobDescription == null)
+        if (jobDescription is null)
         {
             jobDescription = string.Empty;
         }

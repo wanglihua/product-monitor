@@ -14,7 +14,7 @@ public class QuartzStartup(IServiceProvider serviceProvider)
     // public async Task Start()
     public void Start()
     {
-        if (scheduler != null)
+        if (scheduler is not null)
         {
             throw new InvalidOperationException("Already started.");
         }
@@ -42,7 +42,7 @@ public class QuartzStartup(IServiceProvider serviceProvider)
 
     public void Stop()
     {
-        if (scheduler == null)
+        if (scheduler is null)
         {
             return;
         }

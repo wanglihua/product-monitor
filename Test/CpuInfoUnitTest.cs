@@ -18,14 +18,14 @@ public class CpuInfoUnitTest
 
         ManagementObjectCollection managementObjectCollection = managementClass.GetInstances();
 
-        if (managementObjectCollection == null)
+        if (managementObjectCollection is null)
         {
             return "";
         }
 
         foreach (var managementObject in managementObjectCollection)
         {
-            if (managementObject?.Properties["ProcessorId"]?.Value != null)
+            if (managementObject?.Properties["ProcessorId"]?.Value is not null)
             {
                 var cpuIdStr = managementObject.Properties["ProcessorId"].Value.ToString() ?? "";
                 cupInfoList.Add(cpuIdStr);

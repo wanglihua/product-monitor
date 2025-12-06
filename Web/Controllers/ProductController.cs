@@ -292,7 +292,7 @@ public class ProductController(
     [Transactional(false)] // 内部有事务
     public IActionResult Import(IFormFile excelFile)
     {
-        if (excelFile == null)
+        if (excelFile is null)
         {
             throw new ValidationException("导入失败，文件未上传！");
         }
