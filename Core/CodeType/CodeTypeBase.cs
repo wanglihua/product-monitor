@@ -55,8 +55,6 @@ public class CodeTypeBase
 
     public override bool Equals(object? obj)
     {
-        Console.WriteLine("code type base equals 2");
-
         if (obj is null)
         {
             return false;
