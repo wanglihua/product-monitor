@@ -371,6 +371,21 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
     public static readonly ActionLogType UserPassResRevoke = new(0152_0000, "用户收权");
 
     /// <summary>
+    /// 客户端密钥创建
+    /// </summary>
+    public static readonly ActionLogType ClientKeyCreate = new(0154_0000, "客户端密钥创建");
+
+    /// <summary>
+    /// 客户端密钥更新
+    /// </summary>
+    public static readonly ActionLogType ClientKeyUpdate = new(0156_0000, "客户端密钥更新");
+
+    /// <summary>
+    /// 客户端密钥删除
+    /// </summary>
+    public static readonly ActionLogType ClientKeyDelete = new(0158_0000, "客户端密钥删除");
+
+    /// <summary>
     /// None
     /// </summary>
     public static readonly ActionLogType None = new(0, "");
@@ -454,6 +469,9 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
         GroupPassResRevoke,
         UserPassResGrant,
         UserPassResRevoke,
+        ClientKeyCreate,
+        ClientKeyUpdate,
+        ClientKeyDelete,
     };
 
     private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
