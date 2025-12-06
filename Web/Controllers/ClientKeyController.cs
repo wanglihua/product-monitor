@@ -229,7 +229,7 @@ public class ClientKeyController(
 
         if (isCreate == true)
         {
-            db.Add<ClientKeyEntity>(clientKey);
+            db.ClientKey.Add(clientKey);
         }
 
         db.SaveChanges();
@@ -265,7 +265,7 @@ public class ClientKeyController(
             throw new ValidationException($"指定的客户端密钥#{clientKeyId}不存在!");
         }
 
-        db.Remove<ClientKeyEntity>(clientKey);
+        db.ClientKey.Remove(clientKey);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
