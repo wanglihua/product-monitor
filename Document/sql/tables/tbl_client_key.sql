@@ -23,3 +23,15 @@
     INDEX ix_client_key_key (client_key),
 );
 
+EXEC sp_AddExtendedProperty 'MS_Description', N'客户端密钥', 'SCHEMA', 'dbo', 'TABLE', 'tbl_client_key';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_client_key', 'COLUMN', 'id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'学校', 'SCHEMA', 'dbo', 'TABLE', 'tbl_client_key', 'COLUMN', 'college_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_client_key', 'COLUMN', 'product_id';
+EXEC sp_AddExtendedProperty 'MS_Description', N'类型', 'SCHEMA', 'dbo', 'TABLE', 'tbl_client_key', 'COLUMN', 'key_type';
+EXEC sp_AddExtendedProperty 'MS_Description', N'密钥', 'SCHEMA', 'dbo', 'TABLE', 'tbl_client_key', 'COLUMN', 'client_key';
+EXEC sp_AddExtendedProperty 'MS_Description', N'操作人', 'SCHEMA', 'dbo', 'TABLE', 'tbl_client_key', 'COLUMN', 'user_id';
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_client_key', 'COLUMN', 'create_time';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_client_key', 'COLUMN', 'update_time';
