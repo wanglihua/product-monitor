@@ -5,7 +5,7 @@ namespace Domain;
 /// <summary>
 /// 省份
 /// </summary>
-public record ProvinceType : CodeTypeBase, ICodeType<ProvinceType>
+public class ProvinceType : CodeTypeBase, ICodeType<ProvinceType>
 {
     /// <summary>
     /// 北京市

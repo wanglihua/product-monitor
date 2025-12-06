@@ -2,7 +2,7 @@
 
 namespace Domain;
 
-public record UserStatus : CodeTypeBase, ICodeType<UserStatus>
+public class UserStatus : CodeTypeBase, ICodeType<UserStatus>
 {
     /// <summary>
     /// 已启用

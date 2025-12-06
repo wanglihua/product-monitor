@@ -27,26 +27,30 @@ public class CodeTypeBase
         return Id.ToString();
     }
 
-    public new bool Equals(object? x, object? y)
+    public static bool operator ==(CodeTypeBase? x, CodeTypeBase? y)
     {
-        Console.WriteLine("code type base equals 1");
-
-        if (x is null && y is null) // 两个同时为 null
+        if (x is null && y is null)
         {
             return true;
         }
 
-        if (x is null || y is null) // 两个中只有其中一个为 null
+        if (x is not null)
         {
-            return false;
+            return x.Equals(y);
         }
 
-        if ((x is CodeTypeBase xCodeType == false) || (y is CodeTypeBase yCodeType == false))
+        if (y is not null)
         {
-            return false;
+            return y.Equals(x);
         }
 
-        return xCodeType.Id == yCodeType.Id;
+        // 这个不可能发生
+        return false;
+    }
+
+    public static bool operator !=(CodeTypeBase? x, CodeTypeBase? y)
+    {
+        return !(x == y);
     }
 
     public override bool Equals(object? obj)

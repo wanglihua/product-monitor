@@ -2,7 +2,7 @@ using Core.CodeType;
 
 namespace Domain;
 
-public record ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
+public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
 {
     /// <summary>
     /// 用户登录

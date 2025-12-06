@@ -2,7 +2,7 @@
 
 namespace Domain;
 
-public record ClientKeyType : CodeTypeBase, ICodeType<ClientKeyType>
+public class ClientKeyType : CodeTypeBase, ICodeType<ClientKeyType>
 {
     /// <summary>
     /// 安装
