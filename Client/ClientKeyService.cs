@@ -7,8 +7,11 @@ namespace Client
 {
     public class ClientKeyService
     {
-        private string salt => "dc2cfff6c7576a2bbbf4d85bd0c58fb6";
+        private string salt => "dc2cfff6c7576a2bbbf4d85bd0c58fb6"; // 跟服务器上的值一致 
 
+        /// <summary>
+        /// 验证Key格式是否正确，这个算法跟服务器端算法一致
+        /// </summary>
         public bool ValidateKey(string key)
         {
             if (string.IsNullOrWhiteSpace(key) == true)
