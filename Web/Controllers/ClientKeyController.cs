@@ -166,18 +166,20 @@ public class ClientKeyController(
         // 当前只能创建和删除，不能编辑
 
         long loginUserId = userLoginService.GetLoginUserId();
+        
+        // 生成 client key
 
-        var clientKey = new ClientKeyEntity {
+        var clientKeyEntity = new ClientKeyEntity {
             CollegeId = model.CollegeId,
             ProductId = model.ProductId,
             KeyType = ClientKeyType.GetById(model.KeyType),
             UserId = loginUserId
         };
 
-        db.ClientKey.Add(clientKey);
+        db.ClientKey.Add(clientKeyEntity);
         db.SaveChanges();
 
-        string actionDesc = $"{clientKey.ClientKey}#{clientKey.Id}";
+        string actionDesc = $"{clientKeyEntity.ClientKey}#{clientKeyEntity.Id}";
         actionLogService.Add(loginUserId, ActionLogType.ClientKeyCreate, actionDesc);
 
         return Json(new JsonResultData {
