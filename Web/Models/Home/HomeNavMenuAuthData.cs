@@ -94,6 +94,9 @@ public class HomeNavMenuAuthData
     [JsonProperty("passRes")]
     public bool PassRes { get; set; }
 
+    [JsonProperty("clientKey")]
+    public bool ClientKey { get; set; }
+
     [JsonProperty("actionLog")]
     public bool ActionLog { get; set; }
 }

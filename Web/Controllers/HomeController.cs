@@ -83,6 +83,7 @@ public class HomeController(
             User = isAdmin || authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.User),
             Group = isAdmin || authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.Group),
             PassRes = isAdmin || authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.PassRes),
+            ClientKey = isAdmin || authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.ClientKey),
             ActionLog = isAdmin || authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.ActionLog),
         };
 

@@ -338,6 +338,17 @@ const LayoutAdmin = () => {
                 });
             }
 
+            if (data.clientKey === true) {
+                systemManageChildren.push({
+                    key: "client-key",
+                    icon: <i className="iconfont icon-client-key" style={{color: "#1677ff"}}/>,
+                    label: "客户端密钥",
+                    onClick: () => {
+                        navigate("/client-key");
+                    }
+                });
+            }
+
             if (data.admin === true) {
                 systemManageChildren.push({
                     key: "admin-user",
