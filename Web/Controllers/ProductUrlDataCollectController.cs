@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers;
 
 [NoAuth]
-public class ProductUpdateDataCollectController : Controller
+public class ProductUrlDataCollectController : Controller
 {
     [HttpPost]
-    [Route("/product/update/data/collect")]
+    [Route("/product/url/data/collect")]
     [Transactional(true)]
     public IActionResult Index()
     {
@@ -18,4 +18,4 @@ public class ProductUpdateDataCollectController : Controller
             Message = "success",
         });
     }
-}
+} 
