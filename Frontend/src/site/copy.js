@@ -3,7 +3,7 @@ import {
     CopyOutlined,
 } from '@ant-design/icons';
 import copyText from "../core/clipboard";
-import useSiteContext from "../site/site-context";
+import useSiteContext from "./site-context";
 
 const Copy = ({ text }) => {
     const { token } = theme.useToken();
@@ -15,7 +15,7 @@ const Copy = ({ text }) => {
     return (
         <>
             {notEmptyText && (
-                <span style={{ color: token.colorLogoLightBlue, cursor: "pointer" }} onClick={(e) => {
+                <span style={{ color: "rgb(22, 119, 255)", cursor: "pointer" }} onClick={(e) => {
                     copyText(text);
                     showSuccess(`复制 ${text} 成功!`, "成功", 1);
                 }}>

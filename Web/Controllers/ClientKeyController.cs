@@ -18,6 +18,7 @@ namespace Web.Controllers;
 public class ClientKeyController(
     Db db,
     UserLoginService userLoginService,
+    ClientKeyService clientKeyService,
     ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
@@ -166,20 +167,22 @@ public class ClientKeyController(
         // 当前只能创建和删除，不能编辑
 
         long loginUserId = userLoginService.GetLoginUserId();
-        
-        // 生成 client key
 
-        var clientKeyEntity = new ClientKeyEntity {
+        // 生成 client key
+        string key = clientKeyService.GenerateNewKey();
+
+        var clientKey = new ClientKeyEntity {
             CollegeId = model.CollegeId,
             ProductId = model.ProductId,
             KeyType = ClientKeyType.GetById(model.KeyType),
-            UserId = loginUserId
+            UserId = loginUserId,
+            ClientKey = key,
         };
 
-        db.ClientKey.Add(clientKeyEntity);
+        db.ClientKey.Add(clientKey);
         db.SaveChanges();
 
-        string actionDesc = $"{clientKeyEntity.ClientKey}#{clientKeyEntity.Id}";
+        string actionDesc = $"{clientKey.ClientKey}#{clientKey.Id}";
         actionLogService.Add(loginUserId, ActionLogType.ClientKeyCreate, actionDesc);
 
         return Json(new JsonResultData {

@@ -33,7 +33,7 @@ namespace Client
             return hash == key.Substring(32, 32);
         }
 
-        public string GetMD5(string clearText)
+        private string GetMD5(string clearText)
         {
             using (var md5 = MD5.Create())
             {

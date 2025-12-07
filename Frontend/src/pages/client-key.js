@@ -5,6 +5,7 @@ import ClientKeyDetail from "./client-key-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
+import Copy from "../site/copy";
 
 const ClientKey = () => {
 
@@ -67,17 +68,20 @@ const ClientKey = () => {
         {
             title: "类型",
             dataIndex: "keyType",
-            width: "200px",
+            width: "60px",
         },
         {
             title: "密钥",
             dataIndex: "clientKey",
-            width: "200px",
+            width: "540px",
+            render: (text, record, index) => {
+                return <Copy text={text}/>
+            }
         },
         {
             title: "操作人",
-            dataIndex: "userId",
-            width: "200px",
+            dataIndex: "userName",
+            width: "120px",
         },
         {
             title: "创建时间",
