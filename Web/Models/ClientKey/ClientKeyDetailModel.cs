@@ -6,9 +6,6 @@ namespace Web.Models.ClientKey;
 
 public class ClientKeyDetailModel
 {
-    [JsonProperty("id")]
-    public long Id { get; set; }
-
     [JsonProperty("collegeId")]
     public long CollegeId { get; set; }
 
@@ -26,6 +23,14 @@ public class ClientKeyDetailModel
 
     [JsonProperty("clientKey")]
     public string ClientKey { get; set; } = "";
+    
+    [JsonProperty("clientKeyList")]
+    public IList<Dictionary<string, object>> ClientKeyList => ClientKeyType.GetList()
+        .Select(e => new Dictionary<string, object> {
+            ["value"] = e.Id,
+            ["label"] = e.Name,
+        })
+        .ToList();
 }
 
 public class ClientKeyDetailModelValidator : AbstractValidator<ClientKeyDetailModel>

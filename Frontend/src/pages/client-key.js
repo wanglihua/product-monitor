@@ -11,7 +11,8 @@ const ClientKey = () => {
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        collegeNameQuery: "",
+        productNameQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -95,12 +96,14 @@ const ClientKey = () => {
             render: (text, record, index) => {
                 return (
                     <Space>
+                        {/*
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const clientKeyId = record.id;
                             clientKeyDetail.current.show(clientKeyId);
                         }}>
                             <EditOutlined/>编辑
                         </Button>
+                        */}
                         <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             showConfirm("确认要删除吗！", "确认", () => {
                                 post("/api/client-key/delete", {
@@ -129,7 +132,8 @@ const ClientKey = () => {
         loadClientKeyList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const collegeNameQueryRef = useRef();
+    const productNameQueryRef = useRef();
 
     return (
         <div>
@@ -138,17 +142,20 @@ const ClientKey = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={collegeNameQueryRef} addonBefore="学校名称" placeholder="学校名称查询" style={{width: 280}}/>
+                    <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const collegeNameQuery = collegeNameQueryRef.current.input.value;
+                            const productNameQuery = productNameQueryRef.current.input.value;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    collegeNameQuery: collegeNameQuery,
+                                    productNameQuery: productNameQuery,
                                     current_millis: Date.now(),
                                 };
                             });
