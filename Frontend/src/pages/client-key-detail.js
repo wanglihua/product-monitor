@@ -1,4 +1,4 @@
-import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Select, Space, theme} from "antd";
+import {Button, ConfigProvider, Descriptions, Form, Modal, Select, Space, theme} from "antd";
 import {CloseCircleOutlined, SaveOutlined} from "@ant-design/icons";
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
@@ -23,6 +23,10 @@ const ClientKeyDetailInner = (props) => {
     }
 
     const [state, setState] = useState({});
+
+    const [clientKeyTypeSelectOptions, setClientKeyTypeSelectOptions] = useState([]);
+    const [collegeSelectOptions, setCollegeSelectOptions] = useState([]);
+    const [productSelectOptions, setProductSelectOptions] = useState([]);
 
     const form = useRef();
 
@@ -60,12 +64,13 @@ const ClientKeyDetailInner = (props) => {
 
                         const data = res.data;
 
+                        setClientKeyTypeSelectOptions(data.clientKeyTypeList);
+
                         form.current.setFieldsValue({
-                            collegeId: data.collegeId,
-                            productId: data.productId,
-                            keyType: data.keyType,
-                            clientKey: data.clientKey,
-                            userId: data.userId,
+                            collegeId: undefined,
+                            productId: undefined,
+                            keyType: undefined,
+                            clientKey: "",
                         });
                     });
                 }
@@ -93,7 +98,6 @@ const ClientKeyDetailInner = (props) => {
                             productId: values.productId,
                             keyType: values.keyType,
                             clientKey: values.clientKey,
-                            userId: values.userId,
                         }, function (response) {
                             const res = response.data;
                             if (res.success === false) {
@@ -124,14 +128,29 @@ const ClientKeyDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入学校!',
+                                        message: '请输入搜索条件, 并选择学校!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="学校"
-                                    allowClear
+                                <Select
+                                    showSearch={true}
+                                    filterOption={false}
+                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
+                                    placeholder="请输入搜索条件, 并选择学校"
+                                    options={collegeSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/college/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setCollegeSelectOptions(res.collegeList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -141,14 +160,29 @@ const ClientKeyDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入产品!',
+                                        message: '请输入搜索条件, 并选择产品!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="产品"
-                                    allowClear
+                                <Select
+                                    showSearch={true}
+                                    filterOption={false}
+                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
+                                    placeholder="请输入搜索条件, 并选择产品"
+                                    options={productSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/product/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setProductSelectOptions(res.productList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -162,44 +196,9 @@ const ClientKeyDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={4}
+                                <Select
                                     placeholder="类型"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="密钥">
-                            <Form.Item
-                                name="clientKey"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入密钥!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={128}
-                                    placeholder="密钥"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="操作人">
-                            <Form.Item
-                                name="userId"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入操作人!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="操作人"
-                                    allowClear
+                                    options={clientKeyTypeSelectOptions}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -208,7 +207,7 @@ const ClientKeyDetailInner = (props) => {
                     <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "right"}}>
                         <Space>
                             <Button type="primary" size="large" htmlType="submit">
-                                <SaveOutlined/>保存
+                                <SaveOutlined/>生成密钥
                             </Button>
 
                             <Button type="default" size="large" onClick={() => {
@@ -239,11 +238,11 @@ class ClientKeyDetail extends React.Component {
 
     show = (clientKeyId) => {
         this.setState((pre) => {
-           return {
+            return {
                 ...pre,
                 clientKeyId: clientKeyId,
                 open: true,
-           };
+            };
         });
     }
 

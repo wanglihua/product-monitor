@@ -23,9 +23,9 @@ public class ClientKeyDetailModel
 
     [JsonProperty("clientKey")]
     public string ClientKey { get; set; } = "";
-    
-    [JsonProperty("clientKeyList")]
-    public IList<Dictionary<string, object>> ClientKeyList => ClientKeyType.GetList()
+
+    [JsonProperty("clientKeyTypeList")]
+    public IList<Dictionary<string, object>> ClientKeyTypeList => ClientKeyType.GetList()
         .Select(e => new Dictionary<string, object> {
             ["value"] = e.Id,
             ["label"] = e.Name,
