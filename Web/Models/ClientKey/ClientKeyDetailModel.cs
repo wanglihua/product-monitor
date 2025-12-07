@@ -21,9 +21,6 @@ public class ClientKeyDetailModel
     [JsonProperty("keyType")]
     public int KeyType { get; set; }
 
-    [JsonProperty("clientKey")]
-    public string ClientKey { get; set; } = "";
-
     [JsonProperty("clientKeyTypeList")]
     public IList<Dictionary<string, object>> ClientKeyTypeList => ClientKeyType.GetList()
         .Select(e => new Dictionary<string, object> {
@@ -46,9 +43,5 @@ public class ClientKeyDetailModelValidator : AbstractValidator<ClientKeyDetailMo
         RuleFor(e => e.KeyType)
             .Must(p => ClientKeyType.GetById(p) != ClientKeyType.None)
             .WithMessage("类型不能为空!");
-
-        RuleFor(e => e.ClientKey).NotNull().WithMessage("密钥不能为空!");
-        RuleFor(e => e.ClientKey).NotEmpty().WithMessage("密钥不能为空!");
-        RuleFor(e => e.ClientKey).MaximumLength(128).WithMessage("密钥最大长度不能超过128!");
     }
 }

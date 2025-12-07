@@ -147,7 +147,6 @@ public class ClientKeyController(
             ProductId = 0,
             ProductName = "",
             KeyType = 0,
-            ClientKey = "",
         };
 
         return Json(new JsonResultData {
@@ -172,7 +171,6 @@ public class ClientKeyController(
             CollegeId = model.CollegeId,
             ProductId = model.ProductId,
             KeyType = ClientKeyType.GetById(model.KeyType),
-            ClientKey = model.ClientKey ?? "",
             UserId = loginUserId
         };
 

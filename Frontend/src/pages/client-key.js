@@ -56,13 +56,13 @@ const ClientKey = () => {
         },
         {
             title: "学校",
-            dataIndex: "collegeId",
+            dataIndex: "collegeName",
             width: "200px",
         },
         {
             title: "产品",
-            dataIndex: "productId",
-            width: "200px",
+            dataIndex: "productName",
+            width: "250px",
         },
         {
             title: "类型",
@@ -82,12 +82,6 @@ const ClientKey = () => {
         {
             title: "创建时间",
             dataIndex: "createTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
-            dataIndex: "updateTime",
             width: "150px",
             sorter: true,
         },

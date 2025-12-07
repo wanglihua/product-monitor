@@ -70,7 +70,6 @@ const ClientKeyDetailInner = (props) => {
                             collegeId: undefined,
                             productId: undefined,
                             keyType: undefined,
-                            clientKey: "",
                         });
                     });
                 }
@@ -97,7 +96,6 @@ const ClientKeyDetailInner = (props) => {
                             collegeId: values.collegeId,
                             productId: values.productId,
                             keyType: values.keyType,
-                            clientKey: values.clientKey,
                         }, function (response) {
                             const res = response.data;
                             if (res.success === false) {
