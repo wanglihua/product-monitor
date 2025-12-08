@@ -5,14 +5,22 @@ using System.Text;
 
 namespace Client
 {
-    public class ClientKeyService
+    public static class ClientKeyUtil
     {
-        private string salt => "dc2cfff6c7576a2bbbf4d85bd0c58fb6"; // 跟服务器上的值一致 
+        private static string salt => "dc2cfff6c7576a2bbbf4d85bd0c58fb6"; // jcjy md5 
+
+        public static string GenerateKeyFromGuid(Guid guid)
+        {
+            var guidPartList = guid.ToString("D").Split('-').ToList();
+            string hash = GetMD5(string.Concat(guidPartList.OrderByDescending(e => e)) + salt);
+
+            return $"{guid:N}{hash}";
+        }
 
         /// <summary>
         /// 验证Key格式是否正确，这个算法跟服务器端算法一致
         /// </summary>
-        public bool ValidateKey(string key)
+        public static bool ValidateKey(string key)
         {
             if (string.IsNullOrWhiteSpace(key) == true)
             {
@@ -36,7 +44,7 @@ namespace Client
             return hash == key.Substring(32, 32);
         }
 
-        private string GetMD5(string clearText)
+        private static string GetMD5(string clearText)
         {
             using (var md5 = MD5.Create())
             {
