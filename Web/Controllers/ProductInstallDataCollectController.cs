@@ -75,6 +75,16 @@ public class ProductInstallDataCollectController(
             accountType = AccountType.Student;
         }
 
+        if (string.IsNullOrWhiteSpace(param.LoginUser) == true)
+        {
+            // 记录到日志
+            throw new Exception("产品安装数据监测数据，登录账户不能为空！");
+        }
+
+        // SendTime 在数据校验时相当于做过检查了
+
+        // CpuSerialNo NetMacAddress 暂时不检查
+
         string key = param.Key;
         var clientKey = db.ClientKey.AsNoTracking()
             .Where(e => e.ClientKey == key)
@@ -109,8 +119,8 @@ public class ProductInstallDataCollectController(
                 ProductId = productId,
                 CollegeId = collegeId,
                 ProvinceType = provinceType,
-                CpuSerialNo = param.CpuSerialNo,
-                NetMacAddress = param.NetMacAddress,
+                CpuSerialNo = param.CpuSerialNo ?? "", // 参数不检查，所以加上 ?? ""
+                NetMacAddress = param.NetMacAddress ?? "", // 参数不检查，所以加上 ?? ""
                 TaskCount = 0, // 这两个数据暂时这样了
                 TeacherCount = 0, // 这两个数据暂时就这样了
             };
