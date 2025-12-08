@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Client
 {
@@ -12,7 +10,7 @@ namespace Client
         public static string GenerateKeyFromGuid(Guid guid)
         {
             var guidPartList = guid.ToString("D").Split('-').ToList();
-            string hash = GetMD5(string.Concat(guidPartList.OrderByDescending(e => e)) + salt);
+            string hash = HashUtil.GetMD5(string.Concat(guidPartList.OrderByDescending(e => e)) + salt);
 
             return $"{guid:N}{hash}";
         }
@@ -39,26 +37,9 @@ namespace Client
             }
 
             var guidPartList = guid.ToString("D").Split('-').ToList();
-            string hash = GetMD5(string.Concat(guidPartList.OrderByDescending(e => e)) + salt);
+            string hash = HashUtil.GetMD5(string.Concat(guidPartList.OrderByDescending(e => e)) + salt);
 
             return hash == key.Substring(32, 32);
-        }
-
-        private static string GetMD5(string clearText)
-        {
-            using (var md5 = MD5.Create())
-            {
-                byte[] hashData = Encoding.UTF8.GetBytes(clearText);
-                hashData = md5.ComputeHash(hashData);
-
-                var sb = new StringBuilder();
-                foreach (byte b in hashData)
-                {
-                    sb.Append(b.ToString("x2"));
-                }
-
-                return sb.ToString();
-            }
         }
     }
 }

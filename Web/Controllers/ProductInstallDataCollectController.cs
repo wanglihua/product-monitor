@@ -1,8 +1,8 @@
-﻿using Core.Auth;
+﻿using Client;
+using Core.Auth;
 using Core.Database;
 using Core.Web;
 using Microsoft.AspNetCore.Mvc;
-using Service.ProductInstallDataCollect;
 
 namespace Web.Controllers;
 
