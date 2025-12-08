@@ -18,6 +18,8 @@ namespace Client
             sb.Append($"accountType={param.AccountType}");
             sb.Append($"loginUser={param.LoginUser}");
             sb.Append($"useTime={param.UseTime}");
+            sb.Append($"cpuSerialNo={param.CpuSerialNo}");
+            sb.Append($"netMacAddress={param.NetMacAddress}");
             sb.Append($"sendTime={param.SendTime}");
             sb.Append(salt);
 
@@ -26,7 +28,12 @@ namespace Client
 
         public static bool VerifySign(ProductInstallDataCollectParam param)
         {
-            if (DateTime.TryParseExact(param.SendTime, "yyyy-MM-dd HH:mm", new DateTimeFormatInfo(), DateTimeStyles.None, out DateTime sendTime) == false)
+            if (DateTime.TryParseExact(
+                    param.SendTime,
+                    ProductInstallDataCollectParam.DateTimeFormat,
+                    new DateTimeFormatInfo(),
+                    DateTimeStyles.None,
+                    out DateTime sendTime) == false)
             {
                 return false;
             }
