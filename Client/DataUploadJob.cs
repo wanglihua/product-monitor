@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web.UI;
+using Newtonsoft.Json;
 using Quartz;
 
 namespace Client
@@ -21,21 +23,34 @@ namespace Client
 
         public Task Execute(IJobExecutionContext context)
         {
-            var useDataList = PM.DequeueData(1);
+            var useDataList = PM.DequeueData(1); // 每次取一个吧
 
             if (useDataList.Count == 0)
             {
                 return Task.CompletedTask;
             }
 
+            string cpuSerialNo = HardwareInfoUtil.GetCpuId();
+            string netMacAddress = HardwareInfoUtil.GetMacAddress();
+
             foreach (var useData in useDataList)
             {
                 var param = new ProductInstallDataCollectParam {
+                    Key = PM.ClientKey,
+                    UseTime = useData.UseTime.ToString(ProductInstallDataCollectParam.DateTimeFormat),
+                    AccountType = useData.AccountType,
+                    LoginUser = useData.Account,
+                    SendTime = DateTime.Now.ToString(ProductInstallDataCollectParam.DateTimeFormat),
+                    CpuSerialNo = cpuSerialNo,
+                    NetMacAddress = netMacAddress,
                 };
 
+                param.Sign = DataCollectUtil.CalSign(param);
+
                 var httpClient = new HttpClient();
-                var content = new StringContent("");
-                var result = httpClient.PostAsync("", content).GetAwaiter().GetResult();
+                string url = $"{PM.PMSiteBase}/product/install/data/collect";
+                var content = new StringContent(JsonConvert.SerializeObject(param));
+                httpClient.PostAsync(url, content).GetAwaiter().GetResult();
             }
 
             return Task.CompletedTask;
