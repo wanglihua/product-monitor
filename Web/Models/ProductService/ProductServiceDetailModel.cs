@@ -61,11 +61,8 @@ public class ProductServiceDetailModelValidator : AbstractValidator<ProductServi
 {
     public ProductServiceDetailModelValidator()
     {
-        RuleFor(e => e.CollegeId).NotNull().WithMessage("学校不能为空!");
-        RuleFor(e => e.CollegeId).NotEmpty().WithMessage("学校不能为空!");
-
-        RuleFor(e => e.ProductId).NotNull().WithMessage("产品不能为空!");
-        RuleFor(e => e.ProductId).NotEmpty().WithMessage("产品不能为空!");
+        RuleFor(e => e.CollegeId).Must(p => p > 0).WithMessage("学校不能为空!");
+        RuleFor(e => e.ProductId).Must(p => p > 0).WithMessage("产品不能为空!");
 
         RuleFor(e => e.ProjectTypeCode)
             .Must(p => ProjectType.GetById(p) != ProjectType.None)

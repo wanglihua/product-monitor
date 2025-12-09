@@ -22,6 +22,13 @@ public class ProductUrlController(
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
+    private class ProductUrlJoinItem
+    {
+        public ProductUrlEntity ProductUrl { get; set; } = new();
+
+        public ProductEntity Product { get; set; } = new();
+    }
+
     [HttpPost]
     [Route("/api/product-url/list")]
     [Transactional(false)]
@@ -29,36 +36,44 @@ public class ProductUrlController(
     {
         ValidationUtil.Validate<ProductUrlListParamValidator, ProductUrlListParam>(param);
 
-        IQueryable<ProductUrlEntity> query = db.ProductUrl.AsNoTracking();
+        IQueryable<ProductUrlJoinItem> query = db.ProductUrl
+            .Join(db.Product,
+                pu => pu.ProductId,
+                p => p.Id,
+                (pu, p) => new ProductUrlJoinItem {
+                    ProductUrl = pu,
+                    Product = p,
+                })
+            .AsNoTracking();
 
         if (param.TypeQuery != ProductUrlType.None)
         {
             var typeQuery = param.TypeQuery;
-            query = query.Where(e => e.Type == typeQuery);
+            query = query.Where(e => e.ProductUrl.Type == typeQuery);
         }
 
         if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
         {
             string nameQuery = param.NameQuery.Trim();
-            query = query.Where(p => p.Name.Contains(nameQuery));
+            query = query.Where(p => p.Product.Name.Contains(nameQuery));
         }
 
         int productUrlCount = query.Count();
 
         // 排序字段
-        Expression<Func<ProductUrlEntity, object>> sortField = e => e.Id;
+        Expression<Func<ProductUrlJoinItem, object>> sortField = e => e.ProductUrl.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
 
             if (string.Compare(sortFieldParam, nameof(ProductUrlListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
-                sortField = e => e.CreateTime;
+                sortField = e => e.ProductUrl.CreateTime;
             }
 
             if (string.Compare(sortFieldParam, nameof(ProductUrlListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.ProductUrl.UpdateTime;
             }
         }
 
@@ -77,14 +92,14 @@ public class ProductUrlController(
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
             .Select(e => new {
-                Id = e.Id,
-                Name = e.Name,
-                Url = e.Url,
-                Type = e.Type,
-                LoginUser = e.LoginUser,
-                LoginPassword = e.LoginPassword,
-                CreateTime = e.CreateTime,
-                UpdateTime = e.UpdateTime,
+                Id = e.ProductUrl.Id,
+                Name = e.Product.Name,
+                Url = e.ProductUrl.Url,
+                Type = e.ProductUrl.Type,
+                LoginUser = e.ProductUrl.LoginUser,
+                LoginPassword = e.ProductUrl.LoginPassword,
+                CreateTime = e.ProductUrl.CreateTime,
+                UpdateTime = e.ProductUrl.UpdateTime,
             })
             .ToList();
 
@@ -137,7 +152,8 @@ public class ProductUrlController(
 
         var model = new ProductUrlDetailModel {
             Id = 0,
-            Name = "",
+            ProductId = 0,
+            ProductName = "",
             Url = "",
             TypeCode = 0,
             LoginUser = "",
@@ -147,18 +163,28 @@ public class ProductUrlController(
         if (productUrlId > 0)
         {
             var productUrl = db.ProductUrl.Find(productUrlId);
-            if (productUrl is not null)
+            if (productUrl is null)
             {
-                model = new ProductUrlDetailModel {
-                    Id = productUrl.Id,
-                    Name = productUrl.Name,
-                    Url = productUrl.Url,
-                    TypeCode = productUrl.Type.Id,
-                    LoginUser = productUrl.LoginUser,
-                    LoginPassword = productUrl.LoginPassword,
-                    Description = productUrl.Description,
-                };
+                throw new ValidationException($"指定的网址#{productUrlId}不存在！");
             }
+
+            long productId = productUrl.ProductId;
+            var product = db.Product.Find(productId);
+            if (product is null)
+            {
+                throw new ValidationException($"指定的产品#{productId}不存在!");
+            }
+
+            model = new ProductUrlDetailModel {
+                Id = productUrl.Id,
+                ProductId = productId,
+                ProductName = product.Name,
+                Url = productUrl.Url,
+                TypeCode = productUrl.Type.Id,
+                LoginUser = productUrl.LoginUser,
+                LoginPassword = productUrl.LoginPassword,
+                Description = productUrl.Description,
+            };
         }
 
         return Json(new JsonResultData {
@@ -192,7 +218,7 @@ public class ProductUrlController(
             }
         }
 
-        productUrl.Name = model.Name ?? "";
+        productUrl.ProductId = model.ProductId;
         productUrl.Url = model.Url ?? "";
         productUrl.Type = ProductUrlType.GetById(model.TypeCode);
         productUrl.LoginUser = model.LoginUser ?? "";
@@ -209,12 +235,12 @@ public class ProductUrlController(
         long loginUserId = userLoginService.GetLoginUserId();
         if (isCreate == true)
         {
-            string actionDesc = $"{productUrl.Name}#{productUrl.Id}";
+            string actionDesc = $"#{productUrl.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductUrlCreate, actionDesc);
         }
         else
         {
-            string actionDesc = $"{productUrl.Name}#{productUrl.Id}";
+            string actionDesc = $"#{productUrl.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductUrlUpdate, actionDesc);
         }
 
@@ -242,7 +268,7 @@ public class ProductUrlController(
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
-        string actionDesc = $"{productUrl.Name}#{productUrl.Id}";
+        string actionDesc = $"#{productUrl.Id}";
         actionLogService.Add(loginUserId, ActionLogType.ProductUrlDelete, actionDesc);
 
         return Json(new JsonResultData {

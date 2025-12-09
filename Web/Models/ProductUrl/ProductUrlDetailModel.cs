@@ -1,4 +1,3 @@
-using System.Drawing;
 using Domain;
 using FluentValidation;
 using Newtonsoft.Json;
@@ -10,8 +9,11 @@ public class ProductUrlDetailModel
     [JsonProperty("id")]
     public long Id { get; set; }
 
+    [JsonProperty("productId")]
+    public long ProductId { get; set; }
+
     [JsonProperty("name")]
-    public string Name { get; set; } = "";
+    public string ProductName { get; set; } = "";
 
     [JsonProperty("url")]
     public string Url { get; set; } = "";
@@ -41,9 +43,7 @@ public class ProductUrlDetailModelValidator : AbstractValidator<ProductUrlDetail
 {
     public ProductUrlDetailModelValidator()
     {
-        RuleFor(e => e.Name).NotNull().WithMessage("产品名称不能为空!");
-        RuleFor(e => e.Name).NotEmpty().WithMessage("产品名称不能为空!");
-        RuleFor(e => e.Name).MaximumLength(128).WithMessage("产品名称最大长度不能超过128!");
+        RuleFor(e => e.ProductId).Must(p => p > 0).WithMessage("产品不能为空!");
 
         RuleFor(e => e.Url).NotNull().WithMessage("网址不能为空!");
         RuleFor(e => e.Url).NotEmpty().WithMessage("网址不能为空!");
