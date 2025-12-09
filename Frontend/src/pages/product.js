@@ -191,6 +191,7 @@ const Product = () => {
                                 }
 
                                 showSuccess(response.message);
+                                loadProductList();
                             }
 
                             if (status === 'error') {

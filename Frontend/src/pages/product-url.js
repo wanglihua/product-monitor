@@ -197,6 +197,8 @@ const ProductUrl = () => {
                                 }
 
                                 showSuccess(response.message);
+                                
+                                loadProductUrlList();
                             }
 
                             if (status === 'error') {
