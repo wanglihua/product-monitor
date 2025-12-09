@@ -13,9 +13,8 @@ public class ProductUrlEntityMap : IEntityTypeConfiguration<ProductUrlEntity>
 
         EntityMap.Configure(builder);
 
-        builder.Property(e => e.Name)
-            .HasColumnName("name")
-            .HasMaxLength(128)
+        builder.Property(e => e.ProductId)
+            .HasColumnName("product_id")
             .IsRequired(true);
 
         builder.Property(e => e.Url)

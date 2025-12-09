@@ -2,7 +2,7 @@
 (
     id             BIGINT        NOT NULL,
 
-    name           NVARCHAR(128) NOT NULL,
+    product_id     BIGINT        NOT NULL,
     url            NVARCHAR(256) NOT NULL,
     type_code      INT           NOT NULL,
 
@@ -14,7 +14,10 @@
     create_time    DATETIME      NOT NULL,
     update_time    DATETIME      NOT NULL,
 
-    CONSTRAINT pk_product_url PRIMARY KEY (id)
+    CONSTRAINT pk_product_url PRIMARY KEY (id),
+
+    CONSTRAINT fk_product_url_product_id FOREIGN KEY (product_id) REFERENCES tbl_product (id),
+    INDEX ix_product_url_product_id (product_id),
 );
 
 -- DROP TABLE tbl_product_url;
@@ -23,7 +26,7 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'网址管理', 'SCHEMA', 'dbo', 
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'id';
 
-EXEC sp_AddExtendedProperty 'MS_Description', N'产品名称', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'name';
+EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'product_id';
 EXEC sp_AddExtendedProperty 'MS_Description', N'网址', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'url';
 EXEC sp_AddExtendedProperty 'MS_Description', N'类型', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'type_code';
 EXEC sp_AddExtendedProperty 'MS_Description', N'账号', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'login_user';
@@ -31,3 +34,4 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'密码', 'SCHEMA', 'dbo', 'TABLE
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'create_time';
 EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url', 'COLUMN', 'update_time';
+
