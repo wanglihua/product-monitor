@@ -11,7 +11,7 @@ const ProductUrlMonitorEntry = () => {
 
     const params = useParams();
     const productUrlMonitorId = params.productUrlMonitorId;
-    
+
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const navigate = useNavigate();
@@ -65,7 +65,7 @@ const ProductUrlMonitorEntry = () => {
         },
         {
             title: "使用时间",
-            dataIndex: "createTime",
+            dataIndex: "useTime",
             width: "150px",
         },
         {

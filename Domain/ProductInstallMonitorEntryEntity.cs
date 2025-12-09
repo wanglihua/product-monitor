@@ -41,4 +41,9 @@ public class ProductInstallMonitorEntryEntity : Entity
     /// 网卡硬件地址
     /// </summary>
     public string NetMacAddress { get; set; } = "";
+
+    /// <summary>
+    /// 使用时间
+    /// </summary>
+    public DateTime UseTime { get; set; }
 }

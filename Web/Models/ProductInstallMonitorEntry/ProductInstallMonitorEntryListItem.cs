@@ -19,6 +19,9 @@ public class ProductInstallMonitorEntryListItem
     [JsonProperty("provinceType")]
     public string ProvinceType { get; set; } = "";
 
+    [JsonProperty("useTime")]
+    public string UseTime { get; set; } = "";
+
     [JsonProperty("createTime")]
     public string CreateTime { get; set; } = "";
 

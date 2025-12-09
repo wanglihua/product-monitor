@@ -163,6 +163,7 @@ public class ProductInstallDataCollectController(
             ProvinceType = useProvince,
             CpuSerialNo = cpuSerialNo,
             NetMacAddress = netMacAddress,
+            UseTime = useTime,
         };
 
         db.ProductInstallMonitorEntry.Add(productInstallMonitorEntry);

@@ -46,5 +46,9 @@ public class ProductInstallMonitorEntryEntityMap : IEntityTypeConfiguration<Prod
             .HasColumnName("net_mac_address")
             .HasMaxLength(128)
             .IsRequired(true);
+
+        builder.Property(e => e.UseTime)
+            .HasColumnName("use_time")
+            .IsRequired(true);
     }
 }

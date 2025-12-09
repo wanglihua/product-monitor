@@ -97,6 +97,7 @@ public class ProductInstallMonitorEntryController(
                 AccountType = e.AccountType,
                 IpAddress = e.IpAddress,
                 ProvinceType = e.ProvinceType,
+                UseTime = e.UseTime,
                 CreateTime = e.CreateTime,
                 UpdateTime = e.UpdateTime,
             })
@@ -109,6 +110,7 @@ public class ProductInstallMonitorEntryController(
                 AccountType = e.AccountType.Name,
                 IpAddress = e.IpAddress,
                 ProvinceType = e.ProvinceType.Name,
+                UseTime = e.UseTime.ToString("yyyy-MM-dd HH:mm"),
                 CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
                 UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
