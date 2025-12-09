@@ -25,6 +25,7 @@ const ProductUrlDetailInner = (props) => {
     const [state, setState] = useState({});
 
     const [productUrlTypeOptions, setProductUrlTypeOptions] = useState([]);
+    const [productSelectOptions, setProductSelectOptions] = useState([]);
 
     const form = useRef();
 
@@ -63,14 +64,21 @@ const ProductUrlDetailInner = (props) => {
                         const data = res.data;
 
                         let typeCode = undefined;
+                        let productId = undefined;
                         if (productUrlId > 0) {
                             typeCode = data.typeCode;
+
+                            productId = data.productId;
+                            setProductSelectOptions([{
+                                value: productId,
+                                label: data.productName,
+                            }]);
                         }
 
                         setProductUrlTypeOptions(data.productUrlTypeList)
 
                         form.current.setFieldsValue({
-                            name: data.name,
+                            productId: productId,
                             url: data.url,
                             typeCode: typeCode,
                             loginUser: data.loginUser,
@@ -99,7 +107,7 @@ const ProductUrlDetailInner = (props) => {
                     onFinish={(values) => {
                         post("/api/product-url/save", {
                             id: productUrlId,
-                            name: values.name,
+                            productId: values.productId,
                             url: values.url,
                             typeCode: values.typeCode,
                             loginUser: values.loginUser,
@@ -129,20 +137,35 @@ const ProductUrlDetailInner = (props) => {
                         column={1}
                         labelStyle={{width: "120px"}}
                     >
-                        <Descriptions.Item label="产品名称">
+                        <Descriptions.Item label="产品">
                             <Form.Item
-                                name="name"
+                                name="productId"
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入产品名称!',
+                                        message: '请输入搜索条件, 并选择产品!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={128}
-                                    placeholder="产品名称"
-                                    allowClear
+                                <Select
+                                    showSearch={true}
+                                    filterOption={false}
+                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
+                                    placeholder="请输入搜索条件, 并选择产品"
+                                    options={productSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/product/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setProductSelectOptions(res.productList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
