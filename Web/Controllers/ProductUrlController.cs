@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
+using Service.ProductUrl;
 using Web.Models.ProductUrl;
 
 namespace Web.Controllers;
@@ -18,6 +19,7 @@ namespace Web.Controllers;
 public class ProductUrlController(
     Db db,
     UserLoginService userLoginService,
+    ProductUrlExcelService productUrlExcelService,
     ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
@@ -29,13 +31,9 @@ public class ProductUrlController(
         public ProductEntity Product { get; set; } = new();
     }
 
-    [HttpPost]
-    [Route("/api/product-url/list")]
-    [Transactional(false)]
-    public IActionResult List([FromBody] ProductUrlListParam param)
+    [NonAction]
+    private IQueryable<ProductUrlJoinItem> GetListQuery(ProductUrlListParam param)
     {
-        ValidationUtil.Validate<ProductUrlListParamValidator, ProductUrlListParam>(param);
-
         IQueryable<ProductUrlJoinItem> query = db.ProductUrl
             .Join(db.Product,
                 pu => pu.ProductId,
@@ -57,6 +55,18 @@ public class ProductUrlController(
             string nameQuery = param.NameQuery.Trim();
             query = query.Where(p => p.Product.Name.Contains(nameQuery));
         }
+
+        return query;
+    }
+
+    [HttpPost]
+    [Route("/api/product-url/list")]
+    [Transactional(false)]
+    public IActionResult List([FromBody] ProductUrlListParam param)
+    {
+        ValidationUtil.Validate<ProductUrlListParamValidator, ProductUrlListParam>(param);
+
+        IQueryable<ProductUrlJoinItem> query = GetListQuery(param);
 
         int productUrlCount = query.Count();
 
@@ -275,5 +285,44 @@ public class ProductUrlController(
             Success = true,
             Message = "删除成功！",
         });
+    }
+
+    [HttpPost]
+    [Route("/api/product-url/export")]
+    [Transactional(false)]
+    public IActionResult Export(ProductUrlListParam param)
+    {
+        ValidationUtil.Validate<ProductUrlListParamValidator, ProductUrlListParam>(param);
+
+        IQueryable<ProductUrlJoinItem> query = GetListQuery(param);
+
+        var productUrlList = query
+            .OrderBy(e => e.ProductUrl.Id)
+            .Select(e => new {
+                Id = e.ProductUrl.Id,
+                ProductName = e.Product.Name,
+                e.ProductUrl.Url,
+                e.ProductUrl.Type,
+                e.ProductUrl.LoginUser,
+                e.ProductUrl.LoginPassword,
+                e.ProductUrl.Description,
+            })
+            .ToList();
+
+        var productUrlItemList = productUrlList
+            .Select(e => new ProductUrlExcelExportItem {
+                Id = e.Id,
+                ProductName = e.ProductName,
+                Url = e.Url,
+                Type = e.Type.Name,
+                LoginUser = e.LoginUser,
+                LoginPassword = e.LoginPassword,
+                Description = e.Description,
+            })
+            .ToList();
+
+        var excelContent = productUrlExcelService.GetExcelContent(productUrlItemList);
+
+        return File(excelContent, ContentType.Xlsx, "网址.xlsx");
     }
 }
