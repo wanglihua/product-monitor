@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Select, Space, Table} from 'antd';
+import {Button, Input, Select, Space, Table, Upload} from 'antd';
 import {EditOutlined, DeleteOutlined, FileExcelOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import ProductUrlDetail from "./product-url-detail";
 
@@ -9,7 +9,7 @@ import $ from "jquery";
 
 const ProductUrl = () => {
 
-    const {post, showConfirm, showError, showSuccess} = useSiteContext();
+    const {post, showConfirm, showError, showSuccess, showMask, hideMask} = useSiteContext();
 
     const [listParam, setListParam] = useState({
         typeQuery: 0,
@@ -176,6 +176,44 @@ const ProductUrl = () => {
                     >
                         添加
                     </Button>
+                    <Upload
+                        showUploadList={false}
+                        name="excelFile"
+                        accept=".xlsx"
+                        action="/api/product-url/import"
+                        onChange={(info) => {
+                            const status = info.file.status;
+
+                            if (status === 'uploading') {
+                                showMask();
+                            }
+
+                            if (status === 'done') {
+                                hideMask();
+                                const response = info.file.response;
+                                if (response.success !== true) {
+                                    showError(response.message);
+                                    return;
+                                }
+
+                                showSuccess(response.message);
+                            }
+
+                            if (status === 'error') {
+                                hideMask();
+                                showError("文件上传失败, 请重试!");
+                            }
+                        }}
+                    >
+                        <Button
+                            color="default"
+                            icon={<FileExcelOutlined/>}
+                            onClick={(e) => {
+                            }}
+                        >
+                            导入
+                        </Button>
+                    </Upload>
                     <Button
                         color="default"
                         icon={<FileExcelOutlined/>}

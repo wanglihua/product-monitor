@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Util;
+using Microsoft.AspNetCore.Http;
 using NLog;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -117,5 +118,13 @@ public class ProductUrlExcelService
         memoryStream.Flush();
 
         return memoryStream.ToArray();
+    }
+
+    public void Import(IFormFile excelFile)
+    {
+        if (excelFile is null)
+        {
+            throw new ValidationException("导入失败，文件未上传！");
+        }
     }
 }

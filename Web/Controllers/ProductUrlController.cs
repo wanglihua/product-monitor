@@ -325,4 +325,22 @@ public class ProductUrlController(
 
         return File(excelContent, ContentType.Xlsx, "网址.xlsx");
     }
+
+    [HttpPost]
+    [Route("/api/product-url/import")]
+    [Transactional(false)] // 内部有事务
+    public IActionResult Import(IFormFile excelFile)
+    {
+        if (excelFile is null)
+        {
+            throw new ValidationException("导入失败，文件未上传！");
+        }
+
+        productUrlExcelService.Import(excelFile);
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "导入成功！",
+        });
+    }
 }
