@@ -57,6 +57,7 @@
     <ItemGroup>
         <Compile Include="ClientKeyUnitTest.cs" />
         <Compile Include="HelloUnitTest.cs" />
+        <Compile Include="PMUnitTest.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>

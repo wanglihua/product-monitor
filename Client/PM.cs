@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Quartz.Impl;
 
 namespace Client
 {
@@ -9,12 +10,26 @@ namespace Client
         public static ClientType ClientType { get; private set; }
         public static string ClientKey { get; private set; }
 
+        /// <summary>
+        /// 在 asp.net core 的 app.Run() 前调用，或者在 asp.net framework 的 Application_Start() 中调用
+        /// </summary>
+        /// <param name="clientType"></param>
+        /// <param name="clientKey"></param>
         public static void Start(ClientType clientType, string clientKey)
         {
+            // todo 检查 client key
+            if (ClientKeyUtil.ValidateKey(clientKey) == false)
+            {
+                throw new Exception("不合法的 PM client key");
+            }
+
             ClientType = clientType;
             ClientKey = clientKey;
 
-            // todo 开启定时任务
+            // 开启定时任务
+            var scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
+            scheduler.Start().Wait();
+            // HelloJob.Schedule(scheduler); 只是测试
         }
 
         private static ConcurrentQueue<UseData> postInstallDataCollectQueue = new ConcurrentQueue<UseData>();

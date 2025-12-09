@@ -97,6 +97,7 @@
         <Compile Include="HardwareInfoUtil.cs" />
         <Compile Include="HashUtil.cs" />
         <Compile Include="Hello.cs" />
+        <Compile Include="HelloJob.cs" />
         <Compile Include="PM.cs" />
         <Compile Include="ProductInstallDataCollectParam.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>

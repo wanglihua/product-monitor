@@ -9,13 +9,13 @@ using NLog;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using Service;
-using Service.Jobs;
 using StackExchange.Profiling;
 using StackExchange.Profiling.SqlFormatters;
 using StackExchange.Profiling.Storage;
 using Web.Filters;
 using Web.Middlewares;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+using QuartzStartup = Service.Jobs.QuartzStartup;
 
 namespace Web;
 
