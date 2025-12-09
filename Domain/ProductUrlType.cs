@@ -50,6 +50,21 @@ public class ProductUrlType : CodeTypeBase, ICodeType<ProductUrlType>
         return None;
     }
 
+    public static ProductUrlType GetByName(string name)
+    {
+        var list = GetList();
+
+        foreach (var codeType in list)
+        {
+            if (codeType.Name == name)
+            {
+                return codeType;
+            }
+        }
+
+        return None;
+    }
+
     public static IList<ProductUrlType> GetList()
     {
         return codeTypeList.ToList();
