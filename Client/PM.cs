@@ -35,7 +35,7 @@ namespace Client
             // 开启定时任务
             var scheduler = StdSchedulerFactory.GetDefaultScheduler().GetAwaiter().GetResult();
             scheduler.Start().Wait();
-            // HelloJob.Schedule(scheduler); 只是测试
+            DataUploadJob.Schedule(scheduler);
         }
 
         private static ConcurrentQueue<UseData> postInstallDataCollectQueue = new ConcurrentQueue<UseData>();
