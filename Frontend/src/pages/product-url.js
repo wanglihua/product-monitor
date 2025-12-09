@@ -1,10 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Select, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {EditOutlined, DeleteOutlined, FileExcelOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import ProductUrlDetail from "./product-url-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
+import $ from "jquery";
 
 const ProductUrl = () => {
 
@@ -174,6 +175,21 @@ const ProductUrl = () => {
                         }}
                     >
                         添加
+                    </Button>
+                    <Button
+                        color="default"
+                        icon={<FileExcelOutlined/>}
+                        onClick={(e) => {
+                            showConfirm("确认要导出吗！", "确认", () => {
+                                const query = $.param(listParam);
+                                const url = `/api/product-url/export?${query}`;
+                                $(`<form method="post" action="${url}"></form>`).appendTo('body').submit().remove();
+
+                                showSuccess("导出成功, 文件下载中!");
+                            });
+                        }}
+                    >
+                        导出
                     </Button>
                 </Space>
             </div>

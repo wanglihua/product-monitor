@@ -25,10 +25,7 @@ public class ErrorController : Controller
         var model = new ErrorViewModel();
         if (exp is not null)
         {
-            if ((exp is ValidationException) == false)
-            {
-                log.Error(exp);
-            }
+            log.Error(exp);
 
             model.Message = exp.Message;
         }

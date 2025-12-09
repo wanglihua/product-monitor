@@ -28,7 +28,16 @@ public class ProductUrlExcelService
         row.HeightInPoints = rowHeight;
 
         int cellIndex = 0;
-        ICell cell = row.CreateCell(cellIndex);
+
+        ICell cell;
+
+        cell = row.CreateCell(cellIndex);
+        sheet.SetColumnWidth(cellIndex++, 16 * 256);
+        cell.CellStyle = headerCellStyle;
+        cell.SetCellType(CellType.String);
+        cell.SetCellValue("类型");
+
+        cell = row.CreateCell(cellIndex);
         sheet.SetColumnWidth(cellIndex++, 32 * 256);
         cell.CellStyle = headerCellStyle;
         cell.SetCellType(CellType.String);
@@ -41,25 +50,19 @@ public class ProductUrlExcelService
         cell.SetCellValue("网址");
 
         cell = row.CreateCell(cellIndex);
-        sheet.SetColumnWidth(cellIndex++, 32 * 256);
-        cell.CellStyle = headerCellStyle;
-        cell.SetCellType(CellType.String);
-        cell.SetCellValue("类型");
-
-        cell = row.CreateCell(cellIndex);
-        sheet.SetColumnWidth(cellIndex++, 32 * 256);
+        sheet.SetColumnWidth(cellIndex++, 20 * 256);
         cell.CellStyle = headerCellStyle;
         cell.SetCellType(CellType.String);
         cell.SetCellValue("账号");
 
         cell = row.CreateCell(cellIndex);
-        sheet.SetColumnWidth(cellIndex++, 32 * 256);
+        sheet.SetColumnWidth(cellIndex++, 20 * 256);
         cell.CellStyle = headerCellStyle;
         cell.SetCellType(CellType.String);
         cell.SetCellValue("密码");
 
         cell = row.CreateCell(cellIndex);
-        sheet.SetColumnWidth(cellIndex++, 32 * 256);
+        sheet.SetColumnWidth(cellIndex++, 96 * 256);
         cell.CellStyle = headerCellStyle;
         cell.SetCellType(CellType.String);
         cell.SetCellValue("备注");
@@ -72,6 +75,12 @@ public class ProductUrlExcelService
 
             cellIndex = 0;
 
+            // 类型
+            cell = row.CreateCell(cellIndex++);
+            cell.CellStyle = contentCellStyle;
+            cell.SetCellType(CellType.String);
+            cell.SetCellValue(item.Type);
+
             // 产品
             cell = row.CreateCell(cellIndex++);
             cell.CellStyle = contentCellStyle;
@@ -83,12 +92,6 @@ public class ProductUrlExcelService
             cell.CellStyle = contentCellStyle;
             cell.SetCellType(CellType.String);
             cell.SetCellValue(item.Url);
-
-            // 类型
-            cell = row.CreateCell(cellIndex++);
-            cell.CellStyle = contentCellStyle;
-            cell.SetCellType(CellType.String);
-            cell.SetCellValue(item.Type);
 
             // 账号
             cell = row.CreateCell(cellIndex++);

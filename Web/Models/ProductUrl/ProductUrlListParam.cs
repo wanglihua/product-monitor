@@ -12,7 +12,7 @@ public class ProductUrlListParam : ListParam
     [BindProperty(Name = "typeQuery")]
     [JsonProperty("typeQuery")]
     [JsonConverter(typeof(ProductUrlTypeJsonConverter))]
-    [ModelBinder<CodeTypeModelBinder<ProductUrlType>>]
+    [ModelBinder<ProductUrlTypeModelBinder>]
     public ProductUrlType TypeQuery { get; set; } = ProductUrlType.None;
 
     [BindProperty(Name = "nameQuery")]
