@@ -173,9 +173,9 @@ public static class Program
         Console.WriteLine("started");
 #endif
 
-#if DEBUG
-        PM.Start(ClientType.Install, "019af8fa0d5d70b3adf2cb545d9b2a20f1c0445f07775157f4eb3d8658bc8c84");
-#endif
+// #if DEBUG
+//         PM.Start(ClientType.Install, "019af8fa0d5d70b3adf2cb545d9b2a20f1c0445f07775157f4eb3d8658bc8c84");
+// #endif
 
         app.Run();
     }
