@@ -11,6 +11,7 @@ public partial class PassRes
 
         public static IList<PassResEntity> AllData => new List<PassResEntity>() {
             new() { Id = User, Name = "用户管理", CateId = CateId },
+            new() { Id = UserProvince, Name = "用户负责区域", CateId = CateId },
             new() { Id = Group, Name = "群组管理", CateId = CateId },
             new() { Id = PassRes, Name = "权限资源", CateId = CateId },
             new() { Id = ClientKey, Name = "客户端密钥", CateId = CateId },
@@ -23,6 +24,11 @@ public partial class PassRes
         /// 用户管理
         /// </summary>
         public const long User = CateId + 0200;
+
+        /// <summary>
+        /// 用户负责区域
+        /// </summary>
+        public const long UserProvince = CateId + 0300;
 
         /// <summary>
         /// 群组管理
