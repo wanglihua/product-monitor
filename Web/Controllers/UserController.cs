@@ -32,7 +32,9 @@ public class UserController(
     {
         ValidationUtil.Validate<UserListParamValidator, UserListParam>(param);
 
-        IQueryable<UserEntity> query = db.User.AsNoTracking();
+        var normalStatusList = UserStatus.GetNormalList();
+        IQueryable<UserEntity> query = db.User.AsNoTracking()
+            .Where(e => normalStatusList.Contains(e.Status));
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
@@ -334,8 +336,12 @@ public class UserController(
         //     .Where(e => e.UserId == userId)
         //     .Log;
 
-        // 删除用户
-        db.User.Remove(user);
+        // 删除用户, 后面改成了假删除
+        // db.User.Remove(user);
+
+        user.Status = UserStatus.Deleted;
+        user.LoginName = user.LoginName + "_deleted";
+        user.UserName = user.UserName + "_deleted";
 
         db.SaveChanges();
 

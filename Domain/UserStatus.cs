@@ -15,6 +15,11 @@ public class UserStatus : CodeTypeBase, ICodeType<UserStatus>
     public static readonly UserStatus Disabled = new(200, "已禁用");
 
     /// <summary>
+    /// 已删除
+    /// </summary>
+    public static readonly UserStatus Deleted = new(300, "已删除");
+
+    /// <summary>
     /// None
     /// </summary>
     public static readonly UserStatus None = new(0, "");
@@ -22,11 +27,17 @@ public class UserStatus : CodeTypeBase, ICodeType<UserStatus>
     private static readonly IReadOnlyList<UserStatus> codeTypeList = new List<UserStatus>() {
         Enabled,
         Disabled,
+        Deleted,
     };
 
     public static IList<UserStatus> GetList()
     {
         return codeTypeList.ToList();
+    }
+
+    public static IList<UserStatus> GetNormalList()
+    {
+        return codeTypeList.Where(e => e != Deleted).ToList();
     }
 
     private static readonly IDictionary<int, UserStatus> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
@@ -44,8 +55,4 @@ public class UserStatus : CodeTypeBase, ICodeType<UserStatus>
     private UserStatus(int id, string name) : base(id, name)
     {
     }
-}
-
-public class UserStatusJsonConverter : CodeTypeJsonConverter<UserStatus>
-{
 }

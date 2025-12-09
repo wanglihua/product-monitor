@@ -25,7 +25,7 @@ public class UserDetailModel
     public int? StatusId { get; set; }
 
     [JsonProperty("userStatusList")]
-    public IList<Dictionary<string, object>> UserStatusList => UserStatus.GetList()
+    public IList<Dictionary<string, object>> UserStatusList => UserStatus.GetNormalList()
         .Select(e => new Dictionary<string, object> {
             ["value"] = e.Id,
             ["label"] = e.Name,
