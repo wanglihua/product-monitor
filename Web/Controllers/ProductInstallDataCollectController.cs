@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
 using Client;
-using Core;
 using Core.Auth;
 using Core.Database;
+using Core.Util;
 using Core.Web;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -43,7 +43,7 @@ public class ProductInstallDataCollectController(
         if (DateTime.TryParseExact(
                 param.UseTime,
                 ProductInstallDataCollectParam.DateTimeFormat,
-                new DateTimeFormatInfo(),
+                CultureInfo.InvariantCulture,
                 DateTimeStyles.None,
                 out var useTime) == false)
         {
@@ -57,6 +57,11 @@ public class ProductInstallDataCollectController(
         {
             // 记录到日志
             throw new Exception($"产品安装数据监测数据，无效的账号类型#{param.AccountType}");
+        }
+
+        if (string.IsNullOrWhiteSpace(param.LoginUser) == false)
+        {
+            throw new Exception("产品安装数据监测数据，使用账号不能为空！");
         }
 
         var accountType = AccountType.None;
@@ -81,9 +86,20 @@ public class ProductInstallDataCollectController(
             throw new Exception("产品安装数据监测数据，登录账户不能为空！");
         }
 
+        string loginUser = param.LoginUser;
+
         // SendTime 在数据校验时相当于做过检查了
+        DateTime sendTime = DateTime.ParseExact(param.SendTime, ProductInstallDataCollectParam.DateTimeFormat, CultureInfo.InvariantCulture);
 
         // CpuSerialNo NetMacAddress 暂时不检查
+        string cpuSerialNo = param.CpuSerialNo ?? ""; // 参数不检查，所以加上 ?? ""
+        string netMacAddress = param.NetMacAddress ?? ""; // 参数不检查，所以加上 ?? ""
+
+        // ip 地址
+        string ipAddress = WebUtil.GetClientIp(Request);
+
+        // 使用省份
+        var useProvince = ProvinceType.None; // TODO 这里暂时设置为空，到时通过IP获得真实省份
 
         string key = param.Key;
         var clientKey = db.ClientKey.AsNoTracking()
@@ -113,14 +129,14 @@ public class ProductInstallDataCollectController(
                 throw new Exception($"指定的院校#{collegeId}不存在！");
             }
 
-            var provinceType = college.Province;
+            var collegeProvinceType = college.Province;
 
             productInstallMonitor = new ProductInstallMonitorEntity {
                 ProductId = productId,
                 CollegeId = collegeId,
-                ProvinceType = provinceType,
-                CpuSerialNo = param.CpuSerialNo ?? "", // 参数不检查，所以加上 ?? ""
-                NetMacAddress = param.NetMacAddress ?? "", // 参数不检查，所以加上 ?? ""
+                ProvinceType = collegeProvinceType,
+                CpuSerialNo = cpuSerialNo,
+                NetMacAddress = netMacAddress,
                 TaskCount = 0, // 这两个数据暂时这样了
                 TeacherCount = 0, // 这两个数据暂时就这样了
             };
@@ -130,11 +146,26 @@ public class ProductInstallDataCollectController(
         else
         {
             // 如果这两个数据跟原来存储的数据一样，是不会生成 update 语句进行实际更改的
-            productInstallMonitor.CpuSerialNo = param.CpuSerialNo;
-            productInstallMonitor.NetMacAddress = param.NetMacAddress;
+            productInstallMonitor.CpuSerialNo = cpuSerialNo;
+            productInstallMonitor.NetMacAddress = netMacAddress;
         }
 
         // 先把主表保存一下
+        db.SaveChanges();
+
+        long productInstallMonitorId = productInstallMonitor.Id;
+
+        var productInstallMonitorEntry = new ProductInstallMonitorEntryEntity {
+            ProductMonitorId = productInstallMonitorId,
+            LoginUser = param.LoginUser,
+            AccountType = accountType,
+            IpAddress = ipAddress,
+            ProvinceType = useProvince,
+            CpuSerialNo = cpuSerialNo,
+            NetMacAddress = netMacAddress,
+        };
+
+        db.ProductInstallMonitorEntry.Add(productInstallMonitorEntry);
         db.SaveChanges();
 
         return Json(new JsonResultData {
