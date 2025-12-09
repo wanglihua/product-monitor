@@ -7,6 +7,12 @@ namespace Client
 {
     public static class PM
     {
+#if DEBUG
+        public static string PMSiteBase = "http://localhost:5001";
+#else
+        public static string PMSiteBase = "http://localhost:5001";
+#endif
+
         public static ClientType ClientType { get; private set; }
         public static string ClientKey { get; private set; }
 
@@ -27,7 +33,7 @@ namespace Client
             ClientKey = clientKey;
 
             // 开启定时任务
-            var scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
+            var scheduler = StdSchedulerFactory.GetDefaultScheduler().GetAwaiter().GetResult();
             scheduler.Start().Wait();
             // HelloJob.Schedule(scheduler); 只是测试
         }

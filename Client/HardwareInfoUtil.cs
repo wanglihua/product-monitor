@@ -6,9 +6,16 @@ namespace Client
 {
     public static class HardwareInfoUtil
     {
+        private static string macAddressCache = "";
+        private static string cpuIdCache = "";
+
         public static string GetMacAddress()
         {
-            var moAddress = "";
+            // 获取成功过了就不用第二次获取了
+            if (string.IsNullOrWhiteSpace(macAddressCache) == false)
+            {
+                return macAddressCache;
+            }
 
             ManagementClass managementClass = new ManagementClass("Win32_NetworkAdapterConfiguration");
 
@@ -16,6 +23,7 @@ namespace Client
 
             ManagementObjectCollection managementObjectCollection = managementClass.GetInstances();
 
+            // 这个情况一般不会发生
             if (managementObjectCollection == null)
             {
                 return "";
@@ -32,17 +40,24 @@ namespace Client
                 managementObject.Dispose();
             }
 
+            string macAddress = "";
             if (moAddressList.Any())
             {
-                moAddress = moAddressList.OrderByDescending(m => m).FirstOrDefault() ?? "";
+                macAddress = moAddressList.OrderByDescending(m => m).FirstOrDefault() ?? "";
             }
 
-            return moAddress.Replace(":", "") + "006";
+            macAddressCache = macAddress.Replace(":", "") + "006";
+
+            return macAddressCache;
         }
 
         public static string GetCpuId()
         {
-            string cpuId = "";
+            // 获取过成功了就不用第二次获取了
+            if (string.IsNullOrWhiteSpace(cpuIdCache) == false)
+            {
+                return cpuIdCache;
+            }
 
             ManagementClass managementClass = new ManagementClass("Win32_Processor");
 
@@ -50,11 +65,13 @@ namespace Client
 
             ManagementObjectCollection managementObjectCollection = managementClass.GetInstances();
 
+            // 这个情况一般不会发生
             if (managementObjectCollection == null)
             {
                 return "";
             }
 
+            string cpuId = "";
             foreach (var managementObject in managementObjectCollection)
             {
                 if (managementObject?.Properties["ProcessorId"]?.Value != null)
@@ -71,7 +88,9 @@ namespace Client
                 cpuId = cupInfoList.OrderByDescending(m => m).FirstOrDefault() ?? "";
             }
 
-            return cpuId;
+            cpuIdCache = cpuId;
+
+            return cpuIdCache;
         }
     }
 }

@@ -26,7 +26,7 @@ public class QuartzStartup(IServiceProvider serviceProvider)
         var schedulerFactory = new StdSchedulerFactory(properties);
 
         // scheduler = await schedulerFactory.GetScheduler();
-        scheduler = schedulerFactory.GetScheduler().Result;
+        scheduler = schedulerFactory.GetScheduler().GetAwaiter().GetResult();
         scheduler.JobFactory = new JobFactory(serviceProvider);
         // await scheduler.Start();
         scheduler.Start().Wait();
