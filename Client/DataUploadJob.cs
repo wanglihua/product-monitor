@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.UI;
 using Newtonsoft.Json;
 using Quartz;
 
@@ -50,7 +49,9 @@ namespace Client
                 var httpClient = new HttpClient();
                 string url = $"{PM.PMSiteBase}/product/install/data/collect";
                 var content = new StringContent(JsonConvert.SerializeObject(param));
-                httpClient.PostAsync(url, content).GetAwaiter().GetResult();
+                content.Headers.ContentType.MediaType = "application/json";
+                var result = httpClient.PostAsync(url, content).GetAwaiter().GetResult();
+                // Console.WriteLine(result);
             }
 
             return Task.CompletedTask;

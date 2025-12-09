@@ -1,4 +1,5 @@
-﻿using Core.Auth;
+﻿using Client;
+using Core.Auth;
 using Core.Database;
 using Core.Web;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,8 @@ public class TestController : Controller
     [Transactional(true)]
     public IActionResult Index()
     {
+        PM.AddUse("test", "教师");
+
         return Json(new JsonResultData {
             Success = true,
             Message = "success",

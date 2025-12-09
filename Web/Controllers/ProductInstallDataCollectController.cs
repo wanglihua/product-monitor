@@ -59,7 +59,7 @@ public class ProductInstallDataCollectController(
             throw new Exception($"产品安装数据监测数据，无效的账号类型#{param.AccountType}");
         }
 
-        if (string.IsNullOrWhiteSpace(param.LoginUser) == false)
+        if (string.IsNullOrWhiteSpace(param.LoginUser) == true)
         {
             throw new Exception("产品安装数据监测数据，使用账号不能为空！");
         }
