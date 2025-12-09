@@ -34,24 +34,27 @@ namespace Client
 
             foreach (var useData in useDataList)
             {
-                var param = new ProductInstallDataCollectParam {
-                    Key = PM.ClientKey,
-                    UseTime = useData.UseTime.ToString(ProductInstallDataCollectParam.DateTimeFormat),
-                    AccountType = useData.AccountType,
-                    LoginUser = useData.Account,
-                    SendTime = DateTime.Now.ToString(ProductInstallDataCollectParam.DateTimeFormat),
-                    CpuSerialNo = cpuSerialNo,
-                    NetMacAddress = netMacAddress,
-                };
+                if (PM.ClientType == ClientType.Install)
+                {
+                    var param = new ProductInstallDataCollectParam {
+                        Key = PM.ClientKey,
+                        UseTime = useData.UseTime.ToString(ProductInstallDataCollectParam.DateTimeFormat),
+                        AccountType = useData.AccountType,
+                        LoginUser = useData.Account,
+                        SendTime = DateTime.Now.ToString(ProductInstallDataCollectParam.DateTimeFormat),
+                        CpuSerialNo = cpuSerialNo,
+                        NetMacAddress = netMacAddress,
+                    };
 
-                param.Sign = DataCollectUtil.CalSign(param);
+                    param.Sign = DataCollectUtil.CalSign(param);
 
-                var httpClient = new HttpClient();
-                string url = $"{PM.PMSiteBase}/product/install/data/collect";
-                var content = new StringContent(JsonConvert.SerializeObject(param));
-                content.Headers.ContentType.MediaType = "application/json";
-                var result = httpClient.PostAsync(url, content).GetAwaiter().GetResult();
-                // Console.WriteLine(result);
+                    var httpClient = new HttpClient();
+                    string url = $"{PM.PMSiteBase}/product/install/data/collect";
+                    var content = new StringContent(JsonConvert.SerializeObject(param));
+                    content.Headers.ContentType.MediaType = "application/json";
+                    var result = httpClient.PostAsync(url, content).GetAwaiter().GetResult();
+                    // Console.WriteLine(result);
+                }
             }
 
             return Task.CompletedTask;
