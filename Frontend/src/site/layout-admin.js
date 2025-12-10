@@ -87,8 +87,6 @@ const LayoutAdmin = () => {
             }
 
             const data = res.data;
-            data.clientKey = undefined;
-
             let navMenuList = [];
 
             let dataMonitorChildren = [];
