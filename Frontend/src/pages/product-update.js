@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
 import {DeleteOutlined, EditOutlined, FileExcelOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import $ from "jquery";
+import download from "../core/download";
 import ProductUpdateDetail from "./product-update-detail";
 
 import useSiteContext from "../site/site-context";
@@ -177,7 +178,8 @@ const ProductUpdate = () => {
                             showConfirm("确认要导出吗！", "确认", () => {
                                 const query = $.param(listParam);
                                 const url = `/api/product-update/export?${query}`;
-                                $(`<form method="post" action="${url}"></form>`).appendTo('body').submit().remove();
+                                // $(`<form method="post" action="${url}"></form>`).appendTo('body').submit().remove();
+                                download(url);
 
                                 showSuccess("导出成功, 文件下载中!");
                             });

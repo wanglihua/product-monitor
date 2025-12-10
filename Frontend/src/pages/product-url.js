@@ -6,6 +6,7 @@ import ProductUrlDetail from "./product-url-detail";
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 import $ from "jquery";
+import download from "../core/download";
 
 const ProductUrl = () => {
 
@@ -197,7 +198,7 @@ const ProductUrl = () => {
                                 }
 
                                 showSuccess(response.message);
-                                
+
                                 loadProductUrlList();
                             }
 
@@ -223,7 +224,8 @@ const ProductUrl = () => {
                             showConfirm("确认要导出吗！", "确认", () => {
                                 const query = $.param(listParam);
                                 const url = `/api/product-url/export?${query}`;
-                                $(`<form method="post" action="${url}"></form>`).appendTo('body').submit().remove();
+                                // $(`<form method="post" action="${url}"></form>`).appendTo('body').submit().remove();
+                                download(url);
 
                                 showSuccess("导出成功, 文件下载中!");
                             });

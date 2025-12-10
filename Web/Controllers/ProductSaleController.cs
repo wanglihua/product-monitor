@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
+using Service.ProductSale;
 using Web.Models.ProductSale;
 
 namespace Web.Controllers;
@@ -18,7 +19,8 @@ namespace Web.Controllers;
 public class ProductSaleController(
     Db db,
     UserLoginService userLoginService,
-    UserProvinceService userProvinceService) : Controller
+    UserProvinceService userProvinceService,
+    ProductSaleExcelService productSaleExcelService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
@@ -161,10 +163,8 @@ public class ProductSaleController(
     [Transactional(false)]
     public IActionResult Export()
     {
-        return Json(new JsonResultData {
-            Success = true,
-            Message = "成功！",
-        });
+        var excelContent = productSaleExcelService.Export();
+        return File(excelContent, ContentType.Xlsx, "销售目录.xlsx");
     }
 
     [HttpPost]

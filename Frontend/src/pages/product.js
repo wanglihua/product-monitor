@@ -3,6 +3,7 @@ import {Button, Input, Space, Table, Upload} from 'antd';
 import {DeleteOutlined, EditOutlined, FileExcelOutlined, PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import {useNavigate} from "react-router";
 import $ from "jquery";
+import download from "../core/download";
 import ProductDetail from "./product-detail";
 
 import useSiteContext from "../site/site-context";
@@ -216,7 +217,8 @@ const Product = () => {
                             showConfirm("确认要导出吗！", "确认", () => {
                                 const query = $.param(listParam);
                                 const url = `/api/product/export?${query}`;
-                                $(`<form method="post" action="${url}"></form>`).appendTo('body').submit().remove();
+                                // $(`<form method="post" action="${url}"></form>`).appendTo('body').submit().remove();\
+                                download(url);
 
                                 showSuccess("导出成功, 文件下载中!");
                             });
