@@ -31,4 +31,9 @@ public class ProductUrlMonitorEntryEntity : Entity
     /// 省份
     /// </summary>
     public ProvinceType ProvinceType { get; set; } = ProvinceType.None;
+
+    /// <summary>
+    /// 省份
+    /// </summary>
+    public string Province { get; set; } = "";
 }

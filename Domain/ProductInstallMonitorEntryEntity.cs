@@ -33,6 +33,11 @@ public class ProductInstallMonitorEntryEntity : Entity
     public ProvinceType ProvinceType { get; set; } = ProvinceType.None;
 
     /// <summary>
+    /// 使用省份
+    /// </summary>
+    public string Province { get; set; } = "";
+
+    /// <summary>
     /// CPU序列号
     /// </summary>
     public string CpuSerialNo { get; set; } = "";

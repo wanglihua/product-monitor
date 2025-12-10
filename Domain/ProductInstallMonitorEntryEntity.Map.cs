@@ -37,6 +37,11 @@ public class ProductInstallMonitorEntryEntityMap : IEntityTypeConfiguration<Prod
             .HasColumnName("province_type")
             .IsRequired(true);
 
+        builder.Property(e => e.Province)
+            .HasColumnName("province")
+            .HasMaxLength(20)
+            .IsRequired(true);
+
         builder.Property(e => e.CpuSerialNo)
             .HasColumnName("cpu_serial_no")
             .HasMaxLength(128)

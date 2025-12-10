@@ -224,6 +224,25 @@ public class ProvinceType : CodeTypeBase, ICodeType<ProvinceType>
         return codeTypeList.ToList();
     }
 
+    public static ProvinceType GetByName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name) == true)
+        {
+            return None;
+        }
+
+        foreach (var codeType in codeTypeList)
+        {
+            // 这里包含了也算对上了，比如【北京】， 就能匹配【北京市】了
+            if (codeType.Name.Contains(name) == true)
+            {
+                return codeType;
+            }
+        }
+
+        return None;
+    }
+
     private static readonly IDictionary<int, ProvinceType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
 
     public static ProvinceType GetById(int id)

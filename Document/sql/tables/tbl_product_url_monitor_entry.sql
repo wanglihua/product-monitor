@@ -8,6 +8,7 @@
     login_password         NVARCHAR(128) NOT NULL,
     ip_address             NVARCHAR(32)  NOT NULL,
     province_type          INT           NOT NULL CONSTRAINT df_product_url_monitor_entry_province_type DEFAULT 0,
+    province               NVARCHAR(20)  NOT NULL CONSTRAINT df_product_install_monitor_entry_province DEFAULT '',
 
     create_time            DATETIME      NOT NULL,
     update_time            DATETIME      NOT NULL,
@@ -25,6 +26,7 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'账号', 'SCHEMA', 'dbo', 'TABLE
 EXEC sp_AddExtendedProperty 'MS_Description', N'密码', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'login_password';
 EXEC sp_AddExtendedProperty 'MS_Description', N'使用地址', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'ip_address';
 EXEC sp_AddExtendedProperty 'MS_Description', N'省份', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'province_type';
+EXEC sp_AddExtendedProperty 'MS_Description', N'省份', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'province';
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'create_time';
 EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'update_time';

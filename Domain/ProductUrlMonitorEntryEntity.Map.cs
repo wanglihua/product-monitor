@@ -36,5 +36,10 @@ public class ProductUrlMonitorEntryEntityMap : IEntityTypeConfiguration<ProductU
             .HasConversion<CodeTypeConversion<ProvinceType>>()
             .HasColumnName("province_type")
             .IsRequired(true);
+
+        builder.Property(e => e.Province)
+            .HasColumnName("province")
+            .HasMaxLength(20)
+            .IsRequired(true);
     }
 }
