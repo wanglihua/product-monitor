@@ -38,6 +38,7 @@ import PassResGroup from "./pages/pass-res-group";
 import PassResUser from "./pages/pass-res-user";
 import AuthResult from "./pages/auth-result";
 import UserProfilePassword from "./pages/user-profile-password";
+import UserProfileProvince from "./pages/user-profile-province";
 import ClientKey from "./pages/client-key";
 import UserProvince from "./pages/user-province";
 
@@ -50,6 +51,7 @@ const Router = () => {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/test" element={<Test/>}/>
                     <Route path="/user-profile/password" element={<UserProfilePassword/>}/>
+                    <Route path="/user-profile/province" element={<UserProfileProvince/>}/>
                     <Route path="/product" element={<Product/>}/>
                     <Route path="/product-version/:productId" element={<ProductVersion/>}/>
                     <Route path="/college" element={<College/>}/>

@@ -414,6 +414,7 @@ const LayoutAdmin = () => {
                         <Dropdown placement="bottomRight" menu={{
                             items: [
                                 {key: 'user-password', label: (<><KeyOutlined/>&nbsp;<span>修改密码</span></>)},
+                                {key: 'user-province', label: (<><i className="iconfont icon-area"/>&nbsp;<span>负责区域</span></>)},
                                 {key: 'logout', label: (<><LogoutOutlined/>&nbsp;<span>退出登录</span></>)},
                             ],
                             onClick: (e) => {
@@ -432,6 +433,10 @@ const LayoutAdmin = () => {
 
                                         navigate("/login");
                                     });
+                                }
+
+                                if (e.key === "user-province") {
+                                    navigate("/user-profile/province");
                                 }
 
                                 if (e.key === "user-password") {
