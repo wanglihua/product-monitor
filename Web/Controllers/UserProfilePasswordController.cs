@@ -11,7 +11,7 @@ using Web.Models.UserPassword;
 namespace Web.Controllers;
 
 [Auth]
-public class UserPasswordController(
+public class UserProfilePasswordController(
     Db db,
     UserLoginService userLoginService,
     PasswordService passwordService) : Controller
@@ -19,7 +19,7 @@ public class UserPasswordController(
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
     [HttpPost]
-    [Route("/api/user/password/save")]
+    [Route("/api/user/profile/password/save")]
     [Transactional]
     public IActionResult Save([FromBody] UserPasswordSaveParam param)
     {
