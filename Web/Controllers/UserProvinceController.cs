@@ -165,6 +165,15 @@ public class UserProvinceController(
 
         var provinceType = ProvinceType.GetById(model.ProvinceType);
 
+        var userProvinceExist = db.UserProvince.AsNoTracking()
+            .Where(e => e.UserId == userId && e.ProvinceType == provinceType)
+            .Take(1)
+            .SingleOrDefault();
+        if (userProvinceExist is not null)
+        {
+            throw new ValidationException("指定的用户负责区域已经存在，请不要重复添加！");
+        }
+
         var userProvince = new UserProvinceEntity {
             UserId = userId,
             ProvinceType = provinceType,
