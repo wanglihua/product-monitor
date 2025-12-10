@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using Client;
-using Core;
 using Core.Auth;
 using Core.Database;
 using Core.Util;
@@ -89,9 +88,6 @@ public class ProductInstallDataCollectController(
 
         string loginUser = param.LoginUser;
 
-        // SendTime 在数据校验时相当于做过检查了
-        DateTime sendTime = DateTime.ParseExact(param.SendTime, ProductInstallDataCollectParam.DateTimeFormat, CultureInfo.InvariantCulture);
-
         // CpuSerialNo NetMacAddress 暂时不检查
         string cpuSerialNo = param.CpuSerialNo ?? ""; // 参数不检查，所以加上 ?? ""
         string netMacAddress = param.NetMacAddress ?? ""; // 参数不检查，所以加上 ?? ""
@@ -122,7 +118,7 @@ public class ProductInstallDataCollectController(
         long productId = clientKey.ProductId;
         long collegeId = clientKey.CollegeId;
 
-        var productInstallMonitor = db.ProductInstallMonitor.AsTracking() // 后面可能有修改
+        var productInstallMonitor = db.ProductInstallMonitor.AsTracking() // 后面可能对这个数据有修改
             .Where(e => e.ProductId == productId && e.CollegeId == collegeId)
             .Take(1)
             .SingleOrDefault();
@@ -164,7 +160,7 @@ public class ProductInstallDataCollectController(
 
         var productInstallMonitorEntry = new ProductInstallMonitorEntryEntity {
             ProductMonitorId = productInstallMonitorId,
-            LoginUser = param.LoginUser,
+            LoginUser = loginUser,
             AccountType = accountType,
             IpAddress = ipAddress,
             ProvinceType = useProvince,
