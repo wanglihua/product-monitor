@@ -6,6 +6,7 @@ import ProductSaleEntryDetail from "./product-sale-entry-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
+import download from "../core/download";
 
 const ProductSale = () => {
 
@@ -156,6 +157,11 @@ const ProductSale = () => {
                     >
                         添加
                     </Button>
+
+                    <a onClick={() => {
+                        const url = "/api/product-sale/export";
+                        download(url);
+                    }}>下载样板文件</a>
                 </Space>
             </div>
             <div style={{padding: "10px 0"}}>
