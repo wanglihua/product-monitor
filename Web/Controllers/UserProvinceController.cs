@@ -107,12 +107,27 @@ public class UserProvinceController(
             })
             .ToList();
 
+        var provinceTypeList = new List<Dictionary<string, object>> {
+            new Dictionary<string, object> {
+                ["value"] = "",
+                ["label"] = "省份查询",
+            }
+        };
+
+        provinceTypeList.AddRange(ProvinceType.GetList()
+            .Select(e => new Dictionary<string, object> {
+                ["value"] = e.Id,
+                ["label"] = e.Name,
+            })
+        );
+
         return Json(new JsonResultData {
             Success = true,
             Message = "success",
             Data = new Dictionary<string, object> {
                 ["userProvinceList"] = userProvinceItemList,
                 ["userProvinceCount"] = userProvinceCount,
+                ["provinceTypeList"] = provinceTypeList,
             },
         });
     }

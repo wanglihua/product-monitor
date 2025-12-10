@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
+import {Button, Input, Select, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import UserProvinceDetail from "./user-province-detail";
 
@@ -11,7 +11,8 @@ const UserProvince = () => {
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
 
     const [listParam, setListParam] = useState({
-        nameQuery: "",
+        userNameQuery: "",
+        provinceTypeQuery: 0,
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -22,6 +23,7 @@ const UserProvince = () => {
     const [state, setState] = useState({
         userProvinceList: [],
         userProvinceCount: 0,
+        provinceTypeList: [],
     });
 
     const loadUserProvinceList = () => {
@@ -37,6 +39,7 @@ const UserProvince = () => {
                     ...pre,
                     userProvinceList: res.data.userProvinceList,
                     userProvinceCount: res.data.userProvinceCount,
+                    provinceTypeList: res.data.provinceTypeList,
                 };
             });
         });
@@ -113,7 +116,8 @@ const UserProvince = () => {
         loadUserProvinceList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
+    const userNameQueryRef = useRef();
+    const provinceTypeQueryRef = useRef();
 
     return (
         <div>
@@ -123,17 +127,30 @@ const UserProvince = () => {
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
+                    <Input ref={userNameQueryRef} addonBefore="用户名" placeholder="用户名查询" style={{width: 250}}/>
+                    <Select
+                        showSearch={true}
+                        optionFilterProp="label"
+                        notFoundContent={"暂无数据, 请输入正确的搜索条件"}
+                        options={state.provinceTypeList}
+                        placeholder="省份查询"
+                        style={{width: 180}}
+                        onSelect={(val) => {
+                            provinceTypeQueryRef.current = val;
+                        }}
+                    />
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
+                            const userNameQuery = userNameQueryRef.current.input.value;
+                            const provinceTypeQuery = provinceTypeQueryRef.current;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
-                                    nameQuery: nameQuery,
+                                    userNameQuery: userNameQuery,
+                                    provinceTypeQuery: provinceTypeQuery,
                                     current_millis: Date.now(),
                                 };
                             });

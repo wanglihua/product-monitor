@@ -12,7 +12,7 @@ const ExceptionMonitor = () => {
 
     const [listParam, setListParam] = useState({
         productNameQuery: "",
-        provinceTypeQuery: "",
+        provinceTypeQuery: 0,
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -23,7 +23,7 @@ const ExceptionMonitor = () => {
     const [state, setState] = useState({
         exceptionMonitorList: [],
         exceptionMonitorCount: 0,
-        provinceTypeList: "",
+        provinceTypeList: [],
     });
 
     const loadExceptionMonitorList = () => {
