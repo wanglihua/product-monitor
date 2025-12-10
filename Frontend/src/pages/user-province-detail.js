@@ -24,6 +24,7 @@ const UserProvinceDetailInner = (props) => {
 
     const [state, setState] = useState({});
 
+    const [userSelectOptions, setUserSelectOptions] = useState([]);
     const [provinceTypeOptions, setProvinceTypeOptions] = useState([]);
 
     const form = useRef();
@@ -122,14 +123,29 @@ const UserProvinceDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请选择用户!',
+                                        message: '请输入搜索条件, 并选择用户!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={8}
-                                    placeholder=""
-                                    allowClear
+                                <Select
+                                    showSearch={true}
+                                    filterOption={false}
+                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
+                                    placeholder="请输入搜索条件, 并选择用户"
+                                    options={userSelectOptions}
+                                    onSearch={(search) => {
+                                        post("/api/user/select/data", {
+                                            search: search,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setUserSelectOptions(res.userList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>

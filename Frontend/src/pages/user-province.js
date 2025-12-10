@@ -59,7 +59,7 @@ const UserProvince = () => {
         {
             title: "登录名",
             dataIndex: "loginName",
-            width: "200px",
+            width: "180px",
         },
         {
             title: "用户名",
@@ -69,7 +69,7 @@ const UserProvince = () => {
         {
             title: "省份",
             dataIndex: "provinceType",
-            width: "200px",
+            width: "220px",
         },
         {
             title: "添加时间",
@@ -82,12 +82,6 @@ const UserProvince = () => {
             render: (text, record, index) => {
                 return (
                     <Space>
-                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            const userProvinceId = record.id;
-                            userProvinceDetail.current.show(userProvinceId);
-                        }}>
-                            <EditOutlined/>编辑
-                        </Button>
                         <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             showConfirm("确认要移除吗！", "确认", () => {
                                 post("/api/user-province/delete", {
