@@ -68,7 +68,7 @@ const ClientKey = () => {
         {
             title: "类型",
             dataIndex: "keyType",
-            width: "60px",
+            width: "120px",
         },
         {
             title: "密钥",
