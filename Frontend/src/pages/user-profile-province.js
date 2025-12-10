@@ -1,11 +1,11 @@
-﻿import {Button, ConfigProvider, Descriptions, Form, Input, Space, theme} from 'antd';
-import {useEffect, useRef, useState} from "react";
+﻿import {Descriptions} from 'antd';
+import {useEffect, useState} from "react";
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
 const UserProfileProvince = () => {
 
-    const {post, showConfirm, showError, showSuccess} = useSiteContext();
+    const {post, showError} = useSiteContext();
 
     const [state, setState] = useState({
         provinceList: [],
@@ -40,10 +40,11 @@ const UserProfileProvince = () => {
                     layout="horizontal"
                     size="small"
                     column={1}
+                    labelStyle={{width: "80px"}}
                 >
                     {state.provinceList && state.provinceList.map((item, index) => (
-                        <Descriptions.Item label={"区域" + (index + 1)}>
-                            <span>{{item}}</span>
+                        <Descriptions.Item label={"区域" + (index + 1)} key={item}>
+                            <span>{item}</span>
                         </Descriptions.Item>
                     ))}
                 </Descriptions>
