@@ -95,6 +95,7 @@
         <Compile Include="HashUtil.cs" />
         <Compile Include="PM.cs" />
         <Compile Include="ProductInstallDataCollectParam.cs" />
+        <Compile Include="ProductUrlDataCollectParam.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="DataUploadJob.cs" />
         <Compile Include="UseData.cs" />

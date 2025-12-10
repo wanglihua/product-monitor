@@ -55,6 +55,13 @@ namespace Client
                     var result = httpClient.PostAsync(url, content).GetAwaiter().GetResult();
                     // Console.WriteLine(result);
                 }
+
+                if (PM.ClientType == ClientType.UrlEval
+                    || PM.ClientType == ClientType.UrlRent
+                    || PM.ClientType == ClientType.UrlSite)
+                {
+                    
+                }
             }
 
             return Task.CompletedTask;

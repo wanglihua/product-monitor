@@ -11,8 +11,18 @@
         Install = 100,
 
         /// <summary>
-        /// 网站
+        /// 试用网址
         /// </summary>
-        Site = 200,
+        UrlEval = 200,
+
+        /// <summary>
+        /// 租赁网址
+        /// </summary>
+        UrlRent = 300,
+
+        /// <summary>
+        /// 网站网址
+        /// </summary>
+        UrlSite = 400,
     }
 }

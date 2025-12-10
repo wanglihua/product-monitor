@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using Client;
+using Core;
 using Core.Auth;
 using Core.Database;
 using Core.Util;
@@ -110,6 +111,12 @@ public class ProductInstallDataCollectController(
         {
             // 记录到日志
             throw new Exception($"指定的客户端密钥#{key}不存在！");
+        }
+
+        if (clientKey.KeyType != ClientKeyType.Install)
+        {
+            // 记录到日志
+            throw new Exception($"指定的客户端密钥#{key}不是产品安装类型！");
         }
 
         long productId = clientKey.ProductId;

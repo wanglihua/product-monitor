@@ -38,7 +38,7 @@ namespace Client
             DataUploadJob.Schedule(scheduler);
         }
 
-        private static ConcurrentQueue<UseData> postInstallDataCollectQueue = new ConcurrentQueue<UseData>();
+        private static ConcurrentQueue<UseData> useDataCollectQueue = new ConcurrentQueue<UseData>();
 
         /// <summary>
         /// 添加用户使用记录
@@ -47,7 +47,7 @@ namespace Client
         /// <param name="accountType">账号类型, 管理员， 教师， 学生</param>
         public static void AddUse(string account, string accountType)
         {
-            postInstallDataCollectQueue.Enqueue(new UseData {
+            useDataCollectQueue.Enqueue(new UseData {
                 Account = account,
                 AccountType = accountType,
                 UseTime = DateTime.Now,
@@ -65,12 +65,12 @@ namespace Client
 
             for (int index = 0; index < count; index++)
             {
-                if (postInstallDataCollectQueue.IsEmpty == true)
+                if (useDataCollectQueue.IsEmpty == true)
                 {
                     break;
                 }
 
-                if (postInstallDataCollectQueue.TryDequeue(out UseData useData) == true)
+                if (useDataCollectQueue.TryDequeue(out UseData useData) == true)
                 {
                     result.Add(useData);
                 }
