@@ -386,6 +386,16 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
     public static readonly ActionLogType ClientKeyDelete = new(0158_0000, "客户端密钥删除");
 
     /// <summary>
+    /// 创建
+    /// </summary>
+    public static readonly ActionLogType UserProvinceCreate = new(0160_0000, "添加");
+
+    /// <summary>
+    /// 删除
+    /// </summary>
+    public static readonly ActionLogType UserProvinceDelete = new(0164_0000, "移除");
+
+    /// <summary>
     /// None
     /// </summary>
     public static readonly ActionLogType None = new(0, "");
@@ -472,6 +482,8 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
         ClientKeyCreate,
         ClientKeyUpdate,
         ClientKeyDelete,
+        UserProvinceCreate,
+        UserProvinceDelete,
     };
 
     private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);

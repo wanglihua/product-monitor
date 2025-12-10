@@ -6,8 +6,11 @@ namespace Web.Models.UserProvince;
 
 public class UserProvinceListParam : ListParam
 {
-    [JsonProperty("nameQuery")]
-    public string NameQuery { get; set; } = "";
+    [JsonProperty("userNameQuery")]
+    public string UserNameQuery { get; set; } = "";
+
+    [JsonProperty("provinceType")]
+    public int ProvinceType { get; set; }
 }
 
 public class UserProvinceListParamValidator : AbstractValidator<UserProvinceListParam>

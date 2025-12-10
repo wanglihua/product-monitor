@@ -70,6 +70,8 @@ public partial class Db
 
     public DbSet<UserPassResEntity> UserPassResEntity { get; set; }
 
+    public DbSet<UserProvinceEntity> UserProvince { get; set; }
+
     public DbSet<WebSessionDataEntity> WebSessionData { get; set; }
 
     public DbSet<WebSessionEntity> WebSession { get; set; }

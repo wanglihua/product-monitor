@@ -7,19 +7,28 @@ using Core.Web;
 using Domain;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
 using Web.Models.UserProvince;
 
 namespace Web.Controllers;
 
-[Auth(PassRes.BasicSetting.UserProvince)]
+[Auth(PassRes.SystemManage.UserProvince)]
 public class UserProvinceController(
     Db db,
     UserLoginService userLoginService,
     ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
+
+    private class UserProvinceJoinItem
+    {
+        public UserProvinceEntity UserProvince { get; set; } = new();
+
+        public UserEntity User { get; set; } = new();
+    }
+
 
     [HttpPost]
     [Route("/api/user-province/list")]
@@ -28,30 +37,40 @@ public class UserProvinceController(
     {
         ValidationUtil.Validate<UserProvinceListParamValidator, UserProvinceListParam>(param);
 
-        IQueryable<UserProvinceEntity> query = db.UserProvince;
+        IQueryable<UserProvinceJoinItem> query = db.UserProvince
+            .Join(db.User,
+                up => up.UserId,
+                u => u.Id,
+                (up, u) => new UserProvinceJoinItem {
+                    UserProvince = up,
+                    User = u,
+                }
+            )
+            .AsNoTracking();
 
-        if (string.IsNullOrWhiteSpace(param.NameQuery) == false)
+        if (string.IsNullOrWhiteSpace(param.UserNameQuery) == false)
         {
-            string nameQuery = param.NameQuery.Trim();
-            query = query.Where(e => e.Name.Contains(nameQuery));
+            string nameQuery = param.UserNameQuery.Trim();
+            query = query.Where(e => e.User.LoginName.Contains(nameQuery) || e.User.UserName.Contains(nameQuery));
+        }
+
+        var provinceTypeQuery = ProvinceType.GetById(param.ProvinceType);
+        if (provinceTypeQuery != ProvinceType.None)
+        {
+            query = query.Where(e => e.UserProvince.ProvinceType == provinceTypeQuery);
         }
 
         int userProvinceCount = query.Count();
 
         // 排序字段
-        Expression<Func<UserProvinceEntity, object>> sortField = e => e.Id;
+        Expression<Func<UserProvinceJoinItem, object>> sortField = e => e.UserProvince.Id;
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
 
             if (string.Compare(sortFieldParam, nameof(UserProvinceListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
-                sortField = e => e.CreateTime;
-            }
-
-            if (string.Compare(sortFieldParam, nameof(UserProvinceListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
-            {
-                sortField = e => e.UpdateTime;
+                sortField = e => e.UserProvince.CreateTime;
             }
         }
 
@@ -70,21 +89,21 @@ public class UserProvinceController(
             .Skip(param.PageIndex * param.PageSize)
             .Take(param.PageSize)
             .Select(e => new {
-                Id = e.Id,
-                UserId = e.UserId,
-                ProvinceType = e.ProvinceType,
-                CreateTime = e.CreateTime,
-                UpdateTime = e.UpdateTime,
+                Id = e.UserProvince.Id,
+                e.User.LoginName,
+                e.User.UserName,
+                e.UserProvince.ProvinceType,
+                e.UserProvince.CreateTime,
             })
             .ToList();
 
         var userProvinceItemList = userProvinceList
             .Select(e => new UserProvinceListItem {
                 Id = e.Id,
-                UserId = e.UserId,
-                ProvinceType = e.ProvinceType,
+                LoginName = e.LoginName,
+                UserName = e.UserName,
+                ProvinceType = e.ProvinceType.Name,
                 CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
-                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
             })
             .ToList();
 
@@ -101,32 +120,12 @@ public class UserProvinceController(
     [HttpPost]
     [Route("/api/user-province/detail")]
     [Transactional(false)]
-    public IActionResult Detail([FromBody] IdParam param)
+    public IActionResult Detail()
     {
-        ValidationUtil.Validate<IdParamEmptyValidator, IdParam>(param);
-
-        long userProvinceId = param.Id;
-
         var model = new UserProvinceDetailModel {
-            Id = 0,
-            UserId = "",
-            ProvinceType = "",
+            UserId = 0,
+            ProvinceType = ProvinceType.None.Id,
         };
-
-        if (userProvinceId > 0)
-        {
-            var userProvince = db.UserProvince.Find(userProvinceId);
-            if (userProvince is null)
-            {
-                throw new ValidationException("指定的#{userProvinceId}不存在!");
-            }
-
-            model = new UserProvinceDetailModel {
-                Id = userProvince.Id,
-                UserId = userProvince.UserId,
-                ProvinceType = userProvince.ProvinceType,
-            };
-        }
 
         return Json(new JsonResultData {
             Success = true,
@@ -142,48 +141,30 @@ public class UserProvinceController(
     {
         ValidationUtil.Validate<UserProvinceDetailModelValidator, UserProvinceDetailModel>(model);
 
-        long userProvinceId = model.Id;
-        bool isCreate = userProvinceId == 0;
-
-        UserProvinceEntity? userProvince;
-        if (isCreate == true)
+        long userId = model.UserId;
+        var user = db.User.Find(userId);
+        if (user is null)
         {
-            userProvince = new UserProvinceEntity();
-        }
-        else
-        {
-            userProvince = db.UserProvince.Find(userProvinceId);
-            if (userProvince is null)
-            {
-                throw new ValidationException($"指定的#{userProvinceId}不存在!");
-            }
+            throw new ValidationException($"指定的用户#{userId}不存在！");
         }
 
-        userProvince.UserId = model.UserId;
-        userProvince.ProvinceType = model.ProvinceType;
+        var provinceType = ProvinceType.GetById(model.ProvinceType);
 
-        if (isCreate == true)
-        {
-            db.UserProvince.Add(userProvince);
-        }
+        var userProvince = new UserProvinceEntity {
+            UserId = userId,
+            ProvinceType = provinceType,
+        };
 
+        db.UserProvince.Add(userProvince);
         db.SaveChanges();
 
         long loginUserId = userLoginService.GetLoginUserId();
-        if (isCreate == true)
-        {
-            string actionDesc = $"{userProvince.Name}#{userProvince.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.UserProvinceCreate, actionDesc);
-        }
-        else
-        {
-            string actionDesc = $"{userProvince.Name}#{userProvince.Id}";
-            actionLogService.Add(loginUserId, ActionLogType.UserProvinceUpdate, actionDesc);
-        }
+        string actionDesc = $"{user.LoginName}#{provinceType.Name}";
+        actionLogService.Add(loginUserId, ActionLogType.UserProvinceCreate, actionDesc);
 
         return Json(new JsonResultData {
             Success = true,
-            Message = "保存成功！",
+            Message = "添加成功！",
         });
     }
 
@@ -204,13 +185,20 @@ public class UserProvinceController(
         db.UserProvince.Remove(userProvince);
         db.SaveChanges();
 
+        long userId = userProvince.UserId;
+        var user = db.User.Find(userProvince.UserId);
+        if (user is null)
+        {
+            throw new ValidationException($"指定的用户#{userId}不存在！");
+        }
+
         long loginUserId = userLoginService.GetLoginUserId();
-        string actionDesc = $"{userProvince.Name}#{userProvince.Id}";
+        string actionDesc = $"{user.LoginName}#{userProvince.ProvinceType.Name}";
         actionLogService.Add(loginUserId, ActionLogType.UserProvinceDelete, actionDesc);
 
         return Json(new JsonResultData {
             Success = true,
-            Message = "删除成功！",
+            Message = "移除成功！",
         });
     }
 }
