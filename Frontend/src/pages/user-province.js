@@ -54,24 +54,23 @@ const UserProvince = () => {
             },
         },
         {
-            title: "",
-            dataIndex: "userId",
+            title: "登录名",
+            dataIndex: "loginName",
             width: "200px",
         },
         {
-            title: "",
+            title: "用户名",
+            dataIndex: "userName",
+            width: "200px",
+        },
+        {
+            title: "省份",
             dataIndex: "provinceType",
             width: "200px",
         },
         {
-            title: "创建时间",
+            title: "添加时间",
             dataIndex: "createTime",
-            width: "150px",
-            sorter: true,
-        },
-        {
-            title: "更新时间",
-            dataIndex: "updateTime",
             width: "150px",
             sorter: true,
         },
@@ -87,7 +86,7 @@ const UserProvince = () => {
                             <EditOutlined/>编辑
                         </Button>
                         <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
-                            showConfirm("确认要删除吗！", "确认", () => {
+                            showConfirm("确认要移除吗！", "确认", () => {
                                 post("/api/user-province/delete", {
                                     id: record.id,
                                 }, function (response) {
@@ -102,7 +101,7 @@ const UserProvince = () => {
                                 });
                             });
                         }}>
-                            <DeleteOutlined/>删除
+                            <DeleteOutlined/>移除
                         </Button>
                     </Space>
                 );

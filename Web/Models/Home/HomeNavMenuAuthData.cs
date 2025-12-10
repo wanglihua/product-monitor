@@ -88,6 +88,9 @@ public class HomeNavMenuAuthData
     [JsonProperty("user")]
     public bool User { get; set; }
 
+    [JsonProperty("userProvince")]
+    public bool UserProvince { get; set; }
+
     [JsonProperty("group")]
     public bool Group { get; set; }
 

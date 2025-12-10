@@ -81,6 +81,7 @@ public class HomeController(
             SystemManage = isAdmin || authResultList.Any(e => e.UserId == loginUserId && PassRes.SystemManage.All.Contains(e.PassResId)),
 
             User = isAdmin || authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.User),
+            UserProvince = isAdmin || authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.UserProvince),
             Group = isAdmin || authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.Group),
             PassRes = isAdmin || authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.PassRes),
             ClientKey = isAdmin || authResultList.Any(e => e.UserId == loginUserId && e.PassResId == PassRes.SystemManage.ClientKey),

@@ -305,6 +305,17 @@ const LayoutAdmin = () => {
                 });
             }
 
+            if (data.userProvince === true) {
+                systemManageChildren.push({
+                    key: "userProvince",
+                    icon: <i className="iconfont icon-area" style={{color: "#1677ff"}}/>,
+                    label: "用户区域",
+                    onClick: () => {
+                        navigate("/user-province");
+                    }
+                });
+            }
+
             if (data.group === true) {
                 systemManageChildren.push({
                     key: "group",
