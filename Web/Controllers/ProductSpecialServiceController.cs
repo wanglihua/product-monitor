@@ -19,6 +19,7 @@ namespace Web.Controllers;
 public class ProductSpecialServiceController(
     Db db,
     UserLoginService userLoginService,
+    UserProvinceService userProvinceService,
     ProductSpecialServiceService productSpecialServiceService,
     ActionLogService actionLogService) : Controller
 {
@@ -41,6 +42,9 @@ public class ProductSpecialServiceController(
     public IActionResult List([FromBody] ProductSpecialServiceListParam param)
     {
         ValidationUtil.Validate<ProductSpecialServiceListParamValidator, ProductSpecialServiceListParam>(param);
+
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
 
         IQueryable<ProductSpecialServiceJoinItem> query = db.ProductSpecialService
             .Join(db.College,
@@ -68,6 +72,12 @@ public class ProductSpecialServiceController(
                     User = u,
                 })
             .AsNoTracking();
+
+        if (isAdminLogin == false)
+        {
+            var userProvinceList = userProvinceService.GetUserProvinceList(loginUserId);
+            query = query.Where(e => userProvinceList.Contains(e.College.Province));
+        }
 
         if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
         {

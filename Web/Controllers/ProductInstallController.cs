@@ -19,6 +19,7 @@ namespace Web.Controllers;
 public class ProductInstallController(
     Db db,
     UserLoginService userLoginService,
+    UserProvinceService userProvinceService,
     ActionLogService actionLogService,
     ProductInstallExcelService productInstallExcelService) : Controller
 {
@@ -38,6 +39,11 @@ public class ProductInstallController(
     [NonAction]
     private IQueryable<ProductInstallJoinItem> GetListQuery(ProductInstallListParam param)
     {
+        ValidationUtil.Validate<ProductInstallListParamValidator, ProductInstallListParam>(param);
+
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
+
         IQueryable<ProductInstallJoinItem> query = db.ProductInstall
             .Join(db.College,
                 pi => pi.CollegeId,
@@ -65,6 +71,12 @@ public class ProductInstallController(
                 })
             .AsNoTracking();
 
+        if (isAdminLogin == false)
+        {
+            var userProvinceList = userProvinceService.GetUserProvinceList(loginUserId);
+            query = query.Where(e => userProvinceList.Contains(e.College.Province));
+        }
+
         if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
         {
             string collegeNameQuery = param.CollegeNameQuery.Trim();
@@ -85,8 +97,6 @@ public class ProductInstallController(
     [Transactional(false)]
     public IActionResult List([FromBody] ProductInstallListParam param)
     {
-        ValidationUtil.Validate<ProductInstallListParamValidator, ProductInstallListParam>(param);
-
         IQueryable<ProductInstallJoinItem> query = GetListQuery(param);
 
         int productInstallCount = query.Count();

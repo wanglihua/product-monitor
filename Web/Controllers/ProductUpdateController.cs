@@ -19,6 +19,7 @@ namespace Web.Controllers;
 public class ProductUpdateController(
     Db db,
     UserLoginService userLoginService,
+    UserProvinceService userProvinceService,
     ProductUpdateService productUpdateService,
     ProductUpdateExcelService productUpdateExcelService,
     ActionLogService actionLogService) : Controller
@@ -39,6 +40,9 @@ public class ProductUpdateController(
     [NonAction]
     private IQueryable<ProductUpdateJoinItem> GetListQuery(ProductUpdateListParam param)
     {
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
+
         IQueryable<ProductUpdateJoinItem> query = db.ProductUpdate
             .Join(db.College,
                 pu => pu.CollegeId,
@@ -65,6 +69,12 @@ public class ProductUpdateController(
                     User = u,
                 })
             .AsNoTracking();
+
+        if (isAdminLogin == false)
+        {
+            var userProvinceList = userProvinceService.GetUserProvinceList(loginUserId);
+            query = query.Where(e => userProvinceList.Contains(e.College.Province));
+        }
 
         if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
         {
@@ -352,7 +362,7 @@ public class ProductUpdateController(
         long loginUserId = userLoginService.GetLoginUserId();
         string actionDesc = $"#{productUpdate.Id}";
         actionLogService.Add(loginUserId, ActionLogType.ProductUpdateDelete, actionDesc);
-        
+
         long collegeId = productUpdate.CollegeId;
         long productId = productUpdate.ProductId;
         productUpdateService.RefreshUpdateCount(collegeId, productId);
