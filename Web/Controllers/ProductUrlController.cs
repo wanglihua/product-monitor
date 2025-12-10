@@ -321,7 +321,7 @@ public class ProductUrlController(
             })
             .ToList();
 
-        var excelContent = productUrlExcelService.GetExcelContent(productUrlItemList);
+        var excelContent = productUrlExcelService.Export(productUrlItemList);
 
         return File(excelContent, ContentType.Xlsx, "网址.xlsx");
     }

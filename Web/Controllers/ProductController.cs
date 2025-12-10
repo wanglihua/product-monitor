@@ -282,7 +282,7 @@ public class ProductController(
             })
             .ToList();
 
-        var excelContent = productExcelService.GetExcelContent(productItemList);
+        var excelContent = productExcelService.Export(productItemList);
 
         return File(excelContent, ContentType.Xlsx, "产品.xlsx");
     }

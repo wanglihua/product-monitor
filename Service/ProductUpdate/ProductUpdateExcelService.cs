@@ -11,7 +11,7 @@ public class ProductUpdateExcelService
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    public byte[] GetExcelContent(IList<ProductUpdateExcelExportListItem> productUpdateList)
+    public byte[] Export(IList<ProductUpdateExcelExportListItem> productUpdateList)
     {
         string sheetName = "产品更新";
 

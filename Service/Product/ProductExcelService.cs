@@ -15,7 +15,7 @@ public class ProductExcelService(Db db)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    public byte[] GetExcelContent(IList<ProductExcelExportListItem> productList)
+    public byte[] Export(IList<ProductExcelExportListItem> productList)
     {
         string sheetName = "产品";
 

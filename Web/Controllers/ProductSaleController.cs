@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Core;
 using Core.Auth;
 using Core.Database;
 using Core.Util;
@@ -151,6 +152,34 @@ public class ProductSaleController(
                 ["productSaleList"] = productSaleItemList,
                 ["productSaleCount"] = productSaleCount,
             },
+        });
+    }
+
+    // 只是提供一个【上传样板】的下载
+    [HttpPost]
+    [Route("/api/product-sale/export")]
+    [Transactional(false)]
+    public IActionResult Export()
+    {
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "成功！",
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product-sale/import")]
+    [Transactional(false)] // 内部有事务
+    public IActionResult Import(IFormFile excelFile)
+    {
+        if (excelFile is null)
+        {
+            throw new ValidationException("导入失败，文件未上传！");
+        }
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "导入成功！",
         });
     }
 }

@@ -409,7 +409,7 @@ public class ProductInstallController(
             })
             .ToList();
 
-        var excelContent = productInstallExcelService.GetExcelContent(productInstallItemList);
+        var excelContent = productInstallExcelService.Export(productInstallItemList);
 
         return File(excelContent, ContentType.Xlsx, "产品安装.xlsx");
     }

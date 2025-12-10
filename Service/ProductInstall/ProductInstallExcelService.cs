@@ -11,7 +11,7 @@ public class ProductInstallExcelService
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    public byte[] GetExcelContent(IList<ProductInstallExcelExportListItem> productInstallList)
+    public byte[] Export(IList<ProductInstallExcelExportListItem> productInstallList)
     {
         string sheetName = "产品安装";
 

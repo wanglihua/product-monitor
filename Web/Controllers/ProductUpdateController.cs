@@ -426,7 +426,7 @@ public class ProductUpdateController(
             })
             .ToList();
 
-        var excelContent = productUpdateExcelService.GetExcelContent(productUpdateItemList);
+        var excelContent = productUpdateExcelService.Export(productUpdateItemList);
 
         return File(excelContent, ContentType.Xlsx, "产品更新.xlsx");
     }

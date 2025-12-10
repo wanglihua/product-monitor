@@ -15,7 +15,7 @@ public class ProductUrlExcelService(Db db)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    public byte[] GetExcelContent(IList<ProductUrlExcelExportItem> productUrlList)
+    public byte[] Export(IList<ProductUrlExcelExportItem> productUrlList)
     {
         string sheetName = "网址";
 
