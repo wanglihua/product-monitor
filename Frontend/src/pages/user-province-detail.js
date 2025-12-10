@@ -24,12 +24,14 @@ const UserProvinceDetailInner = (props) => {
 
     const [state, setState] = useState({});
 
+    const [provinceTypeOptions, setProvinceTypeOptions] = useState([]);
+
     const form = useRef();
 
     return (
         <Modal
-            title={title.current}
-            width="680px"
+            title="负责区域添加"
+            width="580px"
             destroyOnClose={true}
             footer={null}
             open={open}
@@ -61,9 +63,11 @@ const UserProvinceDetailInner = (props) => {
                         const data = res.data;
 
                         form.current.setFieldsValue({
-                            userId: data.userId,
-                            provinceType: data.provinceType,
+                            userId: undefined,
+                            provinceType: undefined,
                         });
+
+                        setProvinceTypeOptions(data.provinceTypeList);
                     });
                 }
             }}
@@ -112,13 +116,13 @@ const UserProvinceDetailInner = (props) => {
                         column={1}
                         labelStyle={{width: "120px"}}
                     >
-                        <Descriptions.Item label="">
+                        <Descriptions.Item label="用户">
                             <Form.Item
                                 name="userId"
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入!',
+                                        message: '请选择用户!',
                                     },
                                 ]}
                             >
@@ -129,20 +133,22 @@ const UserProvinceDetailInner = (props) => {
                                 />
                             </Form.Item>
                         </Descriptions.Item>
-                        <Descriptions.Item label="">
+                        <Descriptions.Item label="省份">
                             <Form.Item
                                 name="provinceType"
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入!',
+                                        message: '请选择省份!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={4}
-                                    placeholder=""
-                                    allowClear
+                                <Select
+                                    showSearch={true}
+                                    optionFilterProp="label"
+                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
+                                    placeholder="请选择省份"
+                                    options={provinceTypeOptions}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -182,11 +188,11 @@ class UserProvinceDetail extends React.Component {
 
     show = (userProvinceId) => {
         this.setState((pre) => {
-           return {
+            return {
                 ...pre,
                 userProvinceId: userProvinceId,
                 open: true,
-           };
+            };
         });
     }
 
