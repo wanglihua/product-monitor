@@ -135,7 +135,8 @@ const ClientKey = () => {
 
     return (
         <div>
-            <Title title="客户端密钥" menuKey="client-key" breadcrumb={[
+            <Title title="客户端密钥" parentMenuKeys={["system-manage"]} menuKey="client-key" breadcrumb={[
+                {title: "系统管理"},
                 {title: "客户端密钥"},
             ]}/>
             <div>

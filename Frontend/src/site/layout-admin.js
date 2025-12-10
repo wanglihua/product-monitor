@@ -87,6 +87,7 @@ const LayoutAdmin = () => {
             }
 
             const data = res.data;
+            data.clientKey = undefined;
 
             let navMenuList = [];
 
@@ -307,9 +308,9 @@ const LayoutAdmin = () => {
 
             if (data.userProvince === true) {
                 systemManageChildren.push({
-                    key: "userProvince",
+                    key: "user-province",
                     icon: <i className="iconfont icon-area" style={{color: "#1677ff"}}/>,
-                    label: "用户区域",
+                    label: "负责区域",
                     onClick: () => {
                         navigate("/user-province");
                     }

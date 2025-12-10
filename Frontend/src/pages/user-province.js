@@ -117,8 +117,9 @@ const UserProvince = () => {
 
     return (
         <div>
-            <Title title="" menuKey="user-province" breadcrumb={[
-                {title: ""},
+            <Title title="负责区域" parentMenuKeys={["system-manage"]} menuKey="user-province" breadcrumb={[
+                {title: "系统管理"},
+                {title: "负责区域"},
             ]}/>
             <div>
                 <Space>
