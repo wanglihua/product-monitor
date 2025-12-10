@@ -9,7 +9,7 @@ public class IpRegionService
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    public string GetIpProvince(string ipAddress)
+    public string GetIpAddressProvince(string ipAddress)
     {
         if (string.IsNullOrWhiteSpace(ipAddress) == true)
         {

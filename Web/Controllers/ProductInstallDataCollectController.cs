@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NLog;
+using Service;
 using Service.ProductInstallDataCollect;
 
 namespace Web.Controllers;
@@ -16,7 +17,8 @@ namespace Web.Controllers;
 [NoAuth]
 public class ProductInstallDataCollectController(
     Db db,
-    ProductInstallDataCollectService productInstallDataCollectService) : Controller
+    ProductInstallDataCollectService productInstallDataCollectService,
+    IpRegionService ipRegionService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
@@ -96,7 +98,8 @@ public class ProductInstallDataCollectController(
         string ipAddress = WebUtil.GetClientIp(Request);
 
         // 使用省份
-        var useProvince = ProvinceType.None; // TODO 这里暂时设置为空，到时通过IP获得真实省份
+        string userProvinceStr = ipRegionService.GetIpAddressProvince(ipAddress);
+        var useProvince = ProvinceType.GetByName(userProvinceStr);
 
         string key = param.Key;
         var clientKey = db.ClientKey.AsNoTracking()
@@ -163,6 +166,7 @@ public class ProductInstallDataCollectController(
             LoginUser = loginUser,
             AccountType = accountType,
             IpAddress = ipAddress,
+            Province = userProvinceStr,
             ProvinceType = useProvince,
             CpuSerialNo = cpuSerialNo,
             NetMacAddress = netMacAddress,
