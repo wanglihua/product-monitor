@@ -5,14 +5,24 @@ namespace Domain;
 public class ClientKeyType : CodeTypeBase, ICodeType<ClientKeyType>
 {
     /// <summary>
-    /// 安装
+    /// 产品安装
     /// </summary>
-    public static readonly ClientKeyType Install = new(100, "安装");
+    public static readonly ClientKeyType Install = new(100, "产品安装");
 
     /// <summary>
-    /// 网址
+    /// 试用网址
     /// </summary>
-    public static readonly ClientKeyType Url = new(200, "网址");
+    public static readonly ClientKeyType UrlEval = new(200, "试用网址");
+
+    /// <summary>
+    /// 租赁网址
+    /// </summary>
+    public static readonly ClientKeyType UrlRent = new(300, "租赁网址");
+
+    /// <summary>
+    /// 网站网址
+    /// </summary>
+    public static readonly ClientKeyType UrlSite = new(400, "网站网址");
 
     /// <summary>
     /// None
@@ -25,7 +35,9 @@ public class ClientKeyType : CodeTypeBase, ICodeType<ClientKeyType>
 
     private static readonly IReadOnlyList<ClientKeyType> codeTypeList = new List<ClientKeyType>() {
         Install,
-        Url,
+        UrlEval,
+        UrlRent,
+        UrlSite,
     };
 
     public static IList<ClientKeyType> GetList()
