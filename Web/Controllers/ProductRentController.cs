@@ -8,12 +8,16 @@ using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
+using Service;
 using Web.Models.ProductRent;
 
 namespace Web.Controllers;
 
 [Auth(PassRes.ProjectManage.ProductRent)]
-public class ProductRentController(Db db) : Controller
+public class ProductRentController(
+    Db db,
+    UserLoginService userLoginService,
+    UserProvinceService userProvinceService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
@@ -33,6 +37,9 @@ public class ProductRentController(Db db) : Controller
     {
         ValidationUtil.Validate<ProductRentListParamValidator, ProductRentListParam>(param);
 
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
+
         IQueryable<ProductRentJoinItem> query = db.ProductRent
             .Join(db.College,
                 pr => pr.CollegeId,
@@ -50,6 +57,12 @@ public class ProductRentController(Db db) : Controller
                     Product = p,
                 })
             .AsNoTracking();
+
+        if (isAdminLogin == false)
+        {
+            var userProvinceList = userProvinceService.GetUserProvinceList(loginUserId);
+            query = query.Where(e => userProvinceList.Contains(e.College.Province));
+        }
 
         if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
         {

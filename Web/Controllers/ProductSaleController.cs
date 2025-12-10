@@ -8,12 +8,16 @@ using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
+using Service;
 using Web.Models.ProductSale;
 
 namespace Web.Controllers;
 
 [Auth(PassRes.ProjectManage.ProductSale)]
-public class ProductSaleController(Db db) : Controller
+public class ProductSaleController(
+    Db db,
+    UserLoginService userLoginService,
+    UserProvinceService userProvinceService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
@@ -33,6 +37,9 @@ public class ProductSaleController(Db db) : Controller
     {
         ValidationUtil.Validate<ProductSaleListParamValidator, ProductSaleListParam>(param);
 
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
+
         IQueryable<ProductSaleJoinItem> query = db.ProductSale
             .Join(db.College,
                 ps => ps.CollegeId,
@@ -50,6 +57,12 @@ public class ProductSaleController(Db db) : Controller
                     Product = p,
                 })
             .AsNoTracking();
+
+        if (isAdminLogin == false)
+        {
+            var userProvinceList = userProvinceService.GetUserProvinceList(loginUserId);
+            query = query.Where(e => userProvinceList.Contains(e.College.Province));
+        }
 
         if (string.IsNullOrWhiteSpace(param.CollegeNameQuery) == false)
         {
