@@ -435,7 +435,7 @@ const LayoutAdmin = () => {
                                 }
 
                                 if (e.key === "user-password") {
-                                    navigate("/user-password");
+                                    navigate("/user-profile/password");
                                 }
                             },
                         }}>

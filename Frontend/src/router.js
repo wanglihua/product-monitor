@@ -37,7 +37,7 @@ import UserPassRes from "./pages/user-pass-res";
 import PassResGroup from "./pages/pass-res-group";
 import PassResUser from "./pages/pass-res-user";
 import AuthResult from "./pages/auth-result";
-import UserPassword from "./pages/user-password";
+import UserProfilePassword from "./pages/user-profile-password";
 import ClientKey from "./pages/client-key";
 import UserProvince from "./pages/user-province";
 
@@ -49,7 +49,7 @@ const Router = () => {
                 <Route element={<LayoutAdmin/>}>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/test" element={<Test/>}/>
-                    <Route path="/user-password" element={<UserPassword/>}/>
+                    <Route path="/user-profile/password" element={<UserProfilePassword/>}/>
                     <Route path="/product" element={<Product/>}/>
                     <Route path="/product-version/:productId" element={<ProductVersion/>}/>
                     <Route path="/college" element={<College/>}/>

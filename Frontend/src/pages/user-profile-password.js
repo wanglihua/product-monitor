@@ -4,7 +4,7 @@ import {SaveOutlined} from '@ant-design/icons';
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
 
-const UserPassword = () => {
+const UserProfilePassword = () => {
 
     const {token} = theme.useToken();
     const {post, showError, showSuccess} = useSiteContext();
@@ -125,4 +125,4 @@ const UserPassword = () => {
     );
 }
 
-export default UserPassword;
+export default UserProfilePassword;
