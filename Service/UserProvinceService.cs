@@ -1,18 +1,21 @@
 using Core;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 
 namespace Service;
 
 [Service(ServiceType.Scoped)]
-public class UserProvinceService
+public class UserProvinceService(Db db)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    private readonly Db db;
-
-    public UserProvinceService(Db db)
+    public IList<ProvinceType> GetUserProvinceList(long userId)
     {
-        this.db = db;
+        var userProvinceList = db.UserProvince.AsNoTracking()
+            .Where(e => e.UserId == userId)
+            .ToList();
+
+        return userProvinceList.Select(e => e.ProvinceType).ToList();
     }
 }
