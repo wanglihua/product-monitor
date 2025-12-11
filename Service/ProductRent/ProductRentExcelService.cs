@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.Util;
+using Microsoft.AspNetCore.Http;
 using NLog;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -98,37 +99,37 @@ public class ProductRentExcelService
             cell.CellStyle = contentCellStyle;
             cell.SetCellType(CellType.String);
             cell.SetCellValue("");
-            
+
             // 开始时间
             cell = row.CreateCell(cellIndex++);
             cell.CellStyle = contentCellStyle;
             cell.SetCellType(CellType.String);
             cell.SetCellValue("");
-            
+
             // 结束时间
             cell = row.CreateCell(cellIndex++);
             cell.CellStyle = contentCellStyle;
             cell.SetCellType(CellType.String);
             cell.SetCellValue("");
-            
+
             // 客户经理
             cell = row.CreateCell(cellIndex++);
             cell.CellStyle = contentCellStyle;
             cell.SetCellType(CellType.String);
             cell.SetCellValue("");
-            
+
             // 联系老师
             cell = row.CreateCell(cellIndex++);
             cell.CellStyle = contentCellStyle;
             cell.SetCellType(CellType.String);
             cell.SetCellValue("");
-            
+
             // 联系电话
             cell = row.CreateCell(cellIndex++);
             cell.CellStyle = contentCellStyle;
             cell.SetCellType(CellType.String);
             cell.SetCellValue("");
-            
+
             // 备注
             cell = row.CreateCell(cellIndex++);
             cell.CellStyle = contentCellStyle;
@@ -141,5 +142,20 @@ public class ProductRentExcelService
         memoryStream.Flush();
 
         return memoryStream.ToArray();
+    }
+
+    public void Import(IFormFile excelFile)
+    {
+        if (excelFile is null)
+        {
+            throw new ValidationException("导入失败，文件未上传！");
+        }
+
+        IWorkbook workbook = new XSSFWorkbook(excelFile.OpenReadStream());
+        ISheet sheet = workbook.GetSheetAt(0);
+        if (sheet is null)
+        {
+            throw new ValidationException("导入的Excel文件应该至少有一个工作表！");
+        }
     }
 }
