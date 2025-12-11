@@ -161,7 +161,7 @@ const ProductSale = () => {
                     <a onClick={() => {
                         const url = "/api/product-sale/export";
                         download(url);
-                    }}>下载样板文件</a>
+                    }}>下载导入样板文件</a>
                 </Space>
             </div>
             <div style={{padding: "10px 0"}}>

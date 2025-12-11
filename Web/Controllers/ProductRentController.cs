@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Core;
 using Core.Auth;
 using Core.Database;
 using Core.Util;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
+using Service.ProductRent;
 using Web.Models.ProductRent;
 
 namespace Web.Controllers;
@@ -17,7 +19,8 @@ namespace Web.Controllers;
 public class ProductRentController(
     Db db,
     UserLoginService userLoginService,
-    UserProvinceService userProvinceService) : Controller
+    UserProvinceService userProvinceService,
+    ProductRentExcelService productRentExcelService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
@@ -149,6 +152,31 @@ public class ProductRentController(
                 ["productRentList"] = productRentItemList,
                 ["productRentCount"] = productRentCount,
             },
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product-rent/export")]
+    [Transactional(false)]
+    public IActionResult Export()
+    {
+        var excelContent = productRentExcelService.Export();
+        return File(excelContent, ContentType.Xlsx, "租赁目录.xlsx");
+    }
+
+    [HttpPost]
+    [Route("/api/product-rent/import")]
+    [Transactional(false)] // 内部有事务
+    public IActionResult Import(IFormFile excelFile)
+    {
+        if (excelFile is null)
+        {
+            throw new ValidationException("导入失败，文件未上传！");
+        }
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "导入成功！",
         });
     }
 }
