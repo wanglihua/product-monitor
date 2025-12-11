@@ -175,7 +175,9 @@ public class ProductRentController(
             throw new ValidationException("导入失败，文件未上传！");
         }
 
-        productRentExcelService.Import(excelFile);
+        long loginUserId = userLoginService.GetLoginUserId();
+
+        productRentExcelService.Import(excelFile, loginUserId);
 
         return Json(new JsonResultData {
             Success = true,

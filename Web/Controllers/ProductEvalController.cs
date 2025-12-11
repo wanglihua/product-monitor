@@ -175,7 +175,9 @@ public class ProductEvalController(
             throw new ValidationException("导入失败，文件未上传！");
         }
 
-        productEvalExcelService.Import(excelFile);
+        long loginUserId = userLoginService.GetLoginUserId();
+
+        productEvalExcelService.Import(excelFile, loginUserId);
 
         return Json(new JsonResultData {
             Success = true,

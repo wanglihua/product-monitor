@@ -144,7 +144,7 @@ public class ProductRentExcelService
         return memoryStream.ToArray();
     }
 
-    public void Import(IFormFile excelFile)
+    public void Import(IFormFile excelFile, long loginUserId)
     {
         if (excelFile is null)
         {
