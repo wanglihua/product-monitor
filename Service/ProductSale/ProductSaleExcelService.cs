@@ -162,7 +162,7 @@ public class ProductSaleExcelService(
         return memoryStream.ToArray();
     }
 
-    public void Import(IFormFile excelFile)
+    public void Import(IFormFile excelFile, long loginUserId)
     {
         if (excelFile is null)
         {
@@ -288,9 +288,34 @@ public class ProductSaleExcelService(
         Transactional.Wrap(db, () => {
             foreach (var item in productSaleExcelImportList)
             {
-                
-                
+                // 查询对应的主表记录是否已经存在
+                long collegeId = item.CollegeId;
+                long productId = item.ProductId;
+                var productSale = db.ProductSale.AsNoTracking()
+                    .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+                    .Take(1)
+                    .SingleOrDefault();
+
+                long productSaleId;
+                if (productSale is not null)
+                {
+                    productSaleId = productSale.Id;
+                }
+                else
+                {
+                    productSaleId = productSaleService.Create(collegeId, productId, loginUserId);
+                }
+
                 db.ProductSaleEntry.Add(new ProductSaleEntryEntity {
+                    ProductSaleId = productSaleId,
+                    Version = item.Version,
+                    SaleDate = item.SaleDate,
+                    ServiceExpireDate = item.ServiceExpireDate,
+                    SalesManager = item.SalesManager,
+                    ContactTeacher = item.ContactTeacher,
+                    ContactMobile = item.ContactMobile,
+                    Description = item.Description,
+                    UserId = loginUserId,
                 });
             }
 
