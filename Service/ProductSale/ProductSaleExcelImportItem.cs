@@ -1,6 +1,6 @@
 ﻿namespace Service.ProductSale;
 
-public class ProductSaleExcelImportListItem
+public class ProductSaleExcelImportItem
 {
     /// <summary>
     /// 学校

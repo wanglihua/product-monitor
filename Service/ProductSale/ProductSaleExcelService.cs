@@ -176,7 +176,7 @@ public class ProductSaleExcelService(
             throw new ValidationException("导入的Excel文件应该至少有一个工作表！");
         }
 
-        var productSaleExcelImportList = new List<ProductSaleExcelImportListItem>();
+        var productSaleExcelImportList = new List<ProductSaleExcelImportItem>();
 
         // 略过标题行，所以 rowIndex = 1 开始
         int lastRowNum = sheet.LastRowNum;
@@ -266,7 +266,7 @@ public class ProductSaleExcelService(
             // 备注
             string description = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
 
-            productSaleExcelImportList.Add(new ProductSaleExcelImportListItem {
+            productSaleExcelImportList.Add(new ProductSaleExcelImportItem {
                 CollegeId = collegeId,
                 ProductId = productId,
                 Version = version,
@@ -317,6 +317,10 @@ public class ProductSaleExcelService(
                     Description = item.Description,
                     UserId = loginUserId,
                 });
+
+                db.SaveChanges();
+
+                productSaleService.UpdateProductSaleByLatestData(productSaleId);
             }
 
             db.SaveChanges();
