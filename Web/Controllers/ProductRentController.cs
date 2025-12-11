@@ -155,6 +155,7 @@ public class ProductRentController(
         });
     }
 
+    // 只是提供一个【上传样板】的下载
     [HttpPost]
     [Route("/api/product-rent/export")]
     [Transactional(false)]

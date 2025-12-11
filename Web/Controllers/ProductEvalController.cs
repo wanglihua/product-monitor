@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using Core.Auth;
 using Core.Database;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
+using Service.ProductEval;
 using Web.Models.ProductEval;
 
 namespace Web.Controllers;
@@ -17,7 +19,8 @@ namespace Web.Controllers;
 public class ProductEvalController(
     Db db,
     UserLoginService userLoginService,
-    UserProvinceService userProvinceService) : Controller
+    UserProvinceService userProvinceService,
+    ProductEvalExcelService productEvalExcelService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
@@ -149,6 +152,32 @@ public class ProductEvalController(
                 ["productEvalList"] = productEvalItemList,
                 ["productEvalCount"] = productEvalCount,
             },
+        });
+    }
+
+    // 只是提供一个【上传样板】的下载
+    [HttpPost]
+    [Route("/api/product-eval/export")]
+    [Transactional(false)]
+    public IActionResult Export()
+    {
+        var excelContent = productEvalExcelService.Export();
+        return File(excelContent, ContentType.Xlsx, "试用目录.xlsx");
+    }
+
+    [HttpPost]
+    [Route("/api/product-eval/import")]
+    [Transactional(false)] // 内部有事务
+    public IActionResult Import(IFormFile excelFile)
+    {
+        if (excelFile is null)
+        {
+            throw new ValidationException("导入失败，文件未上传！");
+        }
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "导入成功！",
         });
     }
 }

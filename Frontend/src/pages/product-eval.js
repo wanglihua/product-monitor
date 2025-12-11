@@ -6,6 +6,7 @@ import ProductEvalEntryDetail from "./product-eval-entry-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
+import download from "../core/download";
 
 const ProductEval = () => {
 
@@ -163,6 +164,10 @@ const ProductEval = () => {
                     >
                         添加
                     </Button>
+                    <a onClick={() => {
+                        const url = "/api/product-eval/export";
+                        download(url);
+                    }}>下载导入样板文件</a>
                 </Space>
             </div>
             <div style={{padding: "10px 0"}}>
