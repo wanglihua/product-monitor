@@ -175,24 +175,10 @@ public class ProductEvalExcelService(
                 break;
             }
 
-            // 设置单元格的格式为 String，这样后面用 StringCellValue 取值的时候，就不会出错了
             int cellIndex = 0;
-            int lastCellNum = row.LastCellNum;
-            for (cellIndex = 0; cellIndex < lastCellNum; cellIndex++)
-            {
-                ICell cell = row.GetCell(cellIndex);
-                if (cell is null)
-                {
-                    cell = row.CreateCell(cellIndex);
-                }
-
-                cell.SetCellType(CellType.String);
-            }
-
-            cellIndex = 0;
 
             // 学校名称
-            string collegeName = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string collegeName = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
             if (string.IsNullOrWhiteSpace(collegeName))
             {
                 break;
@@ -210,7 +196,7 @@ public class ProductEvalExcelService(
             long collegeId = college.Id;
 
             // 产品名称
-            string productName = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string productName = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
 
             var product = db.Product.AsNoTracking()
                 .Where(e => e.Name == productName)
@@ -224,30 +210,30 @@ public class ProductEvalExcelService(
             long productId = product.Id;
 
             // 开始时间
-            string beginDateStr = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string beginDateStr = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
             if (DateTime.TryParse(beginDateStr, out DateTime beginDate) == false)
             {
                 throw new ValidationException($"Excel第 {rowIndex + 1} 行，指定的 开始时间 无法识别！");
             }
 
             // 结束时间
-            string endDateStr = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string endDateStr = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
             if (DateTime.TryParse(endDateStr, out DateTime endDate) == false)
             {
                 throw new ValidationException($"Excel第 {rowIndex + 1} 行，指定的 结束时间 无法识别！");
             }
 
             // 客户经理
-            string salesManager = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string salesManager = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
 
             // 联系老师
-            string contactTeacher = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string contactTeacher = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
 
             // 联系电话
-            string contactMobile = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string contactMobile = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
 
             // 备注
-            string description = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string description = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
 
             productEvalExcelImportList.Add(new ProductEvalExcelImportItem {
                 CollegeId = collegeId,

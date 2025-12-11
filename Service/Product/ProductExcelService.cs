@@ -135,24 +135,10 @@ public class ProductExcelService(Db db)
                 break;
             }
 
-            // 设置单元格的格式为 String，这样后面用 StringCellValue 取值的时候，就不会出错了
             int cellIndex = 0;
-            int lastCellNum = row.LastCellNum;
-            for (cellIndex = 0; cellIndex < lastCellNum; cellIndex++)
-            {
-                ICell cell = row.GetCell(cellIndex);
-                if (cell is null)
-                {
-                    cell = row.CreateCell(cellIndex);
-                }
-
-                cell.SetCellType(CellType.String);
-            }
-
-            cellIndex = 0;
 
             // 产品名称
-            string name = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string name = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
             if (string.IsNullOrWhiteSpace(name))
             {
                 break;
@@ -169,7 +155,7 @@ public class ProductExcelService(Db db)
             }
 
             //  产品英文名称
-            string englishName = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string englishName = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
 
             productExcelImportList.Add(new ProductExcelImportListItem {
                 Name = name,

@@ -1,3 +1,4 @@
+using System.Globalization;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 
@@ -154,5 +155,21 @@ public static class ExcelUtil
         }
 
         return newRow;
+    }
+
+    public static string GetCellValue(ICell cell)
+    {
+        if (cell is null)
+        {
+            return "";
+        }
+
+        if (cell.CellType == CellType.Numeric && DateUtil.IsCellDateFormatted(cell) == true)
+        {
+            return cell.DateCellValue?.ToString("yyyy-MM-dd HH:mm:ss") ?? "";
+        }
+
+        cell.SetCellType(CellType.String);
+        return (cell.StringCellValue ?? "").Trim();
     }
 }

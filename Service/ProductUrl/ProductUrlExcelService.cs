@@ -150,24 +150,10 @@ public class ProductUrlExcelService(Db db)
                 break;
             }
 
-            // 设置单元格的格式为 String，这样后面用 StringCellValue 取值的时候，就不会出错了
             int cellIndex = 0;
-            int lastCellNum = row.LastCellNum;
-            for (cellIndex = 0; cellIndex < lastCellNum; cellIndex++)
-            {
-                ICell cell = row.GetCell(cellIndex);
-                if (cell is null)
-                {
-                    cell = row.CreateCell(cellIndex);
-                }
-
-                cell.SetCellType(CellType.String);
-            }
-
-            cellIndex = 0;
 
             // 类型
-            string productUrlTypeName = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string productUrlTypeName = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
             if (string.IsNullOrWhiteSpace(productUrlTypeName))
             {
                 break;
@@ -180,7 +166,7 @@ public class ProductUrlExcelService(Db db)
             }
 
             // 产品名称
-            string productName = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string productName = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
             var product = db.Product.AsNoTracking()
                 .Where(e => e.Name == productName)
                 .Take(1)
@@ -193,28 +179,28 @@ public class ProductUrlExcelService(Db db)
             long productId = product.Id;
 
             // 网址
-            string url = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string url = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
             if (string.IsNullOrWhiteSpace(url) == true)
             {
                 throw new ValidationException($"Excel第 {rowIndex + 1} 行， 网址不能为空！");
             }
 
             // 账号
-            string loginUser = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string loginUser = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
             if (string.IsNullOrWhiteSpace(loginUser) == true)
             {
                 throw new ValidationException($"Excel第 {rowIndex + 1} 行， 账号不能为空！");
             }
 
             // 密码
-            string loginPassword = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string loginPassword = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
             if (string.IsNullOrWhiteSpace(loginPassword) == true)
             {
                 throw new ValidationException($"Excel第 {rowIndex + 1} 行， 密码不能为空！");
             }
 
             // 备注
-            string description = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            string description = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
 
             productUrlImportList.Add(new ProductUrlEntity {
                 Type = productUrlType,
