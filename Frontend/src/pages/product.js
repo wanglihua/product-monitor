@@ -204,8 +204,6 @@ const Product = () => {
                         <Button
                             color="default"
                             icon={<FileExcelOutlined/>}
-                            onClick={(e) => {
-                            }}
                         >
                             导入
                         </Button>

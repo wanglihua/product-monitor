@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
-import {PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
+import {Button, Input, Space, Table, Upload} from 'antd';
+import {FileExcelOutlined, PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import {useNavigate} from "react-router";
 import ProductRentEntryDetail from "./product-rent-entry-detail";
 
@@ -10,7 +10,7 @@ import download from "../core/download";
 
 const ProductRent = () => {
 
-    const {post, showConfirm, showError, showSuccess} = useSiteContext();
+    const {post, showConfirm, showError, showSuccess, showMask, hideMask} = useSiteContext();
 
     const navigate = useNavigate();
 
@@ -160,6 +160,43 @@ const ProductRent = () => {
                     >
                         添加
                     </Button>
+                    <Upload
+                        showUploadList={false}
+                        name="excelFile"
+                        accept=".xlsx"
+                        action="/api/product-rent/import"
+                        onChange={(info) => {
+                            const status = info.file.status;
+
+                            if (status === 'uploading') {
+                                showMask();
+                            }
+
+                            if (status === 'done') {
+                                hideMask();
+                                const response = info.file.response;
+                                if (response.success !== true) {
+                                    showError(response.message);
+                                    return;
+                                }
+
+                                showSuccess(response.message);
+                                loadProductRentList();
+                            }
+
+                            if (status === 'error') {
+                                hideMask();
+                                showError("文件上传失败, 请重试!");
+                            }
+                        }}
+                    >
+                        <Button
+                            color="default"
+                            icon={<FileExcelOutlined/>}
+                        >
+                            导入
+                        </Button>
+                    </Upload>
                     <a onClick={() => {
                         const url = "/api/product-rent/export";
                         download(url);

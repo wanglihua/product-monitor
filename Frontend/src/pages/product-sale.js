@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
-import {PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
+import {Button, Input, Space, Table, Upload} from 'antd';
+import {FileExcelOutlined, PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import {useNavigate} from "react-router";
 import ProductSaleEntryDetail from "./product-sale-entry-detail";
 
@@ -10,7 +10,7 @@ import download from "../core/download";
 
 const ProductSale = () => {
 
-    const {post, showConfirm, showError, showSuccess} = useSiteContext();
+    const {post, showConfirm, showError, showSuccess, showMask, hideMask} = useSiteContext();
 
     const navigate = useNavigate();
 
@@ -157,6 +157,43 @@ const ProductSale = () => {
                     >
                         添加
                     </Button>
+                    <Upload
+                        showUploadList={false}
+                        name="excelFile"
+                        accept=".xlsx"
+                        action="/api/product-sale/import"
+                        onChange={(info) => {
+                            const status = info.file.status;
+
+                            if (status === 'uploading') {
+                                showMask();
+                            }
+
+                            if (status === 'done') {
+                                hideMask();
+                                const response = info.file.response;
+                                if (response.success !== true) {
+                                    showError(response.message);
+                                    return;
+                                }
+
+                                showSuccess(response.message);
+                                loadProductSaleList();
+                            }
+
+                            if (status === 'error') {
+                                hideMask();
+                                showError("文件上传失败, 请重试!");
+                            }
+                        }}
+                    >
+                        <Button
+                            color="default"
+                            icon={<FileExcelOutlined/>}
+                        >
+                            导入
+                        </Button>
+                    </Upload>
                     <a onClick={() => {
                         const url = "/api/product-sale/export";
                         download(url);
