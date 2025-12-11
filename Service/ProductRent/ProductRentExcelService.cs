@@ -225,6 +225,11 @@ public class ProductRentExcelService(
                 throw new ValidationException($"Excel第 {rowIndex + 1} 行，指定的 结束时间 无法识别！");
             }
 
+            if (endDate < beginDate)
+            {
+                throw new ValidationException($"Excel第 {rowIndex + 1} 行，开始时间不能晚于结束时间！");
+            }
+
             // 客户经理
             string salesManager = ExcelUtil.GetCellValue(row.GetCell(cellIndex++));
 
@@ -280,6 +285,7 @@ public class ProductRentExcelService(
                     ProductRentId = productRentId,
                     BeginDate = item.BeginDate,
                     EndDate = item.EndDate,
+                    TotalDays = (int)((item.EndDate - item.BeginDate).TotalDays) + 1,
                     SalesManager = item.SalesManager,
                     ContactTeacher = item.ContactTeacher,
                     ContactMobile = item.ContactMobile,
