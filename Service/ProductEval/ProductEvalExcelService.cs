@@ -1,6 +1,9 @@
 ﻿using Core;
+using Core.Database;
 using Core.Util;
+using Domain;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -8,7 +11,9 @@ using NPOI.XSSF.UserModel;
 namespace Service.ProductEval;
 
 [Service(ServiceType.Scoped)]
-public class ProductEvalExcelService
+public class ProductEvalExcelService(
+    Db db,
+    ProductEvalService productEvalService)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
@@ -156,5 +161,150 @@ public class ProductEvalExcelService
         {
             throw new ValidationException("导入的Excel文件应该至少有一个工作表！");
         }
+
+        var productEvalExcelImportList = new List<ProductEvalExcelImportItem>();
+
+        // 略过标题行，所以 rowIndex = 1 开始
+        int lastRowNum = sheet.LastRowNum;
+        for (int rowIndex = 1; rowIndex <= lastRowNum; rowIndex++)
+        {
+            IRow row = sheet.GetRow(rowIndex);
+
+            if (row is null)
+            {
+                break;
+            }
+
+            // 设置单元格的格式为 String，这样后面用 StringCellValue 取值的时候，就不会出错了
+            int cellIndex = 0;
+            int lastCellNum = row.LastCellNum;
+            for (cellIndex = 0; cellIndex < lastCellNum; cellIndex++)
+            {
+                ICell cell = row.GetCell(cellIndex);
+                if (cell is null)
+                {
+                    cell = row.CreateCell(cellIndex);
+                }
+
+                cell.SetCellType(CellType.String);
+            }
+
+            cellIndex = 0;
+
+            // 学校名称
+            string collegeName = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            if (string.IsNullOrWhiteSpace(collegeName))
+            {
+                break;
+            }
+
+            var college = db.College.AsNoTracking()
+                .Where(e => e.Name == collegeName)
+                .Take(1)
+                .SingleOrDefault();
+            if (college is null)
+            {
+                throw new ValidationException($"Excel第 {rowIndex + 1} 行，指定的 院校名称 不存在！");
+            }
+
+            long collegeId = college.Id;
+
+            // 产品名称
+            string productName = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+
+            var product = db.Product.AsNoTracking()
+                .Where(e => e.Name == productName)
+                .Take(1)
+                .SingleOrDefault();
+            if (product is null)
+            {
+                throw new ValidationException($"Excel第 {rowIndex + 1} 行，指定的 产品名称 不存在！");
+            }
+
+            long productId = product.Id;
+
+            // 开始时间
+            string beginDateStr = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            if (DateTime.TryParse(beginDateStr, out DateTime beginDate) == false)
+            {
+                throw new ValidationException($"Excel第 {rowIndex + 1} 行，指定的 开始时间 无法识别！");
+            }
+
+            // 结束时间
+            string endDateStr = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+            if (DateTime.TryParse(endDateStr, out DateTime endDate) == false)
+            {
+                throw new ValidationException($"Excel第 {rowIndex + 1} 行，指定的 结束时间 无法识别！");
+            }
+
+            // 客户经理
+            string salesManager = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+
+            // 联系老师
+            string contactTeacher = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+
+            // 联系电话
+            string contactMobile = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+
+            // 备注
+            string description = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
+
+            productEvalExcelImportList.Add(new ProductEvalExcelImportItem {
+                CollegeId = collegeId,
+                ProductId = productId,
+                BeginDate = beginDate,
+                EndDate = endDate,
+                SalesManager = salesManager,
+                ContactTeacher = contactTeacher,
+                ContactMobile = contactMobile,
+                Description = description,
+            });
+        }
+
+        if (productEvalExcelImportList.Count == 0)
+        {
+            throw new ValidationException("产品导入列表为空!");
+        }
+
+        // 把耗时的Excel操作排除在数据库事务之外
+        Transactional.Wrap(db, () => {
+            foreach (var item in productEvalExcelImportList)
+            {
+                // 查询对应的主表记录是否已经存在
+                long collegeId = item.CollegeId;
+                long productId = item.ProductId;
+                var productEval = db.ProductEval.AsNoTracking()
+                    .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+                    .Take(1)
+                    .SingleOrDefault();
+
+                long productEvalId;
+                if (productEval is not null)
+                {
+                    productEvalId = productEval.Id;
+                }
+                else
+                {
+                    productEvalId = productEvalService.Create(collegeId, productId, loginUserId);
+                }
+
+                db.ProductEvalEntry.Add(new ProductEvalEntryEntity {
+                    ProductEvalId = productEvalId,
+                    BeginDate = item.BeginDate,
+                    EndDate = item.EndDate,
+                    SalesManager = item.SalesManager,
+                    ContactTeacher = item.ContactTeacher,
+                    ContactMobile = item.ContactMobile,
+                    Description = item.Description,
+                    UserId = loginUserId,
+                });
+
+                db.SaveChanges();
+
+                productEvalService.UpdateProductEvalByLatestData(productEvalId);
+            }
+
+            db.SaveChanges();
+        });
     }
 }
