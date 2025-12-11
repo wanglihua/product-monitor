@@ -158,6 +158,16 @@ public class ProductExcelService(Db db)
                 break;
             }
 
+            var productExist = db.Product.AsNoTracking()
+                .Where(e => e.Name == name)
+                .Take(1)
+                .SingleOrDefault();
+
+            if (productExist is not null)
+            {
+                throw new ValidationException($"Excel第 {rowIndex + 1} 行，指定的产品名称【{name}】已经存在!");
+            }
+
             //  产品英文名称
             string englishName = (row.GetCell(cellIndex++)?.StringCellValue ?? string.Empty).Trim();
 
@@ -176,17 +186,6 @@ public class ProductExcelService(Db db)
         Transactional.Wrap(db, () => {
             foreach (var item in productExcelImportList)
             {
-                string name = item.Name;
-                var productExist = db.Product.AsNoTracking()
-                    .Where(e => e.Name == name)
-                    .Take(1)
-                    .SingleOrDefault();
-
-                if (productExist is not null)
-                {
-                    throw new ValidationException($"指定的产品名称【{name}】已经存在!");
-                }
-
                 db.Product.Add(new ProductEntity {
                     Name = item.Name,
                     EnglishName = item.EnglishName,
