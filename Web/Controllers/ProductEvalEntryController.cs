@@ -414,6 +414,12 @@ public class ProductEvalEntryController(
             .OrderBy(e => e.ProductEvalId)
             .Take(1)
             .SingleOrDefault();
+
+        if (productEvalEntryExists is not null)
+        {
+            productEvalService.UpdateProductEvalByLatestData(productEvalId);
+        }
+
         if (productEvalEntryExists is null)
         {
             // 如果最后一个明细也不存在了， 就删除主数据
@@ -429,8 +435,6 @@ public class ProductEvalEntryController(
 
             string actionDesc = $"#{productEval.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductEvalDelete, actionDesc);
-
-            productEvalService.UpdateProductEvalByLatestData(productEvalId);
 
             productEvalDeleted = true;
         }

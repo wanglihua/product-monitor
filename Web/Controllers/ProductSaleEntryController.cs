@@ -408,6 +408,12 @@ public class ProductSaleEntryController(
             .OrderBy(e => e.ProductSaleId)
             .Take(1)
             .SingleOrDefault();
+
+        if (productSaleEntryExists is not null)
+        {
+            productSaleService.UpdateProductSaleByLatestData(productSaleId);
+        }
+
         if (productSaleEntryExists is null)
         {
             // 如果最后一个明细也不存在了， 就删除主数据
@@ -423,8 +429,6 @@ public class ProductSaleEntryController(
 
             string actionDesc = $"#{productSale.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductSaleDelete, actionDesc);
-
-            productSaleService.UpdateProductSaleByLatestData(productSaleId);
 
             productSaleDeleted = true;
         }

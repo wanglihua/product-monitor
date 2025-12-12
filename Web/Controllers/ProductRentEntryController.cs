@@ -413,6 +413,12 @@ public class ProductRentEntryController(
             .OrderBy(e => e.ProductRentId)
             .Take(1)
             .SingleOrDefault();
+
+        if (productRentEntryExists is not null)
+        {
+            productRentService.UpdateProductRentByLatestData(productRentId);
+        }
+
         if (productRentEntryExists is null)
         {
             // 如果最后一个明细也不存在了， 就删除主数据
@@ -428,8 +434,6 @@ public class ProductRentEntryController(
 
             string actionDesc = $"#{productRent.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductRentDelete, actionDesc);
-
-            productRentService.UpdateProductRentByLatestData(productRentId);
 
             productRentDeleted = true;
         }
