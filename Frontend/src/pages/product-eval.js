@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table, Upload} from 'antd';
-import {FileExcelOutlined, PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
+import {DeleteOutlined, FileExcelOutlined, PlusCircleOutlined, SearchOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import {useNavigate} from "react-router";
 import ProductEvalEntryDetail from "./product-eval-entry-detail";
 
@@ -112,6 +112,25 @@ const ProductEval = () => {
                             navigate(`/product-eval-entry/${productEvalId}`);
                         }}>
                             <UnorderedListOutlined/>试用记录
+                        </Button>
+                        <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                            showConfirm("此操作将同时删除关联明细记录，确认要删除吗！", "确认", () => {
+                                post("/api/product-eval/delete", {
+                                    id: record.id,
+                                }, function (response) {
+                                    const res = response.data;
+                                    if (res.success !== true) {
+                                        showError(res.message);
+                                        return;
+                                    }
+
+                                    showSuccess(res.message);
+
+                                    loadProductEvalList();
+                                });
+                            });
+                        }}>
+                            <DeleteOutlined/>删除
                         </Button>
                     </Space>
                 );
