@@ -31,6 +31,8 @@ export default defineConfig(({env, command, envMode}) => {
             chunkSplit: {
                 strategy: 'split-by-experience',
             },
+            removeConsole: true,
+            // bundleAnalyze: {},
         },
         plugins: [
             pluginReact(),
@@ -52,6 +54,11 @@ export default defineConfig(({env, command, envMode}) => {
             entry: {
                 index: './src/index.js',
             }
+        },
+        resolve: {
+            alias: {
+                '@': './src',
+            },
         },
     };
 });
