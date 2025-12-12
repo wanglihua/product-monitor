@@ -19,6 +19,7 @@ namespace Web.Controllers;
 public class ProductRentController(
     Db db,
     UserLoginService userLoginService,
+    ActionLogService actionLogService,
     UserProvinceService userProvinceService,
     ProductRentExcelService productRentExcelService) : Controller
 {
@@ -152,6 +153,37 @@ public class ProductRentController(
                 ["productRentList"] = productRentItemList,
                 ["productRentCount"] = productRentCount,
             },
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product-rent/delete")]
+    [Transactional(true)]
+    public IActionResult Delete([FromBody] IdParam param)
+    {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
+        long productRentId = param.Id;
+        var productRent = db.ProductRent.Find(productRentId);
+        if (productRent is null)
+        {
+            throw new ValidationException($"指定的租赁目录#{productRentId}不存在！");
+        }
+
+        db.ProductRentEntry
+            .Where(e => e.ProductRentId == productRentId)
+            .ExecuteDelete();
+
+        db.ProductRent.Remove(productRent);
+        db.SaveChanges();
+
+        long loginUserId = userLoginService.GetLoginUserId();
+        string actionDesc = $"#{productRent.Id}";
+        actionLogService.Add(loginUserId, ActionLogType.ProductRentDelete, actionDesc);
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "删除成功！",
         });
     }
 

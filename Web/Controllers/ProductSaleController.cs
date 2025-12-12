@@ -19,6 +19,7 @@ namespace Web.Controllers;
 public class ProductSaleController(
     Db db,
     UserLoginService userLoginService,
+    ActionLogService actionLogService,
     UserProvinceService userProvinceService,
     ProductSaleExcelService productSaleExcelService) : Controller
 {
@@ -154,6 +155,37 @@ public class ProductSaleController(
                 ["productSaleList"] = productSaleItemList,
                 ["productSaleCount"] = productSaleCount,
             },
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product-sale/delete")]
+    [Transactional(true)]
+    public IActionResult Delete([FromBody] IdParam param)
+    {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
+        long productSaleId = param.Id;
+        var productSale = db.ProductSale.Find(productSaleId);
+        if (productSale is null)
+        {
+            throw new ValidationException($"指定的销售目录#{productSaleId}不存在！");
+        }
+
+        db.ProductSaleEntry
+            .Where(e => e.ProductSaleId == productSaleId)
+            .ExecuteDelete();
+
+        db.ProductSale.Remove(productSale);
+        db.SaveChanges();
+
+        long loginUserId = userLoginService.GetLoginUserId();
+        string actionDesc = $"#{productSale.Id}";
+        actionLogService.Add(loginUserId, ActionLogType.ProductSaleDelete, actionDesc);
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "删除成功！",
         });
     }
 

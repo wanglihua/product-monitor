@@ -19,6 +19,7 @@ namespace Web.Controllers;
 public class ProductEvalController(
     Db db,
     UserLoginService userLoginService,
+    ActionLogService actionLogService,
     UserProvinceService userProvinceService,
     ProductEvalExcelService productEvalExcelService) : Controller
 {
@@ -152,6 +153,37 @@ public class ProductEvalController(
                 ["productEvalList"] = productEvalItemList,
                 ["productEvalCount"] = productEvalCount,
             },
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product-eval/delete")]
+    [Transactional(true)]
+    public IActionResult Delete([FromBody] IdParam param)
+    {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
+        long productEvalId = param.Id;
+        var productEval = db.ProductEval.Find(productEvalId);
+        if (productEval is null)
+        {
+            throw new ValidationException($"指定的试用目录#{productEvalId}不存在！");
+        }
+
+        db.ProductEvalEntry
+            .Where(e => e.ProductEvalId == productEvalId)
+            .ExecuteDelete();
+
+        db.ProductEval.Remove(productEval);
+        db.SaveChanges();
+
+        long loginUserId = userLoginService.GetLoginUserId();
+        string actionDesc = $"#{productEval.Id}";
+        actionLogService.Add(loginUserId, ActionLogType.ProductEvalDelete, actionDesc);
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "删除成功！",
         });
     }
 
