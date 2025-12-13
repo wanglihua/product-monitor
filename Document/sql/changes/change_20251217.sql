@@ -8,3 +8,7 @@ ALTER TABLE tbl_product_url_monitor_entry
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'省份', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'province';
 
+DROP INDEX ix_user_login_name ON tbl_user;
+
+CREATE UNIQUE INDEX ix_user_login_name ON tbl_user (login_name);
+

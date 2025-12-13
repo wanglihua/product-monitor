@@ -13,11 +13,10 @@ CREATE TABLE tbl_user
     create_time     DATETIME      NOT NULL,
     update_time     DATETIME      NOT NULL,
 
-    CONSTRAINT pk_user PRIMARY KEY (id),
-    INDEX ix_user_login_name (login_name)
+    CONSTRAINT pk_user PRIMARY KEY (id)
 );
 
--- todo 再加一个状态字段
+CREATE UNIQUE INDEX ix_user_login_name ON tbl_user (login_name);
 
 -- 密码 123456
 INSERT INTO tbl_user (id, login_name, user_name, password, salt, last_login_time, create_time, update_time)
