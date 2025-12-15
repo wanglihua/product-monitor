@@ -18,7 +18,7 @@ public class CollegeEntity : Entity
     public string Name { get; set; } = "";
 
     /// <summary>
-    /// 身份
+    /// 省份
     /// </summary>
     public ProvinceType Province { get; set; } = ProvinceType.None;
 

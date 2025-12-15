@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
+using Service.College;
 using Web.Models.College;
 
 namespace Web.Controllers;
@@ -18,17 +19,14 @@ namespace Web.Controllers;
 public class CollegeController(
     Db db,
     UserLoginService userLoginService,
+    CollegeExcelService collegeExcelService,
     ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    [HttpPost]
-    [Route("/api/college/list")]
-    [Transactional(false)]
-    public IActionResult List([FromBody] CollegeListParam param)
+    [NonAction]
+    private IQueryable<CollegeEntity> GetListQuery(CollegeListParam param)
     {
-        ValidationUtil.Validate<CollegeListParamValidator, CollegeListParam>(param);
-
         IQueryable<CollegeEntity> query = db.College.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.CodeQuery) == false)
@@ -42,6 +40,18 @@ public class CollegeController(
             string nameQuery = param.NameQuery.Trim();
             query = query.Where(p => p.Name.Contains(nameQuery));
         }
+
+        return query;
+    }
+
+    [HttpPost]
+    [Route("/api/college/list")]
+    [Transactional(false)]
+    public IActionResult List([FromBody] CollegeListParam param)
+    {
+        ValidationUtil.Validate<CollegeListParamValidator, CollegeListParam>(param);
+
+        IQueryable<CollegeEntity> query = GetListQuery(param);
 
         int collegeCount = query.Count();
 
@@ -227,5 +237,32 @@ public class CollegeController(
             Success = true,
             Message = "删除成功！",
         });
+    }
+
+
+    [Route("/api/college/export")]
+    [Transactional(false)]
+    public IActionResult Export(CollegeListParam param)
+    {
+        ValidationUtil.Validate<CollegeListParamValidator, CollegeListParam>(param);
+
+        IQueryable<CollegeEntity> query = GetListQuery(param);
+
+        var collegeList = query
+            .OrderBy(e => e.Id)
+            .ToList();
+
+        var collegeItemList = collegeList
+            .Select(e => new CollegeExcelExportListItem {
+                Code = e.Code,
+                Name = e.Name,
+                Province = e.Province?.Name ?? "",
+                Level = e.Level?.Name ?? "",
+            })
+            .ToList();
+
+        var excelContent = collegeExcelService.Export(collegeItemList);
+
+        return File(excelContent, ContentType.Xlsx, "院校.xlsx");
     }
 }
