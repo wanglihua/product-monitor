@@ -215,7 +215,7 @@ const Product = () => {
                             showConfirm("确认要导出吗！", "确认", () => {
                                 const query = $.param(listParam);
                                 const url = `/api/product/export?${query}`;
-                                // $(`<form method="post" action="${url}"></form>`).appendTo('body').submit().remove();\
+                                // $(`<form method="post" action="${url}"></form>`).appendTo('body').submit().remove();
                                 download(url);
 
                                 showSuccess("导出成功, 文件下载中!");
