@@ -1,6 +1,5 @@
 ﻿using Core;
 using Core.Util;
-using Domain;
 using NLog;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -8,7 +7,7 @@ using NPOI.XSSF.UserModel;
 namespace Service.College;
 
 [Service(ServiceType.Scoped)]
-public class CollegeExcelService(Db db)
+public class CollegeExcelService
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
