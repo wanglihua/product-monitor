@@ -35,7 +35,7 @@ public class ProductSaleRentEvalTimesCalJob : IJob
         var userProvinceService = new UserProvinceService(db);
 
         // 销售目录
-        var productSaleService = new ProductSaleService(db);
+        var productSaleService = new ProductSaleService(db, userProvinceService);
 
         var productSaleListToUpdate = db.ProductSale.Where(e => e.UpdateTime > someTimeAgo).ToList();
         foreach (var productSale in productSaleListToUpdate)
@@ -45,7 +45,7 @@ public class ProductSaleRentEvalTimesCalJob : IJob
         }
 
         // 租赁目录
-        var productRentService = new ProductRentService(db);
+        var productRentService = new ProductRentService(db, userProvinceService);
         var productRentListToUpdate = db.ProductRent.Where(e => e.UpdateTime > someTimeAgo).ToList();
         foreach (var productRent in productRentListToUpdate)
         {

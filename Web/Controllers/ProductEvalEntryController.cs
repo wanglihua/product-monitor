@@ -46,6 +46,31 @@ public class ProductEvalEntryController(
         long loginUserId = userLoginService.GetLoginUserId();
         bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
 
+        long productEvalId = param.ProductEvalId;
+        var productEval = db.ProductEval.Find(productEvalId);
+        if (productEval is null)
+        {
+            throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
+        }
+
+        long collegeId = productEval.CollegeId;
+        var college = db.College.Find(collegeId);
+        if (college is null)
+        {
+            throw new ValidationException($"指定学校#{collegeId}不存在!");
+        }
+
+        string collegeName = college.Name;
+
+        long productId = productEval.ProductId;
+        var product = db.Product.Find(productId);
+        if (product is null)
+        {
+            throw new ValidationException($"指定产品#{productId}不存在!");
+        }
+
+        string productName = product.Name;
+
         IQueryable<ProductEvalEntryJoinItem> query = db.ProductEvalEntry
             .Join(db.User,
                 pee => pee.UserId,
@@ -78,31 +103,6 @@ public class ProductEvalEntryController(
             var userProvinceList = userProvinceService.GetUserProvinceList(loginUserId);
             query = query.Where(e => userProvinceList.Contains(e.College.Province));
         }
-
-        long productEvalId = param.ProductEvalId;
-        var productEval = db.ProductEval.Find(productEvalId);
-        if (productEval is null)
-        {
-            throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
-        }
-
-        long collegeId = productEval.CollegeId;
-        var college = db.College.Find(collegeId);
-        if (college is null)
-        {
-            throw new ValidationException($"指定学校#{collegeId}不存在!");
-        }
-
-        string collegeName = college.Name;
-
-        long productId = productEval.ProductId;
-        var product = db.Product.Find(productId);
-        if (product is null)
-        {
-            throw new ValidationException($"指定产品#{productId}不存在!");
-        }
-
-        string productName = product.Name;
 
         query = query.Where(p => p.ProductEvalEntry.ProductEvalId == productEvalId);
 

@@ -6,7 +6,9 @@ using NLog;
 namespace Service.ProductRent;
 
 [Service(ServiceType.Scoped)]
-public class ProductRentService(Db db)
+public class ProductRentService(
+    Db db,
+    UserProvinceService userProvinceService)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
@@ -111,5 +113,30 @@ public class ProductRentService(Db db)
         productRent.ServiceTimes = serviceTimes;
 
         db.SaveChanges();
+    }
+
+    public void CheckDataPrivilege(long productRentId, long loginUserId, bool isAdminLogin)
+    {
+        var productRent = db.ProductRent.Find(productRentId);
+        if (productRent is null)
+        {
+            throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
+        }
+
+        long collegeId = productRent.CollegeId;
+        var college = db.College.Find(collegeId);
+        if (college is null)
+        {
+            throw new ValidationException($"指定学校#{collegeId}不存在!");
+        }
+
+        if (isAdminLogin == false)
+        {
+            var userProvinceList = userProvinceService.GetUserProvinceList(loginUserId);
+            if (userProvinceList.Contains(college.Province) == false)
+            {
+                throw new ValidationException($"院校 {college.Name} 不在用户负责区域！");
+            }
+        }
     }
 }

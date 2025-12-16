@@ -19,6 +19,7 @@ namespace Web.Controllers;
 public class ProductRentEntryController(
     Db db,
     UserLoginService userLoginService,
+    UserProvinceService userProvinceService,
     ActionLogService actionLogService,
     ProductRentService productRentService) : Controller
 {
@@ -29,6 +30,10 @@ public class ProductRentEntryController(
         public ProductRentEntryEntity ProductRentEntry { get; set; } = new();
 
         public UserEntity User { get; set; } = new();
+
+        public ProductRentEntity ProductRent { get; set; } = new();
+
+        public CollegeEntity College { get; set; } = new();
     }
 
     [HttpPost]
@@ -37,6 +42,9 @@ public class ProductRentEntryController(
     public IActionResult List([FromBody] ProductRentEntryListParam param)
     {
         ValidationUtil.Validate<ProductRentEntryListParamValidator, ProductRentEntryListParam>(param);
+
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
 
         long productRentId = param.ProductRentId;
         var productRent = db.ProductRent.Find(productRentId);
@@ -71,7 +79,30 @@ public class ProductRentEntryController(
                     ProductRentEntry = pse,
                     User = u,
                 })
+            .Join(db.ProductRent,
+                pse => pse.ProductRentEntry.ProductRentId,
+                pr => pr.Id,
+                (pse, pr) => new ProductRentEntryJoinItem {
+                    ProductRentEntry = pse.ProductRentEntry,
+                    User = pse.User,
+                    ProductRent = pr,
+                })
+            .Join(db.College,
+                pse => pse.ProductRent.CollegeId,
+                c => c.Id,
+                (pse, c) => new ProductRentEntryJoinItem {
+                    ProductRentEntry = pse.ProductRentEntry,
+                    User = pse.User,
+                    ProductRent = pse.ProductRent,
+                    College = c
+                })
             .AsNoTracking();
+
+        if (isAdminLogin == false)
+        {
+            var userProvinceList = userProvinceService.GetUserProvinceList(loginUserId);
+            query = query.Where(e => userProvinceList.Contains(e.College.Province));
+        }
 
         query = query.Where(p => p.ProductRentEntry.ProductRentId == productRentId);
 
