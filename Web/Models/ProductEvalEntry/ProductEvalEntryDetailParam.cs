@@ -23,6 +23,6 @@ public class ProductEvalEntryDetailParamValidator : AbstractValidator<ProductEva
             }
 
             return true;
-        }).WithMessage("产品试用Id不能为空！");
+        }).WithMessage("试用目录Id不能为空！");
     }
 }

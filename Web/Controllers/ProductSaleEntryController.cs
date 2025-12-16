@@ -42,7 +42,7 @@ public class ProductSaleEntryController(
     public IActionResult List([FromBody] ProductSaleEntryListParam param)
     {
         ValidationUtil.Validate<ProductSaleEntryListParamValidator, ProductSaleEntryListParam>(param);
-        
+
         long loginUserId = userLoginService.GetLoginUserId();
         bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
 
@@ -97,7 +97,7 @@ public class ProductSaleEntryController(
                     College = c
                 })
             .AsNoTracking();
-        
+
         if (isAdminLogin == false)
         {
             var userProvinceList = userProvinceService.GetUserProvinceList(loginUserId);
@@ -190,6 +190,11 @@ public class ProductSaleEntryController(
     [Transactional(false)]
     public IActionResult Detail([FromBody] ProductSaleEntryDetailParam param)
     {
+        ValidationUtil.Validate<ProductSaleEntryDetailParamValidator, ProductSaleEntryDetailParam>(param);
+
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
+
         long productSaleEntryId = param.ProductSaleEntryId;
 
         long collegeId = 0;
@@ -209,32 +214,31 @@ public class ProductSaleEntryController(
             productSaleId = productSaleEntry.ProductSaleId;
         }
 
-        if (productSaleId > 0)
+        productSaleService.CheckDataPrivilege(productSaleId, loginUserId, isAdminLogin);
+
+        var productSale = db.ProductSale.Find(productSaleId);
+        if (productSale is null)
         {
-            var productSale = db.ProductSale.Find(productSaleId);
-            if (productSale is null)
-            {
-                throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
-            }
-
-            collegeId = productSale.CollegeId;
-            var college = db.College.Find(collegeId);
-            if (college is null)
-            {
-                throw new ValidationException($"指定学校#{collegeId}不存在!");
-            }
-
-            collegeName = college.Name;
-
-            productId = productSale.ProductId;
-            var product = db.Product.Find(productId);
-            if (product is null)
-            {
-                throw new ValidationException($"指定产品#{productId}不存在!");
-            }
-
-            productName = product.Name;
+            throw new ValidationException($"指定的销售目录#{productSaleId}不存在!");
         }
+
+        collegeId = productSale.CollegeId;
+        var college = db.College.Find(collegeId);
+        if (college is null)
+        {
+            throw new ValidationException($"指定学校#{collegeId}不存在!");
+        }
+
+        collegeName = college.Name;
+
+        productId = productSale.ProductId;
+        var product = db.Product.Find(productId);
+        if (product is null)
+        {
+            throw new ValidationException($"指定产品#{productId}不存在!");
+        }
+
+        productName = product.Name;
 
         var model = new ProductSaleEntryDetailModel {
             ProductSaleEntryId = productSaleEntryId,
@@ -335,6 +339,7 @@ public class ProductSaleEntryController(
         ValidationUtil.Validate<ProductSaleEntryDetailModelValidator, ProductSaleEntryDetailModel>(model);
 
         long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
 
         long productSaleEntryId = model.ProductSaleEntryId;
         bool isCreate = productSaleEntryId == 0;
@@ -373,6 +378,9 @@ public class ProductSaleEntryController(
                 productSaleEntry.ProductSaleId = productSaleId;
             }
         }
+
+        long productSaleBindId = productSaleEntry.ProductSaleId;
+        productSaleService.CheckDataPrivilege(productSaleBindId, loginUserId, isAdminLogin);
 
         productSaleEntry.Version = model.Version ?? "";
         productSaleEntry.SaleDate = DateTime.Parse(model.SaleDate).Date;
@@ -417,6 +425,9 @@ public class ProductSaleEntryController(
     {
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
+
         long productSaleEntryId = param.Id;
         var productSaleEntry = db.ProductSaleEntry.Find(productSaleEntryId);
         if (productSaleEntry is null)
@@ -424,16 +435,17 @@ public class ProductSaleEntryController(
             throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
         }
 
+        long productSaleId = productSaleEntry.ProductSaleId;
+        productSaleService.CheckDataPrivilege(productSaleId, loginUserId, isAdminLogin);
+
         db.ProductSaleEntry.Remove(productSaleEntry);
         db.SaveChanges();
 
-        long loginUserId = userLoginService.GetLoginUserId();
         string entryActionDesc = $"#{productSaleEntry.Id}";
         actionLogService.Add(loginUserId, ActionLogType.ProductSaleEntryDelete, entryActionDesc);
 
         // 删除最后一个明细数据的时候，删除主数据
         bool productSaleDeleted = false;
-        long productSaleId = productSaleEntry.ProductSaleId;
         var productSaleEntryExists = db.ProductSaleEntry.AsNoTracking()
             .Where(e => e.ProductSaleId == productSaleId)
             .OrderBy(e => e.ProductSaleId)
