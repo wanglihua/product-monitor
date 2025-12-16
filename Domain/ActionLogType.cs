@@ -394,6 +394,21 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
     /// 删除
     /// </summary>
     public static readonly ActionLogType UserProvinceDelete = new(0164_0000, "移除");
+    
+    /// <summary>
+    /// 院校更新记录创建
+    /// </summary>
+    public static readonly ActionLogType CollegeChangeLogCreate = new(0166_0000, "院校更新记录创建");
+
+    /// <summary>
+    /// 院校更新记录更新
+    /// </summary>
+    public static readonly ActionLogType CollegeChangeLogUpdate = new(0168_0000, "院校更新记录更新");
+
+    /// <summary>
+    /// 院校更新记录删除
+    /// </summary>
+    public static readonly ActionLogType CollegeChangeLogDelete = new(0170_0000, "院校更新记录删除");
 
     /// <summary>
     /// None
@@ -484,6 +499,9 @@ public class ActionLogType : CodeTypeBase, ICodeType<ActionLogType>
         ClientKeyDelete,
         UserProvinceCreate,
         UserProvinceDelete,
+        CollegeChangeLogCreate,
+        CollegeChangeLogUpdate,
+        CollegeChangeLogDelete,
     };
 
     private static readonly IDictionary<int, ActionLogType> codeTypeMap = codeTypeList.ToDictionary(e => e.Id);
