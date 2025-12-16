@@ -5,7 +5,7 @@ import CollegeChangeLogDetail from "./college-change-log-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 
 const CollegeChangeLog = () => {
 
@@ -13,6 +13,8 @@ const CollegeChangeLog = () => {
     const collegeId = params.collegeId;
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         collegeId: collegeId,
@@ -124,7 +126,11 @@ const CollegeChangeLog = () => {
         <div>
             <Title title={state.collegeName + "  更新记录"} parentMenuKeys={["basic-setting"]} menuKey="college" breadcrumb={[
                 {title: "基础设置"},
-                {title: "院校目录"},
+                {
+                    title: <span style={{cursor: "pointer"}} onClick={() => {
+                        navigate("/college");
+                    }}>院校目录</span>
+                },
                 {title: "院校更新记录"},
             ]}/>
             <div>
