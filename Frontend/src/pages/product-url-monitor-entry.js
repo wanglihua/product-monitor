@@ -69,14 +69,14 @@ const ProductUrlMonitorEntry = () => {
             width: "150px",
         },
         {
-            title: "账号",
+            title: "使用账号",
             dataIndex: "loginUser",
             width: "150px",
         },
         {
-            title: "密码",
-            dataIndex: "loginPassword",
-            width: "150px",
+            title: "账号分类",
+            dataIndex: "accountType",
+            width: "100px",
         },
         {
             title: "使用IP",
