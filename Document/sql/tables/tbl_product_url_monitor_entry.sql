@@ -5,7 +5,7 @@
     product_url_monitor_id BIGINT        NOT NULL,
 
     login_user             NVARCHAR(128) NOT NULL,
-    login_password         NVARCHAR(128) NOT NULL,
+    account_type           INT           NOT NULL CONSTRAINT df_product_url_monitor_entry_account_type DEFAULT 0,
     ip_address             NVARCHAR(32)  NOT NULL,
     province_type          INT           NOT NULL CONSTRAINT df_product_url_monitor_entry_province_type DEFAULT 0,
     province               NVARCHAR(20)  NOT NULL CONSTRAINT df_product_install_monitor_entry_province DEFAULT '',
@@ -23,7 +23,7 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', '
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'网站监测', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'product_url_monitor_id';
 EXEC sp_AddExtendedProperty 'MS_Description', N'账号', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'login_user';
-EXEC sp_AddExtendedProperty 'MS_Description', N'密码', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'login_password';
+EXEC sp_AddExtendedProperty 'MS_Description', N'账号分类', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'account_type';
 EXEC sp_AddExtendedProperty 'MS_Description', N'使用地址', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'ip_address';
 EXEC sp_AddExtendedProperty 'MS_Description', N'省份', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'province_type';
 EXEC sp_AddExtendedProperty 'MS_Description', N'省份', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'province';

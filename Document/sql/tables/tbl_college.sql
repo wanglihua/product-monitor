@@ -28,3 +28,6 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'办学层次', 'SCHEMA', 'dbo', 
 EXEC sp_AddExtendedProperty 'MS_Description', N'创建时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college', 'COLUMN', 'create_time';
 EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college', 'COLUMN', 'update_time';
 
+-- 这个不能运行应用，因为有重复数据
+-- DROP INDEX ix_college_code ON tbl_college;
+-- CREATE UNIQUE INDEX ix_college_code ON tbl_college (code);

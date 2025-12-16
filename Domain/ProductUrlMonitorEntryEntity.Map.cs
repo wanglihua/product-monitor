@@ -22,9 +22,9 @@ public class ProductUrlMonitorEntryEntityMap : IEntityTypeConfiguration<ProductU
             .HasMaxLength(128)
             .IsRequired(true);
 
-        builder.Property(e => e.LoginPassword)
-            .HasColumnName("login_password")
-            .HasMaxLength(128)
+        builder.Property(e => e.AccountType)
+            .HasConversion<CodeTypeConversion<AccountType>>()
+            .HasColumnName("account_type")
             .IsRequired(true);
 
         builder.Property(e => e.IpAddress)

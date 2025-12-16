@@ -18,9 +18,9 @@ public class ProductUrlMonitorEntryEntity : Entity
     public string LoginUser { get; set; } = "";
 
     /// <summary>
-    /// 密码
+    /// 账号分类
     /// </summary>
-    public string LoginPassword { get; set; } = "";
+    public AccountType AccountType { get; set; } = AccountType.None;
 
     /// <summary>
     /// 使用地址

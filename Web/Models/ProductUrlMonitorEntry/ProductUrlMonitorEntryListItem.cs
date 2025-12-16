@@ -13,8 +13,8 @@ public class ProductUrlMonitorEntryListItem
     [JsonProperty("loginUser")]
     public string LoginUser { get; set; } = "";
 
-    [JsonProperty("loginPassword")]
-    public string LoginPassword { get; set; } = "";
+    [JsonProperty("accountType")]
+    public string AccountType { get; set; } = "";
 
     [JsonProperty("ipAddress")]
     public string IpAddress { get; set; } = "";

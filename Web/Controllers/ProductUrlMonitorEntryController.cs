@@ -94,7 +94,7 @@ public class ProductUrlMonitorEntryController(
                 Id = e.Id,
                 ProductUrlMonitorId = e.ProductUrlMonitorId,
                 LoginUser = e.LoginUser,
-                LoginPassword = e.LoginPassword,
+                AccountType = e.AccountType,
                 IpAddress = e.IpAddress,
                 ProvinceType = e.ProvinceType,
                 CreateTime = e.CreateTime,
@@ -107,7 +107,7 @@ public class ProductUrlMonitorEntryController(
                 Id = e.Id,
                 ProductUrlMonitorId = e.ProductUrlMonitorId,
                 LoginUser = e.LoginUser,
-                LoginPassword = e.LoginPassword,
+                AccountType = e.AccountType.Name,
                 IpAddress = e.IpAddress,
                 ProvinceType = e.ProvinceType.Name,
                 CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
@@ -140,7 +140,7 @@ public class ProductUrlMonitorEntryController(
             Id = 0,
             ProductUrlMonitorId = 0,
             LoginUser = "",
-            LoginPassword = "",
+            AccountType = AccountType.None.Id,
             IpAddress = "",
             ProvinceType = 0,
         };
@@ -154,7 +154,7 @@ public class ProductUrlMonitorEntryController(
                     Id = productUrlMonitorEntry.Id,
                     ProductUrlMonitorId = productUrlMonitorEntry.ProductUrlMonitorId,
                     LoginUser = productUrlMonitorEntry.LoginUser,
-                    LoginPassword = productUrlMonitorEntry.LoginPassword,
+                    AccountType = productUrlMonitorEntry.AccountType.Id,
                     IpAddress = productUrlMonitorEntry.IpAddress,
                     ProvinceType = productUrlMonitorEntry.ProvinceType.Id,
                 };
@@ -194,7 +194,7 @@ public class ProductUrlMonitorEntryController(
 
         productUrlMonitorEntry.ProductUrlMonitorId = model.ProductUrlMonitorId;
         productUrlMonitorEntry.LoginUser = model.LoginUser ?? "";
-        productUrlMonitorEntry.LoginPassword = model.LoginPassword ?? "";
+        productUrlMonitorEntry.AccountType = AccountType.GetById(model.AccountType);
         productUrlMonitorEntry.IpAddress = model.IpAddress ?? "";
         productUrlMonitorEntry.ProvinceType = ProvinceType.GetById(model.ProvinceType);
 

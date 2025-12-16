@@ -1,3 +1,4 @@
+using Domain;
 using FluentValidation;
 using Newtonsoft.Json;
 
@@ -14,8 +15,8 @@ public class ProductUrlMonitorEntryDetailModel
     [JsonProperty("loginUser")]
     public string LoginUser { get; set; } = "";
 
-    [JsonProperty("loginPassword")]
-    public string LoginPassword { get; set; } = "";
+    [JsonProperty("accountType")]
+    public int AccountType { get; set; }
 
     [JsonProperty("ipAddress")]
     public string IpAddress { get; set; } = "";
@@ -35,9 +36,7 @@ public class ProductUrlMonitorEntryDetailModelValidator : AbstractValidator<Prod
         RuleFor(e => e.LoginUser).NotEmpty().WithMessage("账号不能为空!");
         RuleFor(e => e.LoginUser).MaximumLength(128).WithMessage("账号最大长度不能超过128!");
 
-        RuleFor(e => e.LoginPassword).NotNull().WithMessage("密码不能为空!");
-        RuleFor(e => e.LoginPassword).NotEmpty().WithMessage("密码不能为空!");
-        RuleFor(e => e.LoginPassword).MaximumLength(128).WithMessage("密码最大长度不能超过128!");
+        RuleFor(e => e.AccountType).Must(p => AccountType.GetById(p) != AccountType.None).WithMessage("账号分类不能为空!");
 
         RuleFor(e => e.IpAddress).NotNull().WithMessage("使用地址不能为空!");
         RuleFor(e => e.IpAddress).NotEmpty().WithMessage("使用地址不能为空!");

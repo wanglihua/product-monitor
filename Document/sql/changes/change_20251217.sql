@@ -32,3 +32,12 @@ CREATE UNIQUE INDEX ix_product_name ON tbl_product (name);
 -- DROP INDEX ix_college_code ON tbl_college;
 -- CREATE UNIQUE INDEX ix_college_code ON tbl_college (code);
 CREATE UNIQUE INDEX ix_college_name ON tbl_college (name);
+
+ALTER TABLE tbl_product_url_monitor_entry
+    DROP COLUMN login_password;
+
+ALTER TABLE tbl_product_url_monitor_entry
+    ADD account_type INT NOT NULL CONSTRAINT df_product_url_monitor_entry_account_type DEFAULT 0;
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'账号分类', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_url_monitor_entry', 'COLUMN', 'account_type';
+
