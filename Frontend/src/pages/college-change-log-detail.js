@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 
 const CollegeChangeLogDetailInner = (props) => {
     const collegeChangeLogId = props.collegeChangeLogId;
+    const collegeId = props.collegeId;
     const open = props.open;
     const self = props.self;
     const loadCollegeChangeLogList = props.loadCollegeChangeLogList;
@@ -50,7 +51,8 @@ const CollegeChangeLogDetailInner = (props) => {
             afterOpenChange={(open) => {
                 if (open === true) {
                     post("/api/college-change-log/detail", {
-                        "id": collegeChangeLogId
+                        "id": collegeChangeLogId,
+                        "collegeId": collegeId,
                     }, function (response) {
                         const res = response.data;
                         if (res.success !== true) {
@@ -87,7 +89,7 @@ const CollegeChangeLogDetailInner = (props) => {
                     onFinish={(values) => {
                         post("/api/college-change-log/save", {
                             id: collegeChangeLogId,
-                            collegeId: values.collegeId,
+                            collegeId: collegeId,
                             changeDesc: values.changeDesc,
                             formerName: values.formerName,
                         }, function (response) {
@@ -114,40 +116,6 @@ const CollegeChangeLogDetailInner = (props) => {
                         column={1}
                         labelStyle={{width: "120px"}}
                     >
-                        <Descriptions.Item label="院校">
-                            <Form.Item
-                                name="collegeId"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入院校!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={8}
-                                    placeholder="院校"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
-                        <Descriptions.Item label="更新描述">
-                            <Form.Item
-                                name="changeDesc"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入更新描述!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    maxLength={512}
-                                    placeholder="更新描述"
-                                    allowClear
-                                />
-                            </Form.Item>
-                        </Descriptions.Item>
                         <Descriptions.Item label="曾用名">
                             <Form.Item
                                 name="formerName"
@@ -165,6 +133,25 @@ const CollegeChangeLogDetailInner = (props) => {
                                 />
                             </Form.Item>
                         </Descriptions.Item>
+                        <Descriptions.Item label="更新描述">
+                            <Form.Item
+                                name="changeDesc"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请输入更新描述!',
+                                    },
+                                ]}
+                            >
+                                <Input.TextArea
+                                    rows={3}
+                                    maxLength={500}
+                                    placeholder="更新描述"
+                                    allowClear
+                                />
+                            </Form.Item>
+                        </Descriptions.Item>
+
                     </Descriptions>
 
                     <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "right"}}>
@@ -181,7 +168,6 @@ const CollegeChangeLogDetailInner = (props) => {
                         </Space>
                     </Form.Item>
                 </Form>
-
             </ConfigProvider>
         </Modal>
     );
@@ -191,21 +177,23 @@ class CollegeChangeLogDetail extends React.Component {
     constructor(props) {
         super(props);
 
+        const collegeId = props.collegeId;
         this.loadCollegeChangeLogList = props.loadCollegeChangeLogList;
 
         this.state = {
             collegeChangeLogId: 0,
+            collegeId: collegeId,
             open: false,
         };
     }
 
     show = (collegeChangeLogId) => {
         this.setState((pre) => {
-           return {
+            return {
                 ...pre,
                 collegeChangeLogId: collegeChangeLogId,
                 open: true,
-           };
+            };
         });
     }
 
@@ -221,12 +209,14 @@ class CollegeChangeLogDetail extends React.Component {
 
     render() {
         const collegeChangeLogId = this.state.collegeChangeLogId;
+        const collegeId = this.state.collegeId;
         const open = this.state.open;
         const loadCollegeChangeLogList = this.loadCollegeChangeLogList;
 
         return (
             <CollegeChangeLogDetailInner
                 collegeChangeLogId={collegeChangeLogId}
+                collegeId={collegeId}
                 open={open}
                 self={this}
                 loadCollegeChangeLogList={loadCollegeChangeLogList}

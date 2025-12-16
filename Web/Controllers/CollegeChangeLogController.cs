@@ -30,6 +30,11 @@ public class CollegeChangeLogController(
         ValidationUtil.Validate<CollegeChangeLogListParamValidator, CollegeChangeLogListParam>(param);
 
         long collegeId = param.CollegeId;
+        var college = db.College.Find(collegeId);
+        if (college is null)
+        {
+            throw new ValidationException($"指定的院校#{collegeId}不存在！");
+        }
 
         IQueryable<CollegeChangeLogEntity> query = db.CollegeChangeLog.AsNoTracking();
         query = query.Where(e => e.CollegeId == collegeId);
@@ -87,10 +92,12 @@ public class CollegeChangeLogController(
             })
             .ToList();
 
+        string collegeName = college.Name;
         return Json(new JsonResultData {
             Success = true,
             Message = "success",
             Data = new Dictionary<string, object> {
+                ["collegeName"] = collegeName,
                 ["collegeChangeLogList"] = collegeChangeLogItemList,
                 ["collegeChangeLogCount"] = collegeChangeLogCount,
             },
@@ -100,15 +107,30 @@ public class CollegeChangeLogController(
     [HttpPost]
     [Route("/api/college-change-log/detail")]
     [Transactional(false)]
-    public IActionResult Detail([FromBody] IdParam param)
+    public IActionResult Detail([FromBody] CollegeChangeLogDetailParam param)
     {
-        ValidationUtil.Validate<IdParamEmptyValidator, IdParam>(param);
+        ValidationUtil.Validate<CollegeChangeLogDetailParamValidator, CollegeChangeLogDetailParam>(param);
 
+        long collegeId = param.CollegeId;
         long collegeChangeLogId = param.Id;
+
+        if (collegeChangeLogId <= 0)
+        {
+            if (collegeId <= 0)
+            {
+                throw new ValidationException("添加时院校Id不能为空！");
+            }
+
+            var college = db.College.Find(collegeId);
+            if (college is null)
+            {
+                throw new ValidationException($"指定的院校#{collegeId}不存在！");
+            }
+        }
 
         var model = new CollegeChangeLogDetailModel {
             Id = 0,
-            CollegeId = 0,
+            CollegeId = collegeId,
             ChangeDesc = "",
             FormerName = "",
         };
@@ -160,7 +182,11 @@ public class CollegeChangeLogController(
             }
         }
 
-        collegeChangeLog.CollegeId = model.CollegeId;
+        if (collegeChangeLogId <= 0)
+        {
+            collegeChangeLog.CollegeId = model.CollegeId;
+        }
+
         collegeChangeLog.ChangeDesc = model.ChangeDesc ?? "";
         collegeChangeLog.FormerName = model.FormerName ?? "";
 

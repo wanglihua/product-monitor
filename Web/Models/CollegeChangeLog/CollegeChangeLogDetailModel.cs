@@ -22,7 +22,16 @@ public class CollegeChangeLogDetailModelValidator : AbstractValidator<CollegeCha
 {
     public CollegeChangeLogDetailModelValidator()
     {
-        RuleFor(e => e.CollegeId).Must(p => p > 0).WithMessage("院校不能为空!");
+        RuleFor(e => e.CollegeId)
+            .Must((e, p) => {
+                if (e.Id <= 0)
+                {
+                    return p > 0;
+                }
+
+                return true;
+            })
+            .WithMessage("院校不能为空!");
 
         RuleFor(e => e.FormerName).NotNull().WithMessage("曾用名不能为空!");
         RuleFor(e => e.FormerName).NotEmpty().WithMessage("曾用名不能为空!");

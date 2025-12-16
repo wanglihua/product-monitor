@@ -24,6 +24,7 @@ const CollegeChangeLog = () => {
     });
 
     const [state, setState] = useState({
+        collegeName: "",
         collegeChangeLogList: [],
         collegeChangeLogCount: 0,
     });
@@ -39,6 +40,7 @@ const CollegeChangeLog = () => {
             setState((pre) => {
                 return {
                     ...pre,
+                    collegeName: res.data.collegeName,
                     collegeChangeLogList: res.data.collegeChangeLogList,
                     collegeChangeLogCount: res.data.collegeChangeLogCount,
                 };
@@ -118,35 +120,15 @@ const CollegeChangeLog = () => {
         loadCollegeChangeLogList();
     }, [JSON.stringify(listParam)]);
 
-    const nameQueryRef = useRef();
-
     return (
         <div>
-            <Title title="院校更新记录" parentMenuKeys={["basic-setting"]} menuKey="college" breadcrumb={[
+            <Title title={state.collegeName + "  更新记录"} parentMenuKeys={["basic-setting"]} menuKey="college" breadcrumb={[
                 {title: "基础设置"},
                 {title: "院校目录"},
                 {title: "院校更新记录"},
             ]}/>
             <div>
                 <Space>
-                    <Input ref={nameQueryRef} addonBefore="名称" placeholder="名称查询" style={{width: 320}}/>
-                    <Button
-                        color="default"
-                        icon={<SearchOutlined/>}
-                        onClick={(e) => {
-                            const nameQuery = nameQueryRef.current.input.value;
-
-                            setListParam((pre) => {
-                                return {
-                                    ...pre,
-                                    nameQuery: nameQuery,
-                                    current_millis: Date.now(),
-                                };
-                            });
-                        }}
-                    >
-                        查询
-                    </Button>
                     <Button
                         color="default"
                         icon={<PlusCircleOutlined style={{color: "green"}}/>}
@@ -182,7 +164,7 @@ const CollegeChangeLog = () => {
                        }}
                 />
             </div>
-            <CollegeChangeLogDetail ref={collegeChangeLogDetail} loadCollegeChangeLogList={loadCollegeChangeLogList}/>
+            <CollegeChangeLogDetail ref={collegeChangeLogDetail} collegeId={collegeId} loadCollegeChangeLogList={loadCollegeChangeLogList}/>
         </div>
     );
 };
