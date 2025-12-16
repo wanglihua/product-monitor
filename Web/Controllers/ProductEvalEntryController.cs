@@ -19,6 +19,7 @@ namespace Web.Controllers;
 public class ProductEvalEntryController(
     Db db,
     UserLoginService userLoginService,
+    UserProvinceService userProvinceService,
     ActionLogService actionLogService,
     ProductEvalService productEvalService) : Controller
 {
@@ -29,6 +30,10 @@ public class ProductEvalEntryController(
         public ProductEvalEntryEntity ProductEvalEntry { get; set; } = new();
 
         public UserEntity User { get; set; } = new();
+
+        public ProductEvalEntity ProductEval { get; set; } = new();
+
+        public CollegeEntity College { get; set; } = new();
     }
 
     [HttpPost]
@@ -38,15 +43,41 @@ public class ProductEvalEntryController(
     {
         ValidationUtil.Validate<ProductEvalEntryListParamValidator, ProductEvalEntryListParam>(param);
 
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
+
         IQueryable<ProductEvalEntryJoinItem> query = db.ProductEvalEntry
             .Join(db.User,
-                pse => pse.UserId,
+                pee => pee.UserId,
                 u => u.Id,
-                (pse, u) => new ProductEvalEntryJoinItem {
-                    ProductEvalEntry = pse,
+                (pee, u) => new ProductEvalEntryJoinItem {
+                    ProductEvalEntry = pee,
                     User = u,
                 })
+            .Join(db.ProductEval,
+                pee => pee.ProductEvalEntry.ProductEvalId,
+                pe => pe.Id,
+                (pee, pe) => new ProductEvalEntryJoinItem {
+                    ProductEvalEntry = pee.ProductEvalEntry,
+                    User = pee.User,
+                    ProductEval = pe,
+                })
+            .Join(db.College,
+                pee => pee.ProductEval.CollegeId,
+                c => c.Id,
+                (pee, c) => new ProductEvalEntryJoinItem {
+                    ProductEvalEntry = pee.ProductEvalEntry,
+                    User = pee.User,
+                    ProductEval = pee.ProductEval,
+                    College = c
+                })
             .AsNoTracking();
+
+        if (isAdminLogin == false)
+        {
+            var userProvinceList = userProvinceService.GetUserProvinceList(loginUserId);
+            query = query.Where(e => userProvinceList.Contains(e.College.Province));
+        }
 
         long productEvalId = param.ProductEvalId;
         var productEval = db.ProductEval.Find(productEvalId);
@@ -152,14 +183,19 @@ public class ProductEvalEntryController(
     [Transactional(false)]
     public IActionResult Detail([FromBody] ProductEvalEntryDetailParam param)
     {
+        ValidationUtil.Validate<ProductEvalEntryDetailParamValidator, ProductEvalEntryDetailParam>(param);
+
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
+
         long productEvalEntryId = param.ProductEvalEntryId;
+        long productEvalId = param.ProductEvalId;
 
         long collegeId = 0;
         string collegeName = "";
         long productId = 0;
         string productName = "";
 
-        long productEvalId = param.ProductEvalId;
         if (productEvalEntryId > 0)
         {
             var productEvalEntry = db.ProductEvalEntry.Find(productEvalEntryId);
@@ -171,32 +207,32 @@ public class ProductEvalEntryController(
             productEvalId = productEvalEntry.ProductEvalId;
         }
 
-        if (productEvalId > 0)
+        productEvalService.CheckDataPrivilege(productEvalId, loginUserId, isAdminLogin);
+
+        var productEval = db.ProductEval.Find(productEvalId);
+        if (productEval is null)
         {
-            var productEval = db.ProductEval.Find(productEvalId);
-            if (productEval is null)
-            {
-                throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
-            }
-
-            collegeId = productEval.CollegeId;
-            var college = db.College.Find(collegeId);
-            if (college is null)
-            {
-                throw new ValidationException($"指定学校#{collegeId}不存在!");
-            }
-
-            collegeName = college.Name;
-
-            productId = productEval.ProductId;
-            var product = db.Product.Find(productId);
-            if (product is null)
-            {
-                throw new ValidationException($"指定产品#{productId}不存在!");
-            }
-
-            productName = product.Name;
+            throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
         }
+
+        collegeId = productEval.CollegeId;
+        var college = db.College.Find(collegeId);
+        if (college is null)
+        {
+            throw new ValidationException($"指定学校#{collegeId}不存在!");
+        }
+
+        collegeName = college.Name;
+
+        productId = productEval.ProductId;
+        var product = db.Product.Find(productId);
+        if (product is null)
+        {
+            throw new ValidationException($"指定产品#{productId}不存在!");
+        }
+
+        productName = product.Name;
+
 
         var model = new ProductEvalEntryDetailModel {
             ProductEvalEntryId = productEvalEntryId,
@@ -303,6 +339,7 @@ public class ProductEvalEntryController(
         }
 
         long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
 
         long productEvalEntryId = model.ProductEvalEntryId;
         bool isCreate = productEvalEntryId == 0;
@@ -341,6 +378,9 @@ public class ProductEvalEntryController(
                 productEvalEntry.ProductEvalId = productEvalId;
             }
         }
+
+        long productEvalBindId = productEvalEntry.ProductEvalId;
+        productEvalService.CheckDataPrivilege(productEvalBindId, loginUserId, isAdminLogin);
 
         productEvalEntry.BeginDate = beginDate;
         productEvalEntry.EndDate = endDate;
@@ -392,6 +432,9 @@ public class ProductEvalEntryController(
     {
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
+
         long productEvalEntryId = param.Id;
         var productEvalEntry = db.ProductEvalEntry.Find(productEvalEntryId);
         if (productEvalEntry is null)
@@ -399,16 +442,17 @@ public class ProductEvalEntryController(
             throw new ValidationException($"指定的试用目录明细#{productEvalEntryId}不存在!");
         }
 
+        long productEvalId = productEvalEntry.ProductEvalId;
+        productEvalService.CheckDataPrivilege(productEvalId, loginUserId, isAdminLogin);
+
         db.ProductEvalEntry.Remove(productEvalEntry);
         db.SaveChanges();
 
-        long loginUserId = userLoginService.GetLoginUserId();
         string entryActionDesc = $"#{productEvalEntry.Id}";
         actionLogService.Add(loginUserId, ActionLogType.ProductEvalEntryDelete, entryActionDesc);
 
         // 删除最后一个明细数据的时候，删除主数据
         bool productEvalDeleted = false;
-        long productEvalId = productEvalEntry.ProductEvalId;
         var productEvalEntryExists = db.ProductEvalEntry.AsNoTracking()
             .Where(e => e.ProductEvalId == productEvalId)
             .OrderBy(e => e.ProductEvalId)

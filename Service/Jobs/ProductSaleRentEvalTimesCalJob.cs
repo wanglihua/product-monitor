@@ -31,7 +31,8 @@ public class ProductSaleRentEvalTimesCalJob : IJob
     {
         DateTime someTimeAgo = DateTime.Now.Subtract(TimeSpan.FromMinutes(TaskIntervalMinutes * 3));
 
-        Db db = new Db();
+        var db = new Db();
+        var userProvinceService = new UserProvinceService(db);
 
         // 销售目录
         var productSaleService = new ProductSaleService(db);
@@ -53,7 +54,7 @@ public class ProductSaleRentEvalTimesCalJob : IJob
         }
 
         // 试用目录
-        var productEvalService = new ProductEvalService(db);
+        var productEvalService = new ProductEvalService(db, userProvinceService);
         var productEvalListToUpdate = db.ProductEval.Where(e => e.UpdateTime > someTimeAgo).ToList();
         foreach (var productEval in productEvalListToUpdate)
         {

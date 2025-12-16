@@ -6,7 +6,9 @@ using NLog;
 namespace Service.ProductEval;
 
 [Service(ServiceType.Scoped)]
-public class ProductEvalService(Db db)
+public class ProductEvalService(
+    Db db,
+    UserProvinceService userProvinceService)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
@@ -109,5 +111,30 @@ public class ProductEvalService(Db db)
         productEval.ServiceTimes = serviceTimes;
 
         db.SaveChanges();
+    }
+
+    public void CheckDataPrivilege(long productEvalId, long loginUserId, bool isAdminLogin)
+    {
+        var productEval = db.ProductEval.Find(productEvalId);
+        if (productEval is null)
+        {
+            throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
+        }
+
+        long collegeId = productEval.CollegeId;
+        var college = db.College.Find(collegeId);
+        if (college is null)
+        {
+            throw new ValidationException($"指定学校#{collegeId}不存在!");
+        }
+
+        if (isAdminLogin == false)
+        {
+            var userProvinceList = userProvinceService.GetUserProvinceList(loginUserId);
+            if (userProvinceList.Contains(college.Province) == false)
+            {
+                throw new ValidationException($"院校 {college.Name} 不在用户负责区域！");
+            }
+        }
     }
 }
