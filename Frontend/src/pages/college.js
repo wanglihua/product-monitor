@@ -1,16 +1,20 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined, FileExcelOutlined} from '@ant-design/icons';
+import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined, FileExcelOutlined, UnorderedListOutlined} from '@ant-design/icons';
 import CollegeDetail from "./college-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
+
+import {useNavigate} from "react-router";
 import $ from "jquery";
 import download from "../core/download";
 
 const College = () => {
 
     const {post, showConfirm, showError, showSuccess} = useSiteContext();
+
+    const navigate = useNavigate();
 
     const [listParam, setListParam] = useState({
         codeQuery: "",
@@ -93,6 +97,12 @@ const College = () => {
             render: (text, record, index) => {
                 return (
                     <Space>
+                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                            const collegeId = record.id;
+                            navigate(`/college/change/log/${collegeId}`);
+                        }}>
+                            <UnorderedListOutlined/>更新记录
+                        </Button>
                         <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             const collegeId = record.id;
                             collegeDetail.current.show(collegeId);

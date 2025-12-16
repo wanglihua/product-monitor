@@ -41,6 +41,7 @@ import UserProfilePassword from "./pages/user-profile-password";
 import UserProfileProvince from "./pages/user-profile-province";
 import ClientKey from "./pages/client-key";
 import UserProvince from "./pages/user-province";
+import CollegeChangeLog from "./pages/college-change-log";
 
 const Router = () => {
     return (
@@ -55,6 +56,7 @@ const Router = () => {
                     <Route path="/product" element={<Product/>}/>
                     <Route path="/product-version/:productId" element={<ProductVersion/>}/>
                     <Route path="/college" element={<College/>}/>
+                    <Route path="/college/change/log/:collegeId" element={<CollegeChangeLog/>}/>
                     <Route path="/product-url" element={<ProductUrl/>}/>
                     <Route path="/product-sale" element={<ProductSale/>}/>
                     <Route path="/product-sale-entry/:productSaleId" element={<ProductSaleEntry/>}/>

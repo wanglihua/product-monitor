@@ -29,7 +29,10 @@ public class CollegeChangeLogController(
     {
         ValidationUtil.Validate<CollegeChangeLogListParamValidator, CollegeChangeLogListParam>(param);
 
+        long collegeId = param.CollegeId;
+
         IQueryable<CollegeChangeLogEntity> query = db.CollegeChangeLog.AsNoTracking();
+        query = query.Where(e => e.CollegeId == collegeId);
 
         int collegeChangeLogCount = query.Count();
 
