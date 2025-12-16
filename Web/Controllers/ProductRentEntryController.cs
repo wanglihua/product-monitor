@@ -181,6 +181,11 @@ public class ProductRentEntryController(
     [Transactional(false)]
     public IActionResult Detail([FromBody] ProductRentEntryDetailParam param)
     {
+        ValidationUtil.Validate<ProductRentEntryDetailParamValidator, ProductRentEntryDetailParam>(param);
+
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
+
         long productRentEntryId = param.ProductRentEntryId;
 
         long collegeId = 0;
@@ -200,32 +205,31 @@ public class ProductRentEntryController(
             productRentId = productRentEntry.ProductRentId;
         }
 
-        if (productRentId > 0)
+        productRentService.CheckDataPrivilege(productRentId, loginUserId, isAdminLogin);
+
+        var productRent = db.ProductRent.Find(productRentId);
+        if (productRent is null)
         {
-            var productRent = db.ProductRent.Find(productRentId);
-            if (productRent is null)
-            {
-                throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
-            }
-
-            collegeId = productRent.CollegeId;
-            var college = db.College.Find(collegeId);
-            if (college is null)
-            {
-                throw new ValidationException($"指定学校#{collegeId}不存在!");
-            }
-
-            collegeName = college.Name;
-
-            productId = productRent.ProductId;
-            var product = db.Product.Find(productId);
-            if (product is null)
-            {
-                throw new ValidationException($"指定产品#{productId}不存在!");
-            }
-
-            productName = product.Name;
+            throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
         }
+
+        collegeId = productRent.CollegeId;
+        var college = db.College.Find(collegeId);
+        if (college is null)
+        {
+            throw new ValidationException($"指定学校#{collegeId}不存在!");
+        }
+
+        collegeName = college.Name;
+
+        productId = productRent.ProductId;
+        var product = db.Product.Find(productId);
+        if (product is null)
+        {
+            throw new ValidationException($"指定产品#{productId}不存在!");
+        }
+
+        productName = product.Name;
 
         var model = new ProductRentEntryDetailModel {
             ProductRentEntryId = productRentEntryId,
@@ -332,6 +336,7 @@ public class ProductRentEntryController(
         }
 
         long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
 
         long productRentEntryId = model.ProductRentEntryId;
         bool isCreate = productRentEntryId == 0;
@@ -370,6 +375,9 @@ public class ProductRentEntryController(
                 productRentEntry.ProductRentId = productRentId;
             }
         }
+
+        long productRentBindId = productRentEntry.ProductRentId;
+        productRentService.CheckDataPrivilege(productRentBindId, loginUserId, isAdminLogin);
 
         productRentEntry.BeginDate = beginDate;
         productRentEntry.EndDate = endDate;
@@ -422,6 +430,9 @@ public class ProductRentEntryController(
     {
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
+        long loginUserId = userLoginService.GetLoginUserId();
+        bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
+
         long productRentEntryId = param.Id;
         var productRentEntry = db.ProductRentEntry.Find(productRentEntryId);
         if (productRentEntry is null)
@@ -429,16 +440,17 @@ public class ProductRentEntryController(
             throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
         }
 
+        long productRentId = productRentEntry.ProductRentId;
+        productRentService.CheckDataPrivilege(productRentId, loginUserId, isAdminLogin);
+
         db.ProductRentEntry.Remove(productRentEntry);
         db.SaveChanges();
 
-        long loginUserId = userLoginService.GetLoginUserId();
         string entryActionDesc = $"#{productRentEntry.Id}";
         actionLogService.Add(loginUserId, ActionLogType.ProductRentEntryDelete, entryActionDesc);
 
         // 删除最后一个明细数据的时候，删除主数据
         bool productRentDeleted = false;
-        long productRentId = productRentEntry.ProductRentId;
         var productRentEntryExists = db.ProductRentEntry.AsNoTracking()
             .Where(e => e.ProductRentId == productRentId)
             .OrderBy(e => e.ProductRentId)
