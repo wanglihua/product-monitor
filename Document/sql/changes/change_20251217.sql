@@ -12,3 +12,11 @@ DROP INDEX ix_user_login_name ON tbl_user;
 
 CREATE UNIQUE INDEX ix_user_login_name ON tbl_user (login_name);
 
+ALTER TABLE tbl_college_change_log
+    ADD former_name NVARCHAR(128) NOT NULL CONSTRAINT df_college_change_log_name DEFAULT '';
+
+ALTER TABLE tbl_college_change_log
+    ADD update_time DATETIME NOT NULL;
+
+EXEC sp_AddExtendedProperty 'MS_Description', N'曾用名', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college_change_log', 'COLUMN', 'former_name';
+EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college_change_log', 'COLUMN', 'update_time';
