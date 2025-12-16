@@ -138,7 +138,6 @@ const CollegeChangeLogDetailInner = (props) => {
                                 name="changeDesc"
                                 rules={[
                                     {
-                                        required: true,
                                         message: '请输入更新描述!',
                                     },
                                 ]}

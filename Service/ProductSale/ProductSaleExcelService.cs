@@ -7,12 +7,14 @@ using Microsoft.EntityFrameworkCore;
 using NLog;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using Service.College;
 
 namespace Service.ProductSale;
 
 [Service(ServiceType.Scoped)]
 public class ProductSaleExcelService(
     Db db,
+    CollegeService collegeService,
     ProductSaleService productSaleService)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
@@ -198,10 +200,12 @@ public class ProductSaleExcelService(
                 break;
             }
 
-            var college = db.College.AsNoTracking()
-                .Where(e => e.Name == collegeName)
-                .Take(1)
-                .SingleOrDefault();
+            // var college = db.College.AsNoTracking()
+            //     .Where(e => e.Name == collegeName)
+            //     .Take(1)
+            //     .SingleOrDefault();
+
+            var college = collegeService.GetCollegeByNameOrFormerName(collegeName);
             if (college is null)
             {
                 throw new ValidationException($"Excel第 {rowIndex + 1} 行，指定的 院校名称 不存在！");

@@ -37,8 +37,6 @@ public class CollegeChangeLogDetailModelValidator : AbstractValidator<CollegeCha
         RuleFor(e => e.FormerName).NotEmpty().WithMessage("曾用名不能为空!");
         RuleFor(e => e.FormerName).MaximumLength(128).WithMessage("曾用名最大长度不能超过128!");
 
-        RuleFor(e => e.ChangeDesc).NotNull().WithMessage("更新描述不能为空!");
-        RuleFor(e => e.ChangeDesc).NotEmpty().WithMessage("更新描述不能为空!");
         RuleFor(e => e.ChangeDesc).MaximumLength(512).WithMessage("更新描述最大长度不能超过512!");
     }
 }

@@ -187,8 +187,8 @@ public class CollegeChangeLogController(
             collegeChangeLog.CollegeId = model.CollegeId;
         }
 
-        collegeChangeLog.ChangeDesc = model.ChangeDesc ?? "";
         collegeChangeLog.FormerName = model.FormerName ?? "";
+        collegeChangeLog.ChangeDesc = model.ChangeDesc ?? "";
 
         if (isCreate == true)
         {
