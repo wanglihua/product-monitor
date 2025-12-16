@@ -12,8 +12,10 @@
     update_time         DATETIME      NOT NULL,
 
     CONSTRAINT pk_product PRIMARY KEY (id),
-    INDEX ix_product_name (name),
+    INDEX ix_product_name (NAME),
 );
+
+CREATE UNIQUE INDEX ix_product_name ON tbl_product (name);
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'产品目录', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product';
 

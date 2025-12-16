@@ -23,3 +23,12 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'更新时间', 'SCHEMA', 'dbo', 
 
 
 CREATE INDEX ix_college_change_log_former_name ON tbl_college_change_log (former_name);
+
+CREATE UNIQUE INDEX ix_group_name ON tbl_group (name);
+
+DROP INDEX ix_product_name ON tbl_product;
+CREATE UNIQUE INDEX ix_product_name ON tbl_product (name);
+
+-- DROP INDEX ix_college_code ON tbl_college;
+-- CREATE UNIQUE INDEX ix_college_code ON tbl_college (code);
+CREATE UNIQUE INDEX ix_college_name ON tbl_college (name);

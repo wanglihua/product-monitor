@@ -13,6 +13,9 @@
     INDEX ix_college_code (code),
 );
 
+-- CREATE UNIQUE INDEX ix_college_code ON tbl_college (code);
+CREATE UNIQUE INDEX ix_college_name ON tbl_college (name);
+
 EXEC sp_AddExtendedProperty 'MS_Description', N'院校目录', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college';
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college', 'COLUMN', 'id';
