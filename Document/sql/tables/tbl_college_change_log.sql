@@ -13,6 +13,7 @@
     CONSTRAINT pk_college_change_log PRIMARY KEY (id),
     CONSTRAINT fk_college_change_log_college_id FOREIGN KEY (college_id) REFERENCES tbl_college (id),
     INDEX ix_college_change_log_college_id (college_id),
+    INDEX ix_college_change_log_former_name (former_name)
 );
 
 EXEC sp_AddExtendedProperty 'MS_Description', N'院校更新记录', 'SCHEMA', 'dbo', 'TABLE', 'tbl_college_change_log';

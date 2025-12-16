@@ -122,7 +122,9 @@ const CollegeChangeLog = () => {
 
     return (
         <div>
-            <Title title="院校更新记录" menuKey="college-change-log" breadcrumb={[
+            <Title title="院校更新记录" parentMenuKeys={["basic-setting"]} menuKey="college" breadcrumb={[
+                {title: "基础设置"},
+                {title: "院校目录"},
                 {title: "院校更新记录"},
             ]}/>
             <div>
