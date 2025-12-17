@@ -272,7 +272,7 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 name="loginUser"
                                 rules={[
                                     {
-                                        required: true,
+                                        required: false,
                                         message: '请输入售后账号!',
                                     },
                                 ]}
@@ -289,7 +289,7 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 name="loginPassword"
                                 rules={[
                                     {
-                                        required: true,
+                                        required: false,
                                         message: '请输入售后密码!',
                                     },
                                 ]}
@@ -306,7 +306,7 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 name="contactTeacher"
                                 rules={[
                                     {
-                                        required: true,
+                                        required: false,
                                         message: '请输入联系老师!',
                                     },
                                 ]}
@@ -323,7 +323,7 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 name="contactMobile"
                                 rules={[
                                     {
-                                        required: true,
+                                        required: false,
                                         message: '请输入联系电话!',
                                     },
                                 ]}

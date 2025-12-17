@@ -78,20 +78,20 @@ public class ProductServiceDetailModelValidator : AbstractValidator<ProductServi
         RuleFor(e => e.ServiceUrl).NotEmpty().WithMessage("售后网址不能为空!");
         RuleFor(e => e.ServiceUrl).MaximumLength(256).WithMessage("售后网址最大长度不能超过256!");
 
-        RuleFor(e => e.LoginUser).NotNull().WithMessage("售后账号不能为空!");
-        RuleFor(e => e.LoginUser).NotEmpty().WithMessage("售后账号不能为空!");
+        // RuleFor(e => e.LoginUser).NotNull().WithMessage("售后账号不能为空!");
+        // RuleFor(e => e.LoginUser).NotEmpty().WithMessage("售后账号不能为空!");
         RuleFor(e => e.LoginUser).MaximumLength(128).WithMessage("售后账号最大长度不能超过128!");
 
-        RuleFor(e => e.LoginPassword).NotNull().WithMessage("售后密码不能为空!");
-        RuleFor(e => e.LoginPassword).NotEmpty().WithMessage("售后密码不能为空!");
+        // RuleFor(e => e.LoginPassword).NotNull().WithMessage("售后密码不能为空!");
+        // RuleFor(e => e.LoginPassword).NotEmpty().WithMessage("售后密码不能为空!");
         RuleFor(e => e.LoginPassword).MaximumLength(128).WithMessage("售后密码最大长度不能超过128!");
 
-        RuleFor(e => e.ContactTeacher).NotNull().WithMessage("联系老师不能为空!");
-        RuleFor(e => e.ContactTeacher).NotEmpty().WithMessage("联系老师不能为空!");
+        // RuleFor(e => e.ContactTeacher).NotNull().WithMessage("联系老师不能为空!");
+        // RuleFor(e => e.ContactTeacher).NotEmpty().WithMessage("联系老师不能为空!");
         RuleFor(e => e.ContactTeacher).MaximumLength(32).WithMessage("联系老师最大长度不能超过32!");
 
-        RuleFor(e => e.ContactMobile).NotNull().WithMessage("联系电话不能为空!");
-        RuleFor(e => e.ContactMobile).NotEmpty().WithMessage("联系电话不能为空!");
+        // RuleFor(e => e.ContactMobile).NotNull().WithMessage("联系电话不能为空!");
+        // RuleFor(e => e.ContactMobile).NotEmpty().WithMessage("联系电话不能为空!");
         RuleFor(e => e.ContactMobile).MaximumLength(32).WithMessage("联系电话最大长度不能超过32!");
 
         RuleFor(e => e.Description).NotNull().WithMessage("售后问题不能为空!");
