@@ -6,7 +6,7 @@ using NLog;
 namespace Service;
 
 [Service(ServiceType.Scoped)]
-public class UserProvinceService(Db db)
+public class UserProvinceService // (Db db)
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 

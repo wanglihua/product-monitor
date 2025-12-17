@@ -244,7 +244,7 @@ const ProductSaleEntryDetailInner = (props) => {
                                 name="version"
                                 rules={[
                                     {
-                                        required: true,
+                                        required: false,
                                         message: '请输入版本号!',
                                     },
                                 ]}
@@ -293,7 +293,7 @@ const ProductSaleEntryDetailInner = (props) => {
                                 name="salesManager"
                                 rules={[
                                     {
-                                        required: true,
+                                        required: false,
                                         message: '请输入客户经理!',
                                     },
                                 ]}
@@ -310,7 +310,7 @@ const ProductSaleEntryDetailInner = (props) => {
                                 name="contactTeacher"
                                 rules={[
                                     {
-                                        required: true,
+                                        required: false,
                                         message: '请输入联系老师!',
                                     },
                                 ]}
@@ -327,7 +327,7 @@ const ProductSaleEntryDetailInner = (props) => {
                                 name="contactMobile"
                                 rules={[
                                     {
-                                        required: true,
+                                        required: false,
                                         message: '请输入联系电话!',
                                     },
                                 ]}
@@ -342,7 +342,11 @@ const ProductSaleEntryDetailInner = (props) => {
                         <Descriptions.Item label="备注">
                             <Form.Item
                                 name="description"
-                                rules={[]}
+                                rules={[
+                                    {
+                                        required: false,
+                                    },
+                                ]}
                             >
                                 <Input.TextArea
                                     rows={2}

@@ -32,7 +32,8 @@ public class ProductSaleRentEvalTimesCalJob : IJob
         DateTime someTimeAgo = DateTime.Now.Subtract(TimeSpan.FromMinutes(TaskIntervalMinutes * 3));
 
         var db = new Db();
-        var userProvinceService = new UserProvinceService(db);
+        // var userProvinceService = new UserProvinceService(db);
+        var userProvinceService = new UserProvinceService();
 
         // 销售目录
         var productSaleService = new ProductSaleService(db, userProvinceService);
