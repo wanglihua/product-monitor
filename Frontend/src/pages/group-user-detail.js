@@ -73,7 +73,7 @@ const GroupUserDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                         post("/api/group-user/save", {
                             groupId: groupId,

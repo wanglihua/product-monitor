@@ -172,7 +172,7 @@ const Login = () => {
                 <Form.Item style={{marginTop: token.formButtonMarginTop, textAlign: "center"}}>
                     <Space>
                         <Button type="primary" size="large" htmlType="submit" style={{width: "180px"}}>
-                            <LoginOutlined />&nbsp;登录
+                            <LoginOutlined/>&nbsp;登录
                         </Button>
                     </Space>
                 </Form.Item>

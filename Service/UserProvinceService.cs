@@ -1,6 +1,6 @@
 using Core;
 using Domain;
-using Microsoft.EntityFrameworkCore;
+// using Microsoft.EntityFrameworkCore;
 using NLog;
 
 namespace Service;
@@ -12,18 +12,20 @@ public class UserProvinceService(Db db)
 
     public IList<ProvinceType> GetUserProvinceList(long userId)
     {
-        var userProvinceList = db.UserProvince.AsNoTracking()
-            .Where(e => e.UserId == userId)
-            .ToList();
+        return ProvinceType.GetList();
 
-        var provinceTypeList = userProvinceList.Select(e => e.ProvinceType).ToList();
-
-        // 这是防止返回的列表是空的， 造成SQL查询时错误
-        if (provinceTypeList.Count == 0)
-        {
-            provinceTypeList.Add(ProvinceType.None);
-        }
-
-        return provinceTypeList;
+        // var userProvinceList = db.UserProvince.AsNoTracking()
+        //     .Where(e => e.UserId == userId)
+        //     .ToList();
+        //
+        // var provinceTypeList = userProvinceList.Select(e => e.ProvinceType).ToList();
+        //
+        // // 这是防止返回的列表是空的， 造成SQL查询时错误
+        // if (provinceTypeList.Count == 0)
+        // {
+        //     provinceTypeList.Add(ProvinceType.None);
+        // }
+        //
+        // return provinceTypeList;
     }
 }

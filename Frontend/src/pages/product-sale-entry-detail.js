@@ -131,7 +131,7 @@ const ProductSaleEntryDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                         post("/api/product-sale-entry/save", {
                             productSaleEntryId: productSaleEntryId,

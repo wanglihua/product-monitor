@@ -85,7 +85,7 @@ const ProductInstallMonitorEntryDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                 >
                     <Descriptions
                         bordered={true}

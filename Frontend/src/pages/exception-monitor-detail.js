@@ -84,7 +84,7 @@ const ExceptionMonitorDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                     }}
                 >

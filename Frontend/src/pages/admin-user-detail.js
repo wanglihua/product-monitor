@@ -57,7 +57,7 @@ const AdminUserDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                         post("/api/admin-user/add/save", {
                             loginName: values.loginName

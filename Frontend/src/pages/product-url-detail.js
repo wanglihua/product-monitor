@@ -103,7 +103,7 @@ const ProductUrlDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                         post("/api/product-url/save", {
                             id: productUrlId,

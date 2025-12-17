@@ -89,7 +89,7 @@ const ClientKeyDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                         post("/api/client-key/save", {
                             id: clientKeyId,

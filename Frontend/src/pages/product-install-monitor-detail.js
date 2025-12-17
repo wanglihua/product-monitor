@@ -87,7 +87,7 @@ const ProductInstallMonitorDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                         post("/api/product-install-monitor/save", {
                             id: productInstallMonitorId,

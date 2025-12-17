@@ -95,7 +95,7 @@ const ProductVersionDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                         post("/api/product-version/save", {
                             id: productVersionId,

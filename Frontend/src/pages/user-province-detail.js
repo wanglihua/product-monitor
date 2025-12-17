@@ -87,7 +87,7 @@ const UserProvinceDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                         post("/api/user-province/save", {
                             id: userProvinceId,

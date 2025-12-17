@@ -94,7 +94,7 @@ const CollegeDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                         post("/api/college/save", {
                             id: collegeId,

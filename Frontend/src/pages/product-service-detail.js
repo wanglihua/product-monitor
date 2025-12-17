@@ -116,7 +116,7 @@ const ProductServiceDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                         post("/api/product-service/save", {
                             id: productServiceId,

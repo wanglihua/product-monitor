@@ -80,7 +80,7 @@ const GroupDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                         post("/api/group/save", {
                             id: groupId,

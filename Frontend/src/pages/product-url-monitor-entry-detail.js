@@ -85,7 +85,7 @@ const ProductUrlMonitorEntryDetailInner = (props) => {
                     ref={form}
                     layout="horizontal"
                     size='middle'
-                    requiredMark={false}
+                    requiredMark={true}
                     onFinish={(values) => {
                         post("/api/product-url-monitor-entry/save", {
                             id: productUrlMonitorEntryId,
