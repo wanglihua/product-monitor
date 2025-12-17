@@ -205,31 +205,34 @@ public class ProductRentEntryController(
             productRentId = productRentEntry.ProductRentId;
         }
 
-        productRentService.CheckDataPrivilege(productRentId, loginUserId, isAdminLogin);
-
-        var productRent = db.ProductRent.Find(productRentId);
-        if (productRent is null)
+        if (productRentId > 0) // 需要有这个判断，因为 有可能只提供了 院校和产品 Id
         {
-            throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
+            productRentService.CheckDataPrivilege(productRentId, loginUserId, isAdminLogin);
+
+            var productRent = db.ProductRent.Find(productRentId);
+            if (productRent is null)
+            {
+                throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
+            }
+
+            collegeId = productRent.CollegeId;
+            var college = db.College.Find(collegeId);
+            if (college is null)
+            {
+                throw new ValidationException($"指定学校#{collegeId}不存在!");
+            }
+
+            collegeName = college.Name;
+
+            productId = productRent.ProductId;
+            var product = db.Product.Find(productId);
+            if (product is null)
+            {
+                throw new ValidationException($"指定产品#{productId}不存在!");
+            }
+
+            productName = product.Name;
         }
-
-        collegeId = productRent.CollegeId;
-        var college = db.College.Find(collegeId);
-        if (college is null)
-        {
-            throw new ValidationException($"指定学校#{collegeId}不存在!");
-        }
-
-        collegeName = college.Name;
-
-        productId = productRent.ProductId;
-        var product = db.Product.Find(productId);
-        if (product is null)
-        {
-            throw new ValidationException($"指定产品#{productId}不存在!");
-        }
-
-        productName = product.Name;
 
         var model = new ProductRentEntryDetailModel {
             ProductRentEntryId = productRentEntryId,

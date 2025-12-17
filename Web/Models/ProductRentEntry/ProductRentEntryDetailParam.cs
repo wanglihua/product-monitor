@@ -16,13 +16,15 @@ public class ProductRentEntryDetailParamValidator : AbstractValidator<ProductRen
 {
     public ProductRentEntryDetailParamValidator()
     {
-        RuleFor(e => e.ProductRentId).Must((e, p) => {
-            if (e.ProductRentEntryId <= 0 && p <= 0)
-            {
-                return false;
-            }
-
-            return true;
-        }).WithMessage("租赁目录Id不能为空！");
+        // 有可能只提供了 院校和产品 Id
+        
+        // RuleFor(e => e.ProductRentId).Must((e, p) => {
+        //     if (e.ProductRentEntryId <= 0 && p <= 0)
+        //     {
+        //         return false;
+        //     }
+        //
+        //     return true;
+        // }).WithMessage("租赁目录Id不能为空！");
     }
 }

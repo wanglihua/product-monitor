@@ -207,32 +207,34 @@ public class ProductEvalEntryController(
             productEvalId = productEvalEntry.ProductEvalId;
         }
 
-        productEvalService.CheckDataPrivilege(productEvalId, loginUserId, isAdminLogin);
-
-        var productEval = db.ProductEval.Find(productEvalId);
-        if (productEval is null)
+        if (productEvalId > 0) // 需要有这个判断，因为 有可能只提供了 院校和产品 Id
         {
-            throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
+            productEvalService.CheckDataPrivilege(productEvalId, loginUserId, isAdminLogin);
+
+            var productEval = db.ProductEval.Find(productEvalId);
+            if (productEval is null)
+            {
+                throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
+            }
+
+            collegeId = productEval.CollegeId;
+            var college = db.College.Find(collegeId);
+            if (college is null)
+            {
+                throw new ValidationException($"指定学校#{collegeId}不存在!");
+            }
+
+            collegeName = college.Name;
+
+            productId = productEval.ProductId;
+            var product = db.Product.Find(productId);
+            if (product is null)
+            {
+                throw new ValidationException($"指定产品#{productId}不存在!");
+            }
+
+            productName = product.Name;
         }
-
-        collegeId = productEval.CollegeId;
-        var college = db.College.Find(collegeId);
-        if (college is null)
-        {
-            throw new ValidationException($"指定学校#{collegeId}不存在!");
-        }
-
-        collegeName = college.Name;
-
-        productId = productEval.ProductId;
-        var product = db.Product.Find(productId);
-        if (product is null)
-        {
-            throw new ValidationException($"指定产品#{productId}不存在!");
-        }
-
-        productName = product.Name;
-
 
         var model = new ProductEvalEntryDetailModel {
             ProductEvalEntryId = productEvalEntryId,

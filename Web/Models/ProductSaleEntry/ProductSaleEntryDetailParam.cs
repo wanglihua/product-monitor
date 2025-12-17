@@ -16,13 +16,15 @@ public class ProductSaleEntryDetailParamValidator : AbstractValidator<ProductSal
 {
     public ProductSaleEntryDetailParamValidator()
     {
-        RuleFor(e => e.ProductSaleId).Must((e, p) => {
-            if (e.ProductSaleEntryId <= 0 && p <= 0)
-            {
-                return false;
-            }
+        // 有可能只提供了 院校和产品 Id
 
-            return true;
-        }).WithMessage("销售目录Id不能为空！");
+        // RuleFor(e => e.ProductSaleId).Must((e, p) => {
+        //     if (e.ProductSaleEntryId <= 0 && p <= 0)
+        //     {
+        //         return false;
+        //     }
+        //
+        //     return true;
+        // }).WithMessage("销售目录Id不能为空！");
     }
 }
