@@ -91,7 +91,7 @@ public class ProductEvalService(
         productEval.BeginDate = productEvalEntryLatest.BeginDate;
         productEval.EndDate = productEvalEntryLatest.EndDate;
 
-        int remainDays = (int)((productEvalEntryLatest.EndDate - productEvalEntryLatest.BeginDate).TotalDays);
+        int remainDays = (int)((productEvalEntryLatest.EndDate - DateTime.Today).TotalDays);
         if (remainDays < 0)
         {
             remainDays = 0;

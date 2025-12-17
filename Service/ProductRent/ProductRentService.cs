@@ -91,7 +91,7 @@ public class ProductRentService(
         productRent.BeginDate = productRentEntryLatest.BeginDate;
         productRent.EndDate = productRentEntryLatest.EndDate;
 
-        int remainDays = (int)((productRentEntryLatest.EndDate - productRentEntryLatest.BeginDate).TotalDays);
+        int remainDays = (int)((productRentEntryLatest.EndDate - DateTime.Today).TotalDays);
         if (remainDays < 0)
         {
             remainDays = 0;
