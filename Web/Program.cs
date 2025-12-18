@@ -49,7 +49,7 @@ public static class Program
 #if DEBUG
         var logLevel = LogLevel.Information;
 #else
-        var logLevel = Microsoft.Extensions.Logging.LogLevel.Error;
+        var logLevel = LogLevel.Error;
 #endif
 
         // 读取数据库配置
@@ -87,7 +87,7 @@ public static class Program
         services.Configure<CookiePolicyOptions>(options => {
             // This lambda determines whether user consent for non-essential cookies is needed for a given request.
             options.CheckConsentNeeded = context => false;
-            options.MinimumSameSitePolicy = SameSiteMode.None;
+            options.MinimumSameSitePolicy = SameSiteMode.Unspecified; // SameSiteMode.None; 使用这个有发现被浏览器阻止的情况
         });
 
 #if DEBUG
