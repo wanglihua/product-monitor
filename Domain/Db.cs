@@ -77,14 +77,6 @@ public partial class Db : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(Dummy).Assembly);
     }
 
-    /// <summary>
-    /// 数据库主键都是long，防止用int参数Find()时有异常
-    /// </summary>
-    public T? Find<T>(int id) where T : class
-    {
-        return base.Find<T>((long)id);
-    }
-
     public override int SaveChanges()
     {
         var entityEntryList = ChangeTracker.Entries()

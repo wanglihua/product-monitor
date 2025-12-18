@@ -299,6 +299,11 @@ public class ProductServiceController(
             {
                 throw new ValidationException("指定的学校和产品组合在租赁目录中不存在！");
             }
+
+            if (productRent.EndDate < DateTime.Today)
+            {
+                throw new ValidationException("指定的学校和产品组合在租赁目录中已过期！");
+            }
         }
 
         if (projectType == ProjectType.Eval)
@@ -310,6 +315,11 @@ public class ProductServiceController(
             if (productEval is null)
             {
                 throw new ValidationException("指定的学校和产品组合在试用目录中不存在！");
+            }
+
+            if (productEval.EndDate < DateTime.Today)
+            {
+                throw new ValidationException("指定的学校和产品组合在试用目录中已过期！");
             }
         }
 
