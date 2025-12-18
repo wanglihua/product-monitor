@@ -43,7 +43,7 @@ public partial class Db : DbContext
             }
         });
 
-        if (SqlServerCompatibilityLevel.GetByVersion(DatabaseConfig.SqlVersion) == SqlServerCompatibilityLevel.SqlServer2008)
+        if (compatibilityLevel == SqlServerCompatibilityLevel.SqlServer2008)
         {
             // 好像这个注释掉也没事，还是先放着吧
             optionsBuilder.ReplaceService<IQueryTranslationPostprocessorFactory, SqlServer2008QueryTranslationPostprocessorFactory>();
