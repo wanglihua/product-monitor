@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 5061026 */
-  src: url('iconfont.woff2?t=1765332945861') format('woff2'),
-       url('iconfont.woff?t=1765332945861') format('woff'),
-       url('iconfont.ttf?t=1765332945861') format('truetype');
+  src: url('iconfont.woff2?t=1766134910289') format('woff2'),
+       url('iconfont.woff?t=1766134910289') format('woff'),
+       url('iconfont.ttf?t=1766134910289') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-product-sale:before {
+  content: "\e632";
 }
 
 .icon-area:before {
@@ -61,7 +65,7 @@
   content: "\e6aa";
 }
 
-.icon-product-sale:before {
+.icon-product-sale-old:before {
   content: "\e601";
 }
 

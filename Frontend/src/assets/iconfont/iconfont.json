@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "22014634",
+      "name": "product-sale",
+      "font_class": "product-sale",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
       "icon_id": "10937700",
       "name": "area",
       "font_class": "area",
@@ -91,8 +98,8 @@
     },
     {
       "icon_id": "23529222",
-      "name": "product-sale",
-      "font_class": "product-sale",
+      "name": "product-sale-old",
+      "font_class": "product-sale-old",
       "unicode": "e601",
       "unicode_decimal": 58881
     },

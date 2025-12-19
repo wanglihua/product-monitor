@@ -62,6 +62,8 @@ public class ProductSaleRentEvalTimesCalJob : IJob
             long productEvalId = productEval.Id;
             productEvalService.UpdateProductEvalByLatestData(productEvalId);
         }
+        
+        // 检查销售目录明细
 
         return Task.CompletedTask;
     }
