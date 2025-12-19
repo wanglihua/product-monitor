@@ -115,6 +115,106 @@ public class ProductRentService(
         db.SaveChanges();
     }
 
+    public void UpdateProductRentStatisticsDataByEntryId(long productRentEntryId)
+    {
+        var productRentEntry = db.ProductRentEntry.Find(productRentEntryId);
+        if (productRentEntry is null)
+        {
+            throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
+        }
+
+        long productRentId = productRentEntry.ProductRentId;
+        UpdateProductRentStatisticsData(productRentId);
+    }
+
+    public void UpdateProductRentStatisticsDataByProductInstall(long productInstallId)
+    {
+        var productInstall = db.ProductInstall.Find(productInstallId);
+        if (productInstall is null)
+        {
+            throw new ValidationException($"指定的产品安装#{productInstallId}不存在！");
+        }
+
+        long collegeId = productInstall.CollegeId;
+        long productId = productInstall.ProductId;
+        var productRent = db.ProductRent.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (productRent is not null)
+        {
+            long productRentId = productRent.Id;
+            UpdateProductRentStatisticsData(productRentId);
+        }
+    }
+
+    public void UpdateProductRentStatisticsDataByProductUpdate(long productUpdateId)
+    {
+        var productUpdate = db.ProductUpdate.Find(productUpdateId);
+        if (productUpdate is null)
+        {
+            throw new ValidationException($"指定的产品更新#{productUpdateId}不存在！");
+        }
+
+        long collegeId = productUpdate.CollegeId;
+        long productId = productUpdate.ProductId;
+        var productRent = db.ProductRent.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (productRent is not null)
+        {
+            long productRentId = productRent.Id;
+            UpdateProductRentStatisticsData(productRentId);
+        }
+    }
+
+    public void UpdateProductRentStatisticsDataByProductService(long productServiceId)
+    {
+        var productService = db.ProductService.Find(productServiceId);
+        if (productService is null)
+        {
+            throw new ValidationException($"指定的售后维护#{productServiceId}不存在！");
+        }
+
+        long collegeId = productService.CollegeId;
+        long productId = productService.ProductId;
+        var productRent = db.ProductRent.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (productRent is not null)
+        {
+            long productRentId = productRent.Id;
+            UpdateProductRentStatisticsData(productRentId);
+        }
+    }
+
+    public void UpdateProductRentStatisticsDataByProductSpecialService(long productSpecialServiceId)
+    {
+        var productSpecialService = db.ProductSpecialService.Find(productSpecialServiceId);
+        if (productSpecialService is null)
+        {
+            throw new ValidationException($"指定的特殊售后#{productSpecialServiceId}不存在！");
+        }
+
+        long collegeId = productSpecialService.CollegeId;
+        long productId = productSpecialService.ProductId;
+        var productRent = db.ProductRent.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (productRent is not null)
+        {
+            long productRentId = productRent.Id;
+            UpdateProductRentStatisticsData(productRentId);
+        }
+    }
+
     public void CheckDataPrivilege(long productRentId, long loginUserId, bool isAdminLogin)
     {
         var productRent = db.ProductRent.Find(productRentId);

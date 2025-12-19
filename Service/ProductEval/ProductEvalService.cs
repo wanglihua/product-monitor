@@ -113,6 +113,106 @@ public class ProductEvalService(
         db.SaveChanges();
     }
 
+    public void UpdateProductEvalStatisticsDataByEntryId(long productEvalEntryId)
+    {
+        var productEvalEntry = db.ProductEvalEntry.Find(productEvalEntryId);
+        if (productEvalEntry is null)
+        {
+            throw new ValidationException($"指定的试用目录明细#{productEvalEntryId}不存在!");
+        }
+
+        long productEvalId = productEvalEntry.ProductEvalId;
+        UpdateProductEvalStatisticsData(productEvalId);
+    }
+
+    public void UpdateProductEvalStatisticsDataByProductInstall(long productInstallId)
+    {
+        var productInstall = db.ProductInstall.Find(productInstallId);
+        if (productInstall is null)
+        {
+            throw new ValidationException($"指定的产品安装#{productInstallId}不存在！");
+        }
+
+        long collegeId = productInstall.CollegeId;
+        long productId = productInstall.ProductId;
+        var productEval = db.ProductEval.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (productEval is not null)
+        {
+            long productEvalId = productEval.Id;
+            UpdateProductEvalStatisticsData(productEvalId);
+        }
+    }
+
+    public void UpdateProductEvalStatisticsDataByProductUpdate(long productUpdateId)
+    {
+        var productUpdate = db.ProductUpdate.Find(productUpdateId);
+        if (productUpdate is null)
+        {
+            throw new ValidationException($"指定的产品更新#{productUpdateId}不存在！");
+        }
+
+        long collegeId = productUpdate.CollegeId;
+        long productId = productUpdate.ProductId;
+        var productEval = db.ProductEval.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (productEval is not null)
+        {
+            long productEvalId = productEval.Id;
+            UpdateProductEvalStatisticsData(productEvalId);
+        }
+    }
+
+    public void UpdateProductEvalStatisticsDataByProductService(long productServiceId)
+    {
+        var productService = db.ProductService.Find(productServiceId);
+        if (productService is null)
+        {
+            throw new ValidationException($"指定的售后维护#{productServiceId}不存在！");
+        }
+
+        long collegeId = productService.CollegeId;
+        long productId = productService.ProductId;
+        var productEval = db.ProductEval.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (productEval is not null)
+        {
+            long productEvalId = productEval.Id;
+            UpdateProductEvalStatisticsData(productEvalId);
+        }
+    }
+
+    public void UpdateProductEvalStatisticsDataByProductSpecialService(long productSpecialServiceId)
+    {
+        var productSpecialService = db.ProductSpecialService.Find(productSpecialServiceId);
+        if (productSpecialService is null)
+        {
+            throw new ValidationException($"指定的特殊售后#{productSpecialServiceId}不存在！");
+        }
+
+        long collegeId = productSpecialService.CollegeId;
+        long productId = productSpecialService.ProductId;
+        var productEval = db.ProductEval.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (productEval is not null)
+        {
+            long productEvalId = productEval.Id;
+            UpdateProductEvalStatisticsData(productEvalId);
+        }
+    }
+
     public void CheckDataPrivilege(long productEvalId, long loginUserId, bool isAdminLogin)
     {
         var productEval = db.ProductEval.Find(productEvalId);
