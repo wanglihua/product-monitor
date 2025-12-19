@@ -145,6 +145,72 @@ public class ProductSaleService(
         }
     }
 
+    public void UpdateProductSaleStatisticsDataByProductUpdate(long productUpdateId)
+    {
+        var productUpdate = db.ProductUpdate.Find(productUpdateId);
+        if (productUpdate is null)
+        {
+            throw new ValidationException($"指定的产品更新#{productUpdateId}不存在！");
+        }
+
+        long collegeId = productUpdate.CollegeId;
+        long productId = productUpdate.ProductId;
+        var productSale = db.ProductSale.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (productSale is not null)
+        {
+            long productSaleId = productSale.Id;
+            UpdateProductSaleStatisticsData(productSaleId);
+        }
+    }
+
+    public void UpdateProductSaleStatisticsDataByProductService(long productServiceId)
+    {
+        var productService = db.ProductService.Find(productServiceId);
+        if (productService is null)
+        {
+            throw new ValidationException($"指定的售后维护#{productServiceId}不存在！");
+        }
+
+        long collegeId = productService.CollegeId;
+        long productId = productService.ProductId;
+        var productSale = db.ProductSale.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (productSale is not null)
+        {
+            long productSaleId = productSale.Id;
+            UpdateProductSaleStatisticsData(productSaleId);
+        }
+    }
+
+    public void UpdateProductSaleStatisticsDataByProductSpecialService(long productSpecialServiceId)
+    {
+        var productSpecialService = db.ProductSpecialService.Find(productSpecialServiceId);
+        if (productSpecialService is null)
+        {
+            throw new ValidationException($"指定的特殊售后#{productSpecialServiceId}不存在！");
+        }
+
+        long collegeId = productSpecialService.CollegeId;
+        long productId = productSpecialService.ProductId;
+        var productSale = db.ProductSale.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (productSale is not null)
+        {
+            long productSaleId = productSale.Id;
+            UpdateProductSaleStatisticsData(productSaleId);
+        }
+    }
+
     public void CheckDataPrivilege(long productSaleId, long loginUserId, bool isAdminLogin)
     {
         var productSale = db.ProductSale.Find(productSaleId);
