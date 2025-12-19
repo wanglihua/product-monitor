@@ -191,12 +191,31 @@ public class ProductRentController(
     [HttpPost]
     [Route("/api/product-rent/update/statistics/data")]
     [Transactional(true)]
-    public IActionResult UpdateStat([FromBody] IdParam param)
+    public IActionResult UpdateStatisticsData([FromBody] IdParam param)
     {
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productRentId = param.Id;
         productRentService.UpdateProductRentStatisticsData(productRentId);
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "更新数据成功！",
+        });
+    }
+
+    [HttpGet]
+    [Route("/api/product-rent/update/statistics/data/all")]
+    [Transactional(false)]
+    public IActionResult UpdateStatisticsDataAll()
+    {
+        var productRentList = db.ProductRent.AsNoTracking()
+            .ToList();
+
+        foreach (var item in productRentList)
+        {
+            Transactional.Wrap(db, () => { productRentService.UpdateProductRentStatisticsData(item.Id); });
+        }
 
         return Json(new JsonResultData {
             Success = true,

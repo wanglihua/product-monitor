@@ -191,12 +191,31 @@ public class ProductEvalController(
     [HttpPost]
     [Route("/api/product-eval/update/statistics/data")]
     [Transactional(true)]
-    public IActionResult UpdateStat([FromBody] IdParam param)
+    public IActionResult UpdateStatisticsData([FromBody] IdParam param)
     {
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productEvalId = param.Id;
         productEvalService.UpdateProductEvalStatisticsData(productEvalId);
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "更新数据成功！",
+        });
+    }
+
+    [HttpGet]
+    [Route("/api/product-eval/update/statistics/data/all")]
+    [Transactional(false)]
+    public IActionResult UpdateStatisticsDataAll()
+    {
+        var productEvalList = db.ProductEval.AsNoTracking()
+            .ToList();
+
+        foreach (var item in productEvalList)
+        {
+            Transactional.Wrap(db, () => { productEvalService.UpdateProductEvalStatisticsData(item.Id); });
+        }
 
         return Json(new JsonResultData {
             Success = true,
