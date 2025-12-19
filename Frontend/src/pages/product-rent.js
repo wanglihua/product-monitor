@@ -109,6 +109,23 @@ const ProductRent = () => {
                         }}>
                             <UnorderedListOutlined/>租赁记录
                         </Button>
+                        <Button color="primary" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
+                            post("/api/product-rent/update/statistics/data", {
+                                id: record.id,
+                            }, function (response) {
+                                const res = response.data;
+                                if (res.success !== true) {
+                                    showError(res.message);
+                                    return;
+                                }
+
+                                showSuccess(res.message);
+
+                                loadProductRentList();
+                            });
+                        }}>
+                            <i className="iconfont icon-gears"/>更新统计
+                        </Button>
                         <Button color="danger" variant="text" size="small" style={{fontSize: "12px"}} onClick={(e) => {
                             showConfirm("此操作将同时删除关联明细记录，确认要删除吗！", "确认", () => {
                                 post("/api/product-rent/delete", {
