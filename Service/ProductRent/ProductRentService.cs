@@ -115,18 +115,6 @@ public class ProductRentService(
         db.SaveChanges();
     }
 
-    public void UpdateProductRentStatisticsDataByEntryId(long productRentEntryId)
-    {
-        var productRentEntry = db.ProductRentEntry.Find(productRentEntryId);
-        if (productRentEntry is null)
-        {
-            throw new ValidationException($"指定的租赁目录明细#{productRentEntryId}不存在!");
-        }
-
-        long productRentId = productRentEntry.ProductRentId;
-        UpdateProductRentStatisticsData(productRentId);
-    }
-
     public void UpdateProductRentStatisticsDataByProductInstall(long productInstallId)
     {
         var productInstall = db.ProductInstall.Find(productInstallId);

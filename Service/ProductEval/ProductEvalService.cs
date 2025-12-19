@@ -113,18 +113,6 @@ public class ProductEvalService(
         db.SaveChanges();
     }
 
-    public void UpdateProductEvalStatisticsDataByEntryId(long productEvalEntryId)
-    {
-        var productEvalEntry = db.ProductEvalEntry.Find(productEvalEntryId);
-        if (productEvalEntry is null)
-        {
-            throw new ValidationException($"指定的试用目录明细#{productEvalEntryId}不存在!");
-        }
-
-        long productEvalId = productEvalEntry.ProductEvalId;
-        UpdateProductEvalStatisticsData(productEvalId);
-    }
-
     public void UpdateProductEvalStatisticsDataByProductInstall(long productInstallId)
     {
         var productInstall = db.ProductInstall.Find(productInstallId);

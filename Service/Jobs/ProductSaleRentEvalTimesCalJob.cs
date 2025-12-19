@@ -1,5 +1,6 @@
 ﻿using Core;
 using Domain;
+using Microsoft.EntityFrameworkCore;
 using NLog;
 using Quartz;
 using Service.ProductEval;
@@ -63,7 +64,57 @@ public class ProductSaleRentEvalTimesCalJob : IJob
             productEvalService.UpdateProductEvalStatisticsData(productEvalId);
         }
 
-        // 检查销售目录明细
+        // 产品安装
+        var productInstallListRecent = db.ProductInstall.AsNoTracking()
+            .Where(e => e.UpdateTime > someTimeAgo)
+            .ToList();
+
+        foreach (var item in productInstallListRecent)
+        {
+            long productInstallId = item.Id;
+            productSaleService.UpdateProductSaleStatisticsDataByProductInstall(productInstallId);
+            productRentService.UpdateProductRentStatisticsDataByProductInstall(productInstallId);
+            productEvalService.UpdateProductEvalStatisticsDataByProductInstall(productInstallId);
+        }
+
+        // 产品更新
+        var productUpdateListRecent = db.ProductUpdate.AsNoTracking()
+            .Where(e => e.UpdateTime > someTimeAgo)
+            .ToList();
+
+        foreach (var item in productUpdateListRecent)
+        {
+            long productUpdateId = item.Id;
+            productSaleService.UpdateProductSaleStatisticsDataByProductUpdate(productUpdateId);
+            productRentService.UpdateProductRentStatisticsDataByProductUpdate(productUpdateId);
+            productEvalService.UpdateProductEvalStatisticsDataByProductUpdate(productUpdateId);
+        }
+
+        // 售后维护
+        var productServiceListRecent = db.ProductService.AsNoTracking()
+            .Where(e => e.UpdateTime > someTimeAgo)
+            .ToList();
+
+        foreach (var item in productServiceListRecent)
+        {
+            long productServiceId = item.Id;
+            productSaleService.UpdateProductSaleStatisticsDataByProductService(productServiceId);
+            productRentService.UpdateProductRentStatisticsDataByProductService(productServiceId);
+            productEvalService.UpdateProductEvalStatisticsDataByProductService(productServiceId);
+        }
+
+        // 特殊售后
+        var productSpecialServiceListRecent = db.ProductSpecialService.AsNoTracking()
+            .Where(e => e.UpdateTime > someTimeAgo)
+            .ToList();
+        
+        foreach (var item in productSpecialServiceListRecent)
+        {
+            long productSpecialServiceId = item.Id;
+            productSaleService.UpdateProductSaleStatisticsDataByProductSpecialService(productSpecialServiceId);
+            productRentService.UpdateProductRentStatisticsDataByProductSpecialService(productSpecialServiceId);
+            productEvalService.UpdateProductEvalStatisticsDataByProductSpecialService(productSpecialServiceId);
+        }
 
         return Task.CompletedTask;
     }

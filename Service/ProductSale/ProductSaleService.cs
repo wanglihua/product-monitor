@@ -111,18 +111,6 @@ public class ProductSaleService(
         db.SaveChanges();
     }
 
-    public void UpdateProductSaleStatisticsDataByEntryId(long productSaleEntryId)
-    {
-        var productSaleEntry = db.ProductSaleEntry.Find(productSaleEntryId);
-        if (productSaleEntry is null)
-        {
-            throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
-        }
-
-        long productSaleId = productSaleEntry.ProductSaleId;
-        UpdateProductSaleStatisticsData(productSaleId);
-    }
-
     public void UpdateProductSaleStatisticsDataByProductInstall(long productInstallId)
     {
         var productInstall = db.ProductInstall.Find(productInstallId);
