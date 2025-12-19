@@ -10,7 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
+using Service.ProductEval;
 using Service.ProductInstall;
+using Service.ProductRent;
+using Service.ProductSale;
 using Web.Models.ProductInstall;
 
 namespace Web.Controllers;
@@ -20,6 +23,9 @@ public class ProductInstallController(
     Db db,
     UserLoginService userLoginService,
     UserProvinceService userProvinceService,
+    ProductSaleService productSaleService,
+    ProductRentService productRentService,
+    ProductEvalService productEvalService,
     ActionLogService actionLogService,
     ProductInstallExcelService productInstallExcelService) : Controller
 {
@@ -324,6 +330,10 @@ public class ProductInstallController(
             string actionDesc = $"#{productInstall.Id}";
             actionLogService.Add(loginUserId, ActionLogType.ProductInstallUpdate, actionDesc);
         }
+
+        productSaleService.UpdateProductSaleStatisticsDataByProductInstall(productInstallId);
+        productRentService.UpdateProductRentStatisticsDataByProductInstall(productInstallId);
+        productEvalService.UpdateProductEvalStatisticsDataByProductInstall(productInstallId);
 
         return Json(new JsonResultData {
             Success = true,

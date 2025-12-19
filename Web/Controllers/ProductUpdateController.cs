@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Service;
+using Service.ProductEval;
+using Service.ProductRent;
+using Service.ProductSale;
 using Service.ProductUpdate;
 using Web.Models.ProductUpdate;
 
@@ -22,6 +25,9 @@ public class ProductUpdateController(
     UserProvinceService userProvinceService,
     ProductUpdateService productUpdateService,
     ProductUpdateExcelService productUpdateExcelService,
+    ProductSaleService productSaleService,
+    ProductRentService productRentService,
+    ProductEvalService productEvalService,
     ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
@@ -335,6 +341,10 @@ public class ProductUpdateController(
         }
 
         productUpdateService.RefreshUpdateCount(collegeId, productId);
+
+        productSaleService.UpdateProductSaleStatisticsDataByProductUpdate(productUpdateId);
+        productRentService.UpdateProductRentStatisticsDataByProductUpdate(productUpdateId);
+        productEvalService.UpdateProductEvalStatisticsDataByProductUpdate(productUpdateId);
 
         return Json(new JsonResultData {
             Success = true,
