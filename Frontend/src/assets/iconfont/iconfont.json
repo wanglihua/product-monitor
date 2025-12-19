@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1261734",
+      "name": "gears",
+      "font_class": "gears",
+      "unicode": "e68b",
+      "unicode_decimal": 59019
+    },
+    {
       "icon_id": "22014634",
       "name": "product-sale",
       "font_class": "product-sale",
