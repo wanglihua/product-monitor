@@ -297,7 +297,7 @@ public class ProductEvalExcelService(
 
                 db.SaveChanges();
 
-                productEvalService.UpdateProductEvalByLatestData(productEvalId);
+                productEvalService.UpdateProductEvalStatisticsData(productEvalId);
             }
 
             db.SaveChanges();

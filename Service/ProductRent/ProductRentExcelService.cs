@@ -299,7 +299,7 @@ public class ProductRentExcelService(
 
                 db.SaveChanges();
 
-                productRentService.UpdateProductRentByLatestData(productRentId);
+                productRentService.UpdateProductRentStatisticsData(productRentId);
             }
 
             db.SaveChanges();

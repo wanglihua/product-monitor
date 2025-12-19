@@ -198,7 +198,7 @@ public class ProductSaleController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productSaleId = param.Id;
-        productSaleService.UpdateProductSaleByLatestData(productSaleId);
+        productSaleService.UpdateProductSaleStatisticsData(productSaleId);
 
         return Json(new JsonResultData {
             Success = true,

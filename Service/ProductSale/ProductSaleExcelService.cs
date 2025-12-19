@@ -310,7 +310,7 @@ public class ProductSaleExcelService(
 
                 db.SaveChanges();
 
-                productSaleService.UpdateProductSaleByLatestData(productSaleId);
+                productSaleService.UpdateProductSaleStatisticsData(productSaleId);
             }
 
             db.SaveChanges();

@@ -196,7 +196,7 @@ public class ProductEvalController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productEvalId = param.Id;
-        productEvalService.UpdateProductEvalByLatestData(productEvalId);
+        productEvalService.UpdateProductEvalStatisticsData(productEvalId);
 
         return Json(new JsonResultData {
             Success = true,

@@ -69,7 +69,7 @@ public class ProductSaleService(
     /// 通过最新的明细数据等更新指定的销售目录
     /// </summary>
     /// <param name="productSaleId">销售目录id</param>
-    public void UpdateProductSaleByLatestData(long productSaleId)
+    public void UpdateProductSaleStatisticsData(long productSaleId)
     {
         var productSale = db.ProductSale.Find(productSaleId);
         if (productSale is null)
@@ -109,6 +109,40 @@ public class ProductSaleService(
         productSale.ServiceTimes = serviceTimes;
 
         db.SaveChanges();
+    }
+
+    public void UpdateProductSaleStatisticsDataByEntryId(long productSaleEntryId)
+    {
+        var productSaleEntry = db.ProductSaleEntry.Find(productSaleEntryId);
+        if (productSaleEntry is null)
+        {
+            throw new ValidationException($"指定的销售目录明细#{productSaleEntryId}不存在!");
+        }
+
+        long productSaleId = productSaleEntry.ProductSaleId;
+        UpdateProductSaleStatisticsData(productSaleId);
+    }
+
+    public void UpdateProductSaleStatisticsDataByProductInstall(long productInstallId)
+    {
+        var productInstall = db.ProductInstall.Find(productInstallId);
+        if (productInstall is null)
+        {
+            throw new ValidationException($"指定的产品安装#{productInstallId}不存在！");
+        }
+
+        long collegeId = productInstall.CollegeId;
+        long productId = productInstall.ProductId;
+        var productSale = db.ProductSale.AsNoTracking()
+            .Where(e => e.CollegeId == collegeId && e.ProductId == productId)
+            .Take(1)
+            .SingleOrDefault();
+
+        if (productSale is not null)
+        {
+            long productSaleId = productSale.Id;
+            UpdateProductSaleStatisticsData(productSaleId);
+        }
     }
 
     public void CheckDataPrivilege(long productSaleId, long loginUserId, bool isAdminLogin)

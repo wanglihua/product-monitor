@@ -42,7 +42,7 @@ public class ProductSaleRentEvalTimesCalJob : IJob
         foreach (var productSale in productSaleListToUpdate)
         {
             long productSaleId = productSale.Id;
-            productSaleService.UpdateProductSaleByLatestData(productSaleId);
+            productSaleService.UpdateProductSaleStatisticsData(productSaleId);
         }
 
         // 租赁目录
@@ -51,7 +51,7 @@ public class ProductSaleRentEvalTimesCalJob : IJob
         foreach (var productRent in productRentListToUpdate)
         {
             long productRentId = productRent.Id;
-            productRentService.UpdateProductRentByLatestData(productRentId);
+            productRentService.UpdateProductRentStatisticsData(productRentId);
         }
 
         // 试用目录
@@ -60,9 +60,9 @@ public class ProductSaleRentEvalTimesCalJob : IJob
         foreach (var productEval in productEvalListToUpdate)
         {
             long productEvalId = productEval.Id;
-            productEvalService.UpdateProductEvalByLatestData(productEvalId);
+            productEvalService.UpdateProductEvalStatisticsData(productEvalId);
         }
-        
+
         // 检查销售目录明细
 
         return Task.CompletedTask;

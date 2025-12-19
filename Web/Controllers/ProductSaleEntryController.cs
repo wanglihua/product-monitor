@@ -413,7 +413,7 @@ public class ProductSaleEntryController(
         }
 
         productSaleId = productSaleEntry.ProductSaleId; // 从保存的实体里面再取一下, 肯定没错, 前面的路径里面有没对这个变量设值的情形
-        productSaleService.UpdateProductSaleByLatestData(productSaleId);
+        productSaleService.UpdateProductSaleStatisticsData(productSaleId);
 
         return Json(new JsonResultData {
             Success = true,
@@ -457,7 +457,7 @@ public class ProductSaleEntryController(
 
         if (productSaleEntryExists is not null)
         {
-            productSaleService.UpdateProductSaleByLatestData(productSaleId);
+            productSaleService.UpdateProductSaleStatisticsData(productSaleId);
         }
 
         if (productSaleEntryExists is null)

@@ -196,7 +196,7 @@ public class ProductRentController(
         ValidationUtil.Validate<IdParamValidator, IdParam>(param);
 
         long productRentId = param.Id;
-        productRentService.UpdateProductRentByLatestData(productRentId);
+        productRentService.UpdateProductRentStatisticsData(productRentId);
 
         return Json(new JsonResultData {
             Success = true,

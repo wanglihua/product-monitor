@@ -68,7 +68,7 @@ public class ProductEvalService(
     /// 通过最新的明细数据等更新指定的试用目录
     /// </summary>
     /// <param name="productEvalId">试用目录id</param>
-    public void UpdateProductEvalByLatestData(long productEvalId)
+    public void UpdateProductEvalStatisticsData(long productEvalId)
     {
         var productEval = db.ProductEval.Find(productEvalId);
         if (productEval is null)

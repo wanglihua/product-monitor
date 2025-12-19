@@ -68,7 +68,7 @@ public class ProductRentService(
     /// 通过最新的明细数据等更新指定的租赁目录
     /// </summary>
     /// <param name="productRentId">租赁目录id</param>
-    public void UpdateProductRentByLatestData(long productRentId)
+    public void UpdateProductRentStatisticsData(long productRentId)
     {
         var productRent = db.ProductRent.Find(productRentId);
         if (productRent is null)
