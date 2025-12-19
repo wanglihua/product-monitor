@@ -21,6 +21,7 @@ public class ProductEvalController(
     UserLoginService userLoginService,
     ActionLogService actionLogService,
     UserProvinceService userProvinceService,
+    ProductEvalService productEvalService,
     ProductEvalExcelService productEvalExcelService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
@@ -184,6 +185,22 @@ public class ProductEvalController(
         return Json(new JsonResultData {
             Success = true,
             Message = "删除成功！",
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product-eval/update/statistics/data")]
+    [Transactional(true)]
+    public IActionResult UpdateStat([FromBody] IdParam param)
+    {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
+        long productEvalId = param.Id;
+        productEvalService.UpdateProductEvalByLatestData(productEvalId);
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "更新数据成功！",
         });
     }
 

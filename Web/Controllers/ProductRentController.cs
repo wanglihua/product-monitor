@@ -21,6 +21,7 @@ public class ProductRentController(
     UserLoginService userLoginService,
     ActionLogService actionLogService,
     UserProvinceService userProvinceService,
+    ProductRentService productRentService,
     ProductRentExcelService productRentExcelService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
@@ -184,6 +185,22 @@ public class ProductRentController(
         return Json(new JsonResultData {
             Success = true,
             Message = "删除成功！",
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product-rent/update/statistics/data")]
+    [Transactional(true)]
+    public IActionResult UpdateStat([FromBody] IdParam param)
+    {
+        ValidationUtil.Validate<IdParamValidator, IdParam>(param);
+
+        long productRentId = param.Id;
+        productRentService.UpdateProductRentByLatestData(productRentId);
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "更新数据成功！",
         });
     }
 
