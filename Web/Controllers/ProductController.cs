@@ -67,6 +67,26 @@ public class ProductController(
                 sortField = e => e.Name;
             }
 
+            if (string.Compare(sortFieldParam, nameof(ProductListItem.EnglishName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.EnglishName;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductListItem.VersionCount), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.VersionCount;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductListItem.LatestVersion), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.LatestVersion;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductListItem.VersionUpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.VersionUpdateTime!;
+            }
+
             if (string.Compare(sortFieldParam, nameof(ProductListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.CreateTime;

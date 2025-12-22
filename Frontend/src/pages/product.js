@@ -69,21 +69,25 @@ const Product = () => {
             title: "产品英文名",
             dataIndex: "englishName",
             width: "200px",
+            sorter: true,
         },
         {
             title: "版本数量",
             dataIndex: "versionCount",
             width: "120px",
+            sorter: true,
         },
         {
             title: "最新版本号",
             dataIndex: "latestVersion",
             width: "120px",
+            sorter: true,
         },
         {
             title: "更新时间",
             dataIndex: "versionUpdateTime",
             width: "120px",
+            sorter: true,
         },
         {
             title: "操作",

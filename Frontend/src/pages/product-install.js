@@ -60,31 +60,37 @@ const ProductInstall = () => {
             title: "学校",
             dataIndex: "collegeName",
             width: "200px",
+            sorter: true,
         },
         {
             title: "产品",
             dataIndex: "productName",
             width: "250px",
+            sorter: true,
         },
         {
             title: "销售版本",
             dataIndex: "versionSale",
             width: "120px",
+            sorter: true,
         },
         {
             title: "安装版本",
             dataIndex: "versionInstall",
             width: "120px",
+            sorter: true,
         },
         {
             title: "安装时间",
             dataIndex: "installDate",
             width: "110px",
+            sorter: true,
         },
         {
             title: "记录人",
             dataIndex: "userName",
             width: "120px",
+            sorter: true,
         },
         {
             title: "操作",

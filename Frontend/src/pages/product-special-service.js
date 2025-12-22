@@ -57,21 +57,25 @@ const ProductSpecialService = () => {
             title: "学校",
             dataIndex: "collegeName",
             width: "200px",
+            sorter: true,
         },
         {
             title: "产品",
             dataIndex: "productName",
             width: "250px",
+            sorter: true,
         },
         {
             title: "联系老师",
             dataIndex: "contactTeacher",
             width: "120px",
+            sorter: true,
         },
         {
             title: "售后次数",
             dataIndex: "serviceCount",
             width: "110px",
+            sorter: true,
         },
         {
             title: "记录时间",
@@ -83,6 +87,7 @@ const ProductSpecialService = () => {
             title: "记录人",
             dataIndex: "userName",
             width: "100px",
+            sorter: true,
         },
         {
             title: "操作",

@@ -75,6 +75,16 @@ public class ProductUrlController(
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
+            
+            if (string.Compare(sortFieldParam, nameof(ProductUrlListItem.TypeName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductUrl.Type;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductUrlListItem.Name), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.Product.Name;
+            }
 
             if (string.Compare(sortFieldParam, nameof(ProductUrlListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {

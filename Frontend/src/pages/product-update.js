@@ -60,36 +60,43 @@ const ProductUpdate = () => {
             title: "学校",
             dataIndex: "collegeName",
             width: "200px",
+            sorter: true,
         },
         {
             title: "产品",
             dataIndex: "productName",
             width: "250px",
+            sorter: true,
         },
         {
             title: "销售版本",
             dataIndex: "versionSale",
             width: "120px",
+            sorter: true,
         },
         {
             title: "更新版本",
             dataIndex: "versionUpdate",
             width: "120px",
+            sorter: true,
         },
         {
             title: "更新次数",
             dataIndex: "updateCount",
             width: "110px",
+            sorter: true,
         },
         {
             title: "更新时间",
             dataIndex: "updateDate",
             width: "110px",
+            sorter: true,
         },
         {
             title: "记录人",
             dataIndex: "userName",
             width: "120px",
+            sorter: true,
         },
         {
             title: "操作",

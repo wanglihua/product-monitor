@@ -62,38 +62,55 @@ const ProductSale = () => {
             title: "学校",
             dataIndex: "collegeName",
             width: "200px",
+            sorter: true,
         },
         {
             title: "产品",
             dataIndex: "productName",
             width: "250px",
+            sorter: true,
         },
         {
-            title: "销售次数 / 安装次数 / 更新次数 / 售后次数",
+            title: "销售次数",
             dataIndex: "saleTimes",
-            width: "320px",
-            render: (value, record, index) => {
-                return (
-                    <span>
-                        <span>销售&nbsp;</span>{record.saleTimes}&nbsp;/&nbsp;<span>安装&nbsp;</span>{record.installTimes}&nbsp;/&nbsp;<span>更新&nbsp;</span>{record.updateTimes}&nbsp;/&nbsp;<span>售后&nbsp;</span>{record.serviceTimes}
-                    </span>
-                );
-            },
+            width: "110px",
+            sorter: true,
+        },
+        {
+            title: "安装次数",
+            dataIndex: "installTimes",
+            width: "110px",
+            sorter: true,
+        },
+        {
+            title: "更新次数",
+            dataIndex: "updateTimes",
+            width: "110px",
+            sorter: true,
+        },
+        {
+            title: "售后次数",
+            dataIndex: "serviceTimes",
+            width: "110px",
+            sorter: true,
         },
         {
             title: "版本号",
             dataIndex: "version",
             width: "110px",
+            sorter: true,
         },
         {
             title: "销售时间",
             dataIndex: "saleDate",
             width: "150px",
+            sorter: true,
         },
         {
             title: "服务到期时间",
             dataIndex: "serviceExpireDate",
             width: "150px",
+            sorter: true,
         },
         {
             title: "操作",

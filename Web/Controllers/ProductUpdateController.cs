@@ -113,6 +113,31 @@ public class ProductUpdateController(
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
+            
+            if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.CollegeName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.College.Name;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.ProductName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.Product.Name;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.VersionSale), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductUpdate.VersionSale;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.VersionUpdate), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductUpdate.VersionUpdate;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.UserName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductUpdate.UserId;
+            }
 
             if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {

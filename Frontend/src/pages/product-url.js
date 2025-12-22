@@ -62,11 +62,13 @@ const ProductUrl = () => {
             title: "类型",
             dataIndex: "typeName",
             width: "100px",
+            sorter: true,
         },
         {
             title: "产品名称",
             dataIndex: "name",
             width: "200px",
+            sorter: true,
         },
         {
             title: "网址",

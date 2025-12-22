@@ -105,6 +105,41 @@ public class ProductServiceController(
         {
             string sortFieldParam = param.SortField;
 
+            if (string.Compare(sortFieldParam, nameof(ProductServiceListItem.ProjectTypeName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductService.ProjectType;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductServiceListItem.CollegeName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.College.Name;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductServiceListItem.ProductName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.Product.Name;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductServiceListItem.ContactTeacher), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductService.ContactTeacher;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductServiceListItem.ServiceCount), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductService.ServiceCount;
+            }
+
+            // if (string.Compare(sortFieldParam, nameof(ProductServiceListItem.UpdateTime), StringComparison.OrdinalIgnoreCase) == 0)
+            // {
+            //     sortField = e => e.ProductService.UpdateTime;
+            // }
+
+            if (string.Compare(sortFieldParam, nameof(ProductServiceListItem.UserName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductService.UserId;
+            }
+
             if (string.Compare(sortFieldParam, nameof(ProductServiceListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductService.CreateTime;

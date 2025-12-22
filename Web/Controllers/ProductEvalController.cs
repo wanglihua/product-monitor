@@ -89,6 +89,46 @@ public class ProductEvalController(
         {
             string sortFieldParam = param.SortField;
 
+            if (string.Compare(sortFieldParam, nameof(ProductEvalListItem.CollegeName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.College.Name;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductEvalListItem.ProductName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.Product.Name;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductEvalListItem.EvalTimes), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductEval.EvalTimes;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductEvalListItem.ServiceTimes), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductEval.ServiceTimes;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductEvalListItem.TotalDays), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductEval.TotalDays;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductEvalListItem.RemainDays), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductEval.RemainDays;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductEvalListItem.BeginDate), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductEval.BeginDate;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductEvalListItem.EndDate), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductEval.EndDate;
+            }
+
             if (string.Compare(sortFieldParam, nameof(ProductEvalListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductEval.CreateTime;

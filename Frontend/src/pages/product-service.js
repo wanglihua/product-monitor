@@ -57,26 +57,31 @@ const ProductService = () => {
             title: "项目类型",
             dataIndex: "projectTypeName",
             width: "110px",
+            sorter: true,
         },
         {
             title: "学校",
             dataIndex: "collegeName",
             width: "200px",
+            sorter: true,
         },
         {
             title: "产品",
             dataIndex: "productName",
             width: "250px",
+            sorter: true,
         },
         {
             title: "联系老师",
             dataIndex: "contactTeacher",
             width: "120px",
+            sorter: true,
         },
         {
             title: "售后次数",
             dataIndex: "serviceCount",
             width: "110px",
+            sorter: true,
         },
         {
             title: "记录时间",
@@ -88,6 +93,7 @@ const ProductService = () => {
             title: "记录人",
             dataIndex: "userName",
             width: "120px",
+            sorter: true,
         },
         {
             title: "操作",

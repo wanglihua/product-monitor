@@ -64,21 +64,25 @@ const College = () => {
             title: "院校标识码",
             dataIndex: "code",
             width: "120px",
+            sorter: true,
         },
         {
             title: "院校名称",
             dataIndex: "name",
             width: "200px",
+            sorter: true,
         },
         {
             title: "省份",
             dataIndex: "province",
             width: "150px",
+            sorter: true,
         },
         {
             title: "办学层次",
             dataIndex: "level",
-            width: "100px",
+            width: "110px",
+            sorter: true,
         },
         {
             title: "创建时间",

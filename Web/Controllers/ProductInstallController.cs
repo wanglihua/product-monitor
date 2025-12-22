@@ -113,6 +113,36 @@ public class ProductInstallController(
         {
             string sortFieldParam = param.SortField;
 
+            if (string.Compare(sortFieldParam, nameof(ProductInstallListItem.CollegeName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.College.Name;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductInstallListItem.ProductName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.Product.Name;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductInstallListItem.VersionSale), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductInstall.VersionSale;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductInstallListItem.VersionInstall), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductInstall.VersionInstall;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductInstallListItem.InstallDate), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductInstall.InstallDate;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductInstallListItem.UserName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.User.Id;
+            }
+
             if (string.Compare(sortFieldParam, nameof(ProductInstallListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductInstall.CreateTime;

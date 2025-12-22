@@ -105,6 +105,31 @@ public class ProductSpecialServiceController(
         {
             string sortFieldParam = param.SortField;
 
+            if (string.Compare(sortFieldParam, nameof(ProductSpecialServiceListItem.CollegeName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.College.Name;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductSpecialServiceListItem.ProductName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.Product.Name;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductSpecialServiceListItem.ContactTeacher), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductSpecialService.ContactTeacher;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductSpecialServiceListItem.ServiceCount), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductSpecialService.ServiceCount;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductSpecialServiceListItem.UserName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductSpecialService.UserId;
+            }
+
             if (string.Compare(sortFieldParam, nameof(ProductSpecialServiceListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductSpecialService.CreateTime;
@@ -367,7 +392,7 @@ public class ProductSpecialServiceController(
         productSpecialServiceService.RefreshServiceCount(collegeId, productId);
 
         productSpecialServiceId = productSpecialService.Id;
-        
+
         productSaleService.UpdateProductSaleStatisticsDataByProductSpecialService(productSpecialServiceId);
         productRentService.UpdateProductRentStatisticsDataByProductSpecialService(productSpecialServiceId);
         productEvalService.UpdateProductEvalStatisticsDataByProductSpecialService(productSpecialServiceId);

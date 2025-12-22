@@ -24,6 +24,7 @@ Web/logs
 Web/wwwroot/index.html
 Web/wwwroot/static
 Web/wwwroot/favicon.ico
+Web/wwwroot/logs
 *.csproj.user
 *.sln.DotSettings
 *.sln.DotSettings.user

@@ -89,6 +89,46 @@ public class ProductRentController(
         {
             string sortFieldParam = param.SortField;
 
+            if (string.Compare(sortFieldParam, nameof(ProductRentListItem.CollegeName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.College.Name;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductRentListItem.ProductName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.Product.Name;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductRentListItem.RentTimes), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductRent.RentTimes;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductRentListItem.ServiceTimes), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductRent.ServiceTimes;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductRentListItem.TotalDays), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductRent.TotalDays;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductRentListItem.RemainDays), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductRent.RemainDays;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductRentListItem.BeginDate), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductRent.BeginDate;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductRentListItem.EndDate), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductRent.EndDate;
+            }
+            
             if (string.Compare(sortFieldParam, nameof(ProductRentListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductRent.CreateTime;

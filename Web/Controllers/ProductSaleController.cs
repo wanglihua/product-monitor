@@ -89,6 +89,51 @@ public class ProductSaleController(
         {
             string sortFieldParam = param.SortField;
 
+            if (string.Compare(sortFieldParam, nameof(ProductSaleListItem.CollegeName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.College.Name;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductSaleListItem.ProductName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.Product.Name;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductSaleListItem.SaleTimes), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductSale.SaleTimes;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductSaleListItem.InstallTimes), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductSale.InstallTimes;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductSaleListItem.UpdateTimes), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductSale.UpdateTimes;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductSaleListItem.ServiceTimes), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductSale.ServiceTimes;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductSaleListItem.Version), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductSale.Version;
+            }
+
+            if (string.Compare(sortFieldParam, nameof(ProductSaleListItem.SaleDate), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductSale.SaleDate;
+            }
+            
+            if (string.Compare(sortFieldParam, nameof(ProductSaleListItem.ServiceExpireDate), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductSale.ServiceExpireDate;
+            }
+
             if (string.Compare(sortFieldParam, nameof(ProductSaleListItem.CreateTime), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductSale.CreateTime;
