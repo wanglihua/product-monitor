@@ -76,28 +76,55 @@ public class ProductEvalService(
             throw new ValidationException($"指定的试用目录#{productEvalId}不存在!");
         }
 
-        var productEvalEntryLatest = db.ProductEvalEntry.AsNoTracking()
+        var productEvalEntryList = db.ProductEvalEntry.AsNoTracking()
             .Where(e => e.ProductEvalId == productEvalId)
-            .OrderByDescending(e => e.Id)
-            .Take(1)
-            .SingleOrDefault();
+            .ToList();
 
-        if (productEvalEntryLatest is null)
+        if (productEvalEntryList.Count == 0)
         {
             throw new ValidationException($"指定的试用目录#{productEvalId}, 当前没有明细数据!");
         }
 
-        productEval.TotalDays = productEvalEntryLatest.TotalDays; // 这个应该要根据  BeginDate 和  EndDate 计算出来, 把这个计算放在 Entry 里面
-        productEval.BeginDate = productEvalEntryLatest.BeginDate;
-        productEval.EndDate = productEvalEntryLatest.EndDate;
+        DateTime beginDateAll = DateTime.MaxValue;
+        DateTime endDateAll = DateTime.MinValue;
+        int totalDaysAll = 0;
+        int remainDaysAll = 0;
 
-        int remainDays = (int)((productEvalEntryLatest.EndDate - DateTime.Today).TotalDays);
-        if (remainDays < 0)
+        foreach (var productEvalEntry in productEvalEntryList)
         {
-            remainDays = 0;
+            DateTime beginDate = productEvalEntry.BeginDate.Date;
+            if (beginDate < beginDateAll)
+            {
+                beginDateAll = beginDate;
+            }
+
+            DateTime endDate = productEvalEntry.EndDate.Date;
+            if (endDate > endDateAll)
+            {
+                endDateAll = endDate;
+            }
+
+            int totalDays = (int)(endDate - beginDate).TotalDays + 1;
+            if (totalDays < 0)
+            {
+                totalDays = 0;
+            }
+
+            totalDaysAll += totalDays;
+
+            int remainDays = (int)(endDate - DateTime.Today).TotalDays;
+            if (remainDays < 0)
+            {
+                remainDays = 0;
+            }
+
+            remainDaysAll += remainDays;
         }
 
-        productEval.RemainDays = remainDays;
+        productEval.BeginDate = beginDateAll;
+        productEval.EndDate = endDateAll;
+        productEval.TotalDays = totalDaysAll;
+        productEval.RemainDays = remainDaysAll;
 
         // 两个次数计算的字段
         long productId = productEval.ProductId;
