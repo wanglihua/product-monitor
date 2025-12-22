@@ -175,7 +175,7 @@ public static class ExcelUtil
         return (cell.StringCellValue ?? "").Trim();
     }
 
-    public static void SetCellDropdownLongList(ISheet sheet, int colIndex, string[] valueList)
+    public static void SetCellDropdownLongList(ISheet sheet, int colIndex, string[] valueList, string newSheetName)
     {
         IWorkbook workbook = sheet.Workbook;
 
@@ -183,19 +183,22 @@ public static class ExcelUtil
         // int inputRowIndexEnd = 65535;
         int inputRowIndexEnd = 10000; // 一万个足足够了
 
-        int sheetCount = workbook.NumberOfSheets;
-        int newSheetIndex = sheetCount;
-        string newSheetName = $"sheet_hidden_for_select_{newSheetIndex}";
+        // 下面几行就是为了创建一个新的工作表名称
+        // int sheetCount = workbook.NumberOfSheets;
+        // int newSheetIndex = sheetCount;
+        // string newSheetName = $"sheet_hidden_for_select_{newSheetIndex}";
 
         //先创建一个Sheet专门用于存储下拉项的值
-        ISheet sheetHidden = workbook.CreateSheet(newSheetName);
-        //隐藏
-        workbook.SetSheetHidden(newSheetIndex, SheetVisibility.VeryHidden);
+        ISheet newDataSheet = workbook.CreateSheet(newSheetName);
+        newDataSheet.SetColumnWidth(0, 60 * 256);
+
+        // 隐藏工作表，暂时不隐藏吧
+        // workbook.SetSheetHidden(newSheetIndex, SheetVisibility.VeryHidden);
 
         int index = 0;
         foreach (var item in valueList)
         {
-            sheetHidden.CreateRow(index).CreateCell(0).SetCellValue(item);
+            newDataSheet.CreateRow(index).CreateCell(0).SetCellValue(item);
             index++;
         }
 
@@ -206,11 +209,12 @@ public static class ExcelUtil
         range.NameName = rangeName;
         CellRangeAddressList regions = new CellRangeAddressList(inputRowIndexBegin, inputRowIndexEnd, colIndex, colIndex);
 
-        DVConstraint constraint = DVConstraint.CreateFormulaListConstraint(rangeName);
-        HSSFDataValidation dataValidate = new HSSFDataValidation(regions, constraint);
-        dataValidate.CreateErrorBox("输入不合法", "请输入或选择下拉列表中的值");
-        dataValidate.ShowPromptBox = true;
-        sheet.AddValidationData(dataValidate);
+        IDataValidationHelper validationHelper = new XSSFDataValidationHelper((XSSFSheet)sheet);
+        IDataValidationConstraint constraint = validationHelper.CreateFormulaListConstraint(rangeName);
+        IDataValidation dataValidation = validationHelper.CreateValidation(constraint, regions);
+        dataValidation.CreateErrorBox("输入不合法", "请输入或选择下拉列表中的值");
+        dataValidation.ShowPromptBox = true;
+        sheet.AddValidationData(dataValidation);
     }
 
     public static void SetCellDropdownShortList(ISheet sheet, int colIndex, string[] valueList)
