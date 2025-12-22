@@ -236,12 +236,12 @@ const ProductInstallDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入销售版本!',
+                                        message: '请选择销售版本!',
                                     },
                                 ]}
                             >
                                 <Select
-                                    placeholder="请选择产品版本"
+                                    placeholder="请选择销售版本!"
                                     options={versionSelectOptions}
                                 />
                             </Form.Item>
@@ -252,12 +252,12 @@ const ProductInstallDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入安装版本!',
+                                        message: '请选择安装版本!',
                                     },
                                 ]}
                             >
                                 <Select
-                                    placeholder="请选择产品版本"
+                                    placeholder="请选择安装版本!"
                                     options={versionSelectOptions}
                                 />
                             </Form.Item>

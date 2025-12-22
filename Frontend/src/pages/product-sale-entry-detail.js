@@ -31,6 +31,7 @@ const ProductSaleEntryDetailInner = (props) => {
 
     const [collegeSelectOptions, setCollegeSelectOptions] = useState([]);
     const [productSelectOptions, setProductSelectOptions] = useState([]);
+    const [versionSelectOptions, setVersionSelectOptions] = useState([]);
 
     const form = useRef();
 
@@ -113,6 +114,8 @@ const ProductSaleEntryDetailInner = (props) => {
                             contactMobile: data.contactMobile,
                             description: data.description,
                         });
+
+                        setVersionSelectOptions(data.productVersionList);
                     });
                 }
             }}
@@ -236,6 +239,19 @@ const ProductSaleEntryDetailInner = (props) => {
                                             setProductSelectOptions(res.productList);
                                         });
                                     }}
+                                    onChange={(value) => {
+                                        post("/api/product/version/select/data", {
+                                            productId: value,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setVersionSelectOptions(res.productVersionList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -245,14 +261,13 @@ const ProductSaleEntryDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: false,
-                                        message: '请输入版本号!',
+                                        message: '请选择版本号!',
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={32}
-                                    placeholder="版本号"
-                                    allowClear
+                                <Select
+                                    placeholder="请选择版本号!"
+                                    options={versionSelectOptions}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
