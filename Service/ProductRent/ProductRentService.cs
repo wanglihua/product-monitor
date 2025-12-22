@@ -76,28 +76,55 @@ public class ProductRentService(
             throw new ValidationException($"指定的租赁目录#{productRentId}不存在!");
         }
 
-        var productRentEntryLatest = db.ProductRentEntry.AsNoTracking()
+        var productRentEntryList = db.ProductRentEntry.AsNoTracking()
             .Where(e => e.ProductRentId == productRentId)
-            .OrderByDescending(e => e.Id)
-            .Take(1)
-            .SingleOrDefault();
+            .ToList();
 
-        if (productRentEntryLatest is null)
+        if (productRentEntryList.Count == 0)
         {
             throw new ValidationException($"指定的租赁目录#{productRentId}, 当前没有明细数据!");
         }
 
-        productRent.TotalDays = productRentEntryLatest.TotalDays; // 这个应该要根据  BeginDate 和  EndDate 计算出来, 把这个计算放在 Entry 里面
-        productRent.BeginDate = productRentEntryLatest.BeginDate;
-        productRent.EndDate = productRentEntryLatest.EndDate;
+        DateTime beginDateAll = DateTime.MaxValue;
+        DateTime endDateAll = DateTime.MinValue;
+        int totalDaysAll = 0;
+        int remainDaysAll = 0;
 
-        int remainDays = (int)((productRentEntryLatest.EndDate - DateTime.Today).TotalDays);
-        if (remainDays < 0)
+        foreach (var productRentEntry in productRentEntryList)
         {
-            remainDays = 0;
+            DateTime beginDate = productRentEntry.BeginDate.Date;
+            if (beginDate < beginDateAll)
+            {
+                beginDateAll = beginDate;
+            }
+
+            DateTime endDate = productRentEntry.EndDate.Date;
+            if (endDate > endDateAll)
+            {
+                endDateAll = endDate;
+            }
+
+            int totalDays = (int)(endDate - beginDate).TotalDays + 1;
+            if (totalDays < 0)
+            {
+                totalDays = 0;
+            }
+
+            totalDaysAll += totalDays;
+
+            int remainDays = (int)(endDate - DateTime.Today).TotalDays;
+            if (remainDays < 0)
+            {
+                remainDays = 0;
+            }
+
+            remainDaysAll += remainDays;
         }
 
-        productRent.RemainDays = remainDays;
+        productRent.BeginDate = beginDateAll;
+        productRent.EndDate = endDateAll;
+        productRent.TotalDays = totalDaysAll;
+        productRent.RemainDays = remainDaysAll;
 
         // 两个次数计算的字段
         // RentTimes
