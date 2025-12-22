@@ -26,13 +26,40 @@ public class ProductEvalExcelService(
 
         IWorkbook workbook = new XSSFWorkbook();
         ISheet sheet = workbook.CreateSheet(sheetName);
+
+        IDataValidationHelper validationHelper = new XSSFDataValidationHelper((XSSFSheet)sheet);
+
+        // int maxInputRow = 65535;
+        int maxInputRow = 10000; // 一万个足足够了
+
+        // int collegeColIndex = 0; // 院校输入是第一列
+        // CellRangeAddressList regionsCollege = new CellRangeAddressList(0, maxInputRow, collegeColIndex, collegeColIndex);
+        //
+        // var collegeNameList = db.College.AsNoTracking()
+        //     .OrderBy(e => e.Id)
+        //     .Select(e => e.Name)
+        //     .ToList();
+        //
+        // IDataValidationConstraint constraintCollege = validationHelper.CreateExplicitListConstraint(collegeNameList.ToArray());
+        // IDataValidation dataValidationCollege = validationHelper.CreateValidation(constraintCollege, regionsCollege);
+        // dataValidationCollege.ShowPromptBox = true;
+        // dataValidationCollege.CreateErrorBox("院校名称输入不合法", "请输入或选择下拉框中的值");
+        // sheet.AddValidationData(dataValidationCollege);
         
-        // IDataValidationHelper validationHelper = new XSSFDataValidationHelper(sheet);
-        // CellRangeAddressList addressList = new CellRangeAddressList(0, 0, 0, 0);
-        // IDataValidationConstraint constraint = validationHelper.CreateExplicitListConstraint(new String[] { "Austin", "Boston", "Chicago", "Dallas", "JacksOnVille","Los Angeles", "New York", "Philladephia"});
-        // IDataValidation dataValidation = validationHelper.CreateValidation(constraint, addressList);
-        // dataValidation.SuppressDropDownArrow = true;
-        // ws.AddValidationData(dataValidation);
+        int productColIndex = 1; // 产品输入是第二列
+        CellRangeAddressList regionsCollege = new CellRangeAddressList(0, maxInputRow, productColIndex, productColIndex);
+
+        var productNameList = db.Product.AsNoTracking()
+            .OrderBy(e => e.Id)
+            .Take(10)
+            .Select(e => e.Name)
+            .ToList();
+
+        IDataValidationConstraint constraintProduct = validationHelper.CreateExplicitListConstraint(productNameList.ToArray());
+        IDataValidation dataValidationProduct = validationHelper.CreateValidation(constraintProduct, regionsCollege);
+        dataValidationProduct.ShowPromptBox = true;
+        dataValidationProduct.CreateErrorBox("产品名称输入不合法", "请输入或选择下拉框中的值");
+        sheet.AddValidationData(dataValidationProduct);
 
         int rowHeight = 22;
         ICellStyle headerCellStyle = ExcelUtil.CreateHeaderCellStyle(workbook);
