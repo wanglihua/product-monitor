@@ -1,6 +1,9 @@
 import {ExclamationCircleFilled} from "@ant-design/icons";
 import {ConfigProvider, Modal, notification, Spin} from "antd";
-import zhCn from "antd/locale/zh_CN";
+// import zhCn from "antd/locale/zh_CN";
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import locale from 'antd/locale/zh_CN';
 import axios from "axios";
 import React, {useState} from "react";
 import {BrowserRouter} from "react-router";
@@ -216,7 +219,7 @@ const App = () => {
 
     return (
         <ConfigProvider
-            locale={zhCn}
+            locale={locale}
             theme={{
                 token: {
                     // 这几个是自己定义的名称
