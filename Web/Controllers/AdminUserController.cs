@@ -120,9 +120,8 @@ public class AdminUserController(
 
         string loginName = param.LoginName.Trim();
 
-        var normalStatusList = UserStatus.GetNormalList();
         var user = db.User.AsNoTracking()
-            .Where(e => e.LoginName == loginName && normalStatusList.Contains(e.Status))
+            .Where(e => e.LoginName == loginName && e.Status != UserStatus.Deleted)
             .OrderBy(e => e.LoginName)
             .Take(1)
             .SingleOrDefault();

@@ -11,6 +11,8 @@ public class UserEntityMap : IEntityTypeConfiguration<UserEntity>
     {
         builder.ToTable("tbl_user");
 
+        builder.HasQueryFilter(e => e.Status != UserStatus.Deleted);
+
         EntityMap.Configure(builder);
 
         builder.Property(e => e.LoginName)

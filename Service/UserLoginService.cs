@@ -116,9 +116,8 @@ public class UserLoginService(
     /// <returns>登录成功的用户id，如果登录不成功就返回0</returns>
     public long Login(string loginName, string password, HttpRequest request)
     {
-        var normalStatusList = UserStatus.GetNormalList();
         var user = db.User.AsTracking() // 后面会更改用户最后登录时间等
-            .Where(e => loginName == e.LoginName && normalStatusList.Contains(e.Status))
+            .Where(e => loginName == e.LoginName && e.Status != UserStatus.Deleted)
             .OrderBy(e => e.LoginName)
             .Take(1)
             .SingleOrDefault();

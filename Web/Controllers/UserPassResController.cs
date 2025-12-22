@@ -46,8 +46,7 @@ public class UserPassResController(
 
         IQueryable<UserEntity> query = db.User.AsNoTracking();
 
-        var normalStatusList = UserStatus.GetNormalList();
-        query = query.Where(e => normalStatusList.Contains(e.Status));
+        query = query.Where(e => e.Status != UserStatus.Deleted);
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {

@@ -32,9 +32,8 @@ public class UserController(
     {
         ValidationUtil.Validate<UserListParamValidator, UserListParam>(param);
 
-        var normalStatusList = UserStatus.GetNormalList();
         IQueryable<UserEntity> query = db.User.AsNoTracking()
-            .Where(e => normalStatusList.Contains(e.Status));
+            .Where(e => e.Status != UserStatus.Deleted);
 
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
