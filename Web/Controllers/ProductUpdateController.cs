@@ -342,6 +342,8 @@ public class ProductUpdateController(
 
         productUpdateService.RefreshUpdateCount(collegeId, productId);
 
+        productUpdateId = productUpdate.Id;
+
         productSaleService.UpdateProductSaleStatisticsDataByProductUpdate(productUpdateId);
         productRentService.UpdateProductRentStatisticsDataByProductUpdate(productUpdateId);
         productEvalService.UpdateProductEvalStatisticsDataByProductUpdate(productUpdateId);

@@ -331,6 +331,8 @@ public class ProductInstallController(
             actionLogService.Add(loginUserId, ActionLogType.ProductInstallUpdate, actionDesc);
         }
 
+        productInstallId = productInstall.Id;
+
         productSaleService.UpdateProductSaleStatisticsDataByProductInstall(productInstallId);
         productRentService.UpdateProductRentStatisticsDataByProductInstall(productInstallId);
         productEvalService.UpdateProductEvalStatisticsDataByProductInstall(productInstallId);

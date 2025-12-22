@@ -365,6 +365,8 @@ public class ProductSpecialServiceController(
         }
 
         productSpecialServiceService.RefreshServiceCount(collegeId, productId);
+
+        productSpecialServiceId = productSpecialService.Id;
         
         productSaleService.UpdateProductSaleStatisticsDataByProductSpecialService(productSpecialServiceId);
         productRentService.UpdateProductRentStatisticsDataByProductSpecialService(productSpecialServiceId);
