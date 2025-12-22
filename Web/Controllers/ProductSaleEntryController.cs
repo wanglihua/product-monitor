@@ -282,21 +282,35 @@ public class ProductSaleEntryController(
                 ContactMobile = productSaleEntry.ContactMobile,
                 Description = productSaleEntry.Description,
             };
+
+            // 处理版本下拉框
+            var productVersionList = db.ProductVersion.AsNoTracking()
+                .Where(e => e.ProductId == productId)
+                .OrderBy(e => e.Version)
+                .ToList();
+
+            var productVersionItemList = productVersionList
+                .Select(e => new Dictionary<string, object> {
+                    ["value"] = e.Version,
+                    ["label"] = e.Version,
+                })
+                .ToList();
+
+            // 已经录入的数据如果列表中没有放到下拉框中
+            string version = productSaleEntry.Version;
+            if (string.IsNullOrWhiteSpace(version) == false)
+            {
+                if (productVersionList.Any(e => e.Version == version) == false)
+                {
+                    productVersionItemList.Add(new Dictionary<string, object> {
+                        ["value"] = version,
+                        ["label"] = version,
+                    });
+                }
+            }
+
+            model.ProductVersionList = productVersionItemList;
         }
-
-        var productVersionList = db.ProductVersion.AsNoTracking()
-            .Where(e => e.ProductId == productId)
-            .OrderBy(e => e.Version)
-            .ToList();
-
-        var productVersionItemList = productVersionList
-            .Select(e => new Dictionary<string, object> {
-                ["value"] = e.Version,
-                ["label"] = e.Version,
-            })
-            .ToList();
-
-        model.ProductVersionList = productVersionItemList;
 
         return Json(new JsonResultData {
             Success = true,

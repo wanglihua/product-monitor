@@ -266,6 +266,7 @@ public class ProductInstallController(
                 throw new ValidationException($"指定的产品#{productId}不存在!");
             }
 
+            // 处理版本下拉框
             var productVersionList = db.ProductVersion.AsNoTracking()
                 .Where(e => e.ProductId == productId)
                 .OrderBy(e => e.Version)
@@ -277,6 +278,31 @@ public class ProductInstallController(
                     ["label"] = e.Version,
                 })
                 .ToList();
+            
+            // 已经录入的数据如果列表中没有放到下拉框中
+            string versionSale = productInstall.VersionSale;
+            if (string.IsNullOrWhiteSpace(versionSale) == false)
+            {
+                if (productVersionList.Any(e => e.Version == versionSale) == false)
+                {
+                    productVersionItemList.Add(new Dictionary<string, object> {
+                        ["value"] = versionSale,
+                        ["label"] = versionSale,
+                    });
+                }
+            }
+
+            string versionInstall = productInstall.VersionInstall;
+            if (string.IsNullOrWhiteSpace(versionInstall) == false && versionInstall != versionSale)
+            {
+                if (productVersionList.Any(e => e.Version == versionInstall) == false)
+                {
+                    productVersionItemList.Add(new Dictionary<string, object> {
+                        ["value"] = versionInstall,
+                        ["label"] = versionInstall,
+                    });
+                }
+            }
 
             model = new ProductInstallDetailModel {
                 Id = productInstall.Id,
@@ -284,8 +310,8 @@ public class ProductInstallController(
                 CollegeName = college.Name,
                 ProductId = productId,
                 ProductName = product.Name,
-                VersionSale = productInstall.VersionSale,
-                VersionInstall = productInstall.VersionInstall,
+                VersionSale = versionSale,
+                VersionInstall = versionInstall,
                 InstallDate = productInstall.InstallDate.ToString("yyyy-MM-dd"),
                 UpdateUrl = productInstall.UpdateUrl,
                 LoginUser = productInstall.LoginUser,

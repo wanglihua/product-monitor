@@ -265,6 +265,7 @@ public class ProductUpdateController(
                 throw new ValidationException($"指定的产品#{productId}不存在!");
             }
 
+            // 处理版本下拉框
             var productVersionList = db.ProductVersion.AsNoTracking()
                 .Where(e => e.ProductId == productId)
                 .OrderBy(e => e.Version)
@@ -276,6 +277,31 @@ public class ProductUpdateController(
                     ["label"] = e.Version,
                 })
                 .ToList();
+
+            // 已经录入的数据如果列表中没有放到下拉框中
+            string versionSale = productUpdate.VersionSale;
+            if (string.IsNullOrWhiteSpace(versionSale) == false)
+            {
+                if (productVersionList.Any(e => e.Version == versionSale) == false)
+                {
+                    productVersionItemList.Add(new Dictionary<string, object> {
+                        ["value"] = versionSale,
+                        ["label"] = versionSale,
+                    });
+                }
+            }
+
+            string versionUpdate = productUpdate.VersionUpdate;
+            if (string.IsNullOrWhiteSpace(versionUpdate) == false && versionUpdate != versionSale)
+            {
+                if (productVersionList.Any(e => e.Version == versionUpdate) == false)
+                {
+                    productVersionItemList.Add(new Dictionary<string, object> {
+                        ["value"] = versionUpdate,
+                        ["label"] = versionUpdate,
+                    });
+                }
+            }
 
             model = new ProductUpdateDetailModel {
                 Id = productUpdate.Id,
