@@ -46,6 +46,9 @@ public class UserPassResController(
 
         IQueryable<UserEntity> query = db.User.AsNoTracking();
 
+        var normalStatusList = UserStatus.GetNormalList();
+        query = query.Where(e => normalStatusList.Contains(e.Status));
+
         if (string.IsNullOrWhiteSpace(param.LoginNameQuery) == false)
         {
             string loginNameQuery = param.LoginNameQuery.Trim();

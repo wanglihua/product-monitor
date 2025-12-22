@@ -40,6 +40,9 @@ public class ActionLogController(Db db) : Controller
                 })
             .AsNoTracking();
 
+        var userNormalStatusList = UserStatus.GetNormalList();
+        query = query.Where(e => userNormalStatusList.Contains(e.User.Status));
+
         if (param.ActionLogTypeQuery is not null && param.ActionLogTypeQuery != ActionLogType.None)
         {
             var actionLogTypeQuery = param.ActionLogTypeQuery;
@@ -52,7 +55,7 @@ public class ActionLogController(Db db) : Controller
 
             // 先过滤用户再过滤日志表, 日志数据量大的情况下会更快
             var userIdList = db.User.AsNoTracking()
-                .Where(e => e.LoginName.Contains(loginNameQuery) || e.UserName.Contains(loginNameQuery))
+                .Where(e => (e.LoginName.Contains(loginNameQuery) || e.UserName.Contains(loginNameQuery)) && userNormalStatusList.Contains(e.Status))
                 .Select(e => e.Id)
                 .ToList();
 

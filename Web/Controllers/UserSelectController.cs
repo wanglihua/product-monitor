@@ -24,6 +24,9 @@ public class UserSelectController(Db db) : Controller
 
         IQueryable<UserEntity> query = db.User.AsNoTracking();
 
+        var normalStatusList = UserStatus.GetNormalList();
+        query = query.Where(e => normalStatusList.Contains(e.Status));
+
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {
             string search = param.Search.Trim();

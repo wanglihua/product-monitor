@@ -29,8 +29,9 @@ public class HelloJob : IJob
     {
         Db db = new Db();
 
+        var normalStatusList = UserStatus.GetNormalList();
         var user = db.User.AsNoTracking()
-            .Where(e => e.Id == 1)
+            .Where(e => e.Id == 1 && normalStatusList.Contains(e.Status))
             .Take(1)
             .SingleOrDefault();
         if (user is not null)

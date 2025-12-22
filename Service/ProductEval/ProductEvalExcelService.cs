@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using NPOI.SS.UserModel;
+using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
 using Service.College;
 
@@ -25,6 +26,13 @@ public class ProductEvalExcelService(
 
         IWorkbook workbook = new XSSFWorkbook();
         ISheet sheet = workbook.CreateSheet(sheetName);
+        
+        // IDataValidationHelper validationHelper = new XSSFDataValidationHelper(sheet);
+        // CellRangeAddressList addressList = new CellRangeAddressList(0, 0, 0, 0);
+        // IDataValidationConstraint constraint = validationHelper.CreateExplicitListConstraint(new String[] { "Austin", "Boston", "Chicago", "Dallas", "JacksOnVille","Los Angeles", "New York", "Philladephia"});
+        // IDataValidation dataValidation = validationHelper.CreateValidation(constraint, addressList);
+        // dataValidation.SuppressDropDownArrow = true;
+        // ws.AddValidationData(dataValidation);
 
         int rowHeight = 22;
         ICellStyle headerCellStyle = ExcelUtil.CreateHeaderCellStyle(workbook);
