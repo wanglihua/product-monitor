@@ -26,6 +26,7 @@ const ProductInstallDetailInner = (props) => {
 
     const [collegeSelectOptions, setCollegeSelectOptions] = useState([]);
     const [productSelectOptions, setProductSelectOptions] = useState([]);
+    const [versionSelectOptions, setVersionSelectOptions] = useState([]);
 
     const form = useRef();
 
@@ -93,6 +94,8 @@ const ProductInstallDetailInner = (props) => {
                             contactMobile: data.contactMobile,
                             description: data.description,
                         });
+
+                        setVersionSelectOptions(data.productVersionList);
                     });
                 }
             }}
@@ -211,6 +214,19 @@ const ProductInstallDetailInner = (props) => {
                                             setProductSelectOptions(res.productList);
                                         });
                                     }}
+                                    onChange={(value) => {
+                                        post("/api/product/version/select/data", {
+                                            productId: value,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setVersionSelectOptions(res.productVersionList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -224,10 +240,9 @@ const ProductInstallDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={32}
-                                    placeholder="销售版本"
-                                    allowClear
+                                <Select
+                                    placeholder="请选择产品版本"
+                                    options={versionSelectOptions}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -241,10 +256,9 @@ const ProductInstallDetailInner = (props) => {
                                     },
                                 ]}
                             >
-                                <Input
-                                    maxLength={32}
-                                    placeholder="安装版本"
-                                    allowClear
+                                <Select
+                                    placeholder="请选择产品版本"
+                                    options={versionSelectOptions}
                                 />
                             </Form.Item>
                         </Descriptions.Item>

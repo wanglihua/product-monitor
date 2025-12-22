@@ -21,10 +21,10 @@ public class ProductInstallDetailModel
     public string ProductName { get; set; } = "";
 
     [JsonProperty("versionSale")]
-    public string VersionSale { get; set; } = "";
+    public string? VersionSale { get; set; }
 
     [JsonProperty("versionInstall")]
-    public string VersionInstall { get; set; } = "";
+    public string? VersionInstall { get; set; }
 
     [JsonProperty("installDate")]
     public string InstallDate { get; set; } = "";
