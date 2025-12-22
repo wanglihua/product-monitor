@@ -266,11 +266,23 @@ public class ProductInstallController(
                 throw new ValidationException($"指定的产品#{productId}不存在!");
             }
 
+            var productVersionList = db.ProductVersion.AsNoTracking()
+                .Where(e => e.ProductId == productId)
+                .OrderBy(e => e.Version)
+                .ToList();
+
+            var productVersionItemList = productVersionList
+                .Select(e => new Dictionary<string, object> {
+                    ["value"] = e.Version,
+                    ["label"] = e.Version,
+                })
+                .ToList();
+
             model = new ProductInstallDetailModel {
                 Id = productInstall.Id,
-                CollegeId = productInstall.CollegeId,
+                CollegeId = collegeId,
                 CollegeName = college.Name,
-                ProductId = productInstall.ProductId,
+                ProductId = productId,
                 ProductName = product.Name,
                 VersionSale = productInstall.VersionSale,
                 VersionInstall = productInstall.VersionInstall,
@@ -281,6 +293,7 @@ public class ProductInstallController(
                 ContactTeacher = productInstall.ContactTeacher,
                 ContactMobile = productInstall.ContactMobile,
                 Description = productInstall.Description,
+                ProductVersionList = productVersionItemList,
             };
         }
 

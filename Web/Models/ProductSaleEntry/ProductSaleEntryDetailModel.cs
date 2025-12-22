@@ -45,6 +45,9 @@ public class ProductSaleEntryDetailModel
 
     [JsonProperty("description")]
     public string Description { get; set; } = "";
+
+    [JsonProperty("productVersionList", NullValueHandling = NullValueHandling.Ignore)]
+    public IList<Dictionary<string, object>>? ProductVersionList { get; set; }
 }
 
 public class ProductSaleEntryDetailModelValidator : AbstractValidator<ProductSaleEntryDetailModel>

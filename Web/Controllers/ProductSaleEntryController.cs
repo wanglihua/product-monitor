@@ -284,6 +284,20 @@ public class ProductSaleEntryController(
             };
         }
 
+        var productVersionList = db.ProductVersion.AsNoTracking()
+            .Where(e => e.ProductId == productId)
+            .OrderBy(e => e.Version)
+            .ToList();
+
+        var productVersionItemList = productVersionList
+            .Select(e => new Dictionary<string, object> {
+                ["value"] = e.Version,
+                ["label"] = e.Version,
+            })
+            .ToList();
+
+        model.ProductVersionList = productVersionItemList;
+
         return Json(new JsonResultData {
             Success = true,
             Message = "success",

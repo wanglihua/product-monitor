@@ -14,7 +14,8 @@ public class ProductSelectController(Db db) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
-    [HttpPost("/api/product/select/data")]
+    [HttpPost]
+    [Route("/api/product/select/data")]
     [Transactional(false)]
     public IActionResult Data([FromBody] ProductSelectDataQueryParam param)
     {

@@ -113,27 +113,27 @@ public class ProductUpdateController(
         if (string.IsNullOrWhiteSpace(param.SortField) == false)
         {
             string sortFieldParam = param.SortField;
-            
+
             if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.CollegeName), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.College.Name;
             }
-            
+
             if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.ProductName), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.Product.Name;
             }
-            
+
             if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.VersionSale), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductUpdate.VersionSale;
             }
-            
+
             if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.VersionUpdate), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductUpdate.VersionUpdate;
             }
-            
+
             if (string.Compare(sortFieldParam, nameof(ProductUpdateListItem.UserName), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.ProductUpdate.UserId;
@@ -265,11 +265,23 @@ public class ProductUpdateController(
                 throw new ValidationException($"指定的产品#{productId}不存在!");
             }
 
+            var productVersionList = db.ProductVersion.AsNoTracking()
+                .Where(e => e.ProductId == productId)
+                .OrderBy(e => e.Version)
+                .ToList();
+
+            var productVersionItemList = productVersionList
+                .Select(e => new Dictionary<string, object> {
+                    ["value"] = e.Version,
+                    ["label"] = e.Version,
+                })
+                .ToList();
+
             model = new ProductUpdateDetailModel {
                 Id = productUpdate.Id,
-                CollegeId = productUpdate.CollegeId,
+                CollegeId = collegeId,
                 CollegeName = college.Name,
-                ProductId = productUpdate.ProductId,
+                ProductId = productId,
                 ProductName = product.Name,
                 VersionSale = productUpdate.VersionSale,
                 VersionUpdate = productUpdate.VersionUpdate,
@@ -282,6 +294,7 @@ public class ProductUpdateController(
                 ContactTeacher = productUpdate.ContactTeacher,
                 ContactMobile = productUpdate.ContactMobile,
                 Description = productUpdate.Description,
+                ProductVersionList = productVersionItemList,
             };
         }
 
