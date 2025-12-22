@@ -25,6 +25,18 @@ public class ProductSaleExcelService(
 
         IWorkbook workbook = new XSSFWorkbook();
         ISheet sheet = workbook.CreateSheet(sheetName);
+        
+        var collegeNameList = db.College.AsNoTracking()
+            .OrderBy(e => e.Name)
+            .Select(e => e.Name)
+            .ToList();
+        ExcelUtil.SetCellDropdownLongList(sheet, 0, collegeNameList.ToArray(), "院校目录");
+
+        var productNameList = db.Product.AsNoTracking()
+            .OrderBy(e => e.Name)
+            .Select(e => e.Name)
+            .ToList();
+        ExcelUtil.SetCellDropdownLongList(sheet, 1, productNameList.ToArray(), "产品目录");
 
         int rowHeight = 22;
         ICellStyle headerCellStyle = ExcelUtil.CreateHeaderCellStyle(workbook);
@@ -40,13 +52,13 @@ public class ProductSaleExcelService(
         ICell cell;
 
         cell = row.CreateCell(cellIndex);
-        sheet.SetColumnWidth(cellIndex++, 16 * 256);
+        sheet.SetColumnWidth(cellIndex++, 36 * 256);
         cell.CellStyle = headerCellStyle;
         cell.SetCellType(CellType.String);
         cell.SetCellValue("学校");
 
         cell = row.CreateCell(cellIndex);
-        sheet.SetColumnWidth(cellIndex++, 32 * 256);
+        sheet.SetColumnWidth(cellIndex++, 36 * 256);
         cell.CellStyle = headerCellStyle;
         cell.SetCellType(CellType.String);
         cell.SetCellValue("产品");
