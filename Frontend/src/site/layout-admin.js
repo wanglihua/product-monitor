@@ -396,7 +396,9 @@ const LayoutAdmin = () => {
     }, []);
 
     return (
-        <Layout>
+        <Layout style={{
+            height: "100vh",
+        }}>
             <Layout.Header style={{
                 padding: '0 5px',
                 // backgroundColor: "white",
