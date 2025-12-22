@@ -2,6 +2,7 @@ using System.Globalization;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
+using NPOI.XSSF.UserModel;
 
 namespace Core.Util;
 
@@ -207,7 +208,7 @@ public static class ExcelUtil
 
         DVConstraint constraint = DVConstraint.CreateFormulaListConstraint(rangeName);
         HSSFDataValidation dataValidate = new HSSFDataValidation(regions, constraint);
-        dataValidate.CreateErrorBox("输入不合法", "请输入或选择下拉列表中的值。");
+        dataValidate.CreateErrorBox("输入不合法", "请输入或选择下拉列表中的值");
         dataValidate.ShowPromptBox = true;
         sheet.AddValidationData(dataValidate);
     }
@@ -215,22 +216,18 @@ public static class ExcelUtil
     public static void SetCellDropdownShortList(ISheet sheet, int colIndex, string[] valueList)
     {
         // 这种方式只能设置少量数据，数据一多就会出错
-        
-        // int maxInputRow = 65535;
-        int maxInputRow = 10000; // 一万个足足够了
 
-        // int collegeColIndex = 0; // 院校输入是第一列
-        // CellRangeAddressList regionsCollege = new CellRangeAddressList(0, maxInputRow, collegeColIndex, collegeColIndex);
-        //
-        // var collegeNameList = db.College.AsNoTracking()
-        //     .OrderBy(e => e.Id)
-        //     .Select(e => e.Name)
-        //     .ToList();
-        //
-        // IDataValidationConstraint constraintCollege = validationHelper.CreateExplicitListConstraint(collegeNameList.ToArray());
-        // IDataValidation dataValidationCollege = validationHelper.CreateValidation(constraintCollege, regionsCollege);
-        // dataValidationCollege.ShowPromptBox = true;
-        // dataValidationCollege.CreateErrorBox("院校名称输入不合法", "请输入或选择下拉框中的值");
-        // sheet.AddValidationData(dataValidationCollege);
+        int inputRowIndexBegin = 1; // 跳过标题列
+        // int inputRowIndexEnd = 65535;
+        int inputRowIndexEnd = 10000; // 一万个足足够了
+
+        CellRangeAddressList regions = new CellRangeAddressList(inputRowIndexBegin, inputRowIndexEnd, colIndex, colIndex);
+
+        IDataValidationHelper validationHelper = new XSSFDataValidationHelper((XSSFSheet)sheet);
+        IDataValidationConstraint constraint = validationHelper.CreateExplicitListConstraint(valueList);
+        IDataValidation dataValidation = validationHelper.CreateValidation(constraint, regions);
+        dataValidation.ShowPromptBox = true;
+        dataValidation.CreateErrorBox("输入不合法", "请输入或选择下拉列表中的值");
+        sheet.AddValidationData(dataValidation);
     }
 }
