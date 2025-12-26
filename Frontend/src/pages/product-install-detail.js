@@ -93,6 +93,7 @@ const ProductInstallDetailInner = (props) => {
                             contactTeacher: data.contactTeacher,
                             contactMobile: data.contactMobile,
                             description: data.description,
+                            attachment: data.attachment,
                         });
 
                         setVersionSelectOptions(data.productVersionList);
@@ -129,6 +130,7 @@ const ProductInstallDetailInner = (props) => {
                             contactTeacher: values.contactTeacher,
                             contactMobile: values.contactMobile,
                             description: values.description,
+                            attachment: values.attachment,
                         }, function (response) {
                             const res = response.data;
                             if (res.success === false) {
@@ -377,41 +379,47 @@ const ProductInstallDetailInner = (props) => {
                             </Form.Item>
                         </Descriptions.Item>
                         <Descriptions.Item label="附件" span={2}>
-                            <Space>
-                                <a href={"/favicon.ico"} target="_blank">下载</a>
-                                <Upload
-                                    showUploadList={false}
-                                    name="attachmentFile"
-                                    accept=".*"
-                                    action="/api/product-install/attachment/upload"
-                                    onChange={(info) => {
-                                        const status = info.file.status;
+                            <Form.Item name="attachment">
+                                <Space>
+                                    <a href={"/favicon.ico"} target="_blank">下载</a>
+                                    <Upload
+                                        showUploadList={false}
+                                        name="attachmentFile"
+                                        accept=".*"
+                                        action="/api/product-install/attachment/upload"
+                                        onChange={(info) => {
+                                            const status = info.file.status;
 
-                                        if (status === 'uploading') {
-                                            showMask();
-                                        }
-
-                                        if (status === 'done') {
-                                            hideMask();
-                                            const response = info.file.response;
-                                            if (response.success !== true) {
-                                                showError(response.message);
-                                                return;
+                                            if (status === 'uploading') {
+                                                showMask();
                                             }
 
-                                            showSuccess(response.message);
-                                        }
+                                            if (status === 'done') {
+                                                hideMask();
+                                                const response = info.file.response;
+                                                if (response.success !== true) {
+                                                    showError(response.message);
+                                                    return;
+                                                }
 
-                                        if (status === 'error') {
-                                            hideMask();
-                                            showError("文件上传失败, 请重试!");
-                                        }
-                                    }}
-                                >
-                                    <Button type="default" size="middle"><UploadOutlined/>上传附件</Button>
-                                </Upload>
-                                <span style={{fontSize: "12px", color: "lightgray"}}>附件上传成功后，请点击保存</span>
-                            </Space>
+                                                form.current.setFieldsValue({
+                                                    attachment: response.data.fileName,
+                                                });
+
+                                                showSuccess(response.message);
+                                            }
+
+                                            if (status === 'error') {
+                                                hideMask();
+                                                showError("文件上传失败, 请重试!");
+                                            }
+                                        }}
+                                    >
+                                        <Button type="default" size="middle"><UploadOutlined/>上传附件</Button>
+                                    </Upload>
+                                    <span style={{fontSize: "12px", color: "lightgray"}}>附件上传成功后，请点击保存</span>
+                                </Space>
+                            </Form.Item>
                         </Descriptions.Item>
                     </Descriptions>
 

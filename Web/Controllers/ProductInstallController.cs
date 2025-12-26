@@ -278,7 +278,7 @@ public class ProductInstallController(
                     ["label"] = e.Version,
                 })
                 .ToList();
-            
+
             // 已经录入的数据如果列表中没有放到下拉框中
             string versionSale = productInstall.VersionSale;
             if (string.IsNullOrWhiteSpace(versionSale) == false)
@@ -327,6 +327,30 @@ public class ProductInstallController(
             Success = true,
             Message = "success",
             Data = model,
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product-install/attachment/upload")]
+    [Transactional(false)]
+    public IActionResult AttachmentUpload(IFormFile attachmentFile)
+    {
+        if (attachmentFile is null)
+        {
+            throw new ValidationException("文件上传失败，请重新上传");
+        }
+
+        log.Info(attachmentFile.FileName);
+        log.Info(attachmentFile.Name);
+
+        // 返回保存的文件路径
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "文件上传成功，请点击保存",
+            Data = new Dictionary<string, object> {
+                ["fileName"] = attachmentFile.FileName,
+            }
         });
     }
 
