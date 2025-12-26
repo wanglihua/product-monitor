@@ -10,7 +10,7 @@ public class ProductInstallAttachmentEntityMap : IEntityTypeConfiguration<Produc
     {
         builder.ToTable("tbl_product_install_attachment");
 
-        EntityMap.Configure(builder);
+        EntityNoUpdateMap.Configure(builder);
 
         builder.Property(e => e.ProductInstallId)
             .HasColumnName("product_install_id")

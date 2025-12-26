@@ -5,7 +5,7 @@ namespace Domain;
 /// <summary>
 /// 
 /// </summary>
-public class ProductInstallAttachmentEntity : Entity
+public class ProductInstallAttachmentEntity : EntityNoUpdate
 {
     /// <summary>
     /// 
