@@ -9,6 +9,7 @@ import Title from "../site/title";
 import {useNavigate} from "react-router";
 import $ from "jquery";
 import download from "../core/download";
+import Copy from "../site/copy";
 
 const College = () => {
 
@@ -65,12 +66,18 @@ const College = () => {
             dataIndex: "code",
             width: "120px",
             sorter: true,
+            render: (text, record, index) => {
+                return <Copy text={text}/>
+            }
         },
         {
             title: "院校名称",
             dataIndex: "name",
             width: "200px",
             sorter: true,
+            render: (text, record, index) => {
+                return <Copy text={text}/>
+            }
         },
         {
             title: "省份",

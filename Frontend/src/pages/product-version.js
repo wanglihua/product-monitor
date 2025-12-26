@@ -6,6 +6,7 @@ import ProductVersionDetail from "./product-version-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
+import Copy from "../site/copy";
 
 const ProductVersion = () => {
 
@@ -63,11 +64,17 @@ const ProductVersion = () => {
             title: "版本号",
             dataIndex: "version",
             width: "200px",
+            render: (text, record, index) => {
+                return <Copy text={text}/>
+            }
         },
         {
             title: "更新基础",
             dataIndex: "versionUpdateBase",
             width: "200px",
+            render: (text, record, index) => {
+                return <Copy text={text}/>
+            }
         },
         {
             title: "版本更新时间",

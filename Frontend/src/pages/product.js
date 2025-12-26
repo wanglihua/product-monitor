@@ -8,6 +8,7 @@ import ProductDetail from "./product-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
+import Copy from "../site/copy";
 
 const Product = () => {
 
@@ -64,12 +65,18 @@ const Product = () => {
             dataIndex: "name",
             width: "360px",
             sorter: true,
+            render: (text, record, index) => {
+                return <Copy text={text}/>
+            }
         },
         {
             title: "产品英文名",
             dataIndex: "englishName",
             width: "200px",
             sorter: true,
+            render: (text, record, index) => {
+                return <Copy text={text}/>
+            }
         },
         {
             title: "版本数量",
@@ -82,6 +89,9 @@ const Product = () => {
             dataIndex: "latestVersion",
             width: "120px",
             sorter: true,
+            render: (text, record, index) => {
+                return <Copy text={text}/>
+            }
         },
         {
             title: "更新时间",
