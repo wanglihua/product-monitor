@@ -389,14 +389,27 @@ const ProductInstallDetailInner = (props) => {
                             {productInstallId > 0 && (
                                 <Form.Item>
                                     <Space>
-                                        {attachment.id > 0 && (
+                                        {attachment.attachmentId > 0 && (
                                             <>
                                                 <a href={`/api/product-install/attachment/download/${attachment.attachmentId}`}>{attachment.attachmentName}</a>
                                                 <Button type="default" size="middle" onClick={() => {
-                                                    setAttachment({
-                                                        attachmentId: 0,
-                                                        attachmentName: "",
+                                                    post("/api/product-install/attachment/remove", {
+                                                        attachmentId: attachment.attachmentId,
+                                                    }, function (response) {
+                                                        const res = response.data;
+                                                        if (res.success === false) {
+                                                            showError(res.message);
+                                                            return;
+                                                        }
+
+                                                        showSuccess(res.message);
+
+                                                        setAttachment({
+                                                            attachmentId: 0,
+                                                            attachmentName: "",
+                                                        });
                                                     });
+
                                                 }}><DeleteOutlined/>移除附件</Button>
                                             </>
                                         )}
@@ -439,7 +452,7 @@ const ProductInstallDetailInner = (props) => {
                                     </Space>
                                 </Form.Item>
                             )}
-                            {productInstallId <= 0 && (<span>请先保存成功后，再上传附件</span>)}
+                            {productInstallId <= 0 && (<span style={{color: "rgb(0, 0, 0, 0.65)"}}>请先保存成功后，再上传附件</span>)}
                         </Descriptions.Item>
                     </Descriptions>
 

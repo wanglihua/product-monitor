@@ -340,7 +340,7 @@ public class ProductInstallController(
         });
     }
 
-    private static readonly string uploadFolder = "upload";
+    private static readonly string uploadFolder = Path.Combine("upload", "product-install");
 
     [HttpPost]
     [Route("/api/product-install/attachment/upload/{productInstallId:long}")]
@@ -362,7 +362,7 @@ public class ProductInstallController(
         string fileExt = new FileInfo(fileName).Extension;
 
         string newFileName = Guid.NewGuid().ToString("N") + fileExt;
-        string monthFolderName = DateTime.Now.ToString("yyyyMM");
+        string monthFolderName = DateTime.Now.ToString("yyyy-MM");
         string fullUploadFolder = Path.Combine(webHostEnvironment.ContentRootPath, uploadFolder, monthFolderName);
         string newFileFullName = Path.Combine(fullUploadFolder, newFileName);
 
@@ -399,6 +399,31 @@ public class ProductInstallController(
         });
     }
 
+    [HttpPost]
+    [Route("/api/product-install/attachment/remove")]
+    [Transactional(true)]
+    public IActionResult AttachmentUpload([FromBody] ProductInstallAttachmentRemoveParam param)
+    {
+        long attachmentId = param.AttachmentId;
+        var attachment = db.ProductInstallAttachment.Find(attachmentId);
+        if (attachment is null)
+        {
+            throw new ValidationException($"指定的安装附件#{attachmentId}不存在");
+        }
+
+        string fullFileName = Path.Combine(webHostEnvironment.ContentRootPath, uploadFolder, attachment.PathFile);
+
+        db.ProductInstallAttachment.Remove(attachment);
+        db.SaveChanges();
+
+        System.IO.File.Delete(fullFileName);
+
+        return Json(new JsonResultData {
+            Success = true,
+            Message = "附件移除成功",
+        });
+    }
+
     [HttpGet]
     [Route("/api/product-install/attachment/download/{attachmentId:long}")]
     [Transactional(false)]
@@ -413,10 +438,8 @@ public class ProductInstallController(
         string fileName = attachment.Name;
         string fullFileName = Path.Combine(webHostEnvironment.ContentRootPath, uploadFolder, attachment.PathFile);
 
-        using Stream fileStream = System.IO.File.OpenRead(fullFileName);
-
         // 用 zip 是让总是提示下载，而不是碰到图片类型时直接打开一个图片
-        return File(fileStream, ContentType.Zip, fileName);
+        return File(System.IO.File.OpenRead(fullFileName), ContentType.Zip, fileName);
     }
 
     [HttpPost]
