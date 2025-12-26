@@ -6,6 +6,7 @@ import UserDetail from "./user-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
+import Copy from "../site/copy";
 
 const User = () => {
 
@@ -63,11 +64,17 @@ const User = () => {
             title: "登录名",
             dataIndex: "loginName",
             width: "200px",
+            render: (text, record, index) => {
+                return <Copy text={text}/>
+            }
         },
         {
             title: "用户名",
             dataIndex: "userName",
             width: "200px",
+            render: (text, record, index) => {
+                return <Copy text={text}/>
+            }
         },
         {
             title: "最近登录",
