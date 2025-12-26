@@ -35,6 +35,8 @@ public partial class Db
     public DbSet<ProductEvalEntryEntity> ProductEvalEntry { get; set; }
 
     public DbSet<ProductInstallEntity> ProductInstall { get; set; }
+    
+    public DbSet<ProductInstallAttachmentEntity> ProductInstallAttachment { get; set; }
 
     public DbSet<ProductInstallMonitorEntity> ProductInstallMonitor { get; set; }
 

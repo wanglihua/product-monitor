@@ -47,6 +47,12 @@ public class ProductInstallDetailModel
     [JsonProperty("description")]
     public string Description { get; set; } = "";
 
+    [JsonProperty("attachmentId")]
+    public long AttachmentId { get; set; }
+
+    [JsonProperty("attachmentName")]
+    public string AttachmentName { get; set; } = "";
+
     [JsonProperty("productVersionList", NullValueHandling = NullValueHandling.Ignore)]
     public IList<Dictionary<string, object>>? ProductVersionList { get; set; }
 }

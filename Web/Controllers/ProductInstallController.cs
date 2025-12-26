@@ -20,6 +20,7 @@ namespace Web.Controllers;
 
 [Auth(PassRes.ProductService.ProductInstall)]
 public class ProductInstallController(
+    IWebHostEnvironment webHostEnvironment,
     Db db,
     UserLoginService userLoginService,
     UserProvinceService userProvinceService,
@@ -304,6 +305,13 @@ public class ProductInstallController(
                 }
             }
 
+            // 附件
+            var attachment = db.ProductInstallAttachment.AsNoTracking()
+                .Where(e => e.ProductInstallId == productInstallId)
+                .OrderByDescending(e => e.Id)
+                .Take(1)
+                .SingleOrDefault();
+
             model = new ProductInstallDetailModel {
                 Id = productInstall.Id,
                 CollegeId = collegeId,
@@ -320,6 +328,8 @@ public class ProductInstallController(
                 ContactMobile = productInstall.ContactMobile,
                 Description = productInstall.Description,
                 ProductVersionList = productVersionItemList,
+                AttachmentId = attachment?.Id ?? 0,
+                AttachmentName = attachment?.Name ?? "",
             };
         }
 
@@ -330,26 +340,61 @@ public class ProductInstallController(
         });
     }
 
+    private static readonly string uploadFolder = "upload";
+
     [HttpPost]
-    [Route("/api/product-install/attachment/upload")]
+    [Route("/api/product-install/attachment/upload/{productInstallId:long}")]
     [Transactional(false)]
-    public IActionResult AttachmentUpload(IFormFile attachmentFile)
+    public IActionResult AttachmentUpload(long productInstallId, IFormFile attachmentFile)
     {
         if (attachmentFile is null)
         {
             throw new ValidationException("文件上传失败，请重新上传");
         }
 
-        // 返回保存的文件路径
+        var productInstall = db.ProductInstall.Find(productInstallId);
+        if (productInstall is null)
+        {
+            throw new ValidationException($"指定的产品安装#{productInstallId}不存在");
+        }
+
+        string fileName = attachmentFile.FileName;
+        string fileExt = new FileInfo(fileName).Extension;
+
+        string newFileName = Guid.NewGuid().ToString("N") + fileExt;
+        string monthFolderName = DateTime.Now.ToString("yyyyMM");
+        string fullUploadFolder = Path.Combine(webHostEnvironment.ContentRootPath, uploadFolder, monthFolderName);
+        string newFileFullName = Path.Combine(fullUploadFolder, newFileName);
+
+        if (Directory.Exists(fullUploadFolder) == false)
+        {
+            Directory.CreateDirectory(fullUploadFolder);
+        }
+
+        using Stream newFileStream = System.IO.File.Create(newFileFullName);
+        attachmentFile.CopyTo(newFileStream);
+
+        long attachmentId = 0L;
+        Transactional.Wrap(db, () => {
+            var attachment = new ProductInstallAttachmentEntity {
+                ProductInstallId = productInstallId,
+                Name = fileName,
+                PathFile = Path.Combine(monthFolderName, newFileName),
+            };
+
+            db.ProductInstallAttachment.Add(attachment);
+
+            db.SaveChanges();
+
+            attachmentId = attachment.Id;
+        });
 
         return Json(new JsonResultData {
             Success = true,
-            Message = "文件上传成功，请点击保存",
+            Message = "文件上传并已保存成功",
             Data = new Dictionary<string, object> {
-                ["attachmentId"] = 1213L,
-                ["attachmentName"] = attachmentFile.FileName,
-                ["attachmentPathFile"] = "some-path/some-file.jpg",
-                ["attachmentNew"] = true, // 这是总是返回 true，表示是一个新上传的文件
+                ["attachmentId"] = attachmentId,
+                ["attachmentName"] = fileName,
             }
         });
     }
@@ -359,8 +404,19 @@ public class ProductInstallController(
     [Transactional(false)]
     public IActionResult AttachmentDownload(long attachmentId)
     {
+        var attachment = db.ProductInstallAttachment.Find(attachmentId);
+        if (attachment is null)
+        {
+            throw new Exception($"指定的产品安装附件#{attachmentId}不存在！");
+        }
+
+        string fileName = attachment.Name;
+        string fullFileName = Path.Combine(webHostEnvironment.ContentRootPath, uploadFolder, attachment.PathFile);
+
+        using Stream fileStream = System.IO.File.OpenRead(fullFileName);
+
         // 用 zip 是让总是提示下载，而不是碰到图片类型时直接打开一个图片
-        return File("", ContentType.Zip, "这是一个文件名.jpg");
+        return File(fileStream, ContentType.Zip, fileName);
     }
 
     [HttpPost]

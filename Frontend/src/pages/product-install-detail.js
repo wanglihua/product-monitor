@@ -100,8 +100,6 @@ const ProductInstallDetailInner = (props) => {
                         setAttachment({
                             attachmentId: data.attachmentId,
                             attachmentName: data.attachmentName,
-                            attachmentPathFile: data.attachmentPathFile,
-                            attachmentNew: false,
                         });
 
                         setVersionSelectOptions(data.productVersionList);
@@ -138,10 +136,8 @@ const ProductInstallDetailInner = (props) => {
                             contactTeacher: values.contactTeacher,
                             contactMobile: values.contactMobile,
                             description: values.description,
-                            attachmentId: attachment.attachmentId,
+                            attachmentId: attachment.attachmentId, // 其实这里也不用传的
                             attachmentName: attachment.attachmentName,
-                            attachmentPathFile: attachment.attachmentPathFile,
-                            attachmentNew: attachment.attachmentNew,
                         }, function (response) {
                             const res = response.data;
                             if (res.success === false) {
@@ -390,62 +386,60 @@ const ProductInstallDetailInner = (props) => {
                             </Form.Item>
                         </Descriptions.Item>
                         <Descriptions.Item label="附件" span={2}>
-                            <Form.Item>
-                                <Space>
-                                    {attachment.id > 0 && (
-                                        <>
-                                            <a href={"/api/product-install/attachment/download/{attachment.attachmentId}"}>{attachment.attachmentName}</a>
-                                            <Button type="default" size="middle" onClick={() => {
-                                                setAttachment({
-                                                    attachmentId: 0,
-                                                    attachmentName: "",
-                                                    attachmentPathFile: "",
-                                                    attachmentNew: true,
-                                                });
-                                            }}><DeleteOutlined/>移除附件</Button>
-                                        </>
-                                    )}
-                                    <Upload
-                                        showUploadList={false}
-                                        name="attachmentFile"
-                                        accept=".*"
-                                        action="/api/product-install/attachment/upload"
-                                        onChange={(info) => {
-                                            const status = info.file.status;
+                            {productInstallId > 0 && (
+                                <Form.Item>
+                                    <Space>
+                                        {attachment.id > 0 && (
+                                            <>
+                                                <a href={`/api/product-install/attachment/download/${attachment.attachmentId}`}>{attachment.attachmentName}</a>
+                                                <Button type="default" size="middle" onClick={() => {
+                                                    setAttachment({
+                                                        attachmentId: 0,
+                                                        attachmentName: "",
+                                                    });
+                                                }}><DeleteOutlined/>移除附件</Button>
+                                            </>
+                                        )}
+                                        <Upload
+                                            showUploadList={false}
+                                            name="attachmentFile"
+                                            accept=".*"
+                                            action={`/api/product-install/attachment/upload/${productInstallId}`}
+                                            onChange={(info) => {
+                                                const status = info.file.status;
 
-                                            if (status === 'uploading') {
-                                                showMask();
-                                            }
-
-                                            if (status === 'done') {
-                                                hideMask();
-                                                const response = info.file.response;
-                                                if (response.success !== true) {
-                                                    showError(response.message);
-                                                    return;
+                                                if (status === 'uploading') {
+                                                    showMask();
                                                 }
 
-                                                setAttachment({
-                                                    attachmentId: response.data.attachmentId,
-                                                    attachmentName: response.data.attachmentName,
-                                                    attachmentPathFile: response.data.attachmentPathFile,
-                                                    attachmentNew: response.data.attachmentNew,
-                                                });
+                                                if (status === 'done') {
+                                                    hideMask();
+                                                    const response = info.file.response;
+                                                    if (response.success !== true) {
+                                                        showError(response.message);
+                                                        return;
+                                                    }
 
-                                                showSuccess(response.message);
-                                            }
+                                                    setAttachment({
+                                                        attachmentId: response.data.attachmentId,
+                                                        attachmentName: response.data.attachmentName,
+                                                    });
 
-                                            if (status === 'error') {
-                                                hideMask();
-                                                showError("文件上传失败, 请重试!");
-                                            }
-                                        }}
-                                    >
-                                        <Button type="default" size="middle"><UploadOutlined/>上传附件</Button>
-                                    </Upload>
-                                    <span style={{fontSize: "12px", color: "lightgray"}}>附件上传成功后，请点击保存</span>
-                                </Space>
-                            </Form.Item>
+                                                    showSuccess(response.message);
+                                                }
+
+                                                if (status === 'error') {
+                                                    hideMask();
+                                                    showError("文件上传失败, 请重试!");
+                                                }
+                                            }}
+                                        >
+                                            <Button type="default" size="middle"><UploadOutlined/>上传附件</Button>
+                                        </Upload>
+                                    </Space>
+                                </Form.Item>
+                            )}
+                            {productInstallId <= 0 && (<span>请先保存成功后，再上传附件</span>)}
                         </Descriptions.Item>
                     </Descriptions>
 
