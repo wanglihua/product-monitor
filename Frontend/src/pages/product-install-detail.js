@@ -1,4 +1,4 @@
-import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Select, Space, theme} from "antd";
+import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Select, Space, theme, Upload} from "antd";
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
@@ -11,7 +11,7 @@ const ProductInstallDetailInner = (props) => {
     const loadProductInstallList = props.loadProductInstallList;
 
     const {token} = theme.useToken();
-    const {post, showSuccess, showError} = useSiteContext();
+    const {post, showMask, hideMask, showSuccess, showError} = useSiteContext();
 
     const title = useRef("");
     if (productInstallId === 0) {
@@ -379,7 +379,37 @@ const ProductInstallDetailInner = (props) => {
                         <Descriptions.Item label="附件" span={2}>
                             <Space>
                                 <a href={"/favicon.ico"} target="_blank">下载</a>
-                                <Button type="default" size="middle"><UploadOutlined/>上传附件</Button>
+                                <Upload
+                                    showUploadList={false}
+                                    name="attachmentFile"
+                                    accept=".*"
+                                    action="/api/product-install/attachment/upload"
+                                    onChange={(info) => {
+                                        const status = info.file.status;
+
+                                        if (status === 'uploading') {
+                                            showMask();
+                                        }
+
+                                        if (status === 'done') {
+                                            hideMask();
+                                            const response = info.file.response;
+                                            if (response.success !== true) {
+                                                showError(response.message);
+                                                return;
+                                            }
+
+                                            showSuccess(response.message);
+                                        }
+
+                                        if (status === 'error') {
+                                            hideMask();
+                                            showError("文件上传失败, 请重试!");
+                                        }
+                                    }}
+                                >
+                                    <Button type="default" size="middle"><UploadOutlined/>上传附件</Button>
+                                </Upload>
                                 <span style={{fontSize: "12px", color: "lightgray"}}>附件上传成功后，请点击保存</span>
                             </Space>
                         </Descriptions.Item>
