@@ -363,7 +363,7 @@ const ProductInstallDetailInner = (props) => {
                                 />
                             </Form.Item>
                         </Descriptions.Item>
-                        <Descriptions.Item label="其他备注">
+                        <Descriptions.Item label="服务器信息">
                             <Form.Item
                                 name="description"
                                 rules={[]}
@@ -371,7 +371,7 @@ const ProductInstallDetailInner = (props) => {
                                 <Input.TextArea
                                     rows={2}
                                     maxLength={512}
-                                    placeholder="其他备注"
+                                    placeholder="服务器信息"
                                     allowClear
                                 />
                             </Form.Item>
