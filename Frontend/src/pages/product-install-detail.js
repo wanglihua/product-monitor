@@ -2,7 +2,7 @@ import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Se
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
-import {CloseCircleOutlined, SaveOutlined, UploadOutlined} from "@ant-design/icons";
+import {CloseCircleOutlined, DeleteOutlined, SaveOutlined, UploadOutlined} from "@ant-design/icons";
 
 const ProductInstallDetailInner = (props) => {
     const productInstallId = props.productInstallId;
@@ -27,6 +27,8 @@ const ProductInstallDetailInner = (props) => {
     const [collegeSelectOptions, setCollegeSelectOptions] = useState([]);
     const [productSelectOptions, setProductSelectOptions] = useState([]);
     const [versionSelectOptions, setVersionSelectOptions] = useState([]);
+
+    const [attachment, setAttachment] = useState({});
 
     const form = useRef();
 
@@ -93,7 +95,13 @@ const ProductInstallDetailInner = (props) => {
                             contactTeacher: data.contactTeacher,
                             contactMobile: data.contactMobile,
                             description: data.description,
-                            attachment: data.attachment,
+                        });
+
+                        setAttachment({
+                            attachmentId: data.attachmentId,
+                            attachmentName: data.attachmentName,
+                            attachmentPathFile: data.attachmentPathFile,
+                            attachmentNew: false,
                         });
 
                         setVersionSelectOptions(data.productVersionList);
@@ -130,7 +138,10 @@ const ProductInstallDetailInner = (props) => {
                             contactTeacher: values.contactTeacher,
                             contactMobile: values.contactMobile,
                             description: values.description,
-                            attachment: values.attachment,
+                            attachmentId: attachment.attachmentId,
+                            attachmentName: attachment.attachmentName,
+                            attachmentPathFile: attachment.attachmentPathFile,
+                            attachmentNew: attachment.attachmentNew,
                         }, function (response) {
                             const res = response.data;
                             if (res.success === false) {
@@ -379,9 +390,21 @@ const ProductInstallDetailInner = (props) => {
                             </Form.Item>
                         </Descriptions.Item>
                         <Descriptions.Item label="附件" span={2}>
-                            <Form.Item name="attachment">
+                            <Form.Item>
                                 <Space>
-                                    <a href={"/favicon.ico"} target="_blank">下载</a>
+                                    {attachment.id > 0 && (
+                                        <>
+                                            <a href={"/api/product-install/attachment/download/{attachment.attachmentId}"}>{attachment.attachmentName}</a>
+                                            <Button type="default" size="middle" onClick={() => {
+                                                setAttachment({
+                                                    attachmentId: 0,
+                                                    attachmentName: "",
+                                                    attachmentPathFile: "",
+                                                    attachmentNew: true,
+                                                });
+                                            }}><DeleteOutlined/>移除附件</Button>
+                                        </>
+                                    )}
                                     <Upload
                                         showUploadList={false}
                                         name="attachmentFile"
@@ -402,8 +425,11 @@ const ProductInstallDetailInner = (props) => {
                                                     return;
                                                 }
 
-                                                form.current.setFieldsValue({
-                                                    attachment: response.data.fileName,
+                                                setAttachment({
+                                                    attachmentId: response.data.attachmentId,
+                                                    attachmentName: response.data.attachmentName,
+                                                    attachmentPathFile: response.data.attachmentPathFile,
+                                                    attachmentNew: response.data.attachmentNew,
                                                 });
 
                                                 showSuccess(response.message);

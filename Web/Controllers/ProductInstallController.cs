@@ -340,18 +340,27 @@ public class ProductInstallController(
             throw new ValidationException("文件上传失败，请重新上传");
         }
 
-        log.Info(attachmentFile.FileName);
-        log.Info(attachmentFile.Name);
-
         // 返回保存的文件路径
 
         return Json(new JsonResultData {
             Success = true,
             Message = "文件上传成功，请点击保存",
             Data = new Dictionary<string, object> {
-                ["fileName"] = attachmentFile.FileName,
+                ["attachmentId"] = 1213L,
+                ["attachmentName"] = attachmentFile.FileName,
+                ["attachmentPathFile"] = "some-path/some-file.jpg",
+                ["attachmentNew"] = true, // 这是总是返回 true，表示是一个新上传的文件
             }
         });
+    }
+
+    [HttpGet]
+    [Route("/api/product-install/attachment/download/{attachmentId:long}")]
+    [Transactional(false)]
+    public IActionResult AttachmentDownload(long attachmentId)
+    {
+        // 用 zip 是让总是提示下载，而不是碰到图片类型时直接打开一个图片
+        return File("", ContentType.Zip, "这是一个文件名.jpg");
     }
 
     [HttpPost]
