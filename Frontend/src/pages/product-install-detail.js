@@ -2,7 +2,7 @@ import {Button, ConfigProvider, DatePicker, Descriptions, Form, Input, Modal, Se
 import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
-import {CloseCircleOutlined, SaveOutlined} from "@ant-design/icons";
+import {CloseCircleOutlined, SaveOutlined, UploadOutlined} from "@ant-design/icons";
 
 const ProductInstallDetailInner = (props) => {
     const productInstallId = props.productInstallId;
@@ -363,7 +363,7 @@ const ProductInstallDetailInner = (props) => {
                                 />
                             </Form.Item>
                         </Descriptions.Item>
-                        <Descriptions.Item label="服务器信息">
+                        <Descriptions.Item label="服务器信息" span={2}>
                             <Form.Item
                                 name="description"
                                 rules={[]}
@@ -375,6 +375,13 @@ const ProductInstallDetailInner = (props) => {
                                     allowClear
                                 />
                             </Form.Item>
+                        </Descriptions.Item>
+                        <Descriptions.Item label="附件" span={2}>
+                            <Space>
+                                <a href={"/favicon.ico"} target="_blank">下载</a>
+                                <Button type="default" size="middle"><UploadOutlined/>上传附件</Button>
+                                <span style={{fontSize: "12px", color: "lightgray"}}>附件上传成功后，请点击保存</span>
+                            </Space>
                         </Descriptions.Item>
                     </Descriptions>
 
