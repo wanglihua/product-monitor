@@ -38,6 +38,7 @@ public class UserLoginRateLimitService(IMemoryCache memoryCache)
         // 存储当前尝试登录时间
         // 无论是否下面报出异常，这里都记录时间
         loginTimeList!.Add(now);
+        memoryCache.Set(key, loginTimeList, TimeSpan.FromSeconds(limitSeconds * 10)); // 缓存保留10分钟
 
         int loginCount = loginTimeList.Count(e => e >= now.AddSeconds(-limitSeconds)); // 最近有缓存记录的登录次数
         // 60 秒内最多登录次数不能大于 5 次
@@ -45,7 +46,5 @@ public class UserLoginRateLimitService(IMemoryCache memoryCache)
         {
             throw new ValidationException("当前用户登录过于频繁，请稍等再重试！");
         }
-
-        memoryCache.Set(key, loginTimeList, TimeSpan.FromSeconds(limitSeconds * 10)); // 缓存保留10分钟
     }
 }
