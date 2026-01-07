@@ -6,6 +6,7 @@
     product_id        BIGINT        NOT NULL,
 
     project_type_code INT           NOT NULL,
+    problem_type      INT           NOT NULL,
     service_date      DATETIME      NOT NULL,
     service_count     INT           NOT NULL,
     service_url       NVARCHAR(256) NOT NULL,
@@ -38,6 +39,7 @@ EXEC sp_AddExtendedProperty 'MS_Description', N'Id', 'SCHEMA', 'dbo', 'TABLE', '
 EXEC sp_AddExtendedProperty 'MS_Description', N'学校', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_service', 'COLUMN', 'college_id';
 EXEC sp_AddExtendedProperty 'MS_Description', N'产品', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_service', 'COLUMN', 'product_id';
 EXEC sp_AddExtendedProperty 'MS_Description', N'项目类型', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_service', 'COLUMN', 'project_type_code';
+EXEC sp_AddExtendedProperty 'MS_Description', N'问题类型', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_service', 'COLUMN', 'problem_type';
 EXEC sp_AddExtendedProperty 'MS_Description', N'售后时间', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_service', 'COLUMN', 'service_date';
 EXEC sp_AddExtendedProperty 'MS_Description', N'售后次数', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_service', 'COLUMN', 'service_count';
 EXEC sp_AddExtendedProperty 'MS_Description', N'售后网址', 'SCHEMA', 'dbo', 'TABLE', 'tbl_product_service', 'COLUMN', 'service_url';

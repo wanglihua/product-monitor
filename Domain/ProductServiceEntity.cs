@@ -23,6 +23,11 @@ public class ProductServiceEntity : Entity
     public ProjectType ProjectType { get; set; } = ProjectType.None;
 
     /// <summary>
+    /// 问题类型
+    /// </summary>
+    public ProblemType ProblemType { get; set; } = ProblemType.None;
+
+    /// <summary>
     /// 售后时间
     /// </summary>
     public DateTime ServiceDate { get; set; }
