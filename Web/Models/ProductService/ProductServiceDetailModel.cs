@@ -79,6 +79,10 @@ public class ProductServiceDetailModelValidator : AbstractValidator<ProductServi
             .Must(p => ProjectType.GetById(p) != ProjectType.None)
             .WithMessage("项目类型不能为空!");
 
+        RuleFor(e => e.ProblemTypeCode)
+            .Must(p => ProblemType.GetById(p) != ProblemType.None)
+            .WithMessage("问题类型不能为空!");
+
         RuleFor(e => e.ServiceDate).NotNull().WithMessage("售后时间不能为空!");
         RuleFor(e => e.ServiceDate).NotEmpty().WithMessage("售后时间不能为空!");
         RuleFor(e => e.ServiceDate)

@@ -237,6 +237,7 @@ public class ProductServiceController(
             ProductId = 0,
             ProductName = "",
             ProjectTypeCode = 0,
+            ProblemTypeCode = 0,
             ServiceDate = DateTime.Today.ToString("yyyy-MM-dd"),
             // ServiceCount = 0,
             ServiceUrl = "",
