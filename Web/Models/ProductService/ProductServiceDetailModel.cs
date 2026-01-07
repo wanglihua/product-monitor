@@ -24,6 +24,9 @@ public class ProductServiceDetailModel
     [JsonProperty("projectTypeCode")]
     public int ProjectTypeCode { get; set; }
 
+    [JsonProperty("problemTypeCode")]
+    public int ProblemTypeCode { get; set; }
+
     [JsonProperty("serviceDate")]
     public string ServiceDate { get; set; } = "";
 
@@ -50,6 +53,14 @@ public class ProductServiceDetailModel
 
     [JsonProperty("projectTypeList")]
     public IList<Dictionary<string, object>> ProjectTypeList => ProjectType.GetList()
+        .Select(e => new Dictionary<string, object> {
+            ["value"] = e.Id,
+            ["label"] = e.Name,
+        })
+        .ToList();
+
+    [JsonProperty("problemTypeList")]
+    public IList<Dictionary<string, object>> ProblemTypeList => ProblemType.GetList()
         .Select(e => new Dictionary<string, object> {
             ["value"] = e.Id,
             ["label"] = e.Name,

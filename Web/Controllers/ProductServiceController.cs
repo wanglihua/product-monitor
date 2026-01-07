@@ -110,6 +110,11 @@ public class ProductServiceController(
                 sortField = e => e.ProductService.ProjectType;
             }
 
+            if (string.Compare(sortFieldParam, nameof(ProductServiceListItem.ProblemTypeName), StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                sortField = e => e.ProductService.ProblemType;
+            }
+
             if (string.Compare(sortFieldParam, nameof(ProductServiceListItem.CollegeName), StringComparison.OrdinalIgnoreCase) == 0)
             {
                 sortField = e => e.College.Name;
@@ -170,6 +175,7 @@ public class ProductServiceController(
                 CollegeName = e.College.Name,
                 ProductName = e.Product.Name,
                 ProjectType = e.ProductService.ProjectType,
+                ProblemType = e.ProductService.ProblemType,
                 ServiceDate = e.ProductService.ServiceDate,
                 ServiceCount = e.ProductService.ServiceCount,
                 ServiceUrl = e.ProductService.ServiceUrl,
@@ -190,6 +196,7 @@ public class ProductServiceController(
                 CollegeName = e.CollegeName,
                 ProductName = e.ProductName,
                 ProjectTypeName = e.ProjectType.Name,
+                ProblemTypeName = e.ProblemType.Name,
                 ServiceDate = e.ServiceDate.ToString("yyyy-MM-dd"),
                 ServiceCount = e.ServiceCount,
                 ServiceUrl = e.ServiceUrl,
@@ -269,6 +276,7 @@ public class ProductServiceController(
                 ProductId = productService.ProductId,
                 ProductName = product.Name,
                 ProjectTypeCode = productService.ProjectType.Id,
+                ProblemTypeCode = productService.ProblemType.Id,
                 ServiceDate = productService.ServiceDate.ToString("yyyy-MM-dd"),
                 // ServiceCount = productService.ServiceCount,
                 ServiceUrl = productService.ServiceUrl,
@@ -314,6 +322,7 @@ public class ProductServiceController(
         }
 
         var projectType = ProjectType.GetById(model.ProjectTypeCode);
+        var problemType = ProblemType.GetById(model.ProblemTypeCode);
         long collegeId = model.CollegeId;
         long productId = model.ProductId;
 
@@ -367,6 +376,7 @@ public class ProductServiceController(
         productService.CollegeId = collegeId;
         productService.ProductId = productId;
         productService.ProjectType = projectType;
+        productService.ProblemType = problemType;
         productService.ServiceDate = DateTime.Parse(model.ServiceDate).Date;
         // productService.ServiceCount = model.ServiceCount; 这个值不是从界面上取得后保存的
         productService.ServiceUrl = model.ServiceUrl ?? "";

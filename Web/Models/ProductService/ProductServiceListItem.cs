@@ -15,6 +15,9 @@ public class ProductServiceListItem
 
     [JsonProperty("projectTypeName")]
     public string ProjectTypeName { get; set; } = "";
+    
+    [JsonProperty("problemTypeName")]
+    public string ProblemTypeName { get; set; } = "";
 
     [JsonProperty("serviceDate")]
     public string ServiceDate { get; set; } = "";
