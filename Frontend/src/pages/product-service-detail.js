@@ -25,6 +25,7 @@ const ProductServiceDetailInner = (props) => {
     const [state, setState] = useState({});
 
     const [projectTypeOptions, setProjectTypeOptions] = useState([]);
+    const [problemTypeOptions, setProblemTypeOptions] = useState([]);
     const [collegeSelectOptions, setCollegeSelectOptions] = useState([]);
     const [productSelectOptions, setProductSelectOptions] = useState([]);
 
@@ -65,6 +66,7 @@ const ProductServiceDetailInner = (props) => {
                         const data = res.data;
 
                         let projectTypeCode = undefined;
+                        let problemTypeCode = undefined;
                         let collegeId = undefined;
                         let productId = undefined;
 
@@ -82,14 +84,17 @@ const ProductServiceDetailInner = (props) => {
                             }]);
 
                             projectTypeCode = data.projectTypeCode;
+                            problemTypeCode = data.problemTypeCode;
                         }
 
                         setProjectTypeOptions(data.projectTypeList)
+                        setProblemTypeOptions(data.problemTypeList);
 
                         form.current.setFieldsValue({
                             collegeId: collegeId,
                             productId: productId,
                             projectTypeCode: projectTypeCode,
+                            problemTypeCode: problemTypeCode,
                             serviceDate: dayjs(data.serviceDate),
                             serviceUrl: data.serviceUrl,
                             loginUser: data.loginUser,
@@ -123,6 +128,7 @@ const ProductServiceDetailInner = (props) => {
                             collegeId: values.collegeId,
                             productId: values.productId,
                             projectTypeCode: values.projectTypeCode,
+                            problemTypeCode: values.problemTypeCode,
                             serviceDate: values.serviceDate,
                             serviceUrl: values.serviceUrl,
                             loginUser: values.loginUser,
@@ -160,7 +166,7 @@ const ProductServiceDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入项目类型!',
+                                        message: '请选择项目类型!',
                                     },
                                 ]}
                             >
@@ -170,8 +176,21 @@ const ProductServiceDetailInner = (props) => {
                                 />
                             </Form.Item>
                         </Descriptions.Item>
-                        <Descriptions.Item label="">
-                            <Form.Item></Form.Item>
+                        <Descriptions.Item label="问题类型">
+                            <Form.Item
+                                name="problemTypeCode"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请选择问题类型!',
+                                    },
+                                ]}
+                            >
+                                <Select
+                                    placeholder="请选择项目类型"
+                                    options={problemTypeOptions}
+                                />
+                            </Form.Item>
                         </Descriptions.Item>
                         <Descriptions.Item label="学校">
                             <Form.Item

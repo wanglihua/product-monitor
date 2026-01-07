@@ -72,6 +72,12 @@ const ProductService = () => {
             sorter: true,
         },
         {
+            title: "问题类型",
+            dataIndex: "problemTypeName",
+            width: "110px",
+            sorter: true,
+        },
+        {
             title: "联系老师",
             dataIndex: "contactTeacher",
             width: "120px",
