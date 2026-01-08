@@ -60,7 +60,22 @@ namespace Client
                     || PM.ClientType == ClientType.UrlRent
                     || PM.ClientType == ClientType.UrlSite)
                 {
-                    
+                    var param = new ProductUrlDataCollectParam {
+                        Key = PM.ClientKey,
+                        UseTime = useData.UseTime.ToString(ProductInstallDataCollectParam.DateTimeFormat),
+                        AccountType = useData.AccountType,
+                        LoginUser = useData.Account,
+                        SendTime = DateTime.Now.ToString(ProductInstallDataCollectParam.DateTimeFormat),
+                    };
+
+                    param.Sign = DataCollectUtil.CalSign(param);
+
+                    var httpClient = new HttpClient();
+                    string url = $"{PM.PMSiteBase}/product/url/data/collect";
+                    var content = new StringContent(JsonConvert.SerializeObject(param));
+                    content.Headers.ContentType.MediaType = "application/json";
+                    var result = httpClient.PostAsync(url, content).GetAwaiter().GetResult();
+                    // Console.WriteLine(result);
                 }
             }
 

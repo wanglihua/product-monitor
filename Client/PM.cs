@@ -23,7 +23,7 @@ namespace Client
         /// <param name="clientKey"></param>
         public static void Start(ClientType clientType, string clientKey)
         {
-            // todo 检查 client key
+            // 检查 client key
             if (ClientKeyUtil.ValidateKey(clientKey) == false)
             {
                 throw new Exception("不合法的 PM client key");
