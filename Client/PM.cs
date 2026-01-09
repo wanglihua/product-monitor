@@ -10,7 +10,7 @@ namespace Client
 #if DEBUG
         public static string PMSiteBase = "http://localhost:5001";
 #else
-        public static string PMSiteBase = "http://localhost:5001";
+        public static string PMSiteBase = "http://47.120.44.124:9006";
 #endif
 
         public static ClientType ClientType { get; private set; }
