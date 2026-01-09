@@ -3,6 +3,7 @@ import React, {useRef, useState} from "react";
 import useSiteContext from "../site/site-context";
 import dayjs from "dayjs";
 import {CloseCircleOutlined, SaveOutlined} from "@ant-design/icons";
+import Product from "./product";
 
 const ProductServiceDetailInner = (props) => {
     const productServiceId = props.productServiceId;
@@ -84,7 +85,10 @@ const ProductServiceDetailInner = (props) => {
                             }]);
 
                             projectTypeCode = data.projectTypeCode;
-                            problemTypeCode = data.problemTypeCode;
+
+                            if (data.problemTypeCode > 0) {
+                                problemTypeCode = data.problemTypeCode;
+                            }
                         }
 
                         setProjectTypeOptions(data.projectTypeList)
