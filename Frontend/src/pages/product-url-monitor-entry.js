@@ -65,7 +65,7 @@ const ProductUrlMonitorEntry = () => {
         },
         {
             title: "使用时间",
-            dataIndex: "useTime",
+            dataIndex: "createTime",
             width: "150px",
         },
         {

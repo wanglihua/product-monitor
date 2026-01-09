@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NLog;
+using Service;
 using Service.ProductUrlDataCollect;
 
 namespace Web.Controllers;
@@ -16,6 +17,7 @@ namespace Web.Controllers;
 [NoAuth]
 public class ProductUrlDataCollectController(
     Db db,
+    IpRegionService ipRegionService,
     ProductUrlDataCollectService productUrlDataCollectService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
@@ -91,7 +93,8 @@ public class ProductUrlDataCollectController(
         string ipAddress = WebUtil.GetClientIp(Request);
 
         // 使用省份
-        var useProvince = ProvinceType.None; // TODO 这里暂时设置为空，到时通过IP获得真实省份
+        string userProvinceStr = ipRegionService.GetIpAddressProvince(ipAddress);
+        var useProvince = ProvinceType.GetByName(userProvinceStr);
 
         string key = param.Key;
         var clientKey = db.ClientKey.AsNoTracking()
@@ -164,6 +167,7 @@ public class ProductUrlDataCollectController(
 
         var productUrlMonitorEntry = new ProductUrlMonitorEntryEntity {
             ProductUrlMonitorId = productUrlMonitorId,
+            AccountType = accountType,
             LoginUser = loginUser,
             IpAddress = ipAddress,
             ProvinceType = useProvince,
