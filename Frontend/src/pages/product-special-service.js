@@ -56,6 +56,12 @@ const ProductSpecialService = () => {
             },
         },
         {
+            title: "项目类型",
+            dataIndex: "projectTypeName",
+            width: "120px",
+            sorter: true,
+        },        
+        {
             title: "学校",
             dataIndex: "collegeName",
             width: "200px",

@@ -29,7 +29,14 @@ public class ProductSpecialServiceExcelService
         row.HeightInPoints = rowHeight;
 
         int cellIndex = 0;
+
         ICell cell = row.CreateCell(cellIndex);
+        sheet.SetColumnWidth(cellIndex++, 16 * 256);
+        cell.CellStyle = headerCellStyle;
+        cell.SetCellType(CellType.String);
+        cell.SetCellValue("项目类型");
+
+        cell = row.CreateCell(cellIndex);
         sheet.SetColumnWidth(cellIndex++, 32 * 256);
         cell.CellStyle = headerCellStyle;
         cell.SetCellType(CellType.String);
@@ -107,6 +114,12 @@ public class ProductSpecialServiceExcelService
             row.HeightInPoints = rowHeight;
 
             cellIndex = 0;
+
+            // 项目类型
+            cell = row.CreateCell(cellIndex++);
+            cell.CellStyle = contentCellStyle;
+            cell.SetCellType(CellType.String);
+            cell.SetCellValue(item.ProjectTypeName);
 
             // 学校
             cell = row.CreateCell(cellIndex++);
