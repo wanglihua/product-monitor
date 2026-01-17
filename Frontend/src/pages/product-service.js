@@ -1,10 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Input, Space, Table} from 'antd';
-import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
+import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined, FileExcelOutlined} from '@ant-design/icons';
 import ProductServiceDetail from "./product-service-detail";
 
 import useSiteContext from "../site/site-context";
 import Title from "../site/title";
+import $ from "jquery";
+import download from "../core/download";
 
 const ProductService = () => {
 
@@ -180,6 +182,21 @@ const ProductService = () => {
                         }}
                     >
                         添加
+                    </Button>
+                    <Button
+                        color="default"
+                        icon={<FileExcelOutlined/>}
+                        onClick={(e) => {
+                            showConfirm("确认要导出吗！", "确认", () => {
+                                const query = $.param(listParam);
+                                const url = `/api/product-service/export?${query}`;
+                                download(url);
+
+                                showSuccess("导出成功, 文件下载中!");
+                            });
+                        }}
+                    >
+                        导出
                     </Button>
                 </Space>
             </div>

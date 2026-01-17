@@ -27,6 +27,7 @@ public class ProductServiceController(
     ProductSaleService productSaleService,
     ProductRentService productRentService,
     ProductEvalService productEvalService,
+    ProductServiceExcelService productServiceExcelService,
     ActionLogService actionLogService) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
@@ -42,13 +43,9 @@ public class ProductServiceController(
         public UserEntity User { get; set; } = new();
     }
 
-    [HttpPost]
-    [Route("/api/product-service/list")]
-    [Transactional(false)]
-    public IActionResult List([FromBody] ProductServiceListParam param)
+    [NonAction]
+    private IQueryable<ProductServiceJoinItem> GetListQuery(ProductServiceListParam param)
     {
-        ValidationUtil.Validate<ProductServiceListParamValidator, ProductServiceListParam>(param);
-
         long loginUserId = userLoginService.GetLoginUserId();
         bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
 
@@ -96,6 +93,18 @@ public class ProductServiceController(
             string productNameQuery = param.ProductNameQuery.Trim();
             query = query.Where(e => e.Product.Name.Contains(productNameQuery));
         }
+
+        return query;
+    }
+
+    [HttpPost]
+    [Route("/api/product-service/list")]
+    [Transactional(false)]
+    public IActionResult List([FromBody] ProductServiceListParam param)
+    {
+        ValidationUtil.Validate<ProductServiceListParamValidator, ProductServiceListParam>(param);
+
+        IQueryable<ProductServiceJoinItem> query = GetListQuery(param);
 
         int productServiceCount = query.Count();
 
@@ -449,5 +458,62 @@ public class ProductServiceController(
             Success = true,
             Message = "删除成功！",
         });
+    }
+
+    [HttpPost]
+    [Route("/api/product-service/export")]
+    [Transactional(false)]
+    public IActionResult Export(ProductServiceListParam param)
+    {
+        ValidationUtil.Validate<ProductServiceListParamValidator, ProductServiceListParam>(param);
+
+        IQueryable<ProductServiceJoinItem> query = GetListQuery(param);
+
+        var productServiceList = query
+            .OrderBy(e => e.ProductService.Id)
+            .Select(e => new {
+                Id = e.ProductService.Id,
+                CollegeName = e.College.Name,
+                ProductName = e.Product.Name,
+                ProjectType = e.ProductService.ProjectType,
+                ProblemType = e.ProductService.ProblemType,
+                ServiceDate = e.ProductService.ServiceDate,
+                ServiceCount = e.ProductService.ServiceCount,
+                ServiceUrl = e.ProductService.ServiceUrl,
+                LoginUser = e.ProductService.LoginUser,
+                LoginPassword = e.ProductService.LoginPassword,
+                ContactTeacher = e.ProductService.ContactTeacher,
+                ContactMobile = e.ProductService.ContactMobile,
+                Description = e.ProductService.Description,
+                CreateTime = e.ProductService.CreateTime,
+                UpdateTime = e.ProductService.UpdateTime,
+                UserName = e.User.UserName,
+            })
+            .ToList();
+
+        var productServiceItemList = productServiceList
+            .Select(e => new ProductServiceExcelExportListItem {
+                Id = e.Id,
+                CollegeName = e.CollegeName,
+                ProductName = e.ProductName,
+                ProjectTypeName = e.ProjectType.Name,
+                ProblemTypeName = e.ProblemType.Name,
+                ServiceDate = e.ServiceDate.ToString("yyyy-MM-dd"),
+                ServiceCount = e.ServiceCount,
+                ServiceUrl = e.ServiceUrl,
+                LoginUser = e.LoginUser,
+                LoginPassword = e.LoginPassword,
+                ContactTeacher = e.ContactTeacher,
+                ContactMobile = e.ContactMobile,
+                Description = e.Description,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+                UserName = e.UserName,
+            })
+            .ToList();
+
+        var excelContent = productServiceExcelService.Export(productServiceItemList);
+
+        return File(excelContent, ContentType.Xlsx, "售后维护.xlsx");
     }
 }
