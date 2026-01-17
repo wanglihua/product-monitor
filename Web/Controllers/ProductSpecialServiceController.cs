@@ -24,6 +24,7 @@ public class ProductSpecialServiceController(
     UserLoginService userLoginService,
     UserProvinceService userProvinceService,
     ProductSpecialServiceService productSpecialServiceService,
+    ProductSpecialServiceExcelService productSpecialServiceExcelService,
     ProductSaleService productSaleService,
     ProductRentService productRentService,
     ProductEvalService productEvalService,
@@ -42,13 +43,9 @@ public class ProductSpecialServiceController(
         public UserEntity User { get; set; } = new();
     }
 
-    [HttpPost]
-    [Route("/api/product-special-service/list")]
-    [Transactional(false)]
-    public IActionResult List([FromBody] ProductSpecialServiceListParam param)
+    [NonAction]
+    private IQueryable<ProductSpecialServiceJoinItem> GetListQuery(ProductSpecialServiceListParam param)
     {
-        ValidationUtil.Validate<ProductSpecialServiceListParamValidator, ProductSpecialServiceListParam>(param);
-
         long loginUserId = userLoginService.GetLoginUserId();
         bool isAdminLogin = userLoginService.IsAdmin(loginUserId);
 
@@ -96,6 +93,18 @@ public class ProductSpecialServiceController(
             string productNameQuery = param.ProductNameQuery.Trim();
             query = query.Where(e => e.Product.Name.Contains(productNameQuery));
         }
+
+        return query;
+    }
+
+    [HttpPost]
+    [Route("/api/product-special-service/list")]
+    [Transactional(false)]
+    public IActionResult List([FromBody] ProductSpecialServiceListParam param)
+    {
+        ValidationUtil.Validate<ProductSpecialServiceListParamValidator, ProductSpecialServiceListParam>(param);
+
+        IQueryable<ProductSpecialServiceJoinItem> query = GetListQuery(param);
 
         int productSpecialServiceCount = query.Count();
 
@@ -432,5 +441,60 @@ public class ProductSpecialServiceController(
             Success = true,
             Message = "删除成功！",
         });
+    }
+
+    [HttpPost]
+    [Route("/api/product-special-service/export")]
+    [Transactional(false)]
+    public IActionResult Export(ProductSpecialServiceListParam param)
+    {
+        ValidationUtil.Validate<ProductSpecialServiceListParamValidator, ProductSpecialServiceListParam>(param);
+
+        IQueryable<ProductSpecialServiceJoinItem> query = GetListQuery(param);
+
+        var productSpecialServiceList = query
+            .OrderBy(e => e.ProductSpecialService.Id)
+            .Select(e => new {
+                Id = e.ProductSpecialService.Id,
+                CollegeName = e.College.Name,
+                ProductName = e.Product.Name,
+                ProjectType = e.ProductSpecialService.ProjectType,
+                ServiceDate = e.ProductSpecialService.ServiceDate,
+                ServiceCount = e.ProductSpecialService.ServiceCount,
+                ServiceUrl = e.ProductSpecialService.ServiceUrl,
+                LoginUser = e.ProductSpecialService.LoginUser,
+                LoginPassword = e.ProductSpecialService.LoginPassword,
+                ContactTeacher = e.ProductSpecialService.ContactTeacher,
+                ContactMobile = e.ProductSpecialService.ContactMobile,
+                Description = e.ProductSpecialService.Description,
+                UserName = e.User.UserName,
+                CreateTime = e.ProductSpecialService.CreateTime,
+                UpdateTime = e.ProductSpecialService.UpdateTime,
+            })
+            .ToList();
+
+        var productSpecialServiceItemList = productSpecialServiceList
+            .Select(e => new ProductSpecialServiceExcelExportListItem {
+                Id = e.Id,
+                CollegeName = e.CollegeName,
+                ProductName = e.ProductName,
+                ProjectTypeName = e.ProjectType.Name,
+                ServiceDate = e.ServiceDate.ToString("yyyy-MM-dd"),
+                ServiceCount = e.ServiceCount,
+                ServiceUrl = e.ServiceUrl,
+                LoginUser = e.LoginUser,
+                LoginPassword = e.LoginPassword,
+                ContactTeacher = e.ContactTeacher,
+                ContactMobile = e.ContactMobile,
+                Description = e.Description,
+                UserName = e.UserName,
+                CreateTime = e.CreateTime.ToString("yyyy-MM-dd HH:mm"),
+                UpdateTime = e.UpdateTime.ToString("yyyy-MM-dd HH:mm"),
+            })
+            .ToList();
+
+        var excelContent = productSpecialServiceExcelService.Export(productSpecialServiceItemList);
+
+        return File(excelContent, ContentType.Xlsx, "特殊售后.xlsx");
     }
 }
