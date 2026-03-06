@@ -10,10 +10,18 @@ public class ProductInstallListParam : ListParam
     [BindProperty(Name = "collegeNameQuery")]
     [JsonProperty("collegeNameQuery")]
     public string CollegeNameQuery { get; set; } = "";
-    
+
     [BindProperty(Name = "productNameQuery")]
     [JsonProperty("productNameQuery")]
     public string ProductNameQuery { get; set; } = "";
+
+    [BindProperty(Name = "installDataBeginQuery")]
+    [JsonProperty("installDataBeginQuery")]
+    public string InstallDataBeginQuery { get; set; } = "";
+
+    [BindProperty(Name = "installDataEndQuery")]
+    [JsonProperty("installDataEndQuery")]
+    public string InstallDataEndQuery { get; set; } = "";
 }
 
 public class ProductInstallListParamValidator : AbstractValidator<ProductInstallListParam>

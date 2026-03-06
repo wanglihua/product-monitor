@@ -96,6 +96,25 @@ public class ProductInstallController(
             query = query.Where(e => e.Product.Name.Contains(productNameQuery));
         }
 
+        if (string.IsNullOrWhiteSpace(param.InstallDataBeginQuery) == false)
+        {
+            string installDataBeginQuery = param.InstallDataBeginQuery.Trim();
+            if (DateTime.TryParse(installDataBeginQuery, out DateTime installDataBegin) == false)
+            {
+                query = query.Where(e => e.ProductInstall.InstallDate >= installDataBegin);
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(param.InstallDataEndQuery) == false)
+        {
+            string installDataEndQuery = param.InstallDataEndQuery.Trim();
+            if (DateTime.TryParse(installDataEndQuery, out DateTime installDataEnd) == false)
+            {
+                installDataEnd = installDataEnd.AddDays(1);
+                query = query.Where(e => e.ProductInstall.InstallDate < installDataEnd);
+            }
+        }
+
         return query;
     }
 

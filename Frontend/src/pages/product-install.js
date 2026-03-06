@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
+import {Button, DatePicker, Input, Space, Table} from 'antd';
 import {EditOutlined, FileExcelOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined} from '@ant-design/icons';
 import $ from "jquery";
 import download from "../core/download";
@@ -15,6 +15,8 @@ const ProductInstall = () => {
     const [listParam, setListParam] = useState({
         collegeNameQuery: "",
         productNameQuery: "",
+        installDateBeginQuery: "",
+        installDateEndQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -144,6 +146,19 @@ const ProductInstall = () => {
                 <Space>
                     <Input ref={collegeNameQueryRef} addonBefore="学校名称" placeholder="学校名称查询" style={{width: 280}}/>
                     <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>
+                    <DatePicker.RangePicker
+                        placeholder={['安装时间开始', '安装时间结束']}
+                        onChange={(date, dateString) => {
+                            setListParam((pre) => {
+                                return {
+                                    ...pre,
+                                    installDateBeginQuery: dateString[0],
+                                    installDateEndQuery: dateString[1],
+                                    current_millis: Date.now(),
+                                };
+                            });
+                        }}
+                    />
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
