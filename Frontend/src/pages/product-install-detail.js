@@ -178,19 +178,6 @@ const ProductInstallDetailInner = (props) => {
                                     notFoundContent={"暂无数据, 请输入正确的搜索条件"}
                                     placeholder="请输入搜索条件, 并选择学校"
                                     options={collegeSelectOptions}
-                                    onSearch={(search) => {
-                                        post("/api/college/select/data", {
-                                            search: search,
-                                        }, function (response) {
-                                            const res = response.data;
-                                            if (res.success !== true) {
-                                                showError(res.message);
-                                                return;
-                                            }
-
-                                            setCollegeSelectOptions(res.collegeList);
-                                        });
-                                    }}
                                     onChange={(value) => {
                                         post("/api/product/select/by/sale", {
                                             collegeId: value,
@@ -213,12 +200,11 @@ const ProductInstallDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入搜索条件, 并选择产品!',
+                                        message: '请选择产品!',
                                     },
                                 ]}
                             >
                                 <Select
-                                    showSearch={true}
                                     filterOption={false}
                                     notFoundContent={"暂无数据, 请先选择院校"}
                                     placeholder="请选择产品"

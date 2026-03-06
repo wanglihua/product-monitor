@@ -206,7 +206,7 @@ const ProductUpdateDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入搜索条件, 并选择产品!',
+                                        message: '请选择产品!',
                                     },
                                 ]}
                             >
