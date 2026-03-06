@@ -135,6 +135,9 @@ const ProductInstall = () => {
 
     const collegeNameQueryRef = useRef();
     const productNameQueryRef = useRef();
+    const installDateBeginQueryRef = useRef();
+    const installDateEndQueryRef = useRef();
+
 
     return (
         <div>
@@ -149,14 +152,8 @@ const ProductInstall = () => {
                     <DatePicker.RangePicker
                         placeholder={['安装时间开始', '安装时间结束']}
                         onChange={(date, dateString) => {
-                            setListParam((pre) => {
-                                return {
-                                    ...pre,
-                                    installDateBeginQuery: dateString[0],
-                                    installDateEndQuery: dateString[1],
-                                    current_millis: Date.now(),
-                                };
-                            });
+                            installDateBeginQueryRef.current = dateString[0];
+                            installDateEndQueryRef.current = dateString[1];
                         }}
                     />
                     <Button
@@ -165,12 +162,16 @@ const ProductInstall = () => {
                         onClick={(e) => {
                             const collegeNameQuery = collegeNameQueryRef.current.input.value;
                             const productNameQuery = productNameQueryRef.current.input.value;
+                            const installDateBeginQuery = installDateBeginQueryRef.current;
+                            const installDateEndQuery = installDateEndQueryRef.current;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
                                     collegeNameQuery: collegeNameQuery,
                                     productNameQuery: productNameQuery,
+                                    installDateBeginQuery: installDateBeginQuery,
+                                    installDateEndQuery: installDateEndQuery,
                                     current_millis: Date.now(),
                                 };
                             });

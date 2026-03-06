@@ -94,6 +94,25 @@ public class ProductUpdateController(
             query = query.Where(e => e.Product.Name.Contains(productNameQuery));
         }
 
+        if (string.IsNullOrWhiteSpace(param.UpdateDateBeginQuery) == false)
+        {
+            string installDataBeginQuery = param.UpdateDateBeginQuery.Trim();
+            if (DateTime.TryParse(installDataBeginQuery, out DateTime installDataBegin) == true)
+            {
+                query = query.Where(e => e.ProductUpdate.UpdateDate >= installDataBegin);
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(param.UpdateDateEndQuery) == false)
+        {
+            string installDataEndQuery = param.UpdateDateEndQuery.Trim();
+            if (DateTime.TryParse(installDataEndQuery, out DateTime installDataEnd) == true)
+            {
+                installDataEnd = installDataEnd.AddDays(1);
+                query = query.Where(e => e.ProductUpdate.UpdateDate < installDataEnd);
+            }
+        }
+
         return query;
     }
 

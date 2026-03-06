@@ -14,6 +14,14 @@ public class ProductUpdateListParam : ListParam
     [BindProperty(Name = "productNameQuery")]
     [JsonProperty("productNameQuery")]
     public string ProductNameQuery { get; set; } = "";
+    
+    [BindProperty(Name = "updateDateBeginQuery")]
+    [JsonProperty("updateDateBeginQuery")]
+    public string UpdateDateBeginQuery { get; set; } = "";
+
+    [BindProperty(Name = "updateDateEndQuery")]
+    [JsonProperty("updateDateEndQuery")]
+    public string UpdateDateEndQuery { get; set; } = "";
 }
 
 public class ProductUpdateListParamValidator : AbstractValidator<ProductUpdateListParam>
