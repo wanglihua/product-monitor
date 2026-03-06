@@ -96,19 +96,19 @@ public class ProductInstallController(
             query = query.Where(e => e.Product.Name.Contains(productNameQuery));
         }
 
-        if (string.IsNullOrWhiteSpace(param.InstallDataBeginQuery) == false)
+        if (string.IsNullOrWhiteSpace(param.InstallDateBeginQuery) == false)
         {
-            string installDataBeginQuery = param.InstallDataBeginQuery.Trim();
-            if (DateTime.TryParse(installDataBeginQuery, out DateTime installDataBegin) == false)
+            string installDataBeginQuery = param.InstallDateBeginQuery.Trim();
+            if (DateTime.TryParse(installDataBeginQuery, out DateTime installDataBegin) == true)
             {
                 query = query.Where(e => e.ProductInstall.InstallDate >= installDataBegin);
             }
         }
 
-        if (string.IsNullOrWhiteSpace(param.InstallDataEndQuery) == false)
+        if (string.IsNullOrWhiteSpace(param.InstallDateEndQuery) == false)
         {
-            string installDataEndQuery = param.InstallDataEndQuery.Trim();
-            if (DateTime.TryParse(installDataEndQuery, out DateTime installDataEnd) == false)
+            string installDataEndQuery = param.InstallDateEndQuery.Trim();
+            if (DateTime.TryParse(installDataEndQuery, out DateTime installDataEnd) == true)
             {
                 installDataEnd = installDataEnd.AddDays(1);
                 query = query.Where(e => e.ProductInstall.InstallDate < installDataEnd);

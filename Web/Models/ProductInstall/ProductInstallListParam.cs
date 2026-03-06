@@ -15,13 +15,13 @@ public class ProductInstallListParam : ListParam
     [JsonProperty("productNameQuery")]
     public string ProductNameQuery { get; set; } = "";
 
-    [BindProperty(Name = "installDataBeginQuery")]
-    [JsonProperty("installDataBeginQuery")]
-    public string InstallDataBeginQuery { get; set; } = "";
+    [BindProperty(Name = "installDateBeginQuery")]
+    [JsonProperty("installDateBeginQuery")]
+    public string InstallDateBeginQuery { get; set; } = "";
 
-    [BindProperty(Name = "installDataEndQuery")]
-    [JsonProperty("installDataEndQuery")]
-    public string InstallDataEndQuery { get; set; } = "";
+    [BindProperty(Name = "installDateEndQuery")]
+    [JsonProperty("installDateEndQuery")]
+    public string InstallDateEndQuery { get; set; } = "";
 }
 
 public class ProductInstallListParamValidator : AbstractValidator<ProductInstallListParam>
