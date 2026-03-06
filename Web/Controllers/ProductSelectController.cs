@@ -19,7 +19,7 @@ public class ProductSelectController(Db db) : Controller
     [Transactional(false)]
     public IActionResult Data([FromBody] ProductSelectDataQueryParam param)
     {
-        IQueryable<ProductEntity> query = db.Product.AsNoTracking();
+        var query = db.Product.AsNoTracking();
 
         if (string.IsNullOrWhiteSpace(param.Search) == false)
         {
@@ -34,6 +34,111 @@ public class ProductSelectController(Db db) : Controller
                 Id = e.Id,
                 Name = e.Name,
             })
+            .ToList();
+
+        var productItemList = productList
+            .Select(e => new Dictionary<string, object>() {
+                ["value"] = e.Id,
+                ["label"] = e.Name,
+            })
+            .ToList();
+
+        return Json(new Dictionary<string, object> {
+            ["success"] = true,
+            ["message"] = "success",
+            ["productList"] = productItemList,
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product/select/by/sale")]
+    [Transactional(false)]
+    public IActionResult BySale([FromBody] ProductSelectBySaleQueryParam param)
+    {
+        var query = db.ProductSale.AsNoTracking();
+
+        long collegeId = param.CollegeId;
+        query = query.Where(e => e.CollegeId == collegeId);
+
+        var productIdList = query
+            .OrderBy(e => e.Id)
+            .Take(SelectConfig.DropdownItemMaxCount)
+            .Select(e => e.Id)
+            .ToList();
+
+        var productList = db.Product.AsNoTracking()
+            .Where(e => productIdList.Contains(e.Id))
+            .OrderBy(e => e.Id)
+            .ToList();
+
+        var productItemList = productList
+            .Select(e => new Dictionary<string, object>() {
+                ["value"] = e.Id,
+                ["label"] = e.Name,
+            })
+            .ToList();
+
+        return Json(new Dictionary<string, object> {
+            ["success"] = true,
+            ["message"] = "success",
+            ["productList"] = productItemList,
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product/select/by/rent")]
+    [Transactional(false)]
+    public IActionResult ByRent([FromBody] ProductSelectByRentQueryParam param)
+    {
+        var query = db.ProductRent.AsNoTracking();
+
+        long collegeId = param.CollegeId;
+        query = query.Where(e => e.CollegeId == collegeId);
+
+        var productIdList = query
+            .OrderBy(e => e.Id)
+            .Take(SelectConfig.DropdownItemMaxCount)
+            .Select(e => e.Id)
+            .ToList();
+
+        var productList = db.Product.AsNoTracking()
+            .Where(e => productIdList.Contains(e.Id))
+            .OrderBy(e => e.Id)
+            .ToList();
+
+        var productItemList = productList
+            .Select(e => new Dictionary<string, object>() {
+                ["value"] = e.Id,
+                ["label"] = e.Name,
+            })
+            .ToList();
+
+        return Json(new Dictionary<string, object> {
+            ["success"] = true,
+            ["message"] = "success",
+            ["productList"] = productItemList,
+        });
+    }
+
+    [HttpPost]
+    [Route("/api/product/select/by/eval")]
+    [Transactional(false)]
+    public IActionResult ByEval([FromBody] ProductSelectByEvalQueryParam param)
+    {
+        var query = db.ProductEval.AsNoTracking();
+
+        long collegeId = param.CollegeId;
+        query = query.Where(e => e.CollegeId == collegeId);
+
+        var productIdList = query
+            .OrderBy(e => e.Id)
+            .Take(SelectConfig.DropdownItemMaxCount)
+            .Select(e => e.Id)
+            .ToList();
+
+        var productList = db.Product.AsNoTracking()
+            .Where(e => productIdList.Contains(e.Id))
+            .OrderBy(e => e.Id)
             .ToList();
 
         var productItemList = productList
