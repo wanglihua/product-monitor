@@ -30,6 +30,27 @@ const ProductSpecialServiceDetailInner = (props) => {
 
     const form = useRef();
 
+    const projectTypeRef = useRef();
+    const collegeRef = useRef();
+
+    const loadProductList = () => {
+        const projectTypeId = projectTypeRef.current;
+        const collegeId = collegeRef.current;
+
+        post("/api/product/select/by/project/type", {
+            projectTypeId: projectTypeId,
+            collegeId: collegeId,
+        }, function (response) {
+            const res = response.data;
+            if (res.success !== true) {
+                showError(res.message);
+                return;
+            }
+
+            setProductSelectOptions(res.productList);
+        });
+    };
+
     return (
         <Modal
             title={title.current}
@@ -164,6 +185,10 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 <Select
                                     placeholder="请选择项目类型"
                                     options={projectTypeOptions}
+                                    onChange={(value) => {
+                                        projectTypeRef.current = value;
+                                        loadProductList();
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -199,6 +224,10 @@ const ProductSpecialServiceDetailInner = (props) => {
                                             setCollegeSelectOptions(res.collegeList);
                                         });
                                     }}
+                                    onChange={(value) => {
+                                        collegeRef.current = value;
+                                        loadProductList();
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -208,29 +237,15 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: '请输入搜索条件, 并选择产品!',
+                                        message: '请选择产品',
                                     },
                                 ]}
                             >
                                 <Select
-                                    showSearch={true}
                                     filterOption={false}
-                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
-                                    placeholder="请输入搜索条件, 并选择产品"
+                                    notFoundContent={"暂无数据, 请先选择项目类型和院校"}
+                                    placeholder="请选择产品"
                                     options={productSelectOptions}
-                                    onSearch={(search) => {
-                                        post("/api/product/select/data", {
-                                            search: search,
-                                        }, function (response) {
-                                            const res = response.data;
-                                            if (res.success !== true) {
-                                                showError(res.message);
-                                                return;
-                                            }
-
-                                            setProductSelectOptions(res.productList);
-                                        });
-                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
