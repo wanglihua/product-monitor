@@ -141,6 +141,8 @@ const ProductUpdate = () => {
 
     const collegeNameQueryRef = useRef();
     const productNameQueryRef = useRef();
+    const updateDateBeginQueryRef = useRef();
+    const updateDateEndQueryRef = useRef();
 
     return (
         <div>
@@ -155,14 +157,8 @@ const ProductUpdate = () => {
                     <DatePicker.RangePicker
                         placeholder={['更新时间开始', '更新时间结束']}
                         onChange={(date, dateString) => {
-                            setListParam((pre) => {
-                                return {
-                                    ...pre,
-                                    updateDateBeginQuery: dateString[0],
-                                    updateDateEndQuery: dateString[1],
-                                    current_millis: Date.now(),
-                                };
-                            });
+                            updateDateBeginQueryRef.current = dateString[0];
+                            updateDateEndQueryRef.current = dateString[1];
                         }}
                     />
                     <Button
@@ -171,12 +167,16 @@ const ProductUpdate = () => {
                         onClick={(e) => {
                             const collegeNameQuery = collegeNameQueryRef.current.input.value;
                             const productNameQuery = productNameQueryRef.current.input.value;
+                            const updateDateBeginQuery = updateDateBeginQueryRef.current;
+                            const updateDateEndQuery = updateDateEndQueryRef.current;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
                                     collegeNameQuery: collegeNameQuery,
                                     productNameQuery: productNameQuery,
+                                    updateDateBeginQuery: updateDateBeginQuery,
+                                    updateDateEndQuery: updateDateEndQuery,
                                     current_millis: Date.now(),
                                 };
                             });
