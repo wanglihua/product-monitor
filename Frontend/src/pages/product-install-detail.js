@@ -191,6 +191,19 @@ const ProductInstallDetailInner = (props) => {
                                             setCollegeSelectOptions(res.collegeList);
                                         });
                                     }}
+                                    onChange={(value) => {
+                                        post("/api/product/select/by/sale", {
+                                            collegeId: value,
+                                        }, function (response) {
+                                            const res = response.data;
+                                            if (res.success !== true) {
+                                                showError(res.message);
+                                                return;
+                                            }
+
+                                            setProductSelectOptions(res.productList);
+                                        });
+                                    }}
                                 />
                             </Form.Item>
                         </Descriptions.Item>
@@ -207,22 +220,9 @@ const ProductInstallDetailInner = (props) => {
                                 <Select
                                     showSearch={true}
                                     filterOption={false}
-                                    notFoundContent={"暂无数据, 请输入正确的搜索条件"}
-                                    placeholder="请输入搜索条件, 并选择产品"
+                                    notFoundContent={"暂无数据, 请先选择院校"}
+                                    placeholder="请选择产品"
                                     options={productSelectOptions}
-                                    onSearch={(search) => {
-                                        post("/api/product/select/data", {
-                                            search: search,
-                                        }, function (response) {
-                                            const res = response.data;
-                                            if (res.success !== true) {
-                                                showError(res.message);
-                                                return;
-                                            }
-
-                                            setProductSelectOptions(res.productList);
-                                        });
-                                    }}
                                     onChange={(value) => {
                                         post("/api/product/version/select/data", {
                                             productId: value,

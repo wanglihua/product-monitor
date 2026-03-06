@@ -63,7 +63,7 @@ public class ProductSelectController(Db db) : Controller
         var productIdList = query
             .OrderBy(e => e.Id)
             .Take(SelectConfig.DropdownItemMaxCount)
-            .Select(e => e.Id)
+            .Select(e => e.ProductId)
             .ToList();
 
         var productList = db.Product.AsNoTracking()
@@ -98,7 +98,7 @@ public class ProductSelectController(Db db) : Controller
         var productIdList = query
             .OrderBy(e => e.Id)
             .Take(SelectConfig.DropdownItemMaxCount)
-            .Select(e => e.Id)
+            .Select(e => e.ProductId)
             .ToList();
 
         var productList = db.Product.AsNoTracking()
@@ -133,7 +133,7 @@ public class ProductSelectController(Db db) : Controller
         var productIdList = query
             .OrderBy(e => e.Id)
             .Take(SelectConfig.DropdownItemMaxCount)
-            .Select(e => e.Id)
+            .Select(e => e.ProductId)
             .ToList();
 
         var productList = db.Product.AsNoTracking()
