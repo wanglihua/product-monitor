@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Button, Input, Space, Table} from 'antd';
+import {Button, DatePicker, Input, Space, Table} from 'antd';
 import {EditOutlined, DeleteOutlined, PlusCircleOutlined, SearchOutlined, FileExcelOutlined} from '@ant-design/icons';
 import ProductSpecialServiceDetail from "./product-special-service-detail";
 
@@ -14,6 +14,8 @@ const ProductSpecialService = () => {
 
     const [listParam, setListParam] = useState({
         nameQuery: "",
+        createDateBeginQuery: "",
+        createDateEndQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
@@ -87,7 +89,7 @@ const ProductSpecialService = () => {
         },
         {
             title: "记录时间",
-            dataIndex: "updateTime",
+            dataIndex: "createTime",
             width: "150px",
             sorter: true,
         },
@@ -138,6 +140,8 @@ const ProductSpecialService = () => {
 
     const collegeNameQueryRef = useRef();
     const productNameQueryRef = useRef();
+    const createDateBeginQueryRef = useRef();
+    const createDateEndQueryRef = useRef();
 
     return (
         <div>
@@ -149,18 +153,29 @@ const ProductSpecialService = () => {
                 <Space>
                     <Input ref={collegeNameQueryRef} addonBefore="学校名称" placeholder="学校名称查询" style={{width: 280}}/>
                     <Input ref={productNameQueryRef} addonBefore="产品名称" placeholder="产品名称查询" style={{width: 280}}/>
+                    <DatePicker.RangePicker
+                        placeholder={['记录时间开始', '记录时间结束']}
+                        onChange={(date, dateString) => {
+                            createDateBeginQueryRef.current = dateString[0];
+                            createDateEndQueryRef.current = dateString[1];
+                        }}
+                    />
                     <Button
                         color="default"
                         icon={<SearchOutlined/>}
                         onClick={(e) => {
                             const collegeNameQuery = collegeNameQueryRef.current.input.value;
                             const productNameQuery = productNameQueryRef.current.input.value;
+                            const createDateBeginQuery = createDateBeginQueryRef.current;
+                            const createDateEndQuery = createDateEndQueryRef.current;
 
                             setListParam((pre) => {
                                 return {
                                     ...pre,
                                     collegeNameQuery: collegeNameQuery,
                                     productNameQuery: productNameQuery,
+                                    createDateBeginQuery: createDateBeginQuery,
+                                    createDateEndQuery: createDateEndQuery,
                                     current_millis: Date.now(),
                                 };
                             });
