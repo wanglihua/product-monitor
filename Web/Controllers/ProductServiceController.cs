@@ -93,6 +93,25 @@ public class ProductServiceController(
             string productNameQuery = param.ProductNameQuery.Trim();
             query = query.Where(e => e.Product.Name.Contains(productNameQuery));
         }
+        
+        if (string.IsNullOrWhiteSpace(param.CreateDateBeginQuery) == false)
+        {
+            string createDateBeginQuery = param.CreateDateBeginQuery.Trim();
+            if (DateTime.TryParse(createDateBeginQuery, out DateTime createDateBegin) == true)
+            {
+                query = query.Where(e => e.ProductService.CreateTime >= createDateBegin);
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(param.CreateDateEndQuery) == false)
+        {
+            string createDateEndQuery = param.CreateDateEndQuery.Trim();
+            if (DateTime.TryParse(createDateEndQuery, out DateTime createDateEnd) == true)
+            {
+                createDateEnd = createDateEnd.AddDays(1);
+                query = query.Where(e => e.ProductService.CreateTime < createDateEnd);
+            }
+        }
 
         return query;
     }
