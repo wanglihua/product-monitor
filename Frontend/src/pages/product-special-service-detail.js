@@ -85,6 +85,7 @@ const ProductSpecialServiceDetailInner = (props) => {
 
                         const data = res.data;
 
+                        let projectTypeCode = undefined;
                         let collegeId = undefined;
                         let productId = undefined;
 
@@ -100,6 +101,8 @@ const ProductSpecialServiceDetailInner = (props) => {
                                 value: productId,
                                 label: data.productName,
                             }]);
+
+                            projectTypeCode = data.projectTypeCode;
                         }
 
                         setProjectTypeOptions(data.projectTypeList)
