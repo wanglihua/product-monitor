@@ -155,7 +155,7 @@ const ProductInstallMonitor = () => {
                     </Button>
                 </Space>
             </div>
-            <div style={{padding: "10px 0"}}>
+            <div style={{padding: "35px 0"}}>
                 <Table columns={productInstallMonitorListColumns} rowKey="id"
                        dataSource={state.productInstallMonitorList}
                        pagination={{

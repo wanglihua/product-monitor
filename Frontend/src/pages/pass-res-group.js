@@ -168,7 +168,7 @@ const PassResGroup = () => {
                     </Button>
                 </Space>
             </div>
-            <div style={{padding: "10px 0"}}>
+            <div style={{padding: "35px 0"}}>
                 <Table columns={passResGroupListColumns} rowKey="id"
                        dataSource={state.passResGroupList}
                        pagination={{

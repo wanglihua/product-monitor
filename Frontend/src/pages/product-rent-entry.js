@@ -164,7 +164,7 @@ const ProductRentEntry = () => {
                     </Button>
                 </Space>
             </div>
-            <div style={{padding: "10px 0"}}>
+            <div style={{padding: "35px 0"}}>
                 <Table columns={productRentEntryListColumns} rowKey="id"
                        dataSource={state.productRentEntryList}
                        pagination={{

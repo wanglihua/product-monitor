@@ -153,7 +153,7 @@ const ProductUrlMonitor = () => {
                     </Button>
                 </Space>
             </div>
-            <div style={{padding: "10px 0"}}>
+            <div style={{padding: "35px 0"}}>
                 <Table columns={productUrlMonitorListColumns} rowKey="id"
                        dataSource={state.productUrlMonitorList}
                        pagination={{

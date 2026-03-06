@@ -247,7 +247,7 @@ const ProductRent = () => {
                     }}>下载导入样板文件</a>
                 </Space>
             </div>
-            <div style={{padding: "10px 0"}}>
+            <div style={{padding: "35px 0"}}>
                 <Table columns={productRentListColumns} rowKey="id"
                        dataSource={state.productRentList}
                        pagination={{
