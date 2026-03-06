@@ -14,6 +14,8 @@ const ProductService = () => {
 
     const [listParam, setListParam] = useState({
         nameQuery: "",
+        createDateBeginQuery: "",
+        createDateEndQuery: "",
         currentPage: 1,
         pageSize: 15,
         sortField: "id",
