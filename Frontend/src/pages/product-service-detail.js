@@ -100,11 +100,6 @@ const ProductServiceDetailInner = (props) => {
                             }]);
 
                             productId = data.productId;
-                            setProductSelectOptions([{
-                                value: productId,
-                                label: data.productName,
-                            }]);
-
                             projectTypeCode = data.projectTypeCode;
 
                             if (data.problemTypeCode > 0) {
@@ -112,6 +107,10 @@ const ProductServiceDetailInner = (props) => {
                             }
                         }
 
+                        projectTypeRef.current = projectTypeCode;
+                        collegeRef.current = collegeId;
+
+                        setProductSelectOptions(data.productList);
                         setProjectTypeOptions(data.projectTypeList)
                         setProblemTypeOptions(data.problemTypeList);
 

@@ -1,4 +1,5 @@
 using Domain;
+using Domain.Dto;
 using FluentValidation;
 using Newtonsoft.Json;
 
@@ -20,6 +21,9 @@ public class ProductServiceDetailModel
 
     [JsonProperty("productName")]
     public string ProductName { get; set; } = "";
+    
+    [JsonProperty("productList")]
+    public List<SelectOptionLongItem> ProductList { get; set; } = new();
 
     [JsonProperty("projectTypeCode")]
     public int ProjectTypeCode { get; set; }

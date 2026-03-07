@@ -5,6 +5,7 @@ using Core.Database;
 using Core.Util;
 using Core.Web;
 using Domain;
+using Domain.Dto;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace Web.Controllers;
 [Auth(PassRes.ProductService.ProductSaleService)]
 public class ProductServiceController(
     Db db,
+    ProductSelectService productSelectService,
     UserLoginService userLoginService,
     UserProvinceService userProvinceService,
     ProductServiceService productServiceService,
@@ -93,7 +95,7 @@ public class ProductServiceController(
             string productNameQuery = param.ProductNameQuery.Trim();
             query = query.Where(e => e.Product.Name.Contains(productNameQuery));
         }
-        
+
         if (string.IsNullOrWhiteSpace(param.CreateDateBeginQuery) == false)
         {
             string createDateBeginQuery = param.CreateDateBeginQuery.Trim();
@@ -298,12 +300,23 @@ public class ProductServiceController(
                 throw new ValidationException($"指定的产品#{productId}不存在!");
             }
 
+            var productItemList = productSelectService.GetProductSelectOptionList(productService.ProjectType, productService.CollegeId);
+
+            if (productItemList.Any(e => e.Value == productId) == false)
+            {
+                productItemList.Add(new SelectOptionLongItem {
+                    Value = productId,
+                    Label = product.Name,
+                });
+            }
+
             model = new ProductServiceDetailModel {
                 Id = productService.Id,
                 CollegeId = productService.CollegeId,
                 CollegeName = college.Name,
                 ProductId = productService.ProductId,
                 ProductName = product.Name,
+                ProductList = productItemList,
                 ProjectTypeCode = productService.ProjectType.Id,
                 ProblemTypeCode = productService.ProblemType.Id,
                 ServiceDate = productService.ServiceDate.ToString("yyyy-MM-dd"),

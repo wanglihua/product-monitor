@@ -19,7 +19,6 @@ public class ProductSelectService(Db db)
 
             var productIdList = query
                 .OrderBy(e => e.Id)
-                .Take(SelectConfig.DropdownItemMaxCount)
                 .Select(e => e.ProductId)
                 .ToList();
 
@@ -34,7 +33,6 @@ public class ProductSelectService(Db db)
 
             var productIdList = query
                 .OrderBy(e => e.Id)
-                .Take(SelectConfig.DropdownItemMaxCount)
                 .Select(e => e.ProductId)
                 .ToList();
 
@@ -49,7 +47,6 @@ public class ProductSelectService(Db db)
 
             var productIdList = query
                 .OrderBy(e => e.Id)
-                .Take(SelectConfig.DropdownItemMaxCount)
                 .Select(e => e.ProductId)
                 .ToList();
 
