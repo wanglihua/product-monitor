@@ -5,6 +5,7 @@ using Core.Database;
 using Core.Util;
 using Core.Web;
 using Domain;
+using Domain.Dto;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace Web.Controllers;
 [Auth(PassRes.ProductService.ProductSpecialService)]
 public class ProductSpecialServiceController(
     Db db,
+    ProductSelectService productSelectService,
     UserLoginService userLoginService,
     UserProvinceService userProvinceService,
     ProductSpecialServiceService productSpecialServiceService,
@@ -280,6 +282,16 @@ public class ProductSpecialServiceController(
             {
                 throw new ValidationException($"指定的产品#{productId}不存在!");
             }
+            
+            var productItemList = productSelectService.GetProductSelectOptionList(productSpecialService.ProjectType, productSpecialService.CollegeId);
+
+            if (productItemList.Any(e => e.Value == productId) == false)
+            {
+                productItemList.Add(new SelectOptionLongItem {
+                    Value = productId,
+                    Label = product.Name,
+                });
+            }
 
             model = new ProductSpecialServiceDetailModel {
                 Id = productSpecialService.Id,
@@ -287,6 +299,7 @@ public class ProductSpecialServiceController(
                 CollegeName = college.Name,
                 ProductId = productSpecialService.ProductId,
                 ProductName = product.Name,
+                ProductList = productItemList,
                 ProjectTypeCode = productSpecialService.ProjectType.Id,
                 ServiceDate = productSpecialService.ServiceDate.ToString("yyyy-MM-dd"),
                 // ServiceCount = productSpecialService.ServiceCount,

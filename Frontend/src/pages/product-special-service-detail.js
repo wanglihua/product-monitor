@@ -108,6 +108,7 @@ const ProductSpecialServiceDetailInner = (props) => {
                         projectTypeRef.current = projectTypeCode;
                         collegeRef.current = collegeId;
 
+                        setProductSelectOptions(data.productList);
                         setProjectTypeOptions(data.projectTypeList)
 
                         form.current.setFieldsValue({
