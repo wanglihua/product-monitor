@@ -5,12 +5,15 @@ using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
+using Service;
 using Web.Models.ProductSelect;
 
 namespace Web.Controllers;
 
 [Auth]
-public class ProductSelectController(Db db) : Controller
+public class ProductSelectController(
+    ProductSelectService productSelectService,
+    Db db) : Controller
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
@@ -55,28 +58,10 @@ public class ProductSelectController(Db db) : Controller
     [Transactional(false)]
     public IActionResult BySale([FromBody] ProductSelectBySaleQueryParam param)
     {
-        var query = db.ProductSale.AsNoTracking();
-
+        var projectType = ProjectType.Sale;
         long collegeId = param.CollegeId;
-        query = query.Where(e => e.CollegeId == collegeId);
 
-        var productIdList = query
-            .OrderBy(e => e.Id)
-            .Take(SelectConfig.DropdownItemMaxCount)
-            .Select(e => e.ProductId)
-            .ToList();
-
-        var productList = db.Product.AsNoTracking()
-            .Where(e => productIdList.Contains(e.Id))
-            .OrderBy(e => e.Id)
-            .ToList();
-
-        var productItemList = productList
-            .Select(e => new Dictionary<string, object>() {
-                ["value"] = e.Id,
-                ["label"] = e.Name,
-            })
-            .ToList();
+        var productItemList = productSelectService.GetProductSelectOptionList(projectType, collegeId);
 
         return Json(new Dictionary<string, object> {
             ["success"] = true,
@@ -90,28 +75,10 @@ public class ProductSelectController(Db db) : Controller
     [Transactional(false)]
     public IActionResult ByRent([FromBody] ProductSelectByRentQueryParam param)
     {
-        var query = db.ProductRent.AsNoTracking();
-
+        var projectType = ProjectType.Rent;
         long collegeId = param.CollegeId;
-        query = query.Where(e => e.CollegeId == collegeId);
 
-        var productIdList = query
-            .OrderBy(e => e.Id)
-            .Take(SelectConfig.DropdownItemMaxCount)
-            .Select(e => e.ProductId)
-            .ToList();
-
-        var productList = db.Product.AsNoTracking()
-            .Where(e => productIdList.Contains(e.Id))
-            .OrderBy(e => e.Id)
-            .ToList();
-
-        var productItemList = productList
-            .Select(e => new Dictionary<string, object>() {
-                ["value"] = e.Id,
-                ["label"] = e.Name,
-            })
-            .ToList();
+        var productItemList = productSelectService.GetProductSelectOptionList(projectType, collegeId);
 
         return Json(new Dictionary<string, object> {
             ["success"] = true,
@@ -125,28 +92,10 @@ public class ProductSelectController(Db db) : Controller
     [Transactional(false)]
     public IActionResult ByEval([FromBody] ProductSelectByEvalQueryParam param)
     {
-        var query = db.ProductEval.AsNoTracking();
-
+        var projectType = ProjectType.Eval;
         long collegeId = param.CollegeId;
-        query = query.Where(e => e.CollegeId == collegeId);
 
-        var productIdList = query
-            .OrderBy(e => e.Id)
-            .Take(SelectConfig.DropdownItemMaxCount)
-            .Select(e => e.ProductId)
-            .ToList();
-
-        var productList = db.Product.AsNoTracking()
-            .Where(e => productIdList.Contains(e.Id))
-            .OrderBy(e => e.Id)
-            .ToList();
-
-        var productItemList = productList
-            .Select(e => new Dictionary<string, object>() {
-                ["value"] = e.Id,
-                ["label"] = e.Name,
-            })
-            .ToList();
+        var productItemList = productSelectService.GetProductSelectOptionList(projectType, collegeId);
 
         return Json(new Dictionary<string, object> {
             ["success"] = true,
@@ -155,80 +104,15 @@ public class ProductSelectController(Db db) : Controller
         });
     }
 
-    [NonAction]
-    private List<long> GetProductIdList(ProductSelectByProjectTypeQueryParam param)
-    {
-        var projectType = ProjectType.GetById(param.ProjectTypeId);
-
-        if (projectType == ProjectType.Sale)
-        {
-            var query = db.ProductSale.AsNoTracking();
-
-            long collegeId = param.CollegeId;
-            query = query.Where(e => e.CollegeId == collegeId);
-
-            var productIdList = query
-                .OrderBy(e => e.Id)
-                .Take(SelectConfig.DropdownItemMaxCount)
-                .Select(e => e.ProductId)
-                .ToList();
-
-            return productIdList;
-        }
-
-        if (projectType == ProjectType.Rent)
-        {
-            var query = db.ProductRent.AsNoTracking();
-
-            long collegeId = param.CollegeId;
-            query = query.Where(e => e.CollegeId == collegeId);
-
-            var productIdList = query
-                .OrderBy(e => e.Id)
-                .Take(SelectConfig.DropdownItemMaxCount)
-                .Select(e => e.ProductId)
-                .ToList();
-
-            return productIdList;
-        }
-
-        if (projectType == ProjectType.Eval)
-        {
-            var query = db.ProductEval.AsNoTracking();
-
-            long collegeId = param.CollegeId;
-            query = query.Where(e => e.CollegeId == collegeId);
-
-            var productIdList = query
-                .OrderBy(e => e.Id)
-                .Take(SelectConfig.DropdownItemMaxCount)
-                .Select(e => e.ProductId)
-                .ToList();
-
-            return productIdList;
-        }
-
-        return new List<long>();
-    }
-
     [HttpPost]
     [Route("/api/product/select/by/project/type")]
     [Transactional(false)]
     public IActionResult ByProjectType([FromBody] ProductSelectByProjectTypeQueryParam param)
     {
-        var productIdList = GetProductIdList(param);
+        var projectType = ProjectType.GetById(param.ProjectTypeId);
+        long collegeId = param.CollegeId;
 
-        var productList = db.Product.AsNoTracking()
-            .Where(e => productIdList.Contains(e.Id))
-            .OrderBy(e => e.Id)
-            .ToList();
-
-        var productItemList = productList
-            .Select(e => new Dictionary<string, object>() {
-                ["value"] = e.Id,
-                ["label"] = e.Name,
-            })
-            .ToList();
+        var productItemList = productSelectService.GetProductSelectOptionList(projectType, collegeId);
 
         return Json(new Dictionary<string, object> {
             ["success"] = true,

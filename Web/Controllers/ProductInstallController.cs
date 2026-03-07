@@ -324,6 +324,10 @@ public class ProductInstallController(
                 }
             }
 
+            // var productIdList = db.pro.AsNoTracking()
+            //     .Select(e => e.ProductId)
+            //     .ToList();
+
             // 附件
             var attachment = db.ProductInstallAttachment.AsNoTracking()
                 .Where(e => e.ProductInstallId == productInstallId)
