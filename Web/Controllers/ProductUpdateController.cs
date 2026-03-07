@@ -5,6 +5,7 @@ using Core.Database;
 using Core.Util;
 using Core.Web;
 using Domain;
+using Domain.Dto;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace Web.Controllers;
 [Auth(PassRes.ProductService.ProductUpdate)]
 public class ProductUpdateController(
     Db db,
+    ProductSelectService productSelectService,
     UserLoginService userLoginService,
     UserProvinceService userProvinceService,
     ProductUpdateService productUpdateService,
@@ -322,12 +324,23 @@ public class ProductUpdateController(
                 }
             }
 
+            var productItemList = productSelectService.GetProductSelectOptionList(ProjectType.Sale, productUpdate.CollegeId);
+
+            if (productItemList.Any(e => e.Value == productId) == false)
+            {
+                productItemList.Add(new SelectOptionLongItem {
+                    Value = productId,
+                    Label = product.Name,
+                });
+            }
+
             model = new ProductUpdateDetailModel {
                 Id = productUpdate.Id,
                 CollegeId = collegeId,
                 CollegeName = college.Name,
                 ProductId = productId,
                 ProductName = product.Name,
+                ProductList = productItemList,
                 VersionSale = productUpdate.VersionSale,
                 VersionUpdate = productUpdate.VersionUpdate,
                 // UpdateCount = productUpdate.UpdateCount,

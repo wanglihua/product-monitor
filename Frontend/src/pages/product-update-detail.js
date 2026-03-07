@@ -75,10 +75,6 @@ const ProductUpdateDetailInner = (props) => {
                             }]);
 
                             productId = data.productId;
-                            setProductSelectOptions([{
-                                value: productId,
-                                label: data.productName,
-                            }]);
                         }
 
                         form.current.setFieldsValue({
@@ -96,6 +92,7 @@ const ProductUpdateDetailInner = (props) => {
                             description: data.description,
                         });
 
+                        setProductSelectOptions(data.productList);
                         setVersionSelectOptions(data.productVersionList);
                     });
                 }
