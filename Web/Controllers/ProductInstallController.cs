@@ -5,6 +5,7 @@ using Core.Database;
 using Core.Util;
 using Core.Web;
 using Domain;
+using Domain.Dto;
 using Domain.PassRes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace Web.Controllers;
 public class ProductInstallController(
     IWebHostEnvironment webHostEnvironment,
     Db db,
+    ProductSelectService productSelectService,
     UserLoginService userLoginService,
     UserProvinceService userProvinceService,
     ProductSaleService productSaleService,
@@ -324,9 +326,15 @@ public class ProductInstallController(
                 }
             }
 
-            // var productIdList = db.pro.AsNoTracking()
-            //     .Select(e => e.ProductId)
-            //     .ToList();
+            var productItemList = productSelectService.GetProductSelectOptionList(ProjectType.Sale, productInstall.CollegeId);
+
+            if (productItemList.Any(e => e.Value == productId) == false)
+            {
+                productItemList.Add(new SelectOptionLongItem {
+                    Value = productId,
+                    Label = product.Name,
+                });
+            }
 
             // 附件
             var attachment = db.ProductInstallAttachment.AsNoTracking()
@@ -341,6 +349,7 @@ public class ProductInstallController(
                 CollegeName = college.Name,
                 ProductId = productId,
                 ProductName = product.Name,
+                ProductList = productItemList,
                 VersionSale = versionSale,
                 VersionInstall = versionInstall,
                 InstallDate = productInstall.InstallDate.ToString("yyyy-MM-dd"),

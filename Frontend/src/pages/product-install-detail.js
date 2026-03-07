@@ -77,10 +77,6 @@ const ProductInstallDetailInner = (props) => {
                             }]);
 
                             productId = data.productId;
-                            setProductSelectOptions([{
-                                value: productId,
-                                label: data.productName,
-                            }]);
                         }
 
                         form.current.setFieldsValue({
@@ -102,6 +98,7 @@ const ProductInstallDetailInner = (props) => {
                             attachmentName: data.attachmentName,
                         });
 
+                        setProductSelectOptions(data.productList);
                         setVersionSelectOptions(data.productVersionList);
                     });
                 }
